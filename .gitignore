@@ -1,0 +1,16 @@
+### VS Code ###
+vs_code/
+.vscode
+.vs_code/
+
+### Intellij IDEA ###
+.idea
+.iws
+.iml
+.ipr
+
+### Mac Bin ###
+.DS_Store
+.DS_Store/
+__MACOSX/
+.__MACOSX/
