@@ -1,5 +1,6 @@
 # CiliCili Player
-Proposal of A DevOps Project
+Proposal of An Online Video Platform
+NYU CS-GY 9223 DevOps
 
 ## Overview
 
