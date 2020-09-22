@@ -3,9 +3,10 @@
 - NYU CS-GY 9223 DevOps
 
 ## Overview
-- Nowadays, video has penetrated into every aspect of our lives. We can follow videos to learn how to cook, play musical instruments, travel around the world, learn knowledge, watch the news, and see how other people live across the world. More or less, video has become an indispensable part of our lives.
-- Our project is dedicated to building an online video viewing platform, including a variety of cutting-edge and popular features like:
+- Nowadays, video has penetrated into every aspect of our lives. We can follow videos to learn how to cook, play musical instruments, enjoy the beauty of various countries, learn knowledge, watch the news, and see how other people live across the world. More or less, video has become an indispensable part of our lives.
+- Our project is dedicated to building an online video playing platform, including a variety of cutting-edge and popular features like:
   - Highly available online video player
+  - Efficient search system
   - User registration, login and authority system
   - User-based recommendation system
   - User reviews and scoring system
