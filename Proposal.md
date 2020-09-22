@@ -3,8 +3,12 @@
 - NYU CS-GY 9223 DevOps
 
 ## Overview
-
-[...]
+- Nowadays, video has penetrated into every aspect of our lives. We can follow videos to learn how to cook, play musical instruments, travel around the world, learn knowledge, watch the news, and see how other people live across the world. More or less, video has become an indispensable part of our lives.
+- Our project is dedicated to building an online video viewing platform, including a variety of cutting-edge and popular features like:
+  - Highly available online video player
+  - User registration, login and authority system
+  - User-based recommendation system
+  - User reviews and scoring system
 
 ## Assumptions
 
@@ -20,29 +24,29 @@
 
 ### Front-end
 
-We will use `React.js`, which is a component-based JavaScript library for building user interfaces. See [React.js](https://reactjs.org/) for more details.
+- We will use `React.js`, which is a component-based JavaScript library for building user interfaces. See [React.js](https://reactjs.org/) for more details.
 
 ### Back-end
 
-We will use `Flask-Rest X`, which is an extension for Python Flask framework that adds support for quickly building REST APIs. See [Flask-Rest X](https://flask-restx.readthedocs.io/en/latest/) for more details.
+- We will use `Flask-Rest X`, which is an extension for Python Flask framework that adds support for quickly building REST APIs. See [Flask-Rest X](https://flask-restx.readthedocs.io/en/latest/) for more details.
 
 ### Testing
 
-For unit test, we will use:
-- `unittest`, to test Python code
-- `Jest`, to test React code
+- For unit test, we will use:
+  - `unittest`, to test Python code
+  - `Jest`, to test React code
 
-We will also use linters listed below to enforce code styling:
-- `flake8` for Python
-- `eslint` for React
+- We will also use linters listed below to enforce code styling:
+  - `flake8` for Python
+  - `eslint` for React
 
 ### CI/CD
 
-We will use `Travis CI`, which provides convenient continuous integration & deployment services.
+- We will use `Travis CI`, which provides convenient continuous integration & deployment services.
 
 ### Deploy and Monitor
 
-We will use `Docker` to set up container for our application for cloud deployment and monitoring in the futurue.
+- We will use `Docker` to set up container for our application for cloud deployment and monitoring in the futurue.
 
 ## External API integrations and Data Sources
 
@@ -51,6 +55,13 @@ We will use `Docker` to set up container for our application for cloud deploymen
 ## Deliverables
 
 [...]
+
+## Future Works
+- We might allow users to upload their own videos.
+- We might allow users to delete their own videos.
+- We might allow users to post live comment (danmaku).
+- We might allow users to block certain users.
+- *To Be Continue ...*
 
 ## Implementation Plan
 
