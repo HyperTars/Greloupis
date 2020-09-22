@@ -14,3 +14,6 @@ vs_code/
 .DS_Store/
 __MACOSX/
 .__MACOSX/
+
+### temp file ###
+*.swp
