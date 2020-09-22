@@ -1,6 +1,6 @@
 # CiliCili Player
-Proposal of An Online Video Platform
-NYU CS-GY 9223 DevOps
+- Proposal of An Online Video Platform
+- NYU CS-GY 9223 DevOps
 
 ## Overview
 
