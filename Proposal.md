@@ -10,6 +10,12 @@
   - User registration, login and authority system
   - User-based recommendation system
   - User reviews and scoring system
+  
+- The primary purpose of this project is to create an online video viewing system. In addition, we have also thought and reflected on similar products already on the market. 
+  - Netflix is a completely B2C video content provider. The video is completely uploaded by the provider and provided to users. Similarly, there are streaming media providers such as HBO Max and Disney+. They lack or essentially do not allow users to upload your own video. However, in our opinion, users can also produce very high-level videos nowadays. Many vlog bloggers, short film teams, etc. already have very professional equipment, and they can also shoot amazing pictures. Perhaps they should have a way to bypass the publisher and directly show their work to other users. 
+  - Regarding this problem, YouTube is such a platform that realizes C2C sharing while the B2C function is also complete. However, our team believes that the way  user communicate in Youtube are not as efficient and effective as those bullet screen (danmaku, a live commenting system) video sites (such as niconico, JP. and bilibili, CN.). 
+  - Correspondingly, these websites do not have the strong background transcoding algorithms, distributed content delivery system and online adaptive streaming coding algorithms like YouTube and Netflix. 
+  - Based on this, our long-term plan (because one semester is too short, it is difficult for us to fully realize them all) is to combine the advantages of all the above video sites to create an online video playback site that meets the needs of users' actual experience in an ultimate way.
 
 ## Assumptions
 
