@@ -5,4 +5,10 @@
 ![React](https://img.shields.io/badge/React-16.3.1-blue)
 ![MySQL](https://img.shields.io/badge/MySQL-8.0.21-blue)
 
+### Project Proposal
 [Proposal](./Proposal.md)
+
+### Contributors
+- Wenzhou Li [HyperTars](https://github.com/HyperTars) wl2154@nyu.edu
+- Linyi Yan [MikeYan01](https://github.com/MikeYan01) ly1333@nyu.edu
+- [FatBin](https://github.com/FatBin)
