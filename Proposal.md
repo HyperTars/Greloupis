@@ -25,7 +25,7 @@
 
 ## Architecture Design
 
-[...]
+![Architecture Design Diagram](./ArchitectureDesign_resize.png)
 
 ## Technology Stack
 
