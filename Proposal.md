@@ -47,6 +47,9 @@
   - `flake8` for Python
   - `eslint` for React
 
+- Test Cases
+  - [Function & Test Cases Sheet](https://docs.google.com/spreadsheets/d/1hoKAh89rNywF343tU5lzeamFmidxdYJ39CW_uUCCRLw/edit?usp=sharing)
+
 ### CI/CD
 
 - We will use `Travis CI`, which provides convenient continuous integration & deployment services.
