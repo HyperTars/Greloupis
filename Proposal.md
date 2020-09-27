@@ -48,7 +48,10 @@
   - `eslint` for React
 
 - Test Cases
-  - [Function & Test Cases Sheet](https://docs.google.com/spreadsheets/d/1hoKAh89rNywF343tU5lzeamFmidxdYJ39CW_uUCCRLw/edit?usp=sharing)
+  - [Test Cases Sheet (Sheet 1 - Test Case)](https://docs.google.com/spreadsheets/d/1hoKAh89rNywF343tU5lzeamFmidxdYJ39CW_uUCCRLw/edit?usp=sharing)
+
+### API Designs
+  - [API Design Sheet (Sheet 2 - API Design)](https://docs.google.com/spreadsheets/d/1hoKAh89rNywF343tU5lzeamFmidxdYJ39CW_uUCCRLw/edit?usp=sharing)
 
 ### CI/CD
 
