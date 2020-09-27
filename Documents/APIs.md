@@ -152,7 +152,7 @@ search_user | Search user list by keyword | GET | /search/user
 #### Overview
 Function | Description | Type | Path (Endpoint)
 --- | --- | --- | ---
-history_create | Create watch history list | POST | /user/{user_id}/history/{video_id}
+history_create | Add a video to history list | POST | /user/{user_id}/history/{video_id}
 history_update | Update watch history | PUT | /user/{user_id}/history/{video_id}
 history_get | Get watch history list by user id | GET | /user/{user_id}/history/
 history_delete | Delete watch history | DELETE | /user/{user_id}/history/{video_id}
