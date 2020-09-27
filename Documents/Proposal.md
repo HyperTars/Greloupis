@@ -17,6 +17,36 @@
   - Correspondingly, these bullet screen video websites do not have strong background transcoding algorithms, distributed content delivery system and online adaptive streaming coding algorithms like YouTube and Netflix. 
   - Based on all points mentioned above, our long-term plan (because one semester is too short, it is difficult for us to fully realize them all) is to combine the advantages of all the above video sites to create an online video playback site that meets the needs of users' actual experience in an ultimate way.
 
+### Requirements and Goals of the System
+
+#### Functional Requirements:
+- **Users must be able to:**
+  - **Account**
+    - Create an account.
+    - Login the system.
+    - Logout from the system.
+    - Have own personal account page when logged in.
+    - Follow users when logged in.
+    - Set account (profile) public and private when logged in.
+    - Close account when logged in.
+  - **Videos**
+    - Upload videos in the system when logged in.
+    - Delete videos in the system when logged in.
+    - Set videos public or private when logged in.
+    - Search videos/users.
+    - Play (watch) videos.
+    - View total number of views/comments/likes/dislikes/stars/shares to videos.
+    - Add comments/likes/dislikes/stars/shares when logged in.
+    - View own watch histories/comments/likes/dislikes/stars/shares when logged in.
+  
+#### Non-Functional Requirements:
+- The system should be highly reliable, any video uploaded should not be lost.
+- The system should be highly available. Consistency can take a hit (in the interest of availability); if a user doesn’t see a video for a while, it should be fine.
+- Users should have a real time experience while watching videos and should not feel any lag.
+
+- *Not in scope*: Video recommendations, most popular videos, channels, subscriptions, watch later, favorites, etc.
+
+
 ## Assumptions
 
 - We assume that all videos we collect from the Internet are legal and valid
@@ -36,6 +66,25 @@
 ### Back-end
 
 - We will use `Flask-Rest X`, which is an extension for Python Flask framework that adds support for quickly building REST APIs. See [Flask-Rest X](https://flask-restx.readthedocs.io/en/latest/) for more details.
+
+### Naming Conventions
+- See full [Naming Conentions](NamingConventions.md)
+
+- Python PEP 8
+  - Packages: `package_name`
+  - Modules: `module`(preferable to stick to 1) or `module_name`
+  - Classes: `UpperCaseCamelCase`
+  - Exceptions: `ValueError`
+  - Global (module-level) Variables: `GLOBAL_VAR`
+  - Instance Variables: `instance_var`, `_non_public`, `__mangled`
+  - Methods: `method_name`, `_non_public`, `__mangled`
+  - First Method Argument: `self` for instance methods, `cls` for class methods.
+  - Functions: `function_name`
+  - Constants: `CONSTANTS_NAME`
+
+- Database & Model
+  - Models: `ModelName`
+  - MySQL: `all_lower_case`
 
 ### Testing
 
