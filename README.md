@@ -17,6 +17,18 @@
 4. Our services should be able to record stats of videos, e.g., likes/dislikes, total number of views, etc.
 5. Users should be able to add and view comments on videos.
 
+
+- Users must be able to create an account.
+  - Each registered users must have their own personal account page.
+  - Users must be able to login the system and logout from the system.
+  - Users must be able to upload/delete videos in the system when they login.
+  - Users must be able to add comments to videos in the system when they login.
+  - Users must be able to watch videos in the system when they login or logout.
+  - Users must be able to search videos/users/groups when they login or logout.
+  - Users must be able to follow channels.
+  - Users must be able like/dislike videos.
+  - Users can like or dislike the videos, under this condition, the system should keep numbers of likes, dislikes, comments, views to present these number to users.
+
 #### Non-Functional Requirements:
 1. The system should be highly reliable, any video uploaded should not be lost.
 2. The system should be highly available. Consistency can take a hit (in the interest of availability); if a user doesn’t see a video for a while, it should be fine.
@@ -26,13 +38,13 @@
 
 ### Designs
 #### Models Design (Entity)
-- See full [Model Design](/Documents/Models.md)
+- See full [Models Design](/Documents/Models.md)
 
 #### Database Design
 - See full [Database Design](/Documents/Database.md)
 
 #### APIs Design
-- See full [API Design](/Documents/API.md)
+- See full [APIs Design](/Documents/APIs.md)
 
 ### Tests
 - See full [Test Cases](/Documents/Test.md)
