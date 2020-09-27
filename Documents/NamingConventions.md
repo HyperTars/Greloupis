@@ -1,0 +1,48 @@
+# Naming Conventions
+- We will follow [PEP 8](https://www.python.org/dev/peps/pep-0008/)
+  - General
+    - Avoid using names that are too general or too wordy. Strike a good balance between the two.
+    - When using CamelCase names, capitalize all letters of an abbreviation (e.g. HTTPServer).
+  - Packages
+    - All `lower case`.
+    - Use underscore `_` to separate multiple words.
+  - Modules
+    - All `lower case`.
+    - Use underscore `_` to separate multiple words.
+    - Preferable to stick to 1 word names.
+  - Classes
+    - `UpperCaseCamelCase` convention.
+    - Python’s built-in classes, however are typically lowercase words.
+    - Exception classes should end in “Error”
+  - Global (module-level) Variables
+    - All `upper case`.
+    - Use underscore `_` to separate multiple words.
+  - Instance Variables
+    - All `lower case`.
+    - Use underscore `_` to separate multiple words.
+    - Non-public instance variables should begin with a single underscore.
+    - If an instance name needs to be mangled, two underscores may begin its name.
+  - Methods
+    - All `lower case`.
+    - Use underscore `_` to separate multiple words.
+    - Non-public method should begin with a single underscore.
+    - If a method name needs to be mangled, two underscores may begin its name.
+  - Method Arguments
+    - Instance methods should have their first argument named `self`.
+    - Class methods should have their first argument named `cls`.
+  - Functions
+    - All `lower case`.
+    - Use underscore `_` to separate multiple words.
+  - Constants
+    - Fully `CAPITALIZED`.
+    - Use underscore `_` to separate multiple words.
+
+
+- MySQL Name conventions
+  - Use lowercase: Will help on speed typing, avoid mistakes dues to case sensitivity e.t.c
+  - No space – use underscore instead
+  - No numbers in name only alpha English characters
+  - Valid understandable names like  blog, ecommerce e.t.c but not like project, james, e.t.c
+  - Name should be self explanatory
+  - Names should not be more than 64 characters.
+  - Avoid prefix
