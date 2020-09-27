@@ -7,14 +7,15 @@
 #### Upload Video
 - Parameters
   - Name | Type | Note
-  - apiKey | string | This will be used to, among other things, throttle users based on their allocated quota.
-  - videoTitle | string | video title
-  - videoDesc | string | (optional) video description
-  - videoTags | string[] | (optional) video tags
-  - videoCategory | string | category of video, e.g., Movie, Vlog, Song, News, Tech, etc.
-  - videoLanguage | string | e.g., English, Mandarin, Hindi, etc.
-  - videoStatus | string | e.g., public, private, limited share.
-  - videoContents | stream | video to be uploaded.
+    --- | --- | ---
+    apiKey | string | This will be used to, among other things, throttle users based on their allocated quota.
+    videoTitle | string | video title
+    videoDesc | string | (optional) video description
+    videoTags | string[] | (optional) video tags
+    videoCategory | string | category of video, e.g., Movie, Vlog, Song, News, Tech, etc.
+    videoLanguage | string | e.g., English, Mandarin, Hindi, etc.
+    videoStatus | string | e.g., public, private, limited share.
+    videoContents | stream | video to be uploaded.
 
 - Returns
   - (default) 202 (request accepted), once the video encoding is completed the user is notified through email with a link to access the video. We can also expose a queryable API to let users know the current status of their uploaded video.
@@ -30,11 +31,16 @@ app, paused it, and started watching it on your phone’s Netflix app. In this c
 Returns: (STREAM)
 A media stream (a video chunk) from the given offset.
 
+#### Delete Video
+DeleteVideo (apiKey, videoID)
+
+     Check if user has permission to delete video. It will return HTTP response 200 (OK), 202 (Accepted) if the action has been queued, or 204 (No Content) based on your response.
+
 
 ### Watch History
 
 ### Search
-#### Search Video
+#### Search Video (Get Video)
 searchVideo(api_dev_key, search_query, user_location, maximum_videos
 _to_return, page_token)
 
