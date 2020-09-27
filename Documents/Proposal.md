@@ -67,7 +67,7 @@
 
 - We will use `Flask-Rest X`, which is an extension for Python Flask framework that adds support for quickly building REST APIs. See [Flask-Rest X](https://flask-restx.readthedocs.io/en/latest/) for more details.
 
-### Naming Conventions
+### Designs: Naming Conventions
 - See full [Naming Conentions](NamingConventions.md)
 
 - Python PEP 8
@@ -86,8 +86,16 @@
   - Models: `ModelName`
   - MySQL: `all_lower_case`
 
-### Testing
+### Designs: Models
+- [Models Design](Models.md)
 
+### Designs: APIs
+- [APIs Design](APIs.md)
+
+### Designs: Database
+- [Database Design](Database.md)
+
+### Testing
 - For unit test, we will use:
   - `unittest`, to test Python code
   - `Jest`, to test React code
@@ -98,9 +106,6 @@
 
 - Test Cases
   - [Test Cases](Test.md)
-
-### API Designs
-  - [API Design](APIs.md)
 
 ### CI/CD
 

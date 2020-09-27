@@ -38,6 +38,10 @@
     - Use underscore `_` to separate multiple words.
 
 
+- Models
+  - `UpperCaseCamelCase` convention for Model name
+  - All `lower case` for content
+
 - MySQL Name conventions
   - Use lowercase: Will help on speed typing, avoid mistakes dues to case sensitivity e.t.c
   - No space – use underscore instead

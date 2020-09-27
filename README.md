@@ -10,6 +10,9 @@
 
 
 ### Designs
+#### Coding Style: Naming Convention
+- See full [Naming Convention](/Documents/NamingConventions.md)
+
 #### Models Design (Entity)
 - See full [Models Design](/Documents/Models.md)
 
