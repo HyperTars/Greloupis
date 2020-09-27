@@ -6,8 +6,8 @@
 Function | Description | Type | Path (Endpoint)
 --- | --- | --- | ---
 user_create | Create user account | POST | /user
-user_login | Logs user into the system | GET | /user/login
-user_logout | Logs out current user session | GET | /user/logout
+user_login | Logs user into the system | POST | /user/login
+user_logout | Logs out current user session | DELETE | /user/logout
 user_get | Get user by user name | GET | /user/{user_id}
 user_update | Update user account | PUT | /user/{user_id}
 user_delete | Delete user account | DELETE | /user/{user_id}
@@ -153,9 +153,9 @@ search_user | Search user list by keyword | GET | /search/user
 Function | Description | Type | Path (Endpoint)
 --- | --- | --- | ---
 history_create | Add a video to history list | POST | /user/{user_id}/history/{video_id}
-history_update | Update watch history | PUT | /user/{user_id}/history/{video_id}
-history_get | Get watch history list by user id | GET | /user/{user_id}/history/
-history_delete | Delete watch history | DELETE | /user/{user_id}/history/{video_id}
+history_update | Update history list | PUT | /user/{user_id}/history/{video_id}
+history_get | Get history list by user id | GET | /user/{user_id}/history/
+history_delete | Delete a video from history list | DELETE | /user/{user_id}/history/{video_id}
 
 ### Video Op
 #### Overview
@@ -165,20 +165,20 @@ rate_post | Post video rate | POST | /video/{video_id}/rate/{user_id}
 rate_list_by_video | Get rate list by video | GET | /video/{video_id}/rate/
 rate_list_by_user | Get rate list by user | GET | /user/{user_id}/rate/
 rate_get | Get specified rate by video and user | GET | /video/{video_id}/rate/{user_id}
-rate_update | Update rate by rate id | PUT | /video/{video_id}/rate/{user_id}
-rate_delete | Delete rate by rate id | DELETE | /video/{video_id}/rate/{user_id}
+rate_update | Update specified rate by video and user | PUT | /video/{video_id}/rate/{user_id}
+rate_delete | Delete specified rate by video and user | DELETE | /video/{video_id}/rate/{user_id}
   | | |  
 review_post | Post video review | POST | /video/{video_id}/review/{user_id}
 review_list_by_video | Get review list by video | GET | /video/{video_id}/review/
 review_list_by_user | Get review list by user | GET | /user/{user_id}/review/
 review_get | Get specified review by video and user | GET | /video/{video_id}/review/{user_id}
-review_update | Update review by review id | PUT | /video/{video_id}/review/{user_id}
-review_delete | Delete review by review id | DELETE | /video/{video_id}/review/{user_id}
+review_update | Update specified review by video and user | PUT | /video/{video_id}/review/{user_id}
+review_delete | Delete specified review by video and user | DELETE | /video/{video_id}/review/{user_id}
   | | |
-star_post | Post video star | POST | /video/{video_id}/star/{user_id}
+star_post | Post video star by video and user | POST | /video/{video_id}/star/{user_id}
 star_count_by_video | Get star count by video | GET | /video/{video_id}/star/
 star_list_by_user | Get star list by user | GET | /user/{user_id}/star/
-star_delete | Delete star by star id | DELETE | /video/{video_id}/star/{user_id}
+star_delete | Delete star by video and user | DELETE | /video/{video_id}/star/{user_id}
   | | |
 view_add | Add video views | PUT | /video/{video_id}/view/
 view_get | Get video views | GET | /video/{video_id}/view/
