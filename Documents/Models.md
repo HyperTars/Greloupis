@@ -37,8 +37,8 @@ see our [latest online document - sheet: Models](https://docs.google.com/spreads
 - **Thumbnail**
     AVP Name | Type | Description | Data Source
     --- | --- | --- | ---
-    `thumbnail_uri` | string | URI of video's thumbnail | system generate
-    `thumbnail_type` | enum | thumbnail source<br>(e.g., auto, user specified, user upload) | user input
+    `thumbnail_uri` | string | URI of video's or user's thumbnail | system generate
+    `thumbnail_type` | enum | thumbnail source<br>(e.g., system default, user upload, auto first frame) | default
     - URI directed to Amazon S3 (storing thumbnail)
 
 ### User Models
@@ -51,9 +51,10 @@ see our [latest online document - sheet: Models](https://docs.google.com/spreads
     `user_password` | string | user's password (encrypted) | user input
     `user_details` | UserDetails | user's personal information in detail | user input
     `user_status` | enum | user's account status<br>(e.g., public, private, closed) | default
-    `followers` | big int | count of user's followers | system generated
-    `reg_date` | date-type | user's registration date | system generated
-    `recent_login` | LoginDetails[] | array of user's recent login details | system generated
+    `user_thumbnail` | Thumbnail | user's thumbnail | default
+    `user_followers` | big int | count of user's followers | system generated
+    `user_reg_date` | date-type | user's registration date | system generated
+    `user_recent_login` | LoginDetails[] | array of user's recent login details | system generated
 
 - **Follow**
     AVP Name | Type | Description | Data Source
