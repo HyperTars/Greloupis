@@ -64,10 +64,10 @@ user_delete | Delete user account | DELETE | /user/{user_id}
 #### Overview
 Function | Description | Type | Path (Endpoint)
 --- | --- | --- | ---
-video_upload | upload video | POST | {user_id}/video
+video_upload | upload video | POST | /user/{user_id}/video
+video_update | update video information | PUT | /user/{user_id}/video/{video_id}
+video_delete | delete video | DELETE | /user/{user_id}/video/{video_id}
 video_get | get video content cache | GET | /video/{video_id}
-video_update | update video information | PUT | /video/{video_id}
-video_delete | delete video | DELETE | /video/{video_id}
 
 #### Video Upload
 - **Function**
@@ -152,33 +152,36 @@ search_user | Search user list by keyword | GET | /search/user
 #### Overview
 Function | Description | Type | Path (Endpoint)
 --- | --- | --- | ---
-history_create | Create watch history list | POST | /{user_id}/history/{video_id}
-history_update | Update watch history | PUT | /{user_id}/history/{video_id}
-history_get | Get watch history list by user id | GET | /{user_id}/history/
-history_delete | Delete watch history | DELETE | /{user_id}/history/{history_id}
+history_create | Create watch history list | POST | /user/{user_id}/history/{video_id}
+history_update | Update watch history | PUT | /user/{user_id}/history/{video_id}
+history_get | Get watch history list by user id | GET | /user/{user_id}/history/
+history_delete | Delete watch history | DELETE | /user/{user_id}/history/{video_id}
 
 ### Video Op
 #### Overview
 Function | Description | Type | Path (Endpoint)
 --- | --- | --- | ---
-rate_post | Post video rate | POST | /{video_id}/rate/{user_id}
-rate_list_by_video | Get rate list by video | GET | /{video_id}/rate/
-rate_list_by_user | Get rate list by user | GET | /{user_id}/rate/
-rate_get | Get rate by rate id | GET | /{video_id}/rate/{user_id}
-rate_update | Update rate by rate id | PUT | /{video_id}/rate/{user_id}
-rate_delete | Delete rate by rate id | DELETE | /{video_id}/rate/{user_id}
+rate_post | Post video rate | POST | /video/{video_id}/rate/{user_id}
+rate_list_by_video | Get rate list by video | GET | /video/{video_id}/rate/
+rate_list_by_user | Get rate list by user | GET | /user/{user_id}/rate/
+rate_get | Get specified rate by video and user | GET | /video/{video_id}/rate/{user_id}
+rate_update | Update rate by rate id | PUT | /video/{video_id}/rate/{user_id}
+rate_delete | Delete rate by rate id | DELETE | /video/{video_id}/rate/{user_id}
   | | |  
-review_post | Post video review | POST | /{video_id}/review/{user_id}
-review_list_by_video | Get review list by video | GET | /{video_id}/review/
-review_list_by_user | Get review list by user | GET | /{user_id}/review/
-review_get | Get review by review id | GET | /{video_id}/review/{user_id}
-review_update | Update review by review id | PUT | /{video_id}/review/{user_id}
-review_delete | Delete review by review id | DELETE | /{video_id}/review/{user_id}
+review_post | Post video review | POST | /video/{video_id}/review/{user_id}
+review_list_by_video | Get review list by video | GET | /video/{video_id}/review/
+review_list_by_user | Get review list by user | GET | /user/{user_id}/review/
+review_get | Get specified review by video and user | GET | /video/{video_id}/review/{user_id}
+review_update | Update review by review id | PUT | /video/{video_id}/review/{user_id}
+review_delete | Delete review by review id | DELETE | /video/{video_id}/review/{user_id}
   | | |
-star_post | Post video star | POST | /{video_id}/star/{user_id}
-star_count_by_video | Get star count by video | GET | /{video_id}/star/
-star_list_by_user | Get star list by user | GET | /{user_id}/star/
-star_delete | Delete star by star id | DELETE | /{video_id}/star/{user_id}
+star_post | Post video star | POST | /video/{video_id}/star/{user_id}
+star_count_by_video | Get star count by video | GET | /video/{video_id}/star/
+star_list_by_user | Get star list by user | GET | /user/{user_id}/star/
+star_delete | Delete star by star id | DELETE | /video/{video_id}/star/{user_id}
+  | | |
+view_add | Add video views | PUT | /video/{video_id}/view/
+view_get | Get video views | GET | /video/{video_id}/view/
 
 ### Follow
 #### Overview
