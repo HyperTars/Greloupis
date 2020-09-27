@@ -8,8 +8,8 @@
   - Highly available online video player
   - Efficient search system
   - User registration, login and authority system
-  - User-based recommendation system
   - User reviews and scoring system
+  - (Extra) User-based recommendation system
   
 - The primary purpose of this project is to create an online video viewing system. In addition, we have also thought and reflected on similar products already on the market. 
   - Netflix is a completely B2C video content provider. The video is completely uploaded by the provider and provided to users. Similarly, there are streaming media providers such as HBO Max and Disney+. They lack or essentially do not allow users to upload their own videos. However, in our opinion, users can produce very high-quality videos nowadays. Many vlog bloggers, short film teams, etc. have professional equipment, and they can shoot amazing pictures. They should have a way to directly show their works to other users without the engagement of publishers. 
@@ -141,7 +141,7 @@ We will use external data from some mainstream online video platforms, including
 
 - Phase 2, due Sept 29
   - [ ] Setup a Flask-RESTX API server
-  - [ ] Aim to have, but not limited to, 8 post and get endpoints
+  - [x] Aim to have, but not limited to, 8 post and get endpoints
 
 - Phase 3, due Oct 6
   - [ ] Create a Makefile to run tests locally, as well as push code into production
