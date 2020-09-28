@@ -97,10 +97,12 @@ user_delete | Delete user account | DELETE | /user/{user_id}
 
 ### User Get
 - **Function**
-  - user_get (api_dev_key)
+  - user_get (api_dev_key, user_id)
 
 - **Parameters**
-  - None
+  - "body": {
+      "user_id": string
+    }
 
 - **Returns**
   - 200 (default): successful operation
