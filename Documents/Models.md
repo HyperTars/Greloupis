@@ -1,7 +1,7 @@
 # Models Design
 see our [latest online document - sheet: Models](https://docs.google.com/spreadsheets/d/1hoKAh89rNywF343tU5lzeamFmidxdYJ39CW_uUCCRLw/edit?usp=sharing)
 
-### Basic Models
+## Basic Models
 - **AddressDetails**
     AVP Name | Type | Description | Data Source
     --- | --- | --- | ---
@@ -41,7 +41,7 @@ see our [latest online document - sheet: Models](https://docs.google.com/spreads
     `thumbnail_type` | enum | thumbnail source<br>(e.g., system default, user upload, auto first frame) | default
     - URI directed to Amazon S3 (storing thumbnail)
 
-### User Models
+## User Models
 - **User**
     AVP Name | Type | Description | Data Source
     --- | --- | --- | ---
@@ -63,7 +63,7 @@ see our [latest online document - sheet: Models](https://docs.google.com/spreads
     `follow_by` | string | follower's user_id | api dev key
     `follow_date` | date-type | date of following | system generate
 
-### Video Models
+## Video Models
 - **Video**
     AVP Name | Type | Description | Data Source
     --- | --- | --- | ---
@@ -128,4 +128,4 @@ see our [latest online document - sheet: Models](https://docs.google.com/spreads
     `user_id` | string | user's uniq id (indexed) | api dev key
     `video_id` | string | video's unique id (indexed) | api dev key
     `process` | time | user watching process (player's last position) | api dev key
-    `hisoty_date` | date-type | history date | system generated
+    `history_date` | date-type | history date | system generated
