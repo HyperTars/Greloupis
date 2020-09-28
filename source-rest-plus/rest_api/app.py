@@ -5,6 +5,7 @@ from flask import Flask, Blueprint
 from rest_api import settings
 from rest_api.api.blog.endpoints.posts import ns as blog_posts_namespace
 from rest_api.api.blog.endpoints.categories import ns as blog_categories_namespace
+from rest_api.api.online_video_platform.endpoints.user import ns as online_video_platform_user_namespace
 from rest_api.api.restplus import api
 from rest_api.database import db
 
@@ -31,6 +32,8 @@ def initialize_app(flask_app):
     api.init_app(blueprint)
     api.add_namespace(blog_posts_namespace)
     api.add_namespace(blog_categories_namespace)
+    api.add_namespace(blog_categories_namespace)
+    api.add_namespace(online_video_platform_user_namespace)
     flask_app.register_blueprint(blueprint)
 
     db.init_app(flask_app)
