@@ -4,6 +4,7 @@
 ![Video.js](https://img.shields.io/badge/Video.js-7.8.4-blue)
 ![React](https://img.shields.io/badge/React-16.3.1-blue)
 ![MySQL](https://img.shields.io/badge/MySQL-8.0.21-blue)
+![RestX](https://img.shields.io/badge/Flask_RestX-0.2.0-blue)
 
 ### Project Proposal
 - [Proposal](/Documents/Proposal.md)
