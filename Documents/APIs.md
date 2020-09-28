@@ -19,7 +19,7 @@ user_delete | Delete user account | DELETE | /user/{user_id}
   - user_create()
 
 - **Parameters**
-  ```json
+  ```
   "body": {
     "user_name": string,
     "user_email": string,
@@ -34,7 +34,7 @@ user_delete | Delete user account | DELETE | /user/{user_id}
   
 - **Returns**
   - 200 (default): successful operation
-    ```json
+    ```
     "body": {
       "user_id": string,
       "user_name": string,
@@ -65,7 +65,7 @@ user_delete | Delete user account | DELETE | /user/{user_id}
   - user_login()
 
 - **Parameters**
-  ```json
+  ```
   "body": {
     "user_name": string,
     "user_email": string,
@@ -97,14 +97,14 @@ user_delete | Delete user account | DELETE | /user/{user_id}
   - user_get()
 
 - **Parameters**
-  ```json
+  ```
   "body": {
     "user_id": string
   }
   ```
 - **Returns**
   - 200 (default): successful operation
-    ```json
+    ```
     "body": {
       "user_id": string,
       "user_name": string,
@@ -136,7 +136,7 @@ user_delete | Delete user account | DELETE | /user/{user_id}
   - user_update()
 
 - **Parameters**
-  ```json
+  ```
   "user_id": string,
   "body": {
     "user_name": string,
@@ -151,7 +151,7 @@ user_delete | Delete user account | DELETE | /user/{user_id}
   ```
 - **Returns**
   - 200 (default): successful operation
-    ```json
+    ```
     "body": {
       "user_id": string,
       "user_name": string,
@@ -184,14 +184,14 @@ user_delete | Delete user account | DELETE | /user/{user_id}
   - user_delete()
 
 - **Parameters**
-  ```json
+  ```
   "body": {
     "user_id": string
   }
   ```
 - **Returns**
   - 200 (default): successful operation
-    ```json
+    ```
     "body": {
       "message": "..."
     }
