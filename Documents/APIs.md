@@ -19,49 +19,187 @@ user_delete | Delete user account | DELETE | /user/{user_id}
   - user_create()
 
 - **Parameters**
-
+  ```json
+  "body": {
+    "user_name": string,
+    "user_email": string,
+    "user_password": string,
+    "user_details": UserDetails {
+        "first_name": string,
+        "last_name": string,
+        "phone": string
+      }
+  }
+  ```
+  
 - **Returns**
-
+  - 200 (default): successful operation
+    ```json
+    "body": {
+      "user_id": string,
+      "user_name": string,
+      "user_email": string,
+      "user_password": string,
+      "user_status": enum,
+      "user_thumbnail": Thumbnail {
+        "thumbnail_uri": string,
+        "thumbnail_type": enum
+      }
+      "user_details": UserDetails {
+        "first_name": string,
+        "last_name": string,
+        "phone": string
+      }
+      "user_followers": big int,
+      "user_reg_date": date-type,
+      "user_recent_login": LoginDetails {
+        "login_ip": string,
+        "login_time": date-type
+      }
+    }
+    ```
+  - 400: bad request
+  - 50x: internal server error
 ### User Login
 - **Function**
   - user_login()
 
 - **Parameters**
+  ```json
+  "body": {
+    "user_name": string,
+    "user_email": string,
+    "user_password": string,
+  }
+  ```
 
+  Either `user_name` or `email` must be input; `password` is required.
 - **Returns**
-
+  - 200 (default): successful operation
+    - `X-Rate-Limit`: integer
+    - `X-Expires-After`: string
+  - 400: invalid username/email/password supplied
+  - 50x: internal server error
 ### User Logout
 - **Function**
   - user_logout()
 
 - **Parameters**
+  
+  None
 
 - **Returns**
-
+  - 200 (default): successful operation
+  - 400: bad request
+  - 50x: internal server error
 ### User Get
 - **Function**
   - user_get()
 
 - **Parameters**
-
+  ```json
+  "body": {
+    "user_id": string
+  }
+  ```
 - **Returns**
-
+  - 200 (default): successful operation
+    ```json
+    "body": {
+      "user_id": string,
+      "user_name": string,
+      "user_email": string,
+      "user_password": string,
+      "user_status": enum,
+      "user_thumbnail": Thumbnail {
+        "thumbnail_uri": string,
+        "thumbnail_type": enum
+      }
+      "user_details": UserDetails {
+        "first_name": string,
+        "last_name": string,
+        "phone": string
+      }
+      "user_followers": big int,
+      "user_reg_date": date-type,
+      "user_recent_login": LoginDetails {
+        "login_ip": string,
+        "login_time": date-type
+      }
+    }
+    ```
+  - 400: invalid username supplied
+  - 404: user not found
+  - 50x: internal server error
 ### User Update
 - **Function**
   - user_update()
 
 - **Parameters**
-
+  ```json
+  "user_id": string,
+  "body": {
+    "user_name": string,
+    "user_email": string,
+    "user_password": string,
+    "user_details": UserDetails {
+        "first_name": string,
+        "last_name": string,
+        "phone": string
+      }
+  }
+  ```
 - **Returns**
-
+  - 200 (default): successful operation
+    ```json
+    "body": {
+      "user_id": string,
+      "user_name": string,
+      "user_email": string,
+      "user_password": string,
+      "user_status": enum,
+      "user_thumbnail": Thumbnail {
+        "thumbnail_uri": string,
+        "thumbnail_type": enum
+      }
+      "user_details": UserDetails {
+        "first_name": string,
+        "last_name": string,
+        "phone": string
+      }
+      "user_followers": big int,
+      "user_reg_date": date-type,
+      "user_recent_login": LoginDetails {
+        "login_ip": string,
+        "login_time": date-type
+      }
+    }
+    ```
+  - 400: invalid username supplied
+  - 404: user not found
+  - 405: method not allowed
+  - 50x: internal server error
 ### User Delete
 - **Function**
   - user_delete()
 
 - **Parameters**
-
+  ```json
+  "body": {
+    "user_id": string
+  }
+  ```
 - **Returns**
-
+  - 200 (default): successful operation
+    ```json
+    "body": {
+      "message": "..."
+    }
+    ```
+  - 400: invalid username supplied
+  - 404: user not found
+  - 405: method not allowed
+  - 50x: internal server error
 ## Video
 ### Overview
 Function | Description | Type | Path (Endpoint)
