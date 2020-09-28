@@ -24,7 +24,7 @@ from datetime import datetime
 
 
 # Basic Models
-class AddressDetails(Document):
+class AddressDetail(Document):
     street1 = StringField(max_length=100)
     street2 = StringField(max_length=100)
     city = StringField(max_length=50)
@@ -33,14 +33,14 @@ class AddressDetails(Document):
     zip = StringField(max_length=20)
 
 
-class UserDetails(Document):
+class UserDetail(Document):
     first_name = StringField(max_length=50, required=True)
     last_name = StringField(max_length=50, required=True)
     phone = StringField(max_length=50, required=True, unique=True)
     address = EmbeddedDocumentField(AddressDetails, required=False)
 
 
-class LoginDetails(Document):
+class LoginDetail(Document):
     login_ip = StringField(max_length=50, required=True)
     login_time = DateTimeField()
 
@@ -57,15 +57,15 @@ class Thumbnail(Document):
 
 
 # User Models
-class Users(Document):
+class User(Document):
     user_id = StringField(max_length=100, required=True, unique=True, primary_key=True)
     user_email = StringField(max_length=50, required=True, unique=True)
     user_name = StringField(max_length=60, required=True, unique=True)
     user_password = StringField(max_length=200, required=True)
-    user_details = EmbeddedDocumentField(UserDetails, required=True)
+    user_detail = EmbeddedDocumentField(UserDetails, required=True)
     user_status = StringField(max_length=50, required=True)
     user_thumbnail = EmbeddedDocumentField(Thumbnail, required=True)
-    user_followers = LongField(default=0, required=True)
+    user_follower = LongField(default=0, required=True)
     user_reg_date = DateTimeField(default=datetime.now(), required=True)
     user_recent_login = ListField(EmbeddedDocumentField(LoginDetails))
 
@@ -89,20 +89,20 @@ class Video(Document):
     video_id = StringField(max_length=100, required=True, unique=True, primary_key=True)
     user_id = StringField(max_length=100, required=True)
     video_title = StringField(max_length=50, required=True, unique=True)
-    video_tags = ListField(StringField)
+    video_tag = ListField(StringField)
     video_category = ListField(StringField)
     video_description = StringField(max_length=1000, default="")
     video_language = StringField(max_length=20)
     video_status = StringField(max_length=20, default="public", required=True)
-    video_contents = StringField()
+    video_content = StringField()
     video_content_status = StringField(max_length=20, required=True)
     video_size = FloatField(default=0)
-    video_views = LongField(default=0)
-    video_likes = LongField(default=0)
-    video_dislikes = LongField(default=0)
-    video_comments = LongField(default=0)
-    video_stars = LongField(default=0)
-    video_shares = LongField(default=0)
+    video_view = LongField(default=0)
+    video_like = LongField(default=0)
+    video_dislike = LongField(default=0)
+    video_comment = LongField(default=0)
+    video_star = LongField(default=0)
+    video_share = LongField(default=0)
     video_thumbnail = EmbeddedDocumentField(Thumbnail, required=True)
     video_upload_date = DateTimeField(default=datetime.now())
     video_uri = EmbeddedDocumentField(VideoURI, required=False)
@@ -138,7 +138,7 @@ class Star(Document):
 
 
 # Error Model
-class Errors(Document):
+class Error(Document):
     call = DictField(required=True)
     response = DictField(required=True)
     date = DateTimeField(default=datetime.now(), required=True)
