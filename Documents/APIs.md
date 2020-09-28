@@ -475,6 +475,409 @@ star_delete | Delete star by video and user | DELETE | /video/{video_id}/star/{u
 view_add | Add video views | PUT | /video/{video_id}/view/
 view_get | Get video views | GET | /video/{video_id}/view/
 
+### Post Rate
+- **Function**
+  - post_rate()
+
+- **Parameters**
+  ```
+  "body": {
+    "user_id": string,
+    "video_id": string
+  }
+  ```
+- **Returns**
+  - 200 (default): successful operation
+    ```
+    "body": {
+      "message": "..."
+    }
+    ```
+  - 400: invalid `user_id` or `video_id` supplied
+  - 404: `user_id` or `video_id` not found
+  - 405: method not allowed
+  - 50x: internal server error
+
+### Get Video Ratings
+- **Function**
+  - get_video_ratings()
+
+- **Parameters**
+  ```
+  "body": {
+    "video_id": string
+  }
+  ```
+- **Returns**
+  - 200 (default): successful operation
+    ```
+    "body": {
+      "message": "..."
+    }
+    ```
+  - 400: invalid `video_id` supplied
+  - 404: `video_id` not found
+  - 50x: internal server error
+
+### Get User Rate
+- **Function**
+  - get_user_ratings()
+
+- **Parameters**
+  ```
+  "body": {
+    "user_id": string
+  }
+  ```
+- **Returns**
+  - 200 (default): successful operation
+    ```
+    "body": {
+      "message": "..."
+    }
+    ```
+  - 400: invalid `user_id` supplied
+  - 404: `user_id` not found
+  - 50x: internal server error
+
+### Get Rate By Specified User and Video
+- **Function**
+  - get_rating()
+
+- **Parameters**
+  ```
+  "body": {
+    "user_id": string,
+    "video_id": string
+  }
+  ```
+- **Returns**
+  - 200 (default): successful operation
+    ```
+    "body": {
+      "message": "..."
+    }
+    ```
+  - 400: invalid `user_id` or `video_id` supplied
+  - 404: `user_id` or `video_id` not found
+  - 50x: internal server error
+
+### Update Rate
+- **Function**
+  - update_rate()
+
+- **Parameters**
+  ```
+  "body": {
+    "user_id": string,
+    "video_id": string
+  }
+  ```
+- **Returns**
+  - 200 (default): successful operation
+    ```
+    "body": {
+      "message": "..."
+    }
+    ```
+  - 400: invalid `user_id` or `video_id` supplied
+  - 404: `user_id` or `video_id` not found
+  - 405: method not allowed
+  - 50x: internal server error
+
+### Delete Rate
+- **Function**
+  - delete_rate()
+
+- **Parameters**
+  ```
+  "body": {
+    "user_id": string,
+    "video_id": string
+  }
+  ```
+- **Returns**
+  - 200 (default): successful operation
+    ```
+    "body": {
+      "message": "..."
+    }
+    ```
+  - 400: invalid `user_id` or `video_id` supplied
+  - 404: `user_id` or `video_id` not found
+  - 405: method not allowed
+  - 50x: internal server error
+
+--- 
+
+### Post Review
+- **Function**
+  - post_review()
+
+- **Parameters**
+  ```
+  "body": {
+    "user_id": string,
+    "video_id": string
+  }
+  ```
+- **Returns**
+  - 200 (default): successful operation
+    ```
+    "body": {
+      "message": "..."
+    }
+    ```
+  - 400: invalid `user_id` or `video_id` supplied
+  - 404: `user_id` or `video_id` not found
+  - 405: method not allowed
+  - 50x: internal server error
+
+### Get Video Reviews
+- **Function**
+  - get_video_reviews()
+
+- **Parameters**
+  ```
+  "body": {
+    "video_id": string
+  }
+  ```
+- **Returns**
+  - 200 (default): successful operation
+    ```
+    "body": {
+      "message": "..."
+    }
+    ```
+  - 400: invalid `video_id` supplied
+  - 404: `video_id` not found
+  - 50x: internal server error
+
+### Get User Reviews
+- **Function**
+  - get_user_reviews()
+
+- **Parameters**
+  ```
+  "body": {
+    "user_id": string
+  }
+  ```
+- **Returns**
+  - 200 (default): successful operation
+    ```
+    "body": {
+      "message": "..."
+    }
+    ```
+  - 400: invalid `user_id` supplied
+  - 404: `user_id` not found
+  - 50x: internal server error
+
+### Get reviews By Specified User and Video
+- **Function**
+  - get_reviews()
+
+- **Parameters**
+  ```
+  "body": {
+    "user_id": string,
+    "video_id": string
+  }
+  ```
+- **Returns**
+  - 200 (default): successful operation
+    ```
+    "body": {
+      "message": "..."
+    }
+    ```
+  - 400: invalid `user_id` or `video_id` supplied
+  - 404: `user_id` or `video_id` not found
+  - 50x: internal server error
+
+### Update Review
+- **Function**
+  - update_review()
+
+- **Parameters**
+  ```
+  "body": {
+    "user_id": string,
+    "video_id": string
+  }
+  ```
+- **Returns**
+  - 200 (default): successful operation
+    ```
+    "body": {
+      "message": "..."
+    }
+    ```
+  - 400: invalid `user_id` or `video_id` supplied
+  - 404: `user_id` or `video_id` not found
+  - 405: method not allowed
+  - 50x: internal server error
+
+### Delete Review
+- **Function**
+  - delete_review()
+
+- **Parameters**
+  ```
+  "body": {
+    "user_id": string,
+    "video_id": string
+  }
+  ```
+- **Returns**
+  - 200 (default): successful operation
+    ```
+    "body": {
+      "message": "..."
+    }
+    ```
+  - 400: invalid `user_id` or `video_id` supplied
+  - 404: `user_id` or `video_id` not found
+  - 405: method not allowed
+  - 50x: internal server error
+
+---
+
+### Post Star
+- **Function**
+  - post_star()
+
+- **Parameters**
+  ```
+  "body": {
+    "user_id": string,
+    "video_id": string
+  }
+  ```
+- **Returns**
+  - 200 (default): successful operation
+    ```
+    "body": {
+      "message": "..."
+    }
+    ```
+  - 400: invalid `user_id` or `video_id` supplied
+  - 404: `user_id` or `video_id` not found
+  - 405: method not allowed
+  - 50x: internal server error
+
+### Get Stars Count
+- **Function**
+  - get_stars_count()
+
+- **Parameters**
+  ```
+  "body": {
+    "video_id": string
+  }
+  ```
+- **Returns**
+  - 200 (default): successful operation
+    ```
+    "body": {
+      "message": "..."
+    }
+    ```
+  - 400: invalid `video_id` supplied
+  - 404: `video_id` not found
+  - 50x: internal server error
+
+### Get Star List
+- **Function**
+  - get_star_list()
+
+- **Parameters**
+  ```
+  "body": {
+    "user_id": string,
+  }
+  ```
+- **Returns**
+  - 200 (default): successful operation
+    ```
+    "body": {
+      "message": "..."
+    }
+    ```
+  - 400: invalid `user_id` supplied
+  - 404: `user_id` not found
+  - 50x: internal server error
+
+### Delete Star
+- **Function**
+  - update_review()
+
+- **Parameters**
+  ```
+  "body": {
+    "user_id": string,
+    "video_id": string
+  }
+  ```
+- **Returns**
+  - 200 (default): successful operation
+    ```
+    "body": {
+      "message": "..."
+    }
+    ```
+  - 400: invalid `user_id` or `video_id` supplied
+  - 404: `user_id` or `video_id` not found
+  - 405: method not allowed
+  - 50x: internal server error
+
+--- 
+
+### Get View
+- **Function**
+  - get_view()
+
+- **Parameters**
+  ```
+  "body": {
+    "video_id": string
+  }
+  ```
+- **Returns**
+  - 200 (default): successful operation
+    ```
+    "body": {
+      "message": "..."
+    }
+    ```
+  - 400: invalid `video_id` supplied
+  - 404: `video_id` not found
+  - 50x: internal server error
+
+### Add View
+- **Function**
+  - add_view()
+
+- **Parameters**
+  ```
+  "body": {
+    "video_id": string
+  }
+  ```
+- **Returns**
+  - 200 (default): successful operation
+    ```
+    "body": {
+      "message": "..."
+    }
+    ```
+  - 400: invalid `video_id` supplied
+  - 404: `video_id` not found
+  - 405: method not allowed
+  - 50x: internal server error
+
 ## Follow
 ### Overview
 Function | Description | Type | Path (Endpoint)
