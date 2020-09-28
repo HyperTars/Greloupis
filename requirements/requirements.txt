@@ -1,0 +1,6 @@
+flask
+flask-restx
+flask-mysql
+Flask-PyMongo
+Flask-SQLAlchemy
+dnspython
