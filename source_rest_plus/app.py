@@ -2,12 +2,12 @@ import logging.config
 
 import os
 from flask import Flask, Blueprint
-from rest_api import settings
-from rest_api.api.blog.endpoints.posts import ns as blog_posts_namespace
-from rest_api.api.blog.endpoints.categories import ns as blog_categories_namespace
-from rest_api.api.online_video_platform.endpoints.user import ns as online_video_platform_user_namespace
-from rest_api.api.restplus import api
-from rest_api.database import db
+from source_rest_plus import settings
+from source_rest_plus.api.blog.endpoints.posts import ns as blog_posts_namespace
+from source_rest_plus.api.blog.endpoints.categories import ns as blog_categories_namespace
+from source_rest_plus.api.online_video_platform.endpoints.user import ns as online_video_platform_user_namespace
+from source_rest_plus.api.restplus import api
+from source_rest_plus.database import db
 
 app = Flask(__name__)
 logging_conf_path = os.path.normpath(os.path.join(os.path.dirname(__file__), '../logging.conf'))

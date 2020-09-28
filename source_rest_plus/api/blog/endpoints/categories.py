@@ -1,11 +1,11 @@
 import logging
 
 from flask import request
-from flask_restplus import Resource
-from rest_api.api.blog.business import create_category, delete_category, update_category
-from rest_api.api.blog.serializers import category, category_with_posts
-from rest_api.api.restplus import api
-from rest_api.database.models import Category
+from flask_restx import Resource
+from source_rest_plus.api.blog.business import create_category, delete_category, update_category
+from source_rest_plus.api.blog.serializers import category, category_with_posts
+from source_rest_plus.api.restplus import api
+from source_rest_plus.database.models import Category
 
 log = logging.getLogger(__name__)
 

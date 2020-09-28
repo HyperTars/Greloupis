@@ -1,8 +1,8 @@
 import logging
 import traceback
 
-from flask_restplus import Api
-from rest_api import settings
+from flask_restx import Api
+from source_rest_plus import settings
 from sqlalchemy.orm.exc import NoResultFound
 
 log = logging.getLogger(__name__)
