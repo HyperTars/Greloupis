@@ -84,7 +84,7 @@
 
 - Database & Model
   - Models: `ModelName`
-  - MySQL: `all_lower_case`
+  - MongoDB: `all_lower_case`
 
 ### Designs: Models
 - [Models Design](Models.md)
