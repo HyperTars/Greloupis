@@ -4,21 +4,23 @@
 
 
 from flask_pymongo import pymongo
+import dnspython
 
 MONGO_ENDPOINT = "mongodb+srv://devops:DevOps@mongodbcluster.v4vtj.mongodb.net/online_video_platform?retryWrites=true&w=majority"
 MONGO_DATABASE = "online_video_platform"
 
-MONGO_TABLE_USER = "users"
-MONGO_TABLE_VIDEO = "videos"
-MONGO_TABLE_HISTORY = "histories"
-MONGO_TABLE_REVIEW = "reviews"
+MONGO_TABLE_USER = "user"
+MONGO_TABLE_VIDEO = "video"
+MONGO_TABLE_HISTORY = "history"
+MONGO_TABLE_REVIEW = "review"
 MONGO_TABLE_FOLLOW = "follow"
-MONGO_TABLE_COMMENT = "comments"
-MONGO_TABLE_LIKE = "likes"
-MONGO_TABLE_DISLIKE = "dislikes"
-MONGO_TABLE_STAR = "stars"
+MONGO_TABLE_COMMENT = "comment"
+MONGO_TABLE_LIKE = "like"
+MONGO_TABLE_DISLIKE = "dislike"
+MONGO_TABLE_STAR = "star"
 
 client = pymongo.MongoClient(MONGO_ENDPOINT)
+dblist = client.list_database_names()
 db = client.get_database(MONGO_DATABASE)
 
 user = pymongo.collection.Collection(db, MONGO_TABLE_USER)

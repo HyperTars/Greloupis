@@ -2,7 +2,7 @@
 see our [latest online document - sheet: Models](https://docs.google.com/spreadsheets/d/1hoKAh89rNywF343tU5lzeamFmidxdYJ39CW_uUCCRLw/edit?usp=sharing)
 
 ## Basic Models
-- **AddressDetails**
+- **AddressDetail**
     AVP Name | Type | Description | Data Source
     --- | --- | --- | ---
     `street1` | string | street | user input
@@ -12,15 +12,15 @@ see our [latest online document - sheet: Models](https://docs.google.com/spreads
     `country` | string | country | user input
     `zip` | string | zip code | user input
 
-- **UserDetails**
+- **UserDetail**
     AVP Name | Type | Description | Data Source
     --- | --- | --- | ---
     `first_name` | string | user's first name | user input
     `last_name` | string | user's last name | user input
     `phone` | string | user's phone number | user input
-    `address` | AddressDetails | user's address | user input
+    `address` | AddressDetail | user's address | user input
 
-- **LoginDetails**
+- **LoginDetail**
     AVP Name | type | Description | Data Source
     --- | --- | --- | ---
     `login_ip` | string | last login ip address | system generate
@@ -49,12 +49,12 @@ see our [latest online document - sheet: Models](https://docs.google.com/spreads
     `user_name` | string | user's nickname | user input
     `user_email` | string | user's email | user input
     `user_password` | string | user's password (encrypted) | user input
-    `user_details` | UserDetails | user's personal information in detail | user input
+    `user_detail` | UserDetail | user's personal information in detail | user input
     `user_status` | enum | user's account status<br>(e.g., public, private, closed) | default
     `user_thumbnail` | Thumbnail | user's thumbnail | default
-    `user_followers` | big int | count of user's followers | system generated
+    `user_follower` | big int | count of user's followers | system generated
     `user_reg_date` | date-type | user's registration date | system generated
-    `user_recent_login` | LoginDetails[] | array of user's recent login details | system generated
+    `user_recent_login` | LoginDetail[] | array of user's recent login details | system generated
 
 - **Follow**
     AVP Name | Type | Description | Data Source
@@ -70,20 +70,20 @@ see our [latest online document - sheet: Models](https://docs.google.com/spreads
     `video_id` | string | video's unique id | system generated
     `user_id` | string | user who uploads the video | api dev key
     `video_title` | string | video title | user input
-    `video_tags` | string[] | array of video tags | user input
+    `video_tag` | string[] | array of video tags | user input
     `video_category` | string[] | array of video category<br>(e.g., Movie, Vlog, Game, Technology, News, Song, etc.) | user input
     `video_description` | string | video description | user input
     `video_language` | enum | video language<br>(e.g., English, Mandarin, Hindi, etc.) | user input
     `video_status` | enum | video status<br>(e.g., public, private, limited share, deleted) | default
-    `video_contents` | stream | video uploading stream | system generated
+    `video_content` | stream | video uploading stream | system generated
     `video_content_status` | enum | content uploading & releasing status<br>(e.g., pending, processing, succeeded, failed, rejected) | system generated
     `video_size` | float | size of the video | system generated
-    `video_views` | big int | count of video views | system generated
-    `video_likes` | big int | count of video likes | system generated
-    `video_dislikes` | big int | count of video dislikes | system generated
-    `video_comments` | big int | count of video comments | system generated
-    `video_stars` | big int | count of video stars | system generated
-    `video_shares` | big int | count of video shares | system generated
+    `video_view` | big int | count of video views | system generated
+    `video_like` | big int | count of video likes | system generated
+    `video_dislike` | big int | count of video dislikes | system generated
+    `video_comment` | big int | count of video comments | system generated
+    `video_star` | big int | count of video stars | system generated
+    `video_share` | big int | count of video shares | system generated
     `video_thumbnail` | Thumbnail | video thumbnail | system generated
     `video_upload_date` | date-type | video upload date | system generated
     `video_uri` | VideoURI | uploaded video URI | system generated
