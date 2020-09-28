@@ -42,7 +42,7 @@
   - `UpperCaseCamelCase` convention for Model name
   - All `lower case` for content
 
-- MySQL Name conventions
+- DataBase Name conventions
   - Use lowercase: Will help on speed typing, avoid mistakes dues to case sensitivity e.t.c
   - No space – use underscore instead
   - No numbers in name only alpha English characters
