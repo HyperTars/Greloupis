@@ -1,7 +1,7 @@
 # APIs Design
 
-  In this document, we list our all APIs. For each API, we introduce the function signature, API parameters and API return values. A Google Sheet version of our API design is also available. See 
- [API Design Google Sheet Version](https://docs.google.com/spreadsheets/d/1hoKAh89rNywF343tU5lzeamFmidxdYJ39CW_uUCCRLw/edit?usp=sharing).
+  In this document, we list our all APIs. For each API, we introduce the function signature, API parameters and API return values. An 
+ [API Design Google Sheet Version](https://docs.google.com/spreadsheets/d/1hoKAh89rNywF343tU5lzeamFmidxdYJ39CW_uUCCRLw/edit?usp=sharing) is also available.
 
 ## User Auth
 ### Overview
@@ -69,10 +69,9 @@ user_delete | Delete user account | DELETE | /user/{user_id}
   "body": {
     "user_name": string,
     "user_email": string,
-    "user_password": string,
+    "user_password": string
   }
   ```
-
   Either `user_name` or `email` must be input; `password` is required.
 - **Returns**
   - 200 (default): successful operation
@@ -214,7 +213,7 @@ video_get | get video content cache | GET | /video/{video_id}
   - video_upload(api_key, title, ...)
 
 - **Parameters**
-  - Name | Type | Note
+  Name | Type | Description
     --- | --- | ---
     apiKey | string | This will be used to, among other things, throttle users based on their allocated quota.
     videoTitle | string | video title
@@ -246,46 +245,110 @@ video_get | get video content cache | GET | /video/{video_id}
   - video_update ()
 
 - **Parameters**
-
+  ```
+  "body": {
+    "video_title": string,
+    "video_category": string[],
+    "video_tags": string[],
+    "video_description": string,
+    "video_language": enum
+  }
+  ```
 - **Returns**
+  - 200 (default): successful operation
+    ```
+      "body": {
+        "video_id": string,
+        "user_id": string,
+        "video_title": string,
+        "video_tags": string[],
+        "video_category": string[],
+        "video_description": string,
+        "video_language": enum,
+        "video_status": enum,
+        "video_contents": stream,
+        "video_content_status": enum,
+        "video_size": float,
+        "video_views": big int,
+        "video_likes": big int,
+        "video_dislikes": big int,
+        "video_comments": big int,
+        "video_stars": big int,
+        "video_shares": big int,
+        "video_thumbnail": Thumbnail,
+        "video_upload_date": date-type,
+        "video_uri": VideoURI
+    }
+    ```
+  - 400: bad request
+  - 405: method not allowed
+  - 50x: internal server error
 
 ### Video Delete
 - **Function**
   - video_delete (apiKey, videoID)
 
 - **Parameters**
-
+  ```
+  "body": {
+    "user_id": string,
+    "video_id": string
+  }
+  ```
 - **Returns**
-  - Check if user has permission to delete video. It will return HTTP response 200 (OK), 202 (Accepted) if the action has been queued, or 204 (No Content) based on your response.
+  
+  Need to check if user has permission to delete video. Returns:
+
+  - HTTP response 200 (OK)
+  - 202 (Accepted) if the action has been queued
+  - 204 (No Content) based on your response
+  - 400: bad request
+  - 404: `user_id` or `video_id` not found
+  - 405: method not allowed
+  - 50x: internal server error
 
 ## Search
 ### Overview
 Function | Description | Type | Path (Endpoint)
 --- | --- | --- | ---
-search_video | Search video list by keyword | GET | /search/video
-search_user | Search user list by keyword | GET | /search/user
+search_video | Search video list by keyword | GET | /search/video?q={keyword}
+search_user | Search user list by keyword | GET | /search/user?q={keyword}
 
 ### Search Video
 - **Function**
   - search_video (api_dev_key, search_query, user_location, maximum_videos_to_return, page_token)
-
+    - api_dev_key (string): The API developer key of a registered account of our service.
+    - search_query (string): A string containing the search terms. 
+    - user_location (string): Optional location of the user performing the search.
+    - maximum_videos_to_return (number): Maximum number of results returned in one request.
+    - page_token (string): This token will specify a page in the result set that should be returned.
 - **Parameters**
-  api_dev_key (string): The API developer key of a registered account of our service.
-  search_query (string): A string containing the search terms. user_location (string): Optional location of the user performing the search.
-  maximum_videos_to_return (number): Maximum number of results returned in one request.
-  page_token (string): This token will specify a page in the result set that should be returned.
+  ```
+  "body": {
+    "keyword": string
+  }
+  ```
 
 - **Returns**
-  - A JSON containing information about the list of video resources matching the search query. Each video resource will have a video title, a thumbnail, a video creation date, and a view count.
+  - 200: successful operation
+  - 400: bad request
+  - 50x: internal server error
 
 ### Search User
 - **Function**
   - search_user ()
 
 - **Parameters**
-
+  ```
+  "body": {
+    "keyword": string
+  }
+  ```
 - **Returns**
-
+  - 200: successful operation
+  - 400: bad request
+  - 50x: internal server error
+  
 ## Watch History
 ### Overview
 Function | Description | Type | Path (Endpoint)
@@ -294,6 +357,97 @@ history_create | Add a video to history list | POST | /user/{user_id}/history/{v
 history_update | Update history list | PUT | /user/{user_id}/history/{video_id}
 history_get | Get history list by user id | GET | /user/{user_id}/history/
 history_delete | Delete a video from history list | DELETE | /user/{user_id}/history/{video_id}
+
+### History Create
+- **Function**
+  - history_create()
+
+- **Parameters**
+  ```
+  "body": {
+    "user_id": string,
+    "video_id": string
+  }
+  ```
+- **Returns**
+  - 200 (default): successful operation
+    ```
+    "body": {
+      "message": "..."
+    }
+    ```
+  - 400: invalid `user_id` or `video_id` supplied
+  - 404: `user_id` or `video_id` not found
+  - 405: method not allowed
+  - 50x: internal server error
+
+### History Update
+- **Function**
+  - history_update()
+
+- **Parameters**
+  ```
+  "body": {
+    "user_id": string,
+    "video_id": string
+  }
+  ```
+- **Returns**
+  - 200 (default): successful operation
+    ```
+    "body": {
+      "message": "..."
+    }
+    ```
+  - 400: invalid `user_id` or `video_id` supplied
+  - 404: `user_id` or `video_id` not found
+  - 405: method not allowed
+  - 50x: internal server error
+
+### History Get
+- **Function**
+  - history_get()
+
+- **Parameters**
+  ```
+  "body": {
+    "user_id": string
+  }
+  ```
+- **Returns**
+  - 200 (default): successful operation
+    ```
+    "body": {
+      "message": "..."
+    }
+    ```
+  - 400: invalid `user_id` supplied
+  - 404: `user_id` not found
+  - 50x: internal server error
+
+### History Delete
+- **Function**
+  - history_delete()
+
+- **Parameters**
+  ```
+  "body": {
+    "user_id": string,
+    "video_id": string
+  }
+  ```
+- **Returns**
+  - 200 (default): successful operation
+    ```
+    "body": {
+      "message": "..."
+    }
+    ```
+  - 400: invalid `user_id` or `video_id` supplied
+  - 404: `user_id` or `video_id` not found
+  - 405: method not allowed
+  - 50x: internal server error
+
 
 ## Video Op
 ### Overview
