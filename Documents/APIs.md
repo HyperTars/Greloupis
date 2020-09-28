@@ -16,7 +16,7 @@ user_delete | Delete user account | DELETE | /user/{user_id}
 
 ### User Create
 - **Function**
-  - user_create()
+  - user_create (user_name, user_email, user_password, first_name, last_name, phone)
 
 - **Parameters**
   ```
@@ -60,9 +60,11 @@ user_delete | Delete user account | DELETE | /user/{user_id}
     ```
   - 400: bad request
   - 50x: internal server error
+
 ### User Login
 - **Function**
-  - user_login()
+  - user_login (api_dev_key, user_name, user_email, user_password)
+  - Either `user_name` or `user_email` must exist
 
 - **Parameters**
   ```
@@ -73,34 +75,33 @@ user_delete | Delete user account | DELETE | /user/{user_id}
   }
   ```
   Either `user_name` or `email` must be input; `password` is required.
+
 - **Returns**
   - 200 (default): successful operation
     - `X-Rate-Limit`: integer
     - `X-Expires-After`: string
   - 400: invalid username/email/password supplied
   - 50x: internal server error
+
 ### User Logout
 - **Function**
-  - user_logout()
+  - user_logout (api_dev_key)
 
 - **Parameters**
-  
-  None
+  - None
 
 - **Returns**
   - 200 (default): successful operation
   - 400: bad request
   - 50x: internal server error
+
 ### User Get
 - **Function**
-  - user_get()
+  - user_get (api_dev_key)
 
 - **Parameters**
-  ```
-  "body": {
-    "user_id": string
-  }
-  ```
+  - None
+
 - **Returns**
   - 200 (default): successful operation
     ```
@@ -130,9 +131,10 @@ user_delete | Delete user account | DELETE | /user/{user_id}
   - 400: invalid username supplied
   - 404: user not found
   - 50x: internal server error
+
 ### User Update
 - **Function**
-  - user_update()
+  - user_update(api_dev_key, user_id, user_name, user_email, user_password, first_name, last_name, phone)
 
 - **Parameters**
   ```
@@ -178,16 +180,14 @@ user_delete | Delete user account | DELETE | /user/{user_id}
   - 404: user not found
   - 405: method not allowed
   - 50x: internal server error
+
 ### User Delete
 - **Function**
-  - user_delete()
+  - user_delete(api_dev_key)
 
 - **Parameters**
-  ```
-  "body": {
-    "user_id": string
-  }
-  ```
+  - None
+
 - **Returns**
   - 200 (default): successful operation
     ```
@@ -199,6 +199,7 @@ user_delete | Delete user account | DELETE | /user/{user_id}
   - 404: user not found
   - 405: method not allowed
   - 50x: internal server error
+
 ## Video
 ### Overview
 Function | Description | Type | Path (Endpoint)
@@ -210,19 +211,19 @@ video_get | get video content cache | GET | /video/{video_id}
 
 ### Video Upload
 - **Function**
-  - video_upload(api_key, title, ...)
+  - video_upload (api_dev_key, video_title, video_tag, video_category, video_description, video_language, video_status, video_contents)
 
 - **Parameters**
   Name | Type | Description
     --- | --- | ---
-    apiKey | string | This will be used to, among other things, throttle users based on their allocated quota.
-    videoTitle | string | video title
-    videoDesc | string | (optional) video description
-    videoTags | string[] | (optional) video tags
-    videoCategory | string | category of video, e.g., Movie, Vlog, Song, News, Tech, etc.
-    videoLanguage | string | e.g., English, Mandarin, Hindi, etc.
-    videoStatus | string | e.g., public, private, limited share.
-    videoContents | stream | video to be uploaded.
+    api_dev_key | string | This will be used to, among other things, throttle users based on their allocated quota.
+    video_title | string | video title
+    video_tag | string[] | (optional) video tags
+    video_category | string | category of video, e.g., Movie, Vlog, Song, News, Tech, etc.
+    video_description | string | (optional) video description
+    video_language | string | e.g., English, Mandarin, Hindi, etc.
+    video_status | string | (optional, default public) e.g., public, private, limited share.
+    video_contents | stream | video to be uploaded.
 
 - **Returns**
   - (default) 202 (request accepted), once the video encoding is completed the user is notified through email with a link to access the video. We can also expose a queryable API to let users know the current status of their uploaded video.
@@ -242,16 +243,17 @@ video_get | get video content cache | GET | /video/{video_id}
 
 ### Video Update
 - **Function**
-  - video_update ()
+  - video_update (api_dev_key, video_title, video_tag, video_category, video_description, video_language, video_status)
 
 - **Parameters**
   ```
   "body": {
     "video_title": string,
+    "video_tag": string[],
     "video_category": string[],
-    "video_tags": string[],
     "video_description": string,
-    "video_language": enum
+    "video_language": enum,
+    "video_status": enum
   }
   ```
 - **Returns**
@@ -261,7 +263,7 @@ video_get | get video content cache | GET | /video/{video_id}
         "video_id": string,
         "user_id": string,
         "video_title": string,
-        "video_tags": string[],
+        "video_tag": string[],
         "video_category": string[],
         "video_description": string,
         "video_language": enum,
@@ -286,12 +288,11 @@ video_get | get video content cache | GET | /video/{video_id}
 
 ### Video Delete
 - **Function**
-  - video_delete (apiKey, videoID)
+  - video_delete (api_dev_key, video_id)
 
 - **Parameters**
   ```
   "body": {
-    "user_id": string,
     "video_id": string
   }
   ```
@@ -322,6 +323,7 @@ search_user | Search user list by keyword | GET | /search/user?q={keyword}
     - user_location (string): Optional location of the user performing the search.
     - maximum_videos_to_return (number): Maximum number of results returned in one request.
     - page_token (string): This token will specify a page in the result set that should be returned.
+
 - **Parameters**
   ```
   "body": {
