@@ -1,4 +1,4 @@
-from flask_restplus import fields
+from flask_restx import fields
 from source_rest_plus.api.restplus import api
 
 user = api.model('User post', {
