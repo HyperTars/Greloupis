@@ -19,7 +19,8 @@
 - See full [Database Design](/Documents/Database.md)
 
 #### APIs Design
-- See full [APIs Design](/Documents/APIs.md)
+- Swagger API yml file [Swagger API file](/Documents/swagger.yml)
+- Overview document [APIs Design](/Documents/APIs.md)
 
 ### Tests
 - See full [Test Cases](/Documents/Test.md)

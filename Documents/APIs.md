@@ -1,7 +1,7 @@
 # APIs Design
 
   In this document, we list our all APIs for quick overview. The full API endpoints list and description can be seen in
- [Swagger YML file](https://github.com/HyperTars/Online-Video-Platform/blob/master/Documents/swagger.yml).
+ [Swagger API file](https://github.com/HyperTars/Online-Video-Platform/blob/master/Documents/swagger.yml).
 
 ## User Auth
 ### Overview
