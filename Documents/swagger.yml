@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  description: "This is a sample server Petstore server.  You can find out more about     Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).      For this sample, you can use the api key `special-key` to test the authorization     filters."
+  description: "The API server for online video platform."
   version: "1.0.0"
   title: "Online Video Platform"
   termsOfService: "http://swagger.io/terms/"
@@ -11,544 +11,6 @@ info:
     url: "https://www.gnu.org/licenses/"
 host: "online-video-platform.com"
 basePath: "/api"
-
-paths:
-  /pet:
-    post:
-      tags:
-      - "pet"
-      summary: "Add a new pet to the store"
-      description: ""
-      operationId: "addPet"
-      consumes:
-      - "application/json"
-      - "application/xml"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "Pet object that needs to be added to the store"
-        required: true
-        schema:
-          $ref: "#/definitions/Pet"
-      responses:
-        "405":
-          description: "Invalid input"
-      security:
-      - petstore_auth:
-        - "write:pets"
-        - "read:pets"
-    put:
-      tags:
-      - "pet"
-      summary: "Update an existing pet"
-      description: ""
-      operationId: "updatePet"
-      consumes:
-      - "application/json"
-      - "application/xml"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "Pet object that needs to be added to the store"
-        required: true
-        schema:
-          $ref: "#/definitions/Pet"
-      responses:
-        "400":
-          description: "Invalid ID supplied"
-        "404":
-          description: "Pet not found"
-        "405":
-          description: "Validation exception"
-      security:
-      - petstore_auth:
-        - "write:pets"
-        - "read:pets"
-  /pet/findByStatus:
-    get:
-      tags:
-      - "pet"
-      summary: "Finds Pets by status"
-      description: "Multiple status values can be provided with comma separated strings"
-      operationId: "findPetsByStatus"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - name: "status"
-        in: "query"
-        description: "Status values that need to be considered for filter"
-        required: true
-        type: "array"
-        items:
-          type: "string"
-          enum:
-          - "available"
-          - "pending"
-          - "sold"
-          default: "available"
-        collectionFormat: "multi"
-      responses:
-        "200":
-          description: "successful operation"
-          schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/Pet"
-        "400":
-          description: "Invalid status value"
-      security:
-      - petstore_auth:
-        - "write:pets"
-        - "read:pets"
-  /pet/findByTags:
-    get:
-      tags:
-      - "pet"
-      summary: "Finds Pets by tags"
-      description: "Muliple tags can be provided with comma separated strings. Use         tag1, tag2, tag3 for testing."
-      operationId: "findPetsByTags"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - name: "tags"
-        in: "query"
-        description: "Tags to filter by"
-        required: true
-        type: "array"
-        items:
-          type: "string"
-        collectionFormat: "multi"
-      responses:
-        "200":
-          description: "successful operation"
-          schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/Pet"
-        "400":
-          description: "Invalid tag value"
-      security:
-      - petstore_auth:
-        - "write:pets"
-        - "read:pets"
-      deprecated: true
-  /pet/{petId}:
-    get:
-      tags:
-      - "pet"
-      summary: "Find pet by ID"
-      description: "Returns a single pet"
-      operationId: "getPetById"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - name: "petId"
-        in: "path"
-        description: "ID of pet to return"
-        required: true
-        type: "integer"
-        format: "int64"
-      responses:
-        "200":
-          description: "successful operation"
-          schema:
-            $ref: "#/definitions/Pet"
-        "400":
-          description: "Invalid ID supplied"
-        "404":
-          description: "Pet not found"
-      security:
-      - api_key: []
-    post:
-      tags:
-      - "pet"
-      summary: "Updates a pet in the store with form data"
-      description: ""
-      operationId: "updatePetWithForm"
-      consumes:
-      - "application/x-www-form-urlencoded"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - name: "petId"
-        in: "path"
-        description: "ID of pet that needs to be updated"
-        required: true
-        type: "integer"
-        format: "int64"
-      - name: "name"
-        in: "formData"
-        description: "Updated name of the pet"
-        required: false
-        type: "string"
-      - name: "status"
-        in: "formData"
-        description: "Updated status of the pet"
-        required: false
-        type: "string"
-      responses:
-        "405":
-          description: "Invalid input"
-      security:
-      - petstore_auth:
-        - "write:pets"
-        - "read:pets"
-    delete:
-      tags:
-      - "pet"
-      summary: "Deletes a pet"
-      description: ""
-      operationId: "deletePet"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - name: "api_key"
-        in: "header"
-        required: false
-        type: "string"
-      - name: "petId"
-        in: "path"
-        description: "Pet id to delete"
-        required: true
-        type: "integer"
-        format: "int64"
-      responses:
-        "400":
-          description: "Invalid ID supplied"
-        "404":
-          description: "Pet not found"
-      security:
-      - petstore_auth:
-        - "write:pets"
-        - "read:pets"
-  /pet/{petId}/uploadImage:
-    post:
-      tags:
-      - "pet"
-      summary: "uploads an image"
-      description: ""
-      operationId: "uploadFile"
-      consumes:
-      - "multipart/form-data"
-      produces:
-      - "application/json"
-      parameters:
-      - name: "petId"
-        in: "path"
-        description: "ID of pet to update"
-        required: true
-        type: "integer"
-        format: "int64"
-      - name: "additionalMetadata"
-        in: "formData"
-        description: "Additional data to pass to server"
-        required: false
-        type: "string"
-      - name: "file"
-        in: "formData"
-        description: "file to upload"
-        required: false
-        type: "file"
-      responses:
-        "200":
-          description: "successful operation"
-          schema:
-            $ref: "#/definitions/ApiResponse"
-      security:
-      - petstore_auth:
-        - "write:pets"
-        - "read:pets"
-  /store/inventory:
-    get:
-      tags:
-      - "store"
-      summary: "Returns pet inventories by status"
-      description: "Returns a map of status codes to quantities"
-      operationId: "getInventory"
-      produces:
-      - "application/json"
-      parameters: []
-      responses:
-        "200":
-          description: "successful operation"
-          schema:
-            type: "object"
-            additionalProperties:
-              type: "integer"
-              format: "int32"
-      security:
-      - api_key: []
-  /store/order:
-    post:
-      tags:
-      - "store"
-      summary: "Place an order for a pet"
-      description: ""
-      operationId: "placeOrder"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "order placed for purchasing the pet"
-        required: true
-        schema:
-          $ref: "#/definitions/Order"
-      responses:
-        "200":
-          description: "successful operation"
-          schema:
-            $ref: "#/definitions/Order"
-        "400":
-          description: "Invalid Order"
-  /store/order/{orderId}:
-    get:
-      tags:
-      - "store"
-      summary: "Find purchase order by ID"
-      description: "For valid response try integer IDs with value >= 1 and <= 10.         Other values will generated exceptions"
-      operationId: "getOrderById"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - name: "orderId"
-        in: "path"
-        description: "ID of pet that needs to be fetched"
-        required: true
-        type: "integer"
-        maximum: 10.0
-        minimum: 1.0
-        format: "int64"
-      responses:
-        "200":
-          description: "successful operation"
-          schema:
-            $ref: "#/definitions/Order"
-        "400":
-          description: "Invalid ID supplied"
-        "404":
-          description: "Order not found"
-    delete:
-      tags:
-      - "store"
-      summary: "Delete purchase order by ID"
-      description: "For valid response try integer IDs with positive integer value.         Negative or non-integer values will generate API errors"
-      operationId: "deleteOrder"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - name: "orderId"
-        in: "path"
-        description: "ID of the order that needs to be deleted"
-        required: true
-        type: "integer"
-        minimum: 1.0
-        format: "int64"
-      responses:
-        "400":
-          description: "Invalid ID supplied"
-        "404":
-          description: "Order not found"
-  /user:
-    post:
-      tags:
-      - "user"
-      summary: "Create user"
-      description: "This can only be done by the logged in user."
-      operationId: "createUser"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "Created user object"
-        required: true
-        schema:
-          $ref: "#/definitions/User"
-      responses:
-        default:
-          description: "successful operation"
-  /user/createWithArray:
-    post:
-      tags:
-      - "user"
-      summary: "Creates list of users with given input array"
-      description: ""
-      operationId: "createUsersWithArrayInput"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "List of user object"
-        required: true
-        schema:
-          type: "array"
-          items:
-            $ref: "#/definitions/User"
-      responses:
-        default:
-          description: "successful operation"
-  /user/createWithList:
-    post:
-      tags:
-      - "user"
-      summary: "Creates list of users with given input array"
-      description: ""
-      operationId: "createUsersWithListInput"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "List of user object"
-        required: true
-        schema:
-          type: "array"
-          items:
-            $ref: "#/definitions/User"
-      responses:
-        default:
-          description: "successful operation"
-  /user/login:
-    get:
-      tags:
-      - "user"
-      summary: "Logs user into the system"
-      description: ""
-      operationId: "loginUser"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - name: "username"
-        in: "query"
-        description: "The user name for login"
-        required: true
-        type: "string"
-      - name: "password"
-        in: "query"
-        description: "The password for login in clear text"
-        required: true
-        type: "string"
-      responses:
-        "200":
-          description: "successful operation"
-          schema:
-            type: "string"
-          headers:
-            X-Rate-Limit:
-              type: "integer"
-              format: "int32"
-              description: "calls per hour allowed by the user"
-            X-Expires-After:
-              type: "string"
-              format: "date-time"
-              description: "date in UTC when token expires"
-        "400":
-          description: "Invalid username/password supplied"
-  /user/logout:
-    get:
-      tags:
-      - "user"
-      summary: "Logs out current logged in user session"
-      description: ""
-      operationId: "logoutUser"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters: []
-      responses:
-        default:
-          description: "successful operation"
-  /user/{username}:
-    get:
-      tags:
-      - "user"
-      summary: "Get user by user name"
-      description: ""
-      operationId: "getUserByName"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - name: "username"
-        in: "path"
-        description: "The name that needs to be fetched. Use user1 for testing. "
-        required: true
-        type: "string"
-      responses:
-        "200":
-          description: "successful operation"
-          schema:
-            $ref: "#/definitions/User"
-        "400":
-          description: "Invalid username supplied"
-        "404":
-          description: "User not found"
-    put:
-      tags:
-      - "user"
-      summary: "Updated user"
-      description: "This can only be done by the logged in user."
-      operationId: "updateUser"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - name: "username"
-        in: "path"
-        description: "name that need to be updated"
-        required: true
-        type: "string"
-      - in: "body"
-        name: "body"
-        description: "Updated user object"
-        required: true
-        schema:
-          $ref: "#/definitions/User"
-      responses:
-        "400":
-          description: "Invalid user supplied"
-        "404":
-          description: "User not found"
-    delete:
-      tags:
-      - "user"
-      summary: "Delete user"
-      description: "This can only be done by the logged in user."
-      operationId: "deleteUser"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - name: "username"
-        in: "path"
-        description: "The name that needs to be deleted"
-        required: true
-        type: "string"
-      responses:
-        "400":
-          description: "Invalid username supplied"
-        "404":
-          description: "User not found"
 
 tags:
 - name: "user"
@@ -571,12 +33,1245 @@ schemes:
 - "https"
 - "http"
 
+paths:
+  '/user':
+    post:
+      tags:
+        - user
+      description: 'User sign up'
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          description: user information
+          required: true
+          schema:
+            $ref: '#/definitions/UserInput'
+
+      responses:
+        200:
+          description: successfully created the user
+          schema:
+            $ref: '#/definitions/ApiResponseWithUser'
+        400:
+          description: bad request
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - online_video_platform_auth:
+            - 'read'
+            - 'write'
+            
+  '/user/login':
+    post:
+      tags:
+        - user
+      description: 'User login'
+      consumes:
+        - multipart/form-data
+      produces:
+        - application/json
+      parameters:
+        - name: user_name
+          in: formData
+          description: user's name
+          required: true
+          type: string
+        - name: user_email
+          in: formData
+          description: user's name
+          required: true
+          type: string
+        - name: user_password
+          in: formData
+          description: user's name
+          required: true
+          type: string
+  
+      responses:
+        200:
+          description: successfully logged in
+          headers:
+            X-Expires-After:
+              type: string
+              format: date-time
+              description: date in UTC when token expires
+            X-Rate-Limit:
+              type: integer
+              format: int32
+              description: calls per hour allowed by the user
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        400:
+          description: invalid user information
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - online_video_platform_auth:
+            - 'read'
+            - 'write'
+
+  '/user/logout':
+    post:
+      tags:
+        - user
+      description: 'User logout'
+      produces:
+        - application/json
+      responses:
+        200:
+          description: successfully logged out
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        400:
+          description: bad request
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - online_video_platform_auth:
+            - 'read'
+            - 'write'
+            
+  '/user/{user_id}':
+    get:
+      tags:
+        - user
+      description: 'Get user information by id'
+      produces:
+        - application/json
+      parameters:
+        - name: user_id
+          in: path
+          description: user's id
+          required: true
+          type: string
+      responses:
+        200:
+          description: successfully got user information
+          schema:
+            $ref: '#/definitions/ApiResponseWithUser'
+        400:
+          description: invalid user id
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        404:
+          description: user not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - online_video_platform_auth:
+            - 'read'
+    
+    put:
+      tags:
+        - user
+      description: 'Update user information by id'
+      produces:
+        - application/json
+      parameters:
+        - name: user_id
+          in: path
+          description: user's id
+          required: true
+          type: string
+        - name: body
+          in: body
+          description: user information
+          required: true
+          schema:
+            $ref: '#/definitions/UserInput'
+      responses:
+        200:
+          description: successfully updated user information
+          schema:
+            $ref: '#/definitions/ApiResponseWithUser'
+        400:
+          description: invalid user id
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        404:
+          description: user not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        405:
+          description: method not allowed
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - online_video_platform_auth:
+            - 'read'
+            - 'write'
+            
+    delete:
+      tags:
+        - user
+      description: 'Delete user by id'
+      produces:
+        - application/json
+      parameters:
+        - name: user_id
+          in: path
+          description: user's id
+          required: true
+          type: string
+      responses:
+        200:
+          description: successfully deleted user
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        400:
+          description: invalid user id
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        404:
+          description: user not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        405:
+          description: method not allowed
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - online_video_platform_auth:
+            - 'read'
+            - 'write'
+    
+  '/video':
+    post:
+      tags:
+        - video
+      description: 'User upload a video'
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          description: video information
+          required: true
+          schema:
+            $ref: '#/definitions/VideoInput'
+
+      responses:
+        200:
+          description: successfully created the user
+          schema:
+            $ref: '#/definitions/ApiResponseWithVideo'
+        400:
+          description: bad request
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        405:
+          description: method not allowed
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - online_video_platform_auth:
+            - 'read'
+            - 'write'
+            
+  '/video/{video_id}':
+    get:
+      tags:
+        - video
+      description: 'Get video information by id'
+      produces:
+        - application/json
+      parameters:
+        - name: video_id
+          in: path
+          description: video's id
+          required: true
+          type: string
+      responses:
+        200:
+          description: successfully got video information
+          schema:
+            $ref: '#/definitions/ApiResponseWithVideo'
+        400:
+          description: invalid video id
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        404:
+          description: video not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - online_video_platform_auth:
+            - 'read'
+            
+    put:
+      tags:
+        - video
+      description: 'Update video information by id'
+      produces:
+        - application/json
+      parameters:
+        - name: video_id
+          in: path
+          description: video's id
+          required: true
+          type: string
+        - name: body
+          in: body
+          description: video information
+          required: true
+          schema:
+            $ref: '#/definitions/VideoInput'
+      responses:
+        200:
+          description: successfully updated video information
+          schema:
+            $ref: '#/definitions/ApiResponseWithUser'
+        400:
+          description: invalid video id
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        404:
+          description: video not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        405:
+          description: method not allowed
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - online_video_platform_auth:
+            - 'read'
+            - 'write'
+            
+    delete:
+      tags:
+        - video
+      description: 'Delete video by id'
+      produces:
+        - application/json
+      parameters:
+        - name: video_id
+          in: path
+          description: video's id
+          required: true
+          type: string
+      responses:
+        200:
+          description: successfully deleted video
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        400:
+          description: invalid video id
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        404:
+          description: video not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        405:
+          description: method not allowed
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - online_video_platform_auth:
+            - 'read'
+            - 'write'
+            
+  '/search/video':  
+    get:
+      tags:
+        - search
+      description: 'Search videos by keyword'
+      produces:
+        - application/json
+      parameters:
+        - name: keyword
+          in: query
+          description: video's keyword
+          required: true
+          type: string
+      responses:
+        200:
+          description: successfully got video search results
+          schema:
+            $ref: '#/definitions/ApiResponseWithList'
+        400:
+          description: bad request
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - online_video_platform_auth:
+            - 'read'
+            
+  '/search/user':  
+    get:
+      tags:
+        - search
+      description: 'Search users by keyword'
+      produces:
+        - application/json
+      parameters:
+        - name: keyword
+          in: query
+          description: user's keyword
+          required: true
+          type: string
+      responses:
+        200:
+          description: successfully got user search results
+          schema:
+            $ref: '#/definitions/ApiResponseWithList'
+        400:
+          description: bad request
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - online_video_platform_auth:
+            - 'read'
+  
+  '/user/{user_id}/like':  
+    get:
+      tags:
+        - user
+      description: 'Get a list of like by user id'
+      produces:
+        - application/json
+      parameters:
+        - name: user_id
+          in: path
+          description: user's id
+          required: true
+          type: string
+      responses:
+        200:
+          description: successfully got user like results
+          schema:
+            $ref: '#/definitions/ApiResponseWithList'
+        400:
+          description: invalid user id
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        404:
+          description: user not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - online_video_platform_auth:
+            - 'read'
+  
+  '/video/{video_id}/like':  
+    get:
+      tags:
+        - video
+      description: 'Get a list of like by video id'
+      produces:
+        - application/json
+      parameters:
+        - name: video_id
+          in: path
+          description: video's id
+          required: true
+          type: string
+      responses:
+        200:
+          description: successfully got video like results
+          schema:
+            $ref: '#/definitions/ApiResponseWithList'
+        400:
+          description: invalid video id
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        404:
+          description: video not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - online_video_platform_auth:
+            - 'read'
+  
+  '/video/{video_id}/like/{user_id}':
+    post:
+      tags:
+        - video
+      description: 'Post a like by specified user and video'
+      produces:
+        - application/json
+      parameters:
+        - name: video_id
+          in: path
+          description: video's id
+          required: true
+          type: string
+        - name: user_id
+          in: path
+          description: user's id
+          required: true
+          type: string
+      responses:
+        200:
+          description: successfully liked a video
+          schema:
+            $ref: '#/definitions/ApiResponseWithList'
+        400:
+          description: invalid video id or user id
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        404:
+          description: user or video not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        405:
+          description: method not allowed
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - online_video_platform_auth:
+            - 'read'
+            - 'write'
+    
+    delete:
+      tags:
+        - video
+      description: 'Undo a like by specified user and video'
+      produces:
+        - application/json
+      parameters:
+        - name: video_id
+          in: path
+          description: video's id
+          required: true
+          type: string
+        - name: user_id
+          in: path
+          description: user's id
+          required: true
+          type: string
+      responses:
+        200:
+          description: successfully undo a like
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        400:
+          description: invalid video id
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        404:
+          description: user or video not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        405:
+          description: method not allowed
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - online_video_platform_auth:
+            - 'read'
+            - 'write'
+  
+  '/user/{user_id}/dislike':  
+    get:
+      tags:
+        - user
+      description: 'Get a list of dislike by user id'
+      produces:
+        - application/json
+      parameters:
+        - name: user_id
+          in: path
+          description: user's id
+          required: true
+          type: string
+      responses:
+        200:
+          description: successfully got user dislike results
+          schema:
+            $ref: '#/definitions/ApiResponseWithList'
+        400:
+          description: invalid user id
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        404:
+          description: user not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - online_video_platform_auth:
+            - 'read'
+  
+  '/video/{video_id}/dislike':  
+    get:
+      tags:
+        - video
+      description: 'Get a list of dislike by video id'
+      produces:
+        - application/json
+      parameters:
+        - name: video_id
+          in: path
+          description: video's id
+          required: true
+          type: string
+      responses:
+        200:
+          description: successfully got video dislike results
+          schema:
+            $ref: '#/definitions/ApiResponseWithList'
+        400:
+          description: invalid video id
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        404:
+          description: video not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - online_video_platform_auth:
+            - 'read'
+  
+  '/video/{video_id}/dislike/{user_id}':
+    post:
+      tags:
+        - video
+      description: 'Post a dislike by specified user and video'
+      produces:
+        - application/json
+      parameters:
+        - name: video_id
+          in: path
+          description: video's id
+          required: true
+          type: string
+        - name: user_id
+          in: path
+          description: user's id
+          required: true
+          type: string
+      responses:
+        200:
+          description: successfully disliked a video
+          schema:
+            $ref: '#/definitions/ApiResponseWithList'
+        400:
+          description: invalid video id or user id
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        404:
+          description: user or video not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        405:
+          description: method not allowed
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - online_video_platform_auth:
+            - 'read'
+            - 'write'
+    
+    delete:
+      tags:
+        - video
+      description: 'Undo a dislike by specified user and video'
+      produces:
+        - application/json
+      parameters:
+        - name: video_id
+          in: path
+          description: video's id
+          required: true
+          type: string
+        - name: user_id
+          in: path
+          description: user's id
+          required: true
+          type: string
+      responses:
+        200:
+          description: successfully undo a dislike
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        400:
+          description: invalid video id or user id
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        404:
+          description: user or video not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        405:
+          description: method not allowed
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - online_video_platform_auth:
+            - 'read'
+            - 'write'
+  
+  '/user/{user_id}/star':  
+    get:
+      tags:
+        - user
+      description: 'Get a list of star by user id'
+      produces:
+        - application/json
+      parameters:
+        - name: user_id
+          in: path
+          description: user's id
+          required: true
+          type: string
+      responses:
+        200:
+          description: successfully got user star results
+          schema:
+            $ref: '#/definitions/ApiResponseWithList'
+        400:
+          description: invalid user id
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        404:
+          description: user not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - online_video_platform_auth:
+            - 'read'
+  
+  '/video/{video_id}/star':  
+    get:
+      tags:
+        - video
+      description: 'Get a list of star by video id'
+      produces:
+        - application/json
+      parameters:
+        - name: video_id
+          in: path
+          description: video's id
+          required: true
+          type: string
+      responses:
+        200:
+          description: successfully got video star results
+          schema:
+            $ref: '#/definitions/ApiResponseWithList'
+        400:
+          description: invalid video id
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        404:
+          description: video not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - online_video_platform_auth:
+            - 'read'
+  
+  '/video/{video_id}/star/{user_id}':
+    post:
+      tags:
+        - video
+      description: 'Post a star by specified user and video'
+      produces:
+        - application/json
+      parameters:
+        - name: video_id
+          in: path
+          description: video's id
+          required: true
+          type: string
+        - name: user_id
+          in: path
+          description: user's id
+          required: true
+          type: string
+      responses:
+        200:
+          description: successfully stared a video
+          schema:
+            $ref: '#/definitions/ApiResponseWithList'
+        400:
+          description: invalid video id or user id
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        404:
+          description: user or video not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        405:
+          description: method not allowed
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - online_video_platform_auth:
+            - 'read'
+            - 'write'
+    
+    delete:
+      tags:
+        - video
+      description: 'Undo a star by specified user and video'
+      produces:
+        - application/json
+      parameters:
+        - name: video_id
+          in: path
+          description: video's id
+          required: true
+          type: string
+        - name: user_id
+          in: path
+          description: user's id
+          required: true
+          type: string
+      responses:
+        200:
+          description: successfully undo a star
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        400:
+          description: invalid video id or user id
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        404:
+          description: user or video not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        405:
+          description: method not allowed
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - online_video_platform_auth:
+            - 'read'
+            - 'write'            
+
+  '/video/{video_id}/view':  
+    get:
+      tags:
+        - video
+      description: 'Get total view count by video id'
+      produces:
+        - application/json
+      parameters:
+        - name: video_id
+          in: path
+          description: video's id
+          required: true
+          type: string
+      responses:
+        200:
+          description: successfully got video view count
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        400:
+          description: invalid video id
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        404:
+          description: video not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - online_video_platform_auth:
+            - 'read'
+            - 'write'
+            
+    put:
+      tags:
+        - video
+      description: 'Increment total view count by video id'
+      produces:
+        - application/json
+      parameters:
+        - name: video_id
+          in: path
+          description: video's id
+          required: true
+          type: string
+      responses:
+        200:
+          description: successfully increment video view count by 1
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        400:
+          description: invalid video id
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        404:
+          description: video not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        405:
+          description: method not allowed
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - online_video_platform_auth:
+            - 'read'
+            - 'write'      
+    
+  '/user/{user_id}/comment/':  
+    get:
+      tags:
+        - user
+      description: 'Get a list of comments by user id'
+      produces:
+        - application/json
+      parameters:
+        - name: user_id
+          in: path
+          description: user's id
+          required: true
+          type: string
+      responses:
+        200:
+          description: successfully got user comment list
+          schema:
+            $ref: '#/definitions/ApiResponseWithList'
+        400:
+          description: invalid user id
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        404:
+          description: user not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - online_video_platform_auth:
+            - 'read'
+            
+  '/video/{video_id}/comment/':  
+    get:
+      tags:
+        - video
+      description: 'Get a list of comment by video id'
+      produces:
+        - application/json
+      parameters:
+        - name: video_id
+          in: path
+          description: video's id
+          required: true
+          type: string
+      responses:
+        200:
+          description: successfully got video comment list
+          schema:
+            $ref: '#/definitions/ApiResponseWithList'
+        400:
+          description: invalid video id
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        404:
+          description: video not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - online_video_platform_auth:
+            - 'read'
+            
+  '/video/{video_id}/comment/{user_id}':  
+    get:
+      tags:
+        - video
+      description: 'Get a comment by specified video id and user id'
+      produces:
+        - application/json
+      parameters:
+        - name: video_id
+          in: path
+          description: video's id
+          required: true
+          type: string
+        - name: user_id
+          in: path
+          description: user's id
+          required: true
+          type: string
+      responses:
+        200:
+          description: successfully got comment
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        400:
+          description: invalid video id or user id
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        404:
+          description: video or user not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - online_video_platform_auth:
+            - 'read'
+            
+    post:
+      tags:
+        - video
+      description: 'Post a comment by specified video id and user id'
+      produces:
+        - application/json
+      parameters:
+        - name: video_id
+          in: path
+          description: video's id
+          required: true
+          type: string
+        - name: user_id
+          in: path
+          description: user's id
+          required: true
+          type: string
+        - name: body
+          in: body
+          description: user information
+          required: true
+          schema:
+            $ref: '#/definitions/CommentInput'
+      responses:
+        200:
+          description: successfully post a comment
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        400:
+          description: invalid video id or user id
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        404:
+          description: video or user not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        405:
+          description: method not allowed
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - online_video_platform_auth:
+            - 'read'
+            - 'write'
+            
+    put:
+      tags:
+        - video
+      description: 'Update a comment by specified video id and user id'
+      produces:
+        - application/json
+      parameters:
+        - name: video_id
+          in: path
+          description: video's id
+          required: true
+          type: string
+        - name: user_id
+          in: path
+          description: user's id
+          required: true
+          type: string
+        - name: body
+          in: body
+          description: user information
+          required: true
+          schema:
+            $ref: '#/definitions/CommentInput'
+      responses:
+        200:
+          description: successfully update a comment
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        400:
+          description: invalid video id or user id
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        404:
+          description: video or user not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        405:
+          description: method not allowed
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - online_video_platform_auth:
+            - 'read'
+            - 'write'
+    
+    delete:
+      tags:
+        - video
+      description: 'Delete a comment by specified video id and user id'
+      produces:
+        - application/json
+      parameters:
+        - name: video_id
+          in: path
+          description: video's id
+          required: true
+          type: string
+        - name: user_id
+          in: path
+          description: user's id
+          required: true
+          type: string
+      responses:
+        200:
+          description: successfully delete a comment
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        400:
+          description: invalid video id or user id
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        404:
+          description: video or user not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        405:
+          description: method not allowed
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - online_video_platform_auth:
+            - 'read'
+            - 'write'
 
 securityDefinitions:
-  petstore_auth:
+  online_video_platform_auth:
     type: "oauth2"
     authorizationUrl: "http://online-video-platform.com/login"
     flow: "implicit"
+    scopes:
+      'read': read your data
+      'write': modify your data
   api_key:
     type: "apiKey"
     name: "api_key"
@@ -697,6 +1392,25 @@ definitions:
     xml:
       name: "User"
 
+  UserInput:
+    type: "object"
+    required:
+    - "user_email"
+    - "user_name"
+    - "user_password"
+    properties:
+      user_email:
+        type: "string"
+      user_name:
+        type: "string"
+      user_password:
+        type: "string"
+      user_detail:
+        $ref: "#/definitions/UserDetail"
+    xml:
+      name: "UserInput"
+  
+  
   Follow:
     type: "object"
     properties:
@@ -802,6 +1516,27 @@ definitions:
     xml:
       name: "Video"
   
+  VideoInput:
+    type: "object"
+    properties:
+      video_title:
+        type: "string"
+      video_category:
+        type: "array"
+        items:
+          type: "string"
+      video_tags:
+        type: "array"
+        items:
+          type: "string"
+      video_description:
+        type: "string"
+      video_language:
+        type: "string"
+        example: "English"
+    xml:
+      name: "User"
+  
   Comment:
     type: "object"
     required:
@@ -820,6 +1555,16 @@ definitions:
         format: "date-time"
     xml:
       name: "Comment"
+  
+  CommentInput:
+    type: "object"
+    required:
+    - "comment"
+    properties:
+      comment:
+        type: "string"
+    xml:
+      name: "CommentInput"
   
   Like:
     type: "object"
@@ -865,15 +1610,6 @@ definitions:
         format: "date-time"
     xml:
       name: "Star"
-
-  Order:
-    type: "object"
-    properties:
-      complete:
-        type: "boolean"
-        default: false
-    xml:
-      name: "Order"
   
   ApiResponse:
     type: "object"
@@ -881,11 +1617,38 @@ definitions:
       code:
         type: "integer"
         format: "int32"
-      type:
-        type: "string"
       message:
         type: "string"
-
+        
+  ApiResponseWithUser:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int32"
+      message:
+        $ref: "#/definitions/User"
+        
+  ApiResponseWithVideo:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int32"
+      message:
+        $ref: "#/definitions/Video"
+  
+  ApiResponseWithList:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int32"
+      message:
+        type: "array"
+        items:
+          type: "string"
+  
 externalDocs:
   description: "Git Repo"
   url: "https://github.com/HyperTars/Online-Video-Platform"
