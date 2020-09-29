@@ -24,7 +24,7 @@ user_delete | Delete user account | DELETE | /user/{user_id}
     "user_name": string,
     "user_email": string,
     "user_password": string,
-    "user_details": UserDetails {
+    "user_details": UserDetail {
         "first_name": string,
         "last_name": string,
         "phone": string
@@ -45,14 +45,14 @@ user_delete | Delete user account | DELETE | /user/{user_id}
         "thumbnail_uri": string,
         "thumbnail_type": enum
       }
-      "user_details": UserDetails {
+      "user_details": UserDetail {
         "first_name": string,
         "last_name": string,
         "phone": string
       }
       "user_followers": big int,
       "user_reg_date": date-type,
-      "user_recent_login": LoginDetails {
+      "user_recent_login": LoginDetail {
         "login_ip": string,
         "login_time": date-type
       }
@@ -117,14 +117,14 @@ user_delete | Delete user account | DELETE | /user/{user_id}
         "thumbnail_uri": string,
         "thumbnail_type": enum
       }
-      "user_details": UserDetails {
+      "user_details": UserDetail {
         "first_name": string,
         "last_name": string,
         "phone": string
       }
       "user_followers": big int,
       "user_reg_date": date-type,
-      "user_recent_login": LoginDetails {
+      "user_recent_login": LoginDetail {
         "login_ip": string,
         "login_time": date-type
       }
@@ -145,7 +145,7 @@ user_delete | Delete user account | DELETE | /user/{user_id}
     "user_name": string,
     "user_email": string,
     "user_password": string,
-    "user_details": UserDetails {
+    "user_details": UserDetail {
         "first_name": string,
         "last_name": string,
         "phone": string
@@ -165,14 +165,14 @@ user_delete | Delete user account | DELETE | /user/{user_id}
         "thumbnail_uri": string,
         "thumbnail_type": enum
       }
-      "user_details": UserDetails {
+      "user_details": UserDetail {
         "first_name": string,
         "last_name": string,
         "phone": string
       }
       "user_followers": big int,
       "user_reg_date": date-type,
-      "user_recent_login": LoginDetails {
+      "user_recent_login": LoginDetail {
         "login_ip": string,
         "login_time": date-type
       }
