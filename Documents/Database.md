@@ -87,9 +87,84 @@
 
 ### Collection: video
 - **Document**
+    Attr1 | Type | Attr2 | Type | Data Source | Nullable | Description
+    --- | --- | --- | --- | --- | --- | ---
+    video_id / `_id` | ObjectId | - | - | Mongo generate | NO | video's unique id
+    user_id | String | - | - | user input | NO | uploader's user id
+    video_title | String | - | - | user input | NO | video's title
+    video_tag | Array | `index` | String | user input | YES | array of video's tags
+    video_category | Array | `index` | String | user input | YES | array of video's categories
+    video_description | String | - | - | user input | YES | video's description
+    video_language | String | - | - | user input | YES | video's language
+    video_status | String | - | - | user input | NO | default public, private, deleted
+    video_content | String | - | - | system generate | YES | upload streaming address
+    video_content_status | String | - | - | system generate | YES | default pending
+    video_size | Double | - | - | system generate | YES | video size in MB
+    video_view | Int64 | - | - | system generate | NO | count of video views (default 0)
+    video_like | Int64 | - | - | system generate | NO | count of video likes (default 0)
+    video_dislike | Int64 | - | - | system generate | NO | count of video dislikes (default 0)
+    video_comment | Int64 | - | - | system generate | NO | count of video comments (default 0)
+    video_star | Int64 | - | - | system generate | NO | count of video stars (default 0)
+    video_share | Int64 | - | - | system generate | NO | count of video shares (default 0)
+    video_thumbnail | Object | thumbnail_uri | String | system generate | YES | thumbnail URI
+     | | | thumbnail_type | String | user input | NO | auto, user_upload, first frame (default auto)
+    video_upload_date | Date | - | - | system generate | NO | video upload date
+    video_uri | Object | video_low | String | system generate | YES | 480p video URI
+     | | | video_mid | String | system generate | YES | 720p video URI
+     | | | video_high | String | system generate | YES | 1080p video URI
 
 - **Sample**
-
+    ```json
+    {
+        "_id": {
+            "$oid": "5f72999541bc583c4819d915"
+        },
+        "user_id": "84215634654asd8",
+        "video_title": "XiXiHaHa",
+        "video_tag": ["politics", "president"],
+        "video_category": ["entertainment"],
+        "video_description": "XiXi and HaHa AMV",
+        "video_languege": "Mandarin",
+        "video_status": "public",
+        "video_content": "stream://54asd56a4d5",
+        "video_content_status": "pending",
+        "video_size": {
+            "$numberDouble": "93.66"
+        },
+        "video_view": {
+            "$numberLong": "2"
+        },
+        "video_like": {
+            "$numberLong": "0"
+        },
+        "video_dislike": {
+            "$numberLong": "1"
+        },
+        "video_comment": {
+            "$numberLong": "0"
+        },
+        "video_star": {
+            "$numberLong": "0"
+        },
+        "video_share": {
+            "$numberLong": "1"
+        },
+        "video_thumbnail": {
+            "thumbnail_uri": "https://s3.amazon.asdasdasda.png",
+            "thumbnail_type": "auto"
+        },
+        "video_upload_date": {
+            "$date": {
+                "$numberLong": "-639054000000"
+            }
+        },
+        "video_uri": {
+            "video_low": "",
+            "video_mid": "",
+            "video_high": "https://s3.amazon.com/asdjadasdas.mp4"
+        }
+    }
+    ```
 ### Collection: video_op (including watch history, comment, like, dislike, star)
 - **Document**
     Attr | Type | Data Source | Nullable | Description
