@@ -31,7 +31,7 @@ class AddressDetail(Document):
     state = StringField(max_length=50)
     country = StringField(max_length=50)
     zip = StringField(max_length=20)
-
+    
 
 class UserDetail(Document):
     first_name = StringField(max_length=50, required=True)

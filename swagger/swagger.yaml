@@ -1,0 +1,1633 @@
+swagger: "2.0"
+info:
+  description: "The API server for online video platform."
+  version: "1.0.0"
+  title: "Online Video Platform"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "hypertars@gmail.com"
+  license:
+    name: "GNU v3.0"
+    url: "https://www.gnu.org/licenses/"
+host: "online-video-platform.com"
+basePath: "/api"
+
+tags:
+- name: "user"
+  description: "Operations about user"
+  externalDocs:
+    description: "See more design details"
+    url: "https://github.com/HyperTars/Online-Video-Platform"
+- name: "video"
+  description: "Operations about video"
+  externalDocs:
+    description: "See more design details"
+    url: "https://github.com/HyperTars/Online-Video-Platform"
+- name: "search"
+  description: "Operations about search"
+  externalDocs:
+    description: "See more design details"
+    url: "https://github.com/HyperTars/Online-Video-Platform"
+
+schemes:
+- "https"
+- "http"
+
+paths:
+  '/user':
+    post:
+      tags:
+        - user
+      description: 'User sign up'
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          description: user information
+          required: true
+          schema:
+            $ref: '#/definitions/UserInput'
+
+      responses:
+        200:
+          description: successfully created the user
+          schema:
+            $ref: '#/definitions/ApiResponseWithUser'
+        400:
+          description: bad request
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - api_key_header: []
+          api_key_query: []
+            
+  '/user/login':
+    post:
+      tags:
+        - user
+      description: 'User login'
+      consumes:
+        - multipart/form-data
+      produces:
+        - application/json
+      parameters:
+        - name: user_name
+          in: formData
+          description: user's name
+          required: true
+          type: string
+        - name: user_email
+          in: formData
+          description: user's name
+          required: true
+          type: string
+        - name: user_password
+          in: formData
+          description: user's name
+          required: true
+          type: string
+  
+      responses:
+        200:
+          description: successfully logged in
+          headers:
+            X-Expires-After:
+              type: string
+              format: date-time
+              description: date in UTC when token expires
+            X-Rate-Limit:
+              type: integer
+              format: int32
+              description: calls per hour allowed by the user
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        400:
+          description: invalid user information
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - api_key_header: []
+          api_key_query: []
+
+  '/user/logout':
+    post:
+      tags:
+        - user
+      description: 'User logout'
+      produces:
+        - application/json
+      responses:
+        200:
+          description: successfully logged out
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        400:
+          description: bad request
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - api_key_header: []
+          api_key_query: []
+            
+  '/user/{user_id}':
+    get:
+      tags:
+        - user
+      description: 'Get user information by id'
+      produces:
+        - application/json
+      parameters:
+        - name: user_id
+          in: path
+          description: user's id
+          required: true
+          type: string
+      responses:
+        200:
+          description: successfully got user information
+          schema:
+            $ref: '#/definitions/ApiResponseWithUser'
+        400:
+          description: invalid user id
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        404:
+          description: user not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - api_key_header: []
+          api_key_query: []
+    
+    put:
+      tags:
+        - user
+      description: 'Update user information by id'
+      produces:
+        - application/json
+      parameters:
+        - name: user_id
+          in: path
+          description: user's id
+          required: true
+          type: string
+        - name: body
+          in: body
+          description: user information
+          required: true
+          schema:
+            $ref: '#/definitions/UserInput'
+      responses:
+        200:
+          description: successfully updated user information
+          schema:
+            $ref: '#/definitions/ApiResponseWithUser'
+        400:
+          description: invalid user id
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        404:
+          description: user not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        405:
+          description: method not allowed
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - api_key_header: []
+          api_key_query: []
+            
+    delete:
+      tags:
+        - user
+      description: 'Delete user by id'
+      produces:
+        - application/json
+      parameters:
+        - name: user_id
+          in: path
+          description: user's id
+          required: true
+          type: string
+      responses:
+        200:
+          description: successfully deleted user
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        400:
+          description: invalid user id
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        404:
+          description: user not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        405:
+          description: method not allowed
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - api_key_header: []
+          api_key_query: []
+    
+  '/video':
+    post:
+      tags:
+        - video
+      description: 'User upload a video'
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          description: video information
+          required: true
+          schema:
+            $ref: '#/definitions/VideoInput'
+
+      responses:
+        200:
+          description: successfully created the user
+          schema:
+            $ref: '#/definitions/ApiResponseWithVideo'
+        400:
+          description: bad request
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        405:
+          description: method not allowed
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - api_key_header: []
+          api_key_query: []
+            
+  '/video/{video_id}':
+    get:
+      tags:
+        - video
+      description: 'Get video information by id'
+      produces:
+        - application/json
+      parameters:
+        - name: video_id
+          in: path
+          description: video's id
+          required: true
+          type: string
+      responses:
+        200:
+          description: successfully got video information
+          schema:
+            $ref: '#/definitions/ApiResponseWithVideo'
+        400:
+          description: invalid video id
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        404:
+          description: video not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - api_key_header: []
+          api_key_query: []
+            
+    put:
+      tags:
+        - video
+      description: 'Update video information by id'
+      produces:
+        - application/json
+      parameters:
+        - name: video_id
+          in: path
+          description: video's id
+          required: true
+          type: string
+        - name: body
+          in: body
+          description: video information
+          required: true
+          schema:
+            $ref: '#/definitions/VideoInput'
+      responses:
+        200:
+          description: successfully updated video information
+          schema:
+            $ref: '#/definitions/ApiResponseWithUser'
+        400:
+          description: invalid video id
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        404:
+          description: video not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        405:
+          description: method not allowed
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - api_key_header: []
+          api_key_query: []
+            
+    delete:
+      tags:
+        - video
+      description: 'Delete video by id'
+      produces:
+        - application/json
+      parameters:
+        - name: video_id
+          in: path
+          description: video's id
+          required: true
+          type: string
+      responses:
+        200:
+          description: successfully deleted video
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        400:
+          description: invalid video id
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        404:
+          description: video not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        405:
+          description: method not allowed
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - api_key_header: []
+          api_key_query: []
+            
+  '/search/video':  
+    get:
+      tags:
+        - search
+      description: 'Search videos by keyword'
+      produces:
+        - application/json
+      parameters:
+        - name: keyword
+          in: query
+          description: video's keyword
+          required: true
+          type: string
+      responses:
+        200:
+          description: successfully got video search results
+          schema:
+            $ref: '#/definitions/ApiResponseWithList'
+        400:
+          description: bad request
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - api_key_header: []
+          api_key_query: []
+            
+  '/search/user':  
+    get:
+      tags:
+        - search
+      description: 'Search users by keyword'
+      produces:
+        - application/json
+      parameters:
+        - name: keyword
+          in: query
+          description: user's keyword
+          required: true
+          type: string
+      responses:
+        200:
+          description: successfully got user search results
+          schema:
+            $ref: '#/definitions/ApiResponseWithList'
+        400:
+          description: bad request
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - api_key_header: []
+          api_key_query: []
+  
+  '/user/{user_id}/like':  
+    get:
+      tags:
+        - user
+      description: 'Get a list of like by user id'
+      produces:
+        - application/json
+      parameters:
+        - name: user_id
+          in: path
+          description: user's id
+          required: true
+          type: string
+      responses:
+        200:
+          description: successfully got user like results
+          schema:
+            $ref: '#/definitions/ApiResponseWithList'
+        400:
+          description: invalid user id
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        404:
+          description: user not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - api_key_header: []
+          api_key_query: []
+  
+  '/video/{video_id}/like':  
+    get:
+      tags:
+        - video
+      description: 'Get a list of like by video id'
+      produces:
+        - application/json
+      parameters:
+        - name: video_id
+          in: path
+          description: video's id
+          required: true
+          type: string
+      responses:
+        200:
+          description: successfully got video like results
+          schema:
+            $ref: '#/definitions/ApiResponseWithList'
+        400:
+          description: invalid video id
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        404:
+          description: video not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - api_key_header: []
+          api_key_query: []
+  
+  '/video/{video_id}/like/{user_id}':
+    post:
+      tags:
+        - video
+      description: 'Post a like by specified user and video'
+      produces:
+        - application/json
+      parameters:
+        - name: video_id
+          in: path
+          description: video's id
+          required: true
+          type: string
+        - name: user_id
+          in: path
+          description: user's id
+          required: true
+          type: string
+      responses:
+        200:
+          description: successfully liked a video
+          schema:
+            $ref: '#/definitions/ApiResponseWithList'
+        400:
+          description: invalid video id or user id
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        404:
+          description: user or video not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        405:
+          description: method not allowed
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - api_key_header: []
+          api_key_query: []
+    
+    delete:
+      tags:
+        - video
+      description: 'Undo a like by specified user and video'
+      produces:
+        - application/json
+      parameters:
+        - name: video_id
+          in: path
+          description: video's id
+          required: true
+          type: string
+        - name: user_id
+          in: path
+          description: user's id
+          required: true
+          type: string
+      responses:
+        200:
+          description: successfully undo a like
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        400:
+          description: invalid video id
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        404:
+          description: user or video not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        405:
+          description: method not allowed
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - api_key_header: []
+          api_key_query: []
+  
+  '/user/{user_id}/dislike':  
+    get:
+      tags:
+        - user
+      description: 'Get a list of dislike by user id'
+      produces:
+        - application/json
+      parameters:
+        - name: user_id
+          in: path
+          description: user's id
+          required: true
+          type: string
+      responses:
+        200:
+          description: successfully got user dislike results
+          schema:
+            $ref: '#/definitions/ApiResponseWithList'
+        400:
+          description: invalid user id
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        404:
+          description: user not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - api_key_header: []
+          api_key_query: []
+  
+  '/video/{video_id}/dislike':  
+    get:
+      tags:
+        - video
+      description: 'Get a list of dislike by video id'
+      produces:
+        - application/json
+      parameters:
+        - name: video_id
+          in: path
+          description: video's id
+          required: true
+          type: string
+      responses:
+        200:
+          description: successfully got video dislike results
+          schema:
+            $ref: '#/definitions/ApiResponseWithList'
+        400:
+          description: invalid video id
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        404:
+          description: video not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - api_key_header: []
+          api_key_query: []
+  
+  '/video/{video_id}/dislike/{user_id}':
+    post:
+      tags:
+        - video
+      description: 'Post a dislike by specified user and video'
+      produces:
+        - application/json
+      parameters:
+        - name: video_id
+          in: path
+          description: video's id
+          required: true
+          type: string
+        - name: user_id
+          in: path
+          description: user's id
+          required: true
+          type: string
+      responses:
+        200:
+          description: successfully disliked a video
+          schema:
+            $ref: '#/definitions/ApiResponseWithList'
+        400:
+          description: invalid video id or user id
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        404:
+          description: user or video not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        405:
+          description: method not allowed
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - api_key_header: []
+          api_key_query: []
+    
+    delete:
+      tags:
+        - video
+      description: 'Undo a dislike by specified user and video'
+      produces:
+        - application/json
+      parameters:
+        - name: video_id
+          in: path
+          description: video's id
+          required: true
+          type: string
+        - name: user_id
+          in: path
+          description: user's id
+          required: true
+          type: string
+      responses:
+        200:
+          description: successfully undo a dislike
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        400:
+          description: invalid video id or user id
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        404:
+          description: user or video not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        405:
+          description: method not allowed
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - api_key_header: []
+          api_key_query: []
+  
+  '/user/{user_id}/star':  
+    get:
+      tags:
+        - user
+      description: 'Get a list of star by user id'
+      produces:
+        - application/json
+      parameters:
+        - name: user_id
+          in: path
+          description: user's id
+          required: true
+          type: string
+      responses:
+        200:
+          description: successfully got user star results
+          schema:
+            $ref: '#/definitions/ApiResponseWithList'
+        400:
+          description: invalid user id
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        404:
+          description: user not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - api_key_header: []
+          api_key_query: []
+  
+  '/video/{video_id}/star':  
+    get:
+      tags:
+        - video
+      description: 'Get a list of star by video id'
+      produces:
+        - application/json
+      parameters:
+        - name: video_id
+          in: path
+          description: video's id
+          required: true
+          type: string
+      responses:
+        200:
+          description: successfully got video star results
+          schema:
+            $ref: '#/definitions/ApiResponseWithList'
+        400:
+          description: invalid video id
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        404:
+          description: video not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - api_key_header: []
+          api_key_query: []
+  
+  '/video/{video_id}/star/{user_id}':
+    post:
+      tags:
+        - video
+      description: 'Post a star by specified user and video'
+      produces:
+        - application/json
+      parameters:
+        - name: video_id
+          in: path
+          description: video's id
+          required: true
+          type: string
+        - name: user_id
+          in: path
+          description: user's id
+          required: true
+          type: string
+      responses:
+        200:
+          description: successfully stared a video
+          schema:
+            $ref: '#/definitions/ApiResponseWithList'
+        400:
+          description: invalid video id or user id
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        404:
+          description: user or video not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        405:
+          description: method not allowed
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - api_key_header: []
+          api_key_query: []
+    
+    delete:
+      tags:
+        - video
+      description: 'Undo a star by specified user and video'
+      produces:
+        - application/json
+      parameters:
+        - name: video_id
+          in: path
+          description: video's id
+          required: true
+          type: string
+        - name: user_id
+          in: path
+          description: user's id
+          required: true
+          type: string
+      responses:
+        200:
+          description: successfully undo a star
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        400:
+          description: invalid video id or user id
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        404:
+          description: user or video not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        405:
+          description: method not allowed
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - api_key_header: []
+          api_key_query: []
+
+  '/video/{video_id}/view':  
+    get:
+      tags:
+        - video
+      description: 'Get total view count by video id'
+      produces:
+        - application/json
+      parameters:
+        - name: video_id
+          in: path
+          description: video's id
+          required: true
+          type: string
+      responses:
+        200:
+          description: successfully got video view count
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        400:
+          description: invalid video id
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        404:
+          description: video not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - api_key_header: []
+          api_key_query: []
+            
+    put:
+      tags:
+        - video
+      description: 'Increment total view count by video id'
+      produces:
+        - application/json
+      parameters:
+        - name: video_id
+          in: path
+          description: video's id
+          required: true
+          type: string
+      responses:
+        200:
+          description: successfully increment video view count by 1
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        400:
+          description: invalid video id
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        404:
+          description: video not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        405:
+          description: method not allowed
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - api_key_header: []
+          api_key_query: []
+    
+  '/user/{user_id}/comment/':  
+    get:
+      tags:
+        - user
+      description: 'Get a list of comments by user id'
+      produces:
+        - application/json
+      parameters:
+        - name: user_id
+          in: path
+          description: user's id
+          required: true
+          type: string
+      responses:
+        200:
+          description: successfully got user comment list
+          schema:
+            $ref: '#/definitions/ApiResponseWithList'
+        400:
+          description: invalid user id
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        404:
+          description: user not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - api_key_header: []
+          api_key_query: []
+            
+  '/video/{video_id}/comment/':  
+    get:
+      tags:
+        - video
+      description: 'Get a list of comment by video id'
+      produces:
+        - application/json
+      parameters:
+        - name: video_id
+          in: path
+          description: video's id
+          required: true
+          type: string
+      responses:
+        200:
+          description: successfully got video comment list
+          schema:
+            $ref: '#/definitions/ApiResponseWithList'
+        400:
+          description: invalid video id
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        404:
+          description: video not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - api_key_header: []
+          api_key_query: []
+            
+  '/video/{video_id}/comment/{user_id}':  
+    get:
+      tags:
+        - video
+      description: 'Get a comment by specified video id and user id'
+      produces:
+        - application/json
+      parameters:
+        - name: video_id
+          in: path
+          description: video's id
+          required: true
+          type: string
+        - name: user_id
+          in: path
+          description: user's id
+          required: true
+          type: string
+      responses:
+        200:
+          description: successfully got comment
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        400:
+          description: invalid video id or user id
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        404:
+          description: video or user not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - api_key_header: []
+          api_key_query: []
+            
+    post:
+      tags:
+        - video
+      description: 'Post a comment by specified video id and user id'
+      produces:
+        - application/json
+      parameters:
+        - name: video_id
+          in: path
+          description: video's id
+          required: true
+          type: string
+        - name: user_id
+          in: path
+          description: user's id
+          required: true
+          type: string
+        - name: body
+          in: body
+          description: user information
+          required: true
+          schema:
+            $ref: '#/definitions/CommentInput'
+      responses:
+        200:
+          description: successfully post a comment
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        400:
+          description: invalid video id or user id
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        404:
+          description: video or user not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        405:
+          description: method not allowed
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - api_key_header: []
+          api_key_query: []
+            
+    put:
+      tags:
+        - video
+      description: 'Update a comment by specified video id and user id'
+      produces:
+        - application/json
+      parameters:
+        - name: video_id
+          in: path
+          description: video's id
+          required: true
+          type: string
+        - name: user_id
+          in: path
+          description: user's id
+          required: true
+          type: string
+        - name: body
+          in: body
+          description: user information
+          required: true
+          schema:
+            $ref: '#/definitions/CommentInput'
+      responses:
+        200:
+          description: successfully update a comment
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        400:
+          description: invalid video id or user id
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        404:
+          description: video or user not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        405:
+          description: method not allowed
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - api_key_header: []
+          api_key_query: []
+    
+    delete:
+      tags:
+        - video
+      description: 'Delete a comment by specified video id and user id'
+      produces:
+        - application/json
+      parameters:
+        - name: video_id
+          in: path
+          description: video's id
+          required: true
+          type: string
+        - name: user_id
+          in: path
+          description: user's id
+          required: true
+          type: string
+      responses:
+        200:
+          description: successfully delete a comment
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        400:
+          description: invalid video id or user id
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        404:
+          description: video or user not found
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        405:
+          description: method not allowed
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/ApiResponse'
+      security:
+        - api_key_header: []
+          api_key_query: []
+
+securityDefinitions:
+  api_key_header:
+    type: "apiKey"
+    name: "X-API-key-header"
+    in: "header"
+  
+  api_key_query:
+    type: "apiKey"
+    name: "X-API-key-query"
+    in: "query"
+
+definitions:
+
+  AddressDetail:
+    type: "object"
+    properties:
+      street1:
+        type: "string"
+      street2:
+        type: "string"
+      city:
+        type: "string"
+      state:
+        type: "string"
+      country:
+        type: "string"
+      zip:
+        type: "string"
+    xml:
+      name: "AddresDetail"
+  
+  UserDetail:
+    type: "object"
+    required: 
+    - "first_name"
+    - "last_name"
+    - "phone"
+    properties:
+      first_name:
+        type: "string"
+      last_name:
+        type: "string"
+      phone:
+        type: "string"
+      address:
+        $ref: "#/definitions/AddressDetail"
+    xml:
+      name: "UserDetail"
+
+  LoginDetail:
+    type: "object"
+    properties:
+      login_ip:
+        type: "string"
+      login_time:
+        type: "string"
+        format: "date-time"
+    xml:
+      name: "LoginDetail"
+  
+  VideoURI:
+    type: "object"
+    properties:
+      video_low:
+        type: "string"
+      video_mid:
+        type: "string"
+      video_high:
+        type: "string"
+    xml:
+      name: "VideoURI"
+  
+  Thumbnail:
+    type: "object"
+    required:
+    - "thumbnail_type"
+    properties:
+      thumbnail_uri:
+        type: "string"
+      thumbnail_type:
+        type: "string"
+        enum:
+        - "system default"
+        - "user upload"
+        - "auto first frame"
+    xml:
+      name: "Thumbnail"
+  
+  User:
+    type: "object"
+    required:
+    - "user_email"
+    - "user_name"
+    properties:
+      user_id:
+        type: "string"
+      user_name:
+        type: "string"
+      user_password:
+        type: "string"
+      user_detail:
+        $ref: "#/definitions/UserDetail"
+      user_status:
+        type: "string"
+        enum:
+        - "public"
+        - "private"
+        - "closed"
+      user_thumbnail:
+        $ref: "#/definitions/Thumbnail"
+      user_follower:
+        type: "integer"
+        format: "int64"
+      user_reg_date:
+        type: "string"
+        format: "date-time"
+      user_recent_login:
+        type: "array"
+        xml:
+          name: "login_detail"
+          wrapped: true
+        items:
+          $ref: "#/definitions/LoginDetail"
+    xml:
+      name: "User"
+
+  UserInput:
+    type: "object"
+    required:
+    - "user_email"
+    - "user_name"
+    - "user_password"
+    properties:
+      user_email:
+        type: "string"
+      user_name:
+        type: "string"
+      user_password:
+        type: "string"
+      user_detail:
+        $ref: "#/definitions/UserDetail"
+    xml:
+      name: "UserInput"
+  
+  
+  Follow:
+    type: "object"
+    properties:
+      follow_uploader:
+        type: "string"
+      follow_by:
+        type: "string"
+      follow_date:
+        type: "string"
+        format: "date-time"
+    xml:
+      name: "Follow"
+  
+  History:
+    type: "object"
+    properties:
+      history_id:
+        type: "string"
+      user_id:
+        type: "string"
+      video_id:
+        type: "string"
+      process:
+        type: "string"
+        format: "date-time"
+    xml:
+      name: "History"
+  
+  Video:
+    type: "object"
+    required:
+    - "video_title"
+    properties:
+      video_id:
+        type: "string"
+      user_id:
+        type: "string"
+      video_title:
+        type: "string"
+      video_tag:
+        type: "array"
+        xml:
+          name: "tg"
+          wrapped: true
+        items:
+          type: "string"
+      video_category:
+        type: "array"
+        xml:
+          name: "cat"
+          wrapped: true
+        items:
+          type: "string"
+      video_description:
+        type: "string"
+      video_language:
+        type: "string"
+        example: "English"
+      video_status:
+        type: "string"
+        enum:
+        - "public"
+        - "private"
+        - "limited"
+        - "deleted"
+      video_content:
+        type: "string"
+      video_content_status:
+        type: "string"
+        enum:
+        - "pending"
+        - "processing"
+        - "finished"
+        - "failed"
+        - "rejected"
+      video_size:
+        type: "string"
+      video_view:
+        type: "integer"
+        format: "int64"
+      video_like:
+        type: "integer"
+        format: "int64"
+      video_dislike:
+        type: "integer"
+        format: "int64"
+      video_comment:
+        type: "integer"
+        format: "int64"
+      video_star:
+        type: "integer"
+        format: "int64"
+      video_share:
+        type: "integer"
+        format: "int64"
+      video_thumbnail:
+        $ref: "#/definitions/Thumbnail"
+      video_upload_date:
+        type: "string"
+        format: "date-time"
+      video_uri:
+        $ref: "#/definitions/VideoURI"
+    xml:
+      name: "Video"
+  
+  VideoInput:
+    type: "object"
+    properties:
+      video_title:
+        type: "string"
+      video_category:
+        type: "array"
+        items:
+          type: "string"
+      video_tags:
+        type: "array"
+        items:
+          type: "string"
+      video_description:
+        type: "string"
+      video_language:
+        type: "string"
+        example: "English"
+    xml:
+      name: "User"
+  
+  Comment:
+    type: "object"
+    required:
+    - "comment"
+    properties:
+      comment_id:
+        type: "string"
+      user_id:
+        type: "string"
+      video_id:
+        type: "string"
+      comment:
+        type: "string"
+      comment_date:
+        type: "string"
+        format: "date-time"
+    xml:
+      name: "Comment"
+  
+  CommentInput:
+    type: "object"
+    required:
+    - "comment"
+    properties:
+      comment:
+        type: "string"
+    xml:
+      name: "CommentInput"
+  
+  Like:
+    type: "object"
+    properties:
+      like_id:
+        type: "string"
+      user_id:
+        type: "string"
+      video_id:
+        type: "string"
+      like_date:
+        type: "string"
+        format: "date-time"
+    xml:
+      name: "Like"
+  
+  Dislike:
+    type: "object"
+    properties:
+      dislike_id:
+        type: "string"
+      user_id:
+        type: "string"
+      video_id:
+        type: "string"
+      dislike_date:
+        type: "string"
+        format: "date-time"
+    xml:
+      name: "Dislike"
+  
+  Star:
+    type: "object"
+    properties:
+      star_id:
+        type: "string"
+      user_id:
+        type: "string"
+      video_id:
+        type: "string"
+      star_date:
+        type: "string"
+        format: "date-time"
+    xml:
+      name: "Star"
+  
+  ApiResponse:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int32"
+      message:
+        type: "string"
+        
+  ApiResponseWithUser:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int32"
+      message:
+        $ref: "#/definitions/User"
+        
+  ApiResponseWithVideo:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int32"
+      message:
+        $ref: "#/definitions/Video"
+  
+  ApiResponseWithList:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int32"
+      message:
+        type: "array"
+        items:
+          type: "string"
+  
+externalDocs:
+  description: "Git Repo"
+  url: "https://github.com/HyperTars/Online-Video-Platform"
