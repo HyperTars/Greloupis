@@ -1,7 +1,7 @@
 # APIs Design
 
-  <!-- In this document, we list our all APIs. For each API, we introduce the function signature, API parameters and API return values. An 
- [API Design Google Sheet Version](https://docs.google.com/spreadsheets/d/1hoKAh89rNywF343tU5lzeamFmidxdYJ39CW_uUCCRLw/edit?usp=sharing) is also available. -->
+  In this document, we list our all APIs for quick overview. The full API endpoints list and description can be seen in
+ [Swagger YML file](https://github.com/HyperTars/Online-Video-Platform/blob/master/Documents/swagger.yml).
 
 ## User Auth
 ### Overview
