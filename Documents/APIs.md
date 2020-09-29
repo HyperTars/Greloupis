@@ -457,12 +457,15 @@ history_delete | Delete a video from history list | DELETE | /user/{user_id}/his
 ### Overview
 Function | Description | Type | Path (Endpoint)
 --- | --- | --- | ---
-rate_post | Post video rate | POST | /video/{video_id}/rate/{user_id}
-rate_list_by_video | Get rate list by video | GET | /video/{video_id}/rate/
-rate_list_by_user | Get rate list by user | GET | /user/{user_id}/rate/
-rate_get | Get specified rate by video and user | GET | /video/{video_id}/rate/{user_id}
-rate_update | Update specified rate by video and user | PUT | /video/{video_id}/rate/{user_id}
-rate_delete | Delete specified rate by video and user | DELETE | /video/{video_id}/rate/{user_id}
+like_post | Post video like | POST | /video/{video_id}/like/{user_id}
+like_list_by_video | Get like list by video | GET | /video/{video_id}/like/
+like_list_by_user | Get like list by user | GET | /user/{user_id}/like/
+like_delete | Delete specified like by video and user | DELETE | /video/{video_id}/like/{user_id}
+  | | | 
+dislike_post | Post video dislike | POST | /video/{video_id}/dislike/{user_id}
+dislike_list_by_video | Get dislike list by video | GET | /video/{video_id}/dislike/
+dislike_list_by_user | Get dislike list by user | GET | /user/{user_id}/dislike/
+dislike_delete | Delete specified dislike by video and user | DELETE | /video/{video_id}/dislike/{user_id}
   | | |  
 review_post | Post video review | POST | /video/{video_id}/review/{user_id}
 review_list_by_video | Get review list by video | GET | /video/{video_id}/review/
@@ -472,7 +475,7 @@ review_update | Update specified review by video and user | PUT | /video/{video_
 review_delete | Delete specified review by video and user | DELETE | /video/{video_id}/review/{user_id}
   | | |
 star_post | Post video star by video and user | POST | /video/{video_id}/star/{user_id}
-star_count_by_video | Get star count by video | GET | /video/{video_id}/star/
+star_list_by_video | Get star list by video | GET | /video/{video_id}/star/
 star_list_by_user | Get star list by user | GET | /user/{user_id}/star/
 star_delete | Delete star by video and user | DELETE | /video/{video_id}/star/{user_id}
   | | |
