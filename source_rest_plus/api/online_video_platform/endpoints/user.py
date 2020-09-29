@@ -24,6 +24,7 @@ class UserSignUp(Resource):
         """
         data = request.json
         print(data)
+        print('hello')
         return None, 200
 
 
