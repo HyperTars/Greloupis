@@ -20,7 +20,7 @@ def configure_app(flask_app):
     flask_app.config['SQLALCHEMY_DATABASE_URI'] = settings.SQLALCHEMY_DATABASE_URI
     flask_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = settings.SQLALCHEMY_TRACK_MODIFICATIONS
     flask_app.config['SWAGGER_UI_DOC_EXPANSION'] = settings.RESTX_SWAGGER_UI_DOC_EXPANSION
-    flask_app.config['RESTPLUS_VALIDATE'] = settings.RESTPX_VALIDATE
+    flask_app.config['RESTPLUS_VALIDATE'] = settings.RESTX_VALIDATE
     flask_app.config['RESTPLUS_MASK_SWAGGER'] = settings.RESTX_MASK_SWAGGER
     flask_app.config['ERROR_404_HELP'] = settings.RESTX_ERROR_404_HELP
 
