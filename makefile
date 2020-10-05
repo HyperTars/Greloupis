@@ -12,7 +12,7 @@ github:	FORCE
 	git commit -a
 	git push origin master
 
-tests:	lint unit
+tests:	lint unit #test
 	echo "lint unit tests"
 
 unit:	FORCE
@@ -20,8 +20,7 @@ unit:	FORCE
 	# test
 
 lint:	FORCE
-	$(LINTER) . --exit-zero --ignore=W191,E265
-	#$(LINTER) $(SRC_DIR)/*.py --exit-zero --ignore=W191,E265, E117, E265, E231, E309, E251
+	$(LINTER) $(SRC_DIR)/*.py --exit-zero --ignore=W191,E265
 
 test:	FORCE
 	python $(SRC_DIR)/test.py
