@@ -5,13 +5,17 @@
 ![React](https://img.shields.io/badge/React-16.3.1-blue)
 ![MongoDB](https://img.shields.io/badge/MongoDB-4.4.0-blue)
 
-- **`source` folder is currently unavailable, please check `source_rest_plus` to see our runnable [app.py](/source_rest_plus/app.py).**
-- **We've just replaced REST-Plus with REST-X in `source_rest_plus`, we will gradually migrate them to the `source` folder in the future.**
+### Start Server
 
+```
+cd source/
+python app.py FLASK_APP=app flask run --host=127.0.0.1 --port=8000
+```
+
+You should be able to visit http://localhost:5000/ now and see a list of APIs of the application.
 
 ### Project Proposal
 - [Proposal](/Documents/Proposal.md)
-
 
 ### Designs
 #### Coding Style: Naming Convention
@@ -24,7 +28,6 @@
 - See full [Database Design](/Documents/Database.md)
 
 #### APIs Design
-- Swagger API yml file [Swagger API file](/Documents/swagger.yml)
 - Overview document [APIs Design](/Documents/APIs.md)
 
 #### Components Design
@@ -40,9 +43,9 @@
 - See full [Test Cases](/Documents/Test.md)
 
 
-
 ### Contributors
-- GitHub | Name | NetID
+  
+  GitHub | Name | NetID
   --- | --- | ---
   [HyperTars](https://github.com/HyperTars) | Wenzhou Li | [wl2154](mailto:wl2154@nyu.edu)
   [MikeYan01](https://github.com/MikeYan01) | Linyi Yan | [ly1333](mailto:ly1333@nyu.edu)
