@@ -5,6 +5,15 @@
 ![React](https://img.shields.io/badge/React-16.3.1-blue)
 ![MongoDB](https://img.shields.io/badge/MongoDB-4.4.0-blue)
 
+### Start Server
+
+```
+cd source/
+python app.py FLASK_APP=app flask run --host=127.0.0.1 --port=8000
+```
+
+You should be able to visit http://localhost:5000/ now and see a list of APIs of the application.
+
 ### Project Proposal
 - [Proposal](/Documents/Proposal.md)
 
@@ -35,7 +44,8 @@
 
 
 ### Contributors
-- GitHub | Name | NetID
+  
+  GitHub | Name | NetID
   --- | --- | ---
   [HyperTars](https://github.com/HyperTars) | Wenzhou Li | [wl2154](mailto:wl2154@nyu.edu)
   [MikeYan01](https://github.com/MikeYan01) | Linyi Yan | [ly1333](mailto:ly1333@nyu.edu)
