@@ -1,5 +1,5 @@
 flask
 flask-restx
-Flask-PyMongo
+flask-pymongo
 dnspython
 flake8
