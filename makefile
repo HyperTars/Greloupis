@@ -8,8 +8,8 @@ prod:	tests github
 
 github:	FORCE
 	git add .
-	- git commit -a
-	- git push origin master
+	-git commit -a
+	git push origin master
 
 tests:	lint unit
 	echo "lint unit tests"
