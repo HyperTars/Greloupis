@@ -2,3 +2,4 @@ flask
 flask-restx
 Flask-PyMongo
 dnspython
+flake8
