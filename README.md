@@ -5,6 +5,9 @@
 ![React](https://img.shields.io/badge/React-16.3.1-blue)
 ![MongoDB](https://img.shields.io/badge/MongoDB-4.4.0-blue)
 
+### Project Proposal
+- [Proposal](/Documents/Proposal.md)
+  
 ### Guide
 
 #### Install dependencies
@@ -13,7 +16,13 @@
 make dev_env
 ```
 
-#### Start Server
+#### Run test
+- To run test, run
+```bash
+make test
+```
+
+#### Start server
 - To start server, run
 ```bash
 python source/app.py
@@ -23,9 +32,6 @@ python source/app.py FLASK_APP=app flask run --host=127.0.0.1 --port=8000
 
 You should be able to visit http://localhost:5000/ now and see a list of APIs of the application (swagger).
 ![API_Preview](Documents/api_preview.png)
-
-### Project Proposal
-- [Proposal](/Documents/Proposal.md)
 
 ### Designs
 #### Coding Style: Naming Convention
