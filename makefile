@@ -8,8 +8,9 @@ prod:	tests github
 
 github:	FORCE
 	git add .
-	- git commit -a
-	- git push origin master
+	git pull
+	git commit -a
+	git push origin master
 
 tests:	lint unit
 	echo "lint unit tests"
@@ -27,3 +28,6 @@ test:	FORCE
 
 dev_env:	FORCE
 	pip install -r $(REQ_DIR)/requirements-dev.txt
+
+docs:	#FORCE
+	cd $(SRC_DIR); make docs
