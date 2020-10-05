@@ -1,7 +1,6 @@
 # APIs Design
 
-  In this document, we list our all APIs for quick overview. The full API endpoints list and description can be seen in
- [Swagger API file](https://github.com/HyperTars/Online-Video-Platform/blob/master/Documents/swagger.yml).
+In this document, we list our all APIs for quick overview. 
 
 ## User Auth
 ### Overview
@@ -482,7 +481,7 @@ star_delete | Delete star by video and user | DELETE | /video/{video_id}/star/{u
 view_add | Add video views | PUT | /video/{video_id}/view/
 view_get | Get video views | GET | /video/{video_id}/view/
 
-## Follow
+<!-- ## Follow
 ### Overview
 Function | Description | Type | Path (Endpoint)
 --- | --- | --- | ---
@@ -491,4 +490,4 @@ unfollow | Unfollow an uploader | DELETE | /{user_id}`(follower)`/follow/{user_i
 following_list | Get all following uploader | GET | /{user_id}/follow/following
 followers_list | Get all followers list | GET | /{user_id}/follow/followers
 
-## (TBD) Recommendation
+## (TBD) Recommendation -->

@@ -5,13 +5,8 @@
 ![React](https://img.shields.io/badge/React-16.3.1-blue)
 ![MongoDB](https://img.shields.io/badge/MongoDB-4.4.0-blue)
 
-- **`source` folder is currently unavailable, please check `source_rest_plus` to see our runnable [app.py](/source_rest_plus/app.py).**
-- **We've just replaced REST-Plus with REST-X in `source_rest_plus`, we will gradually migrate them to the `source` folder in the future.**
-
-
 ### Project Proposal
 - [Proposal](/Documents/Proposal.md)
-
 
 ### Designs
 #### Coding Style: Naming Convention
@@ -24,7 +19,6 @@
 - See full [Database Design](/Documents/Database.md)
 
 #### APIs Design
-- Swagger API yml file [Swagger API file](/Documents/swagger.yml)
 - Overview document [APIs Design](/Documents/APIs.md)
 
 #### Components Design
@@ -38,7 +32,6 @@
 
 ### Tests
 - See full [Test Cases](/Documents/Test.md)
-
 
 
 ### Contributors
