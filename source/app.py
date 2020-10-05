@@ -294,12 +294,12 @@ class VideoVideoIdStarUserId(Resource):
 search = api.namespace('search', description='Search APIs')
 
 '''
- @route     GET /search/video/<string:keyword>
+ @route     GET /search/video?q=<string:keyword>
  @desc      Search videos by keyword
  @access    Public
 '''
 
-@search.route('/video/<string:keyword>')
+@search.route('/video?q=<string:keyword>')
 @search.response(400, 'Bad request.')
 @search.response(500, 'Internal server error.')
 class SearchVideo(Resource):
@@ -310,11 +310,11 @@ class SearchVideo(Resource):
 
 
 '''
- @route     GET /search/user/<string:keyword>
+ @route     GET /search/user?q=<string:keyword>
  @desc      Search users by keyword
  @access    Public
 '''
-@search.route('/user/<string:keyword>')
+@search.route('/user?q=<string:keyword>')
 @search.response(400, 'Bad request.')
 @search.response(500, 'Internal server error.')
 class SearchUser(Resource):
