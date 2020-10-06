@@ -137,8 +137,3 @@ class Star(Document):
     star_date = DateTimeField(default=datetime, required=True)
 
 
-# Error Model
-class Error(Document):
-    call = DictField(required=True)
-    response = DictField(required=True)
-    date = DateTimeField(default=datetime.now(), required=True)

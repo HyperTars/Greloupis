@@ -2,9 +2,10 @@
 # PyMongo-3.11
 # dnspython-2.0.0
 
-
+from flask import Flask
 from flask_pymongo import pymongo
-import dnspython
+from flask_mongoengine import MongoEngine
+
 
 MONGO_ENDPOINT = "mongodb+srv://devops:DevOps@mongodbcluster.v4vtj.mongodb.net/online_video_platform?retryWrites=true&w=majority"
 MONGO_DATABASE = "online_video_platform"
