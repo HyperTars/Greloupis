@@ -1,20 +1,18 @@
-# Global general settings class
-class Config(object):
-    """Config Core Class"""
-    # Debug Mode
-    DEBUG = True
+import os
+from source.configs import DevConfig, TestConfig, ProdConfig
 
-    # Config Flask
-    FLASK_SERVER_NAME = 'localhost:8888'
-    FLASK_DEBUG = True
+basedir = os.path.abspath(os.path.dirname(__file__))
 
-    # Config Log
-    # LOG_LEVEL = "DEBUG"
-    LOG_LEVEL = "INFO"
+class config:
+    SECRET_KEY = os.environ.get('SECRET_KEY') or 'this is a secret string'
+    @staticmethod
+    def init_app(app):
+        pass
 
-    # Config redis
-    # Change to real IP address ...
-    REDIS_HOST = 'your host'
-    REDIS_PORT = 'your port'
-    REDIS_PASSWORD = 'your password'
-    REDIS_POLL = 10
+
+config = {
+    'dev': DevConfig,
+    'test': TestConfig,
+    'prod': ProdConfig,
+    'default': DevConfig
+}

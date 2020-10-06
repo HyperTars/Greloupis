@@ -1,8 +1,11 @@
-# Global general settings class
-class Config(object):
+# Test settings class
+class TestConfig(object):
     """Config Core Class"""
     # Debug Mode
     DEBUG = True
+
+    # DB URI
+    MONGO_ENDPOINT = "mongodb+srv://devops:DevOps@mongodbcluster.v4vtj.mongodb.net/online_video_platform?retryWrites=true&w=majority"
 
     # Config Flask
     FLASK_SERVER_NAME = 'localhost:8000'
