@@ -9,7 +9,7 @@ prod:	tests github
 github:	FORCE
 	git add .
 	git pull origin master
-	git commit -a
+	git commit -a -m "aaa"
 	git push origin master
 
 tests:	lint unit #test
