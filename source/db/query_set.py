@@ -44,10 +44,10 @@ class CustomQuerySet(QuerySet):
             'full_result': full_result,
             'update': update
         }
-        signals.me_pre_update.send(self.__class__, document=self, **signal_kwargs)
+        signal.me_pre_update.send(self.__class__, document=self, **signal_kwargs)
         result = self.update(multi=multi, write_concern=write_concern, full_result=full_result, **update)
         signal_kwargs['result'] = result
-        signals.me_post_update.send(self.__class__, document=self, **signal_kwargs)
+        signal.me_post_update.send(self.__class__, document=self, **signal_kwargs)
         return result
 
     def insert(self, doc_or_docs, *args, **kwargs):

@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+# mongoengine-0.20.0
 
 import datetime, hashlib, urllib
 from flask_mongoengine import MongoEngine
@@ -9,7 +10,9 @@ from itsdangerous import TimedJSONWebSignatureSerializer
 
 db = MongoEngine()
 
-class AddressDetail(db.Document):
+# User Models
+
+class AddressDetail(db.EmbeddedDocument):
     street1 = db.StringField(max_length=100)
     street2 = db.StringField(max_length=100)
     city = db.StringField(max_length=50)
@@ -18,31 +21,38 @@ class AddressDetail(db.Document):
     zip = db.StringField(max_length=20)
     
 
-class UserDetail(db.Document):
+class UserDetail(db.EmbeddedDocument):
     first_name = db.StringField(max_length=50, required=True)
     last_name = db.StringField(max_length=50, required=True)
     phone = db.StringField(max_length=50, required=True, unique=True)
-    address = db.EmbeddedDocumentField(db.AddressDetails, required=False)
+    address = db.EmbeddedDocumentField('AddressDetail')
 
 
-class LoginDetail(db.Document):
+class Thumbnail(db.EmbeddedDocument):
+    thumbnail_uri = db.StringField(max_length=200, required=True)
+    thumbnail_type = db.StringField(max_length=50, required=True)
+
+
+class LoginDetail(db.EmbeddedDocument):
     login_ip = db.StringField(max_length=50, required=True)
     login_time = db.DateTimeField()
 
 
 class User(db.Document):
-    user_id = db.StringField(max_length=100, required=True, unique=True, primary_key=True)
+    _id = db.StringField()
     user_email = db.StringField(max_length=50, required=True, unique=True)
     user_name = db.StringField(max_length=60, required=True, unique=True)
     user_password = db.StringField(max_length=200, required=True)
-    user_detail = db.EmbeddedDocumentField(db.UserDetails, required=True)
+    user_detail = db.EmbeddedDocumentField(UserDetail, required=True)
     user_status = db.StringField(max_length=50, required=True)
-    user_thumbnail = db.EmbeddedDocumentField(db.Thumbnail, required=True)
-    user_reg_date = db.DateTimeField(default=datetime.now(), required=True)
-    user_recent_login = db.ListField(db.EmbeddedDocumentField(db.LoginDetails))
+    user_thumbnail = db.EmbeddedDocumentField('Thumbnail', required=True)
+    user_reg_date = db.DateTimeField(required=True)
+    user_recent_login = db.ListField(db.EmbeddedDocumentField('LoginDetail'))
     user_following = db.ListField(db.StringField)
     user_follower = db.ListField(db.StringField)
     
+    meta = {'collection': 'user'}
+
     @property
     def password(self):
         raise AttributeError('Password is not allowed to read')
@@ -101,13 +111,3 @@ class User(db.Document):
 
     def __unicode__(self):
         return self.username
-
-
-    
-@login_manager.user_loader
-def load_user(username):
-    try:
-        user = User.objects.get(username=username)
-    except User.DoesNotExist:
-        user = None
-    return user
