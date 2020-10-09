@@ -12,38 +12,42 @@ video = Namespace('video', description='Video APIs')
 @video.response(405, 'Method not allowed')
 @video.response(500, 'Internal server error')
 class Video(Resource):
-    """
-        User upload a video
-    """
+
     def post(self):
+        """
+            User upload a video
+        """
         return {}, 200, None
 
 @video.route('/<string:video_id>')
+@video.param('video_id', 'Video ID')
 @video.response(200, 'Successful operation')
 @video.response(400, 'Invalid video ID')
 @video.response(404, 'Video not found')
 @video.response(500, 'Internal server error')
 class VideoVideoId(Resource):
-    """
-        Get video information by id
-    """
+
     def get(self, video_id):
+        """
+            Get video information by video ID
+        """
         return {}, 200, None
 
-    """
-        Update video information by id
-    """
     @video.response(405, 'Method not allowed')
     def put(self, video_id):
+        """
+            Update video information by video ID
+        """        
         return {}, 200, None
 
-    """
-        Delete video by id
-    """
     def delete(self, video_id):
+        """
+            Delete video information by video ID
+        """        
         return {}, 200, None
 
 @video.route('/<string:video_id>/view')
+@video.param('video_id', 'Video ID')
 @video.response(200, 'Successful operation')
 @video.response(400, 'Invalid video ID')
 @video.response(404, 'Video not found')
@@ -51,13 +55,20 @@ class VideoVideoId(Resource):
 class VideoVideoIdView(Resource):
 
     def get(self, video_id):
+        """
+            Get video view count by video ID
+        """
         return {}, 200, None
 
     @video.response(405, 'Method not allowed')
     def put(self, video_id):
+        """
+            Increment video view count by 1 by video ID
+        """
         return {}, 200, None
 
 @video.route('/<string:video_id>/comment')
+@video.param('video_id', 'Video ID')
 @video.response(200, 'Successful operation')
 @video.response(400, 'Invalid video ID')
 @video.response(404, 'Video not found')
@@ -65,9 +76,14 @@ class VideoVideoIdView(Resource):
 class VideoVideoIdComment(Resource):
 
     def get(self, video_id):
+        """
+            Get video view comments list by video ID
+        """        
         return {}, 200, None
 
 @video.route('/<string:video_id>/comment/<string:user_id>')
+@video.param('video_id', 'Video ID')
+@video.param('user_id', 'User ID')
 @video.response(200, 'Successful operation')
 @video.response(400, 'Invalid video ID  or user ID')
 @video.response(404, 'Video or user not found')
@@ -75,21 +91,34 @@ class VideoVideoIdComment(Resource):
 class VideoVideoIdCommentUserId(Resource):
 
     def get(self, video_id, user_id):
+        """
+            Get a comment by specified video id and user id
+        """           
         return {}, 200, None
 
     @video.response(405, 'Method not allowed')
     def post(self, video_id, user_id):
+        """
+            Post a comment by specified video id and user id
+        """            
         return {}, 200, None
 
     @video.response(405, 'Method not allowed')
     def put(self, video_id, user_id):
+        """
+            Update a comment by specified video id and user id
+        """           
         return {}, 200, None
 
     @video.response(405, 'Method not allowed')
     def delete(self, video_id, user_id):
+        """
+            Delete a comment by specified video id and user id
+        """   
         return {}, 200, None
 
 @video.route('/<string:video_id>/dislike')
+@video.param('video_id', 'Video ID')
 @video.response(200, 'Successful operation')
 @video.response(400, 'Invalid video ID')
 @video.response(404, 'Video not found')
@@ -97,9 +126,14 @@ class VideoVideoIdCommentUserId(Resource):
 class VideoVideoIdDislike(Resource):
 
     def get(self, video_id):
+        """
+            Get a list of dislike by video id
+        """   
         return {}, 200, None
 
 @video.route('/<string:video_id>/dislike/<string:user_id>')
+@video.param('video_id', 'Video ID')
+@video.param('user_id', 'User ID')
 @video.response(200, 'Successful operation')
 @video.response(400, 'Invalid video ID or user ID')
 @video.response(404, 'Video or user not found')
@@ -108,12 +142,19 @@ class VideoVideoIdDislike(Resource):
 class VideoVideoIdDislikeUserId(Resource):
     
     def post(self, video_id, user_id):
+        """
+            Post a dislike by specified user and video
+        """           
         return {}, 200, None
 
     def delete(self, video_id, user_id):
+        """
+            Undo a dislike by specified user and video
+        """          
         return {}, 200, None
 
 @video.route('/<string:video_id>/like')
+@video.param('video_id', 'Video ID')
 @video.response(200, 'Successful operation')
 @video.response(400, 'Invalid video ID')
 @video.response(404, 'Video not found')
@@ -121,9 +162,14 @@ class VideoVideoIdDislikeUserId(Resource):
 class VideoVideoIdLike(Resource):
 
     def get(self, video_id):
+        """
+            Get a list of like by video id
+        """           
         return {}, 200, None
 
 @video.route('/<string:video_id>/like/<string:user_id>')
+@video.param('video_id', 'Video ID')
+@video.param('user_id', 'User ID')
 @video.response(200, 'Successful operation')
 @video.response(400, 'Invalid video ID or user ID')
 @video.response(404, 'Video or user not found')
@@ -132,12 +178,19 @@ class VideoVideoIdLike(Resource):
 class VideoVideoIdLikeUserId(Resource):
 
     def post(self, video_id, user_id):
+        """
+            Post a like by specified user and video
+        """         
         return {}, 200, None
 
     def delete(self, video_id, user_id):
+        """
+            Undo a like by specified user and video
+        """             
         return {}, 200, None
 
 @video.route('/<string:video_id>/star')
+@video.param('video_id', 'Video ID')
 @video.response(200, 'Successful operation')
 @video.response(400, 'Invalid video ID')
 @video.response(404, 'Video not found')
@@ -145,9 +198,14 @@ class VideoVideoIdLikeUserId(Resource):
 class VideoVideoIdStar(Resource):
 
     def get(self, video_id):
+        """
+            Get a list of star by video id
+        """            
         return {}, 200, None
 
 @video.route('/<string:video_id>/star/<string:user_id>')
+@video.param('video_id', 'Video ID')
+@video.param('user_id', 'User ID')
 @video.response(200, 'Successful operation')
 @video.response(400, 'Invalid video ID or user ID')
 @video.response(404, 'Video or user not found')
@@ -156,7 +214,13 @@ class VideoVideoIdStar(Resource):
 class VideoVideoIdStarUserId(Resource):
 
     def post(self, video_id, user_id):
+        """
+            Post a star by specified user and video
+        """           
         return {}, 200, None
 
     def delete(self, video_id, user_id):
+        """
+            Undo a star by specified user and video
+        """           
         return {}, 200, None
