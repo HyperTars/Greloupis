@@ -30,6 +30,7 @@ thumbnail = user.model(name='Thumbnail', model={
 user_info = user.model(name='User', model={
     'user_id': fields.String,
     'user_name': fields.String,
+    'user_email': fields.String,
     'user_password': fields.String,
     'user_detail': fields.Nested(user_detail),
     'user_status': fields.String,
