@@ -12,20 +12,16 @@ db = MongoEngine()
 
 # User Models
 
-class AddressDetail(db.EmbeddedDocument):
+class UserDetail(db.EmbeddedDocument):
+    first_name = db.StringField(max_length=50, required=True)
+    last_name = db.StringField(max_length=50, required=True)
+    phone = db.StringField(max_length=50, required=True, unique=True)
     street1 = db.StringField(max_length=100)
     street2 = db.StringField(max_length=100)
     city = db.StringField(max_length=50)
     state = db.StringField(max_length=50)
     country = db.StringField(max_length=50)
     zip = db.StringField(max_length=20)
-    
-
-class UserDetail(db.EmbeddedDocument):
-    first_name = db.StringField(max_length=50, required=True)
-    last_name = db.StringField(max_length=50, required=True)
-    phone = db.StringField(max_length=50, required=True, unique=True)
-    address = db.EmbeddedDocumentField('AddressDetail')
 
 
 class Thumbnail(db.EmbeddedDocument):

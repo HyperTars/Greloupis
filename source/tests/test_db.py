@@ -4,7 +4,9 @@
 
 from flask import Flask
 from flask_mongoengine import MongoEngine
-
+from wtforms.fields import FieldList, FormField
+from dateutil.parser import parse
+from time import sleep
 
 MONGO_ENDPOINT = "mongodb+srv://devops:DevOps@mongodbcluster.v4vtj.mongodb.net/online_video_platform?retryWrites=true&w=majority"
 MONGO_DATABASE = "online_video_platform"
@@ -54,7 +56,56 @@ class VideoOp(db.Document):
         video_op_dict['star_date'] = self.star_date
         return video_op_dict
 
+class UserDetail(db.EmbeddedDocument):
+    first_name = db.StringField(max_length=50, required=True)
+    last_name = db.StringField(max_length=50, required=True)
+    phone = db.StringField(max_length=50, required=True, unique=True)
+    street1 = db.StringField(max_length=100)
+    street2 = db.StringField(max_length=100)
+    city = db.StringField(max_length=50)
+    state = db.StringField(max_length=50)
+    country = db.StringField(max_length=50)
+    zip = db.StringField(max_length=20)
+
+
+class Thumbnail(db.EmbeddedDocument):
+    thumbnail_uri = db.StringField(max_length=200, required=True)
+    thumbnail_type = db.StringField(max_length=50, required=True)
+
+
+class LoginDetail(db.EmbeddedDocument):
+    login_ip = db.StringField(max_length=50, required=True)
+    login_time = db.DateTimeField()
+
+
+class User(db.Document):
+    _id = db.StringField()
+    user_email = db.StringField(max_length=50, required=True, unique=True)
+    user_name = db.StringField(max_length=60, required=True, unique=True)
+    user_password = db.StringField(max_length=200, required=True)
+    user_detail = db.EmbeddedDocumentField('UserDetail', required=True)
+    user_status = db.StringField(max_length=50, required=True)
+    user_thumbnail = db.EmbeddedDocumentField('Thumbnail', required=True)
+    user_reg_date = db.DateTimeField(required=True)
+    user_recent_login = db.ListField(db.EmbeddedDocumentField('LoginDetail'))
+    user_following = db.ListField(db.StringField)
+    user_follower = db.ListField(db.StringField)
+
+tu_detail = UserDetail(first_name="test_user", last_name="test_user", phone="+1xxxxxx", street1="str1", street2="str2", city="cty", state="stt", country="ctry", zip="zip")
+tu_thumbnail = Thumbnail(thumbnail_uri="test_uri", thumbnail_type="test_type")
+tu_login = LoginDetail(login_ip="1.1.1.1", login_time=parse("20201008153008"))
+tu = User(user_email="xx.gmail.com", user_name="test_user", user_password="askdkj091", user_detail=tu_detail, user_status="active", user_thumbnail=tu_thumbnail, user_reg_date=parse("20201008141231"), user_recent_login=[tu_login], user_following=[], user_follower=[])
+# tu.save()
+
 print("test: get video_op")
 vo = VideoOp.objects()
 for v in vo:
     print(v.to_dict())
+
+print("test: get user")
+usr = User()
+usr = User.objects()
+len(usr)
+for u in usr:
+    print(u._id)
+
