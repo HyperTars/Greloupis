@@ -39,13 +39,13 @@ class User(db.Document):
     user_email = db.StringField(max_length=50, required=True, unique=True)
     user_name = db.StringField(max_length=60, required=True, unique=True)
     user_password = db.StringField(max_length=200, required=True)
-    user_detail = db.EmbeddedDocumentField(UserDetail, required=True)
+    user_detail = db.EmbeddedDocumentField('UserDetail', required=True)
     user_status = db.StringField(max_length=50, required=True)
     user_thumbnail = db.EmbeddedDocumentField('Thumbnail', required=True)
     user_reg_date = db.DateTimeField(required=True)
     user_recent_login = db.ListField(db.EmbeddedDocumentField('LoginDetail'))
-    user_following = db.ListField(db.StringField)
-    user_follower = db.ListField(db.StringField)
+    user_following = db.ListField(db.StringField())
+    user_follower = db.ListField(db.StringField())
     
     meta = {'collection': 'user'}
 
