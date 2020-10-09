@@ -88,8 +88,8 @@ class User(db.Document):
     user_thumbnail = db.EmbeddedDocumentField('Thumbnail', required=True)
     user_reg_date = db.DateTimeField(required=True)
     user_recent_login = db.ListField(db.EmbeddedDocumentField('LoginDetail'))
-    user_following = db.ListField(db.StringField)
-    user_follower = db.ListField(db.StringField)
+    user_following = db.ListField(db.StringField())
+    user_follower = db.ListField(db.StringField())
 
 tu_detail = UserDetail(first_name="test_user", last_name="test_user", phone="+1xxxxxx", street1="str1", street2="str2", city="cty", state="stt", country="ctry", zip="zip")
 tu_thumbnail = Thumbnail(thumbnail_uri="test_uri", thumbnail_type="test_type")
