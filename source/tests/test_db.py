@@ -7,6 +7,7 @@ from flask_mongoengine import MongoEngine
 from wtforms.fields import FieldList, FormField
 from dateutil.parser import parse
 import datetime
+import bson
 
 MONGO_ENDPOINT = "mongodb+srv://devops:DevOps@mongodbcluster.v4vtj.mongodb.net/online_video_platform?retryWrites=true&w=majority"
 MONGO_DATABASE = "online_video_platform"
@@ -58,20 +59,20 @@ class VideoOp(db.Document):
 
 
 class UserDetail(db.EmbeddedDocument):
-    first_name = db.StringField(max_length=50, required=True)
-    last_name = db.StringField(max_length=50, required=True)
-    phone = db.StringField(max_length=50, required=True, unique=True)
-    street1 = db.StringField(max_length=100)
-    street2 = db.StringField(max_length=100)
-    city = db.StringField(max_length=50)
-    state = db.StringField(max_length=50)
-    country = db.StringField(max_length=50)
-    zip = db.StringField(max_length=20)
+    first_name = db.StringField(max_length=50, default="")
+    last_name = db.StringField(max_length=50, default="")
+    phone = db.StringField(max_length=50, unique=True, default="")
+    street1 = db.StringField(max_length=100, default="")
+    street2 = db.StringField(max_length=100, default="")
+    city = db.StringField(max_length=50, default="")
+    state = db.StringField(max_length=50, default="")
+    country = db.StringField(max_length=50, default="")
+    zip = db.StringField(max_length=20, default="")
 
 
 class Thumbnail(db.EmbeddedDocument):
-    thumbnail_uri = db.StringField(max_length=200, required=True)
-    thumbnail_type = db.StringField(max_length=50, required=True)
+    thumbnail_uri = db.StringField(max_length=200, required=True, default="")
+    thumbnail_type = db.StringField(max_length=50, required=True, default="default")
 
 
 class LoginDetail(db.EmbeddedDocument):
@@ -210,7 +211,46 @@ class Video(db.Document):
         return video_dict
 
 
-tu_detail = UserDetail(first_name="test_user", last_name="test_user", phone="+1xxxxxx", street1="str1", street2="str2", city="cty", state="stt", country="ctry", zip="zip")
+
+def get_user_by_name(user_name: str):
+    user = User.objects(user_name=user_name)
+    return user
+
+
+def get_user_by_email(user_email: str):
+    user = User.objects(user_email=user_email)
+    return user
+
+
+def get_user_by_id(user_id: str):
+    user = User.objects.get(_id = bson.ObjectId(user_id))
+    return user
+
+
+def create_user(user_name: str, user_email: str, user_password: str, user_ip="0.0.0.0"):
+    if len(get_user_by_name(user_name)) > 0:
+        print("user name is taken")
+        return -1
+        # Throw Error here
+    elif len(get_user_by_email(user_email)) > 0:
+        print("user email is taken")
+        return -1
+        # Throw Error here
+    print("can register")
+    login = []
+    login.append(LoginDetail(login_ip=user_ip, login_time=datetime.datetime.now()))
+    user = User(user_name=user_name, user_email=user_email, user_password=user_password, user_status="active", user_detail = UserDetail(), user_thumbnail=Thumbnail(), user_recent_login=login, user_reg_date=datetime.datetime.now())
+    user.save()
+
+create_user("test2", "test2@email.com", "testpasscode")
+
+
+    
+    
+    
+
+
+tu_detail = UserDetail(first_name="first_name", last_name="test_user", phone="+1xxxxxx", street1="str1", street2="str2", city="cty", state="stt", country="ctry", zip="zip")
 tu_thumbnail = Thumbnail(thumbnail_uri="test_uri", thumbnail_type="test_type")
 tu_login = LoginDetail(login_ip="1.1.1.1", login_time=parse("20201008153008"))
 tu = User(user_email="xx.gmail.com", user_name="test_user", user_password="askdkj091", user_detail=tu_detail, user_status="active", user_thumbnail=tu_thumbnail, user_reg_date=parse("20201008141231"), user_recent_login=[tu_login], user_following=["kl12j3lk12j3l12k"], user_follower=["89889a7d98as789d", "1h312jj3h12kj312h"])
