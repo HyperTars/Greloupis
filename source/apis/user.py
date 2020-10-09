@@ -6,11 +6,59 @@ import json
 
 user = Namespace('user', description='User APIs')
 
+address_detail = user.model(name='AddressDetail', model={
+    'street1': fields.String(required=True),
+    'street2': fields.String(required=False),
+    'city': fields.String(required=True),
+    'state': fields.String(required=True),
+    'country': fields.String(required=True),
+    'zip': fields.String(required=True)
+})
+
+user_detail = user.model(name='UserDetail', model={
+    'first_name': fields.String(required=True),
+    'last_name': fields.String(required=True),
+    'phone': fields.String(required=True),
+    'address': fields.Nested(address_detail, required=False)
+})
+
+thumbnail = user.model(name='Thumbnail', model={
+    'thumbnail_uri': fields.String(required=True),
+    'thumbnail_type': fields.String(required=True)
+})
+
+user_info = user.model(name='User', model={
+    'user_id': fields.String(required=True),
+    'user_name': fields.String(required=True),
+    'user_password': fields.String(required=True),
+    'user_detail': fields.Nested(user_detail, required=False),
+    'user_status': fields.String(required=False),
+    'user_thumbnail': fields.Nested(thumbnail, required=False),
+    'user_follower': fields.Integer(required=False),
+    'user_reg_date': fields.DateTime(required=False),
+    'user_recent_login': fields.List(fields.String(required=False))
+})
+
+general_response = user.model(name='ApiResponse', model={
+    'code': fields.String(required=True),
+    'body': fields.String(required=True)
+})
+
+general_response_user = user.model(name='ApiResponseWithUser', model={
+    'code': fields.String(required=True),
+    'body': fields.Nested(user_info, required=True)
+})
+
+general_response_list = user.model(name='ApiResponseWithList', model={
+    'code': fields.String(required=True),
+    'body': fields.List(fields.String(required=True))
+})
+
 @user.route('')
-@user.response(200, 'Successful operation')
-@user.response(400, 'Invalid user information')
-@user.response(405, 'Method not allowed')
-@user.response(500, 'Internal server error')
+@user.response(200, 'Successful operation', general_response_user)
+@user.response(400, 'Invalid user information', general_response)
+@user.response(405, 'Method not allowed', general_response)
+@user.response(500, 'Internal server error', general_response)
 class User(Resource):
 
     def post(self):
@@ -20,10 +68,11 @@ class User(Resource):
         return {}, 200, None
 
 @user.route('/<string:user_id>')
-@user.response(200, 'Successful operation')
-@user.response(400, 'Invalid user information')
-@user.response(404, 'User not found')
-@user.response(500, 'Internal server error')
+@user.param('user_id', 'User ID', general_response_user)
+@user.response(200, 'Successful operation', general_response)
+@user.response(400, 'Invalid user information', general_response)
+@user.response(404, 'User not found', general_response)
+@user.response(500, 'Internal server error', general_response)
 class UserUserId(Resource):
 
     def get(self, user_id):
@@ -50,9 +99,9 @@ class UserUserId(Resource):
 
 
 @user.route('/login')
-@user.response(200, 'Successful operation')
-@user.response(400, 'Invalid user information')
-@user.response(500, 'Internal server error')
+@user.response(200, 'Successful operation', general_response_user)
+@user.response(400, 'Invalid user information', general_response)
+@user.response(500, 'Internal server error', general_response)
 class UserLogin(Resource):
     def post(self):
         """
@@ -62,9 +111,9 @@ class UserLogin(Resource):
 
 
 @user.route('/logout')
-@user.response(200, 'Successful operation')
-@user.response(400, 'Bad request')
-@user.response(500, 'Internal server error')
+@user.response(200, 'Successful operation', general_response_user)
+@user.response(400, 'Bad request', general_response)
+@user.response(500, 'Internal server error', general_response)
 class UserLogout(Resource):
 
     def post(self):
@@ -74,10 +123,11 @@ class UserLogout(Resource):
         return None, 200
 
 @user.route('/<string:user_id>/like')
-@user.response(200, 'Successful operation')
-@user.response(400, 'Invalid user id')
-@user.response(404, 'User not found')
-@user.response(500, 'Internal server error')
+@user.param('user_id', 'User ID')
+@user.response(200, 'Successful operation', general_response_list)
+@user.response(400, 'Invalid user id', general_response)
+@user.response(404, 'User not found', general_response)
+@user.response(500, 'Internal server error', )
 class UserUserIdLike(Resource):
 
     def get(self, user_id):
@@ -87,10 +137,11 @@ class UserUserIdLike(Resource):
         return {}, 200, None
 
 @user.route('/<string:user_id>/dislike')
-@user.response(200, 'Successful operation')
-@user.response(400, 'Invalid user id')
-@user.response(404, 'User not found')
-@user.response(500, 'Internal server error')
+@user.param('user_id', 'User ID')
+@user.response(200, 'Successful operation', general_response_list)
+@user.response(400, 'Invalid user id', general_response)
+@user.response(404, 'User not found', general_response)
+@user.response(500, 'Internal server error', general_response)
 class UserUserIdDislike(Resource):
 
     def get(self, user_id):
@@ -100,10 +151,11 @@ class UserUserIdDislike(Resource):
         return {}, 200, None
 
 @user.route('/<string:user_id>/star')
-@user.response(200, 'Successful operation')
-@user.response(400, 'Invalid user id')
-@user.response(404, 'User not found')
-@user.response(500, 'Internal server error')
+@user.param('user_id', 'User ID')
+@user.response(200, 'Successful operation', general_response_list)
+@user.response(400, 'Invalid user id', general_response)
+@user.response(404, 'User not found', general_response)
+@user.response(500, 'Internal server error', general_response)
 class UserUserIdStar(Resource):
 
     def get(self, user_id):
@@ -113,10 +165,11 @@ class UserUserIdStar(Resource):
         return {}, 200, None
 
 @user.route('/<string:user_id>/comment')
-@user.response(200, 'Successful operation')
-@user.response(400, 'Invalid user id')
-@user.response(404, 'User not found')
-@user.response(500, 'Internal server error')
+@user.param('user_id', 'User ID')
+@user.response(200, 'Successful operation', general_response_list)
+@user.response(400, 'Invalid user id', general_response)
+@user.response(404, 'User not found', general_response)
+@user.response(500, 'Internal server error', general_response)
 class UserUserIdComment(Resource):
 
     def get(self, user_id):

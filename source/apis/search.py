@@ -6,32 +6,40 @@ import json
 
 search = Namespace('search', description='Search APIs')
 
-'''
- @route     GET /search/video?q=<string:keyword>
- @desc      Search videos by keyword
- @access    Public
-'''
+general_response = search.model(name='ApiResponse', model={
+    'code': fields.String(required=True),
+    'body': fields.String(required=True)
+})
+
+general_response_list = search.model(name='ApiResponseWithList', model={
+    'code': fields.String(required=True),
+    'body': fields.List(fields.String(required=True))
+})
 
 @search.route('/video?q=<string:keyword>')
-@search.response(400, 'Bad request.')
-@search.response(500, 'Internal server error.')
+@search.param('keyword', 'Searching keyword')
+@search.response(200, 'Successfully got video search results.', general_response_list)
+@search.response(400, 'Bad request.', general_response)
+@search.response(500, 'Internal server error.', general_response)
 class SearchVideo(Resource):
-    @search.doc(responses={200: 'Successfully got video search results.'})
     def get(self, keyword):
+        """
+            Search videos by keyword
+        """
         search_result = []
         return {}, 200, None
 
 
-'''
- @route     GET /search/user?q=<string:keyword>
- @desc      Search users by keyword
- @access    Public
-'''
 @search.route('/user?q=<string:keyword>')
-@search.response(400, 'Bad request.')
-@search.response(500, 'Internal server error.')
+@search.param('keyword', 'Searching keyword')
+@search.response(200, 'Successfully got user search results.', general_response_list)
+@search.response(400, 'Bad request.', general_response)
+@search.response(500, 'Internal server error.', general_response)
 class SearchUser(Resource):
     @search.doc(responses={200: 'Successfully got user search results.'})
     def get(self, keyword):
+        """
+            Search users by keyword
+        """
         search_result = []
         return {}, 200, None
