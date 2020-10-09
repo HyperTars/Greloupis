@@ -45,6 +45,8 @@ class Video(db.Document):
     video_upload_date = db.DateTimeField(required=True)
     video_uri = db.EmbeddedDocumentField('VideoURI', required=False)
 
+    # to_json() is also supported
+
     def to_dict(self):
         video_dict = {}
         video_tag_array = []
@@ -86,3 +88,5 @@ class Video(db.Document):
         video_dict['video_uri'] = video_uri_dict
 
         return video_dict
+    
+    

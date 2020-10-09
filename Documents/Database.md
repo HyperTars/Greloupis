@@ -35,7 +35,7 @@
     ```json
     {
         "_id": {
-            "$oid": "5f72894b41bc583c4819d90b"
+            "$oid": "5f808f045e03b2165ca4275a"
         },
         "user_email": "hypertars@gmail.com",
         "user_name": "hypertars",
@@ -44,14 +44,12 @@
             "first_name": "Brian",
             "last_name": "Lee",
             "phone": "+13474051241",
-            "address": {
-                "street1": "343 Gold St",
-                "street2": "Apt 3810",
-                "city": "Brooklyn",
-                "state": "New York",
-                "country": "United States",
-                "zip": "11201"
-            }
+            "street1": "343 Gold St",
+            "street2": "Apt 3810",
+            "city": "Brooklyn",
+            "state": "New York",
+            "country": "United States",
+            "zip": "11201"
         },
         "user_status": "public",
         "user_thumbnail": {
@@ -80,6 +78,49 @@
         }],
         "user_following": ["46a5sd465as4d56as4", "7asdas654das98da8as"],
         "user_follower": []
+    }
+    ```
+
+    Sample2
+    ```json
+    {
+        "_id": {
+            "$oid": "5f808f205e03b2165ca4275b"
+        },
+        "user_email": "xx.gmail.com",
+        "user_name": "test_user",
+        "user_password": "askdkj091",
+        "user_detail": {
+            "first_name": "test_user",
+            "last_name": "test_user",
+            "phone": "+1xxxxxx",
+            "street1": "str1",
+            "street2": "str2",
+            "city": "cty",
+            "state": "stt",
+            "country": "ctry",
+            "zip": "zip"
+        },
+        "user_status": "active",
+        "user_thumbnail": {
+            "thumbnail_uri": "test_uri",
+            "thumbnail_type": "test_type"
+        },
+        "user_reg_date": {
+            "$date": {
+                "$numberLong": "1602166351000"
+            }
+        },
+        "user_recent_login": [{
+            "login_ip": "1.1.1.1",
+            "login_time": {
+                "$date": {
+                    "$numberLong": "1602171008000"
+                }
+            }
+        }],
+        "user_following": ["kl12j3lk12j3l12k"],
+        "user_follower": ["89889a7d98as789d", "1h312jj3h12kj312h"]
     }
     ```
 

@@ -13,20 +13,20 @@ db = MongoEngine()
 # User Models
 
 class UserDetail(db.EmbeddedDocument):
-    first_name = db.StringField(max_length=50, required=True)
-    last_name = db.StringField(max_length=50, required=True)
-    phone = db.StringField(max_length=50, required=True, unique=True)
-    street1 = db.StringField(max_length=100)
-    street2 = db.StringField(max_length=100)
-    city = db.StringField(max_length=50)
-    state = db.StringField(max_length=50)
-    country = db.StringField(max_length=50)
-    zip = db.StringField(max_length=20)
+    first_name = db.StringField(max_length=50, default="")
+    last_name = db.StringField(max_length=50, default="")
+    phone = db.StringField(max_length=50, default="")
+    street1 = db.StringField(max_length=100, default="")
+    street2 = db.StringField(max_length=100, default="")
+    city = db.StringField(max_length=50, default="")
+    state = db.StringField(max_length=50, default="")
+    country = db.StringField(max_length=50, default="")
+    zip = db.StringField(max_length=20, default="")
 
 
 class Thumbnail(db.EmbeddedDocument):
-    thumbnail_uri = db.StringField(max_length=200, required=True)
-    thumbnail_type = db.StringField(max_length=50, required=True)
+    thumbnail_uri = db.StringField(max_length=200, required=True, default="")
+    thumbnail_type = db.StringField(max_length=50, required=True, default="default")
 
 
 class LoginDetail(db.EmbeddedDocument):
@@ -49,6 +49,8 @@ class User(db.Document):
 
     meta = {'collection': 'user'}
 
+    # to_json() is also supported
+    
     def to_dict(self):
         user_dict = {}
         user_detail_dict = {}
@@ -94,7 +96,6 @@ class User(db.Document):
         user_dict['user_following'] = user_following_array
         user_dict['user_follower'] = user_follower_array
         return user_dict
-    
 
     @property
     def password(self):

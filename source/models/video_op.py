@@ -28,6 +28,8 @@ class VideoOp(db.Document):
     dislike_date = db.DateTimeField(required=False)
     star_date = db.DateTimeField(required=False)
     
+    # to_json() is also supported
+    
     def to_dict(self):
         video_op_dict = {}
         video_op_dict['video_op_id'] = str(self._id)
