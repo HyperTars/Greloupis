@@ -10,27 +10,26 @@
 - **Document**
     Attr1 | Type | Attr2 | Type | Attr3 | Type | Data Source | Nullable | Description
     --- | --- | --- | --- | --- | --- | --- | --- | ---
-    user_id / `_id` | ObjectId | - | - | - | - | Mongo generate | NO | user's unique id
-    user_email | String | - | - | - | - |  user input | NO | user's email
-    user_name | String | - | - | - | - | user input | NO | user's nick name
-    user_password | String | - | - | - | - | user input | NO | user's password, encoded
-    user_detail | Object | first_name | string | - | - | user input | NO | user's first name
-     | | | last_name | String | - | - | user input | NO | user's last name
-     | | | phone | String | - | - | user input | NO | user's phone number
-     | | | address | Object | street1 | string | usre input | YES | user's detail address
-     | | | | | street2 | String | user input | YES |
-     | | | | | city | String | user input | YES |
-     | | | | | state | String | user input | YES |
-     | | | | | country | String | user inpu | YES |
-     | | | | | zip | String | user input | YES |
-    user_status | String | - | - | - | - | user input | NO | user's profile status (default public) 
-    user_thumbnail | Object | thumbnail_uri | String | - | - | system generate | YES | user's thumbnail URI
-     | | | thumbnail_type | String | - | - | user input | NO | default: system auto
-    user_reg_date | Date | - | - | - | - | system generate | NO | user's registration date 
-    user_recent_login | Array | `index` | Object | login_ip | String | user input | NO |
-     | | | | | login_time | Date | - | - | system generate | NO | 
-    user_following | Array | `index` | String | - | - | user input | YES | array of following uploaders' ids
-    user_follower | Array | `index` | String | - | - | system generated | YES | array of user's followers
+    user_id / `_id` | ObjectId | - | - Mongo generate | NO | user's unique id
+    user_email | String | - | -  user input | NO | user's email
+    user_name | String | - | - | user input | NO | user's nick name
+    user_password | String | - | - | user input | NO | user's password, encoded
+    user_detail | Object | first_name | string user input | NO | user's first name
+     | | | last_name | String | user input | NO | user's last name
+     | | | phone | String | user input | NO | user's phone number
+     | | | street1 | string| usre input | YES | user's detail address
+     | | | street2 | String|  user input | YES |
+     | | | city | String|  user input | YES |
+     | | | state | String|  user input | YES |
+     | | | country | String|  user inpu | YES |
+     | | | zip | String |  user input | YES |
+    user_status | String | - | - | user input | NO | user's profile status (default public) 
+    user_thumbnail | Object | thumbnail_uri | String | system generate | YES | user's thumbnail URI
+     | | | thumbnail_type | String | user input | NO | default: system auto
+    user_reg_date | Date | - | - | system generate | NO | user's registration date 
+    user_recent_login | Array | `index` | (Object)<br>login_ip - String /<br>login_time - Date | user input /<br>system generate | NO | array of user's recent logins
+    user_following | Array | `index` | String | user input | YES | array of following uploaders' ids
+    user_follower | Array | `index` | String | system generated | YES | array of user's followers
 
 - **Sample**
     ```json

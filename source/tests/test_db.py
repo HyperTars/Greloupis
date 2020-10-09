@@ -94,8 +94,8 @@ class User(db.Document):
 tu_detail = UserDetail(first_name="test_user", last_name="test_user", phone="+1xxxxxx", street1="str1", street2="str2", city="cty", state="stt", country="ctry", zip="zip")
 tu_thumbnail = Thumbnail(thumbnail_uri="test_uri", thumbnail_type="test_type")
 tu_login = LoginDetail(login_ip="1.1.1.1", login_time=parse("20201008153008"))
-tu = User(user_email="xx.gmail.com", user_name="test_user", user_password="askdkj091", user_detail=tu_detail, user_status="active", user_thumbnail=tu_thumbnail, user_reg_date=parse("20201008141231"), user_recent_login=[tu_login], user_following=[], user_follower=[])
-# tu.save()
+tu = User(user_email="xx.gmail.com", user_name="test_user", user_password="askdkj091", user_detail=tu_detail, user_status="active", user_thumbnail=tu_thumbnail, user_reg_date=parse("20201008141231"), user_recent_login=[tu_login], user_following=["kl12j3lk12j3l12k"], user_follower=["89889a7d98as789d", "1h312jj3h12kj312h"])
+tu.save()
 
 print("test: get video_op")
 vo = VideoOp.objects()
