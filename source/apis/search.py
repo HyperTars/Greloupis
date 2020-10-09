@@ -4,21 +4,18 @@ from flask import Flask, request, g, Blueprint
 from flask_restx import Resource, Api, fields, marshal_with, reqparse, Namespace
 import json
 
+from .user import user_info, general_response
+
 search = Namespace('search', description='Search APIs')
 
-general_response = search.model(name='ApiResponse', model={
-    'code': fields.String(required=True),
-    'body': fields.String(required=True)
-})
-
-general_response_list = search.model(name='ApiResponseWithList', model={
-    'code': fields.String(required=True),
-    'body': fields.List(fields.String(required=True))
+user_response_list = search.model(name='ApiResponseWithList', model={
+    'code': fields.String,
+    'body': fields.List(fields.Nested(user_info))
 })
 
 @search.route('/video?q=<string:keyword>')
 @search.param('keyword', 'Searching keyword')
-@search.response(200, 'Successfully got video search results.', general_response_list)
+@search.response(200, 'Successfully got video search results.', general_response)
 @search.response(400, 'Bad request.', general_response)
 @search.response(500, 'Internal server error.', general_response)
 class SearchVideo(Resource):
@@ -32,7 +29,7 @@ class SearchVideo(Resource):
 
 @search.route('/user?q=<string:keyword>')
 @search.param('keyword', 'Searching keyword')
-@search.response(200, 'Successfully got user search results.', general_response_list)
+@search.response(200, 'Successfully got user search results.', user_response_list)
 @search.response(400, 'Bad request.', general_response)
 @search.response(500, 'Internal server error.', general_response)
 class SearchUser(Resource):

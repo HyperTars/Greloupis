@@ -7,55 +7,104 @@ import json
 user = Namespace('user', description='User APIs')
 
 address_detail = user.model(name='AddressDetail', model={
-    'street1': fields.String(required=True),
-    'street2': fields.String(required=False),
-    'city': fields.String(required=True),
-    'state': fields.String(required=True),
-    'country': fields.String(required=True),
-    'zip': fields.String(required=True)
+    'street1': fields.String,
+    'street2': fields.String,
+    'city': fields.String,
+    'state': fields.String,
+    'country': fields.String,
+    'zip': fields.String
 })
 
 user_detail = user.model(name='UserDetail', model={
-    'first_name': fields.String(required=True),
-    'last_name': fields.String(required=True),
-    'phone': fields.String(required=True),
-    'address': fields.Nested(address_detail, required=False)
+    'first_name': fields.String,
+    'last_name': fields.String,
+    'phone': fields.String,
+    'address': fields.Nested(address_detail)
 })
 
 thumbnail = user.model(name='Thumbnail', model={
-    'thumbnail_uri': fields.String(required=True),
-    'thumbnail_type': fields.String(required=True)
+    'thumbnail_uri': fields.String,
+    'thumbnail_type': fields.String
 })
 
 user_info = user.model(name='User', model={
-    'user_id': fields.String(required=True),
-    'user_name': fields.String(required=True),
-    'user_password': fields.String(required=True),
-    'user_detail': fields.Nested(user_detail, required=False),
-    'user_status': fields.String(required=False),
-    'user_thumbnail': fields.Nested(thumbnail, required=False),
-    'user_follower': fields.Integer(required=False),
-    'user_reg_date': fields.DateTime(required=False),
-    'user_recent_login': fields.List(fields.String(required=False))
+    'user_id': fields.String,
+    'user_name': fields.String,
+    'user_password': fields.String,
+    'user_detail': fields.Nested(user_detail),
+    'user_status': fields.String,
+    'user_thumbnail': fields.Nested(thumbnail),
+    'user_follower': fields.Integer,
+    'user_reg_date': fields.DateTime,
+    'user_recent_login': fields.List(fields.String)
+})
+
+like = user.model(name='Like', model={
+    'like_id': fields.String,
+    'user_id': fields.String,
+    'video_id': fields.String,
+    'like_date': fields.String
+})
+
+dislike = user.model(name='Dislike', model={
+    'dislike_id': fields.String,
+    'user_id': fields.String,
+    'video_id': fields.String,
+    'dislike_date': fields.String
+})
+
+comment = user.model(name='Comment', model={
+    'comment_id': fields.String,
+    'user_id': fields.String,
+    'video_id': fields.String,
+    'comment_date': fields.String,
+    'comment': fields.String
+})
+
+star = user.model(name='Star', model={
+    'star_id': fields.String,
+    'user_id': fields.String,
+    'video_id': fields.String,
+    'star_date': fields.String
 })
 
 general_response = user.model(name='ApiResponse', model={
-    'code': fields.String(required=True),
-    'body': fields.String(required=True)
+    'code': fields.String,
+    'body': fields.String
 })
 
-general_response_user = user.model(name='ApiResponseWithUser', model={
-    'code': fields.String(required=True),
-    'body': fields.Nested(user_info, required=True)
+user_response = user.model(name='ApiResponseWithUser', model={
+    'code': fields.String,
+    'body': fields.Nested(user_info)
 })
 
 general_response_list = user.model(name='ApiResponseWithList', model={
-    'code': fields.String(required=True),
-    'body': fields.List(fields.String(required=True))
+    'code': fields.String,
+    'body': fields.List(fields.String)
+})
+
+like_response_list = user.model(name='ApiResponseWithLikeList', model={
+    'code': fields.String,
+    'body': fields.List(fields.Nested(like))
+})
+
+dislike_response_list = user.model(name='ApiResponseWithDislikeList', model={
+    'code': fields.String,
+    'body': fields.List(fields.Nested(dislike))
+})
+
+star_response_list = user.model(name='ApiResponseWithStarList', model={
+    'code': fields.String,
+    'body': fields.List(fields.Nested(star))
+})
+
+comment_response_list = user.model(name='ApiResponseWithCommentList', model={
+    'code': fields.String,
+    'body': fields.List(fields.Nested(comment))
 })
 
 @user.route('')
-@user.response(200, 'Successful operation', general_response_user)
+@user.response(200, 'Successful operation', user_response)
 @user.response(400, 'Invalid user information', general_response)
 @user.response(405, 'Method not allowed', general_response)
 @user.response(500, 'Internal server error', general_response)
@@ -68,8 +117,8 @@ class User(Resource):
         return {}, 200, None
 
 @user.route('/<string:user_id>')
-@user.param('user_id', 'User ID', general_response_user)
-@user.response(200, 'Successful operation', general_response)
+@user.param('user_id', 'User ID')
+@user.response(200, 'Successful operation', user_response)
 @user.response(400, 'Invalid user information', general_response)
 @user.response(404, 'User not found', general_response)
 @user.response(500, 'Internal server error', general_response)
@@ -99,7 +148,7 @@ class UserUserId(Resource):
 
 
 @user.route('/login')
-@user.response(200, 'Successful operation', general_response_user)
+@user.response(200, 'Successful operation', user_response)
 @user.response(400, 'Invalid user information', general_response)
 @user.response(500, 'Internal server error', general_response)
 class UserLogin(Resource):
@@ -111,7 +160,7 @@ class UserLogin(Resource):
 
 
 @user.route('/logout')
-@user.response(200, 'Successful operation', general_response_user)
+@user.response(200, 'Successful operation', user_response)
 @user.response(400, 'Bad request', general_response)
 @user.response(500, 'Internal server error', general_response)
 class UserLogout(Resource):
@@ -124,7 +173,7 @@ class UserLogout(Resource):
 
 @user.route('/<string:user_id>/like')
 @user.param('user_id', 'User ID')
-@user.response(200, 'Successful operation', general_response_list)
+@user.response(200, 'Successful operation', like_response_list)
 @user.response(400, 'Invalid user id', general_response)
 @user.response(404, 'User not found', general_response)
 @user.response(500, 'Internal server error', )
@@ -138,7 +187,7 @@ class UserUserIdLike(Resource):
 
 @user.route('/<string:user_id>/dislike')
 @user.param('user_id', 'User ID')
-@user.response(200, 'Successful operation', general_response_list)
+@user.response(200, 'Successful operation', dislike_response_list)
 @user.response(400, 'Invalid user id', general_response)
 @user.response(404, 'User not found', general_response)
 @user.response(500, 'Internal server error', general_response)
@@ -152,7 +201,7 @@ class UserUserIdDislike(Resource):
 
 @user.route('/<string:user_id>/star')
 @user.param('user_id', 'User ID')
-@user.response(200, 'Successful operation', general_response_list)
+@user.response(200, 'Successful operation', star_response_list)
 @user.response(400, 'Invalid user id', general_response)
 @user.response(404, 'User not found', general_response)
 @user.response(500, 'Internal server error', general_response)
@@ -166,7 +215,7 @@ class UserUserIdStar(Resource):
 
 @user.route('/<string:user_id>/comment')
 @user.param('user_id', 'User ID')
-@user.response(200, 'Successful operation', general_response_list)
+@user.response(200, 'Successful operation', comment_response_list)
 @user.response(400, 'Invalid user id', general_response)
 @user.response(404, 'User not found', general_response)
 @user.response(500, 'Internal server error', general_response)
