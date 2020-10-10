@@ -18,10 +18,15 @@ class DevConfig(object):
     DEBUG = True
 
     # Mongo DB
+    MONGO_ENDPOINT = "mongodb+srv://devops:DevOps@mongodbcluster.v4vtj.mongodb.net/online_video_platform?retryWrites=true&w=majority"
+    MONGO_DATABASE = "online_video_platform"
     MONGODB_SETTINGS = {
-        'db': 'online_video_platform',
-        'host': 'mongodb+srv://devops:DevOps@mongodbcluster.v4vtj.mongodb.net/online_video_platform?retryWrites=true&w=majority'
+        'db': MONGO_DATABASE,
+        'host': MONGO_ENDPOINT
     }
+    MONGO_TABLE_USER = "user"
+    MONGO_TABLE_VIDEO = "video"
+    MONGO_TABLE_VIDEO_OP = "video_op"
     
     # Config Flask
     FLASK_SERVER_NAME = 'localhost:8000'
@@ -45,9 +50,16 @@ class TestConfig(object):
     # Debug Mode
     DEBUG = True
 
-    # DB URI
+    # Mongo DB
     MONGO_ENDPOINT = "mongodb+srv://devops:DevOps@mongodbcluster.v4vtj.mongodb.net/online_video_platform?retryWrites=true&w=majority"
     MONGO_DATABASE = "online_video_platform"
+    MONGODB_SETTINGS = {
+        'db': MONGO_DATABASE,
+        'host': MONGO_ENDPOINT
+    }
+    MONGO_TABLE_USER = "user"
+    MONGO_TABLE_VIDEO = "video"
+    MONGO_TABLE_VIDEO_OP = "video_op"
     
     # Config Flask
     FLASK_SERVER_NAME = 'localhost:8000'

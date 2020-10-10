@@ -181,10 +181,11 @@ def user_update_details(user_id: str, **kw):
     :return 1 if succeeded, -1 if no such user
     """
     users = user_get_by_id(user_id)
-    id = bson.ObjectId(user_id)
     if len(users) == 0:
         # print("No such user")
         return -1  # TODO: error_code
+    
+    id = bson.ObjectId(user_id)
 
     if 'user_first_name' in kw:
         User.objects(_id=id).update(set__user_detail__first_name=kw['user_first_name'])

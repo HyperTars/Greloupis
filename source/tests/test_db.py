@@ -4,18 +4,14 @@
 
 from flask import Flask
 from flask_mongoengine import MongoEngine
+from source.config import TestConfig
+from source.db.mongo import get_db
 from source.db.query_user import *
 from source.db.query_video import *
 from source.db.query_video_op import *
-from source.db.mongo import *
 
-app = Flask(__name__)
-app.config['MONGODB_SETTINGS'] = {
-    'db': MONGO_DATABASE,
-    'host': MONGO_ENDPOINT
-}
 
-db = MongoEngine(app)
+db = get_db(TestConfig)
 
 
 ############
@@ -121,3 +117,4 @@ video_get_by_title("XiXiHaHa")[0].to_dict()
 video_delete("5f810903cd3d45e0e5989891")
 video_create("5f808f79c2ac20387eb8f3c9", "test video", "https://s3.amazon.com/test_video.mp4")
 video_create("5f808f79c2ac20387eb8f3c9", "test film", "https://s3.amazon.com/test_film.mp4", video_tag=['movie'], video_category=['funny', 'action'])
+video_update("5f72999541bc583c4819d915", video_uri_low="https://s3.amazon.com/test_low_quality.mp4")
