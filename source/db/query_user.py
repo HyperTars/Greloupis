@@ -1,4 +1,4 @@
-from source.models import User, LoginDetail, UserDetail, Thumbnail
+from source.models.user import User, LoginDetail, UserDetail, Thumbnail
 import bson
 import datetime
 
