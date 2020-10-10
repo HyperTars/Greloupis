@@ -1,5 +1,3 @@
-# Flask-pymongo-2.3.0
-# PyMongo-3.11
 # dnspython-2.0.0
 
 from flask import Flask

@@ -6,6 +6,7 @@ import json
 
 from .user import user_info, general_response
 from .video import video_info, general_response
+from source.service.service_search import *
 
 search = Namespace('search', description='Search APIs')
 
@@ -41,8 +42,5 @@ class SearchVideo(Resource):
 class SearchUser(Resource):
     @search.doc(responses={200: 'Successfully got user search results.'})
     def get(self, keyword):
-        """
-            Search users by keyword
-        """
-        search_result = []
+        search_result = search_user_by_keyword(name=keyword)
         return {}, 200, None
