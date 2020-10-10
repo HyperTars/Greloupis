@@ -24,42 +24,9 @@ app.config['MONGODB_SETTINGS'] = {
 
 db = MongoEngine(app)
 
-
-
-class VideoOp(db.Document):
-    _id = db.StringField()
-    user_id = db.StringField(max_length=100, required=True)
-    video_id = db.StringField(max_length=100, required=True)
-    process = db.IntField(required=False, default=0)
-    comment = db.StringField(max_length=1000, required=True)
-    like = db.BooleanField(default=False)
-    dislike = db.BooleanField(default=False)
-    star = db.BooleanField(default=False)
-    process_date = db.DateTimeField(required=False)
-    comment_date = db.DateTimeField(required=False)
-    like_date = db.DateTimeField(required=False)
-    dislike_date = db.DateTimeField(required=False)
-    star_date = db.DateTimeField(required=False)
-    
-    # Convert to dict
-    def to_dict(self):
-        video_op_dict = {}
-        video_op_dict['video_op_id'] = str(self._id)
-        video_op_dict['user_id'] = self.user_id
-        video_op_dict['video_id'] = self.video_id
-        video_op_dict['process'] = self.process
-        video_op_dict['comment'] = self.comment
-        video_op_dict['like'] = self.like
-        video_op_dict['dislike'] = self.dislike
-        video_op_dict['star'] = self.star
-        video_op_dict['process_date'] = self.process_date
-        video_op_dict['comment_date'] = self.comment_date
-        video_op_dict['like_date'] = self.like_date
-        video_op_dict['dislike_date'] = self.dislike_date
-        video_op_dict['star_date'] = self.star_date
-        return video_op_dict
-
-
+###############
+# User Models #
+###############
 class UserDetail(db.EmbeddedDocument):
     first_name = db.StringField(max_length=50, default="")
     last_name = db.StringField(max_length=50, default="")
@@ -135,12 +102,17 @@ class User(db.Document):
         return user_dict
 
 
+################
+# Video Models #
+################
 class VideoURI(db.EmbeddedDocument):
     video_low = db.StringField(max_length=200, required=True)
     video_mid = db.StringField(max_length=200, required=True)
     video_high = db.StringField(max_length=200, required=True)
 
 
+video_delete(video_id: str):
+video_update(video_id: str, **kw):
 class Video(db.Document):
     _id = db.StringField()
     user_id = db.StringField(max_length=100, required=True)
@@ -205,14 +177,60 @@ class Video(db.Document):
 
         return video_dict
 
-# Video CRUD
+##############
+# Video CRUD #
+##############
 def video_get_by_id(video_id: str):
     """
     :return: an array of such Video (len == 0 or 1), len == 0 if no such video_id, len == 1 if found
     """
     return Video.objects(_id=bson.ObjectId(video_id))
 
-# User CRUD
+##############
+# Video Test #
+##############
+video_get_by_id("5f72999541bc583c4819d915")
+
+#########################
+# Video Operation Model #
+#########################
+class VideoOp(db.Document):
+    _id = db.StringField()
+    user_id = db.StringField(max_length=100, required=True)
+    video_id = db.StringField(max_length=100, required=True)
+    process = db.IntField(required=False, default=0)
+    comment = db.StringField(max_length=1000, required=True)
+    like = db.BooleanField(default=False)
+    dislike = db.BooleanField(default=False)
+    star = db.BooleanField(default=False)
+    process_date = db.DateTimeField(required=False)
+    comment_date = db.DateTimeField(required=False)
+    like_date = db.DateTimeField(required=False)
+    dislike_date = db.DateTimeField(required=False)
+    star_date = db.DateTimeField(required=False)
+    
+    # Convert to dict
+    def to_dict(self):
+        video_op_dict = {}
+        video_op_dict['video_op_id'] = str(self._id)
+        video_op_dict['user_id'] = self.user_id
+        video_op_dict['video_id'] = self.video_id
+        video_op_dict['process'] = self.process
+        video_op_dict['comment'] = self.comment
+        video_op_dict['like'] = self.like
+        video_op_dict['dislike'] = self.dislike
+        video_op_dict['star'] = self.star
+        video_op_dict['process_date'] = self.process_date
+        video_op_dict['comment_date'] = self.comment_date
+        video_op_dict['like_date'] = self.like_date
+        video_op_dict['dislike_date'] = self.dislike_date
+        video_op_dict['star_date'] = self.star_date
+        return video_op_dict
+
+
+#############
+# User CRUD #
+#############
 def user_get_by_name(user_name: str):
     """
     :return: an array of such User, len == 0 if no such user_name, len == 1 if found
@@ -456,77 +474,10 @@ def user_delete(user_id: str):
         return -1 # TODO: error_code
     return User.objects(_id=bson.ObjectId(user_id)).delete()
 
-print("=============== RAW TEST =================")
-print("=============== test: get video_op ===============\n")
-vo = VideoOp.objects()
-for v in vo:
-    print(v.to_dict())
-    print("\n")
 
-print("=============== test: get user ===============\n")
-usr = User.objects()
-for u in usr:
-    print(u.to_dict())
-    print("\n")
-
-print("=============== test: get user ===============\n")
-video = Video.objects()
-for v in video:
-    print(v.to_dict())
-    print("\n")
-
-
-print("=============== test: update user thumbnail ===============\n")
-user_update_thumbnail("5f808f78c2ac20387eb8f3c8", user_thumbnail_uri="s3.amazon.com/aidjasjds", user_thumbnail_type="origin") # invalid type error
-user_update_thumbnail("5f808f78c2ac20387eb8f3c8", user_thumbnail_uri="s3.amazon.com/aidjasjds", user_thumbnail_type="default") # invalid type error
-
-print("=============== test: update user detail ===============\n")
-user_update_details("5f808f78c2ac20387eb8f3c8", user_first_name="fffff", user_last_name="kkk", user_phone="+1313123123", user_zip="11201")
-
-print("=============== test: update user status ===============\n")
-user_update_status("5f808f78c2ac20387eb8f3c8", "active") # invalid status
-user_update_status("5f808f78c2ac20387eb8f3c8", "public") # success
-user_update_status("5f808f78c2ac20387eb8f3c8", "private") # success
-
-print("=============== test: update user name ===============\n")
-user_update_name("5f808f78c2ac20387eb8f3c8", "test4") # name conflict
-user_update_name("5f808f78c2ac20387eb8f3c8", "test2") # same as current conflict
-user_update_name("5f808f78c2ac20387eb8f3c8", "test1") # success
-user_update_name("5f808f78c2ac20387eb8f3c8", "test2") # change back
-
-print("=============== test: update user password ===============\n")
-user_update_password("5f808f78c2ac20387eb8f3c8", "testpasscode") # same as current conflict
-user_update_password("5f808f78c2ac20387eb8f3c8", "test77888") # success
-user_update_password("5f808f78c2ac20387eb8f3c8", "testpasscode") # change back
-
-print("=============== test: add user login ===============\n")
-user_add_login("5f808f78c2ac20387eb8f3c8", ip="127.0.1.1")
-
-print("=============== test: add/delete user following ===============\n")
-user_add_follow("5f808f78c2ac20387eb8f3c8", "5f808f045e03b2165ca4275a")
-user_delete_follow("5f808f78c2ac20387eb8f3c8", "5f808f045e03b2165ca4275a")
-
-# print("=============== test: RAW DATA CONSTRUCT TEST ===============\n")
-# tu_detail = UserDetail(first_name="first_name", last_name="test_user", phone="+1xxxxxx", street1="str1", street2="str2", city="cty", state="stt", country="ctry", zip="zip")
-# tu_thumbnail = Thumbnail(thumbnail_uri="test_uri", thumbnail_type="test_type")
-# tu_login = LoginDetail(login_ip="1.1.1.1", login_time=parse("20201008153008"))
-# tu = User(user_email="xx.gmail.com", user_name="test_user", user_password="askdkj091", user_detail=tu_detail, user_status="active", user_thumbnail=tu_thumbnail, user_reg_date=parse("20201008141231"), user_recent_login=[tu_login], user_following=["kl12j3lk12j3l12k"], user_follower=["89889a7d98as789d", "1h312jj3h12kj312h"])
-# tu.save()
-
-print("=============== test: delete user ===============\n")
-user_delete("5f808f78c2ac20387eb8f3c8")
-
-print("=============== test: create user ===============\n")
-user_create("test2", "test2@email.com", "testpasscode")
-user_create("test3", "test2@email.com", "testpasscode") # email conflict
-user_create("test2", "test3@email.com", "testpasscode") # name conflict
-user_create("test4", "test4@email.com", "testpasscode")
-
-print("=============== test: delete user (set status deleted)===============\n")
-user_delete("5f808f78c2ac20387eb8f3c8")
-
-
-# VideoOp CRUD
+################
+# VideoOp CRUD #
+################
 def video_op_create(user_id: str, video_id: str, init_time=datetime.datetime.now()):
     if len(user_get_by_id(user_id)) == 0:
         # print("No such user")
@@ -568,7 +519,6 @@ def video_op_get_by_op_id(op_id: str):
     :return: an array of such video_op (len == 0 or 1), len == 0 if no such video_op_id, len == 1 if found
     """
     return VideoOp.objects(_id=bson.ObjectId(op_id))
-
 
 def video_op_update_process(op_id: str, process: int, process_date=datetime.datetime.now()):
     """
@@ -631,6 +581,86 @@ def video_op_update_star(op_id: str, star: bool, star_date=datetime.datetime.now
     return VideoOp.objects(_id=bson.ObjectId(op_id)).update(star=star, star_date=star_date)
 
 
+############
+# RAW TEST #
+############
+print("=============== RAW TEST =================")
+print("=============== test: get video_op ===============\n")
+vo = VideoOp.objects()
+for v in vo:
+    print(v.to_dict())
+    print("\n")
+
+print("=============== test: get user ===============\n")
+usr = User.objects()
+for u in usr:
+    print(u.to_dict())
+    print("\n")
+
+print("=============== test: get user ===============\n")
+video = Video.objects()
+for v in video:
+    print(v.to_dict())
+    print("\n")
+
+
+#############
+# User Test #
+#############
+print("=============== test: update user thumbnail ===============\n")
+user_update_thumbnail("5f808f78c2ac20387eb8f3c8", user_thumbnail_uri="s3.amazon.com/aidjasjds", user_thumbnail_type="origin") # invalid type error
+user_update_thumbnail("5f808f78c2ac20387eb8f3c8", user_thumbnail_uri="s3.amazon.com/aidjasjds", user_thumbnail_type="default") # invalid type error
+
+print("=============== test: update user detail ===============\n")
+user_update_details("5f808f78c2ac20387eb8f3c8", user_first_name="fffff", user_last_name="kkk", user_phone="+1313123123", user_zip="11201")
+
+print("=============== test: update user status ===============\n")
+user_update_status("5f808f78c2ac20387eb8f3c8", "active") # invalid status
+user_update_status("5f808f78c2ac20387eb8f3c8", "public") # success
+user_update_status("5f808f78c2ac20387eb8f3c8", "private") # success
+
+print("=============== test: update user name ===============\n")
+user_update_name("5f808f78c2ac20387eb8f3c8", "test4") # name conflict
+user_update_name("5f808f78c2ac20387eb8f3c8", "test2") # same as current conflict
+user_update_name("5f808f78c2ac20387eb8f3c8", "test1") # success
+user_update_name("5f808f78c2ac20387eb8f3c8", "test2") # change back
+
+print("=============== test: update user password ===============\n")
+user_update_password("5f808f78c2ac20387eb8f3c8", "testpasscode") # same as current conflict
+user_update_password("5f808f78c2ac20387eb8f3c8", "test77888") # success
+user_update_password("5f808f78c2ac20387eb8f3c8", "testpasscode") # change back
+
+print("=============== test: add user login ===============\n")
+user_add_login("5f808f78c2ac20387eb8f3c8", ip="127.0.1.1")
+
+print("=============== test: add/delete user following ===============\n")
+user_add_follow("5f808f78c2ac20387eb8f3c8", "5f808f045e03b2165ca4275a")
+user_delete_follow("5f808f78c2ac20387eb8f3c8", "5f808f045e03b2165ca4275a")
+
+# print("=============== test: RAW DATA CONSTRUCT TEST ===============\n")
+# tu_detail = UserDetail(first_name="first_name", last_name="test_user", phone="+1xxxxxx", street1="str1", street2="str2", city="cty", state="stt", country="ctry", zip="zip")
+# tu_thumbnail = Thumbnail(thumbnail_uri="test_uri", thumbnail_type="test_type")
+# tu_login = LoginDetail(login_ip="1.1.1.1", login_time=parse("20201008153008"))
+# tu = User(user_email="xx.gmail.com", user_name="test_user", user_password="askdkj091", user_detail=tu_detail, user_status="active", user_thumbnail=tu_thumbnail, user_reg_date=parse("20201008141231"), user_recent_login=[tu_login], user_following=["kl12j3lk12j3l12k"], user_follower=["89889a7d98as789d", "1h312jj3h12kj312h"])
+# tu.save()
+
+print("=============== test: delete user ===============\n")
+user_delete("5f808f78c2ac20387eb8f3c8")
+
+print("=============== test: create user ===============\n")
+user_create("test2", "test2@email.com", "testpasscode")
+user_create("test3", "test2@email.com", "testpasscode") # email conflict
+user_create("test2", "test3@email.com", "testpasscode") # name conflict
+user_create("test4", "test4@email.com", "testpasscode")
+
+print("=============== test: delete user (set status deleted)===============\n")
+user_delete("5f808f78c2ac20387eb8f3c8")
+
+
+#################
+# Video Op Test #
+#################
+print("=============== test: Video Op CRUD ===============\n")
 video_op_create("5f808f79c2ac20387eb8f3c9", "5f72999541bc583c4819d915")
 video_op_get_by_user_id("5f808f79c2ac20387eb8f3c9")[0].to_json()
 video_op_get_by_video_id("5f72999541bc583c4819d915")[0].to_json()
