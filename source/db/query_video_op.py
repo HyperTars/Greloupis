@@ -7,6 +7,12 @@ import datetime
 
 # VideoOp CRUD
 def video_op_create(user_id: str, video_id: str, init_time=datetime.datetime.utcnow()):
+    """
+    :param user_id: user's unique id
+    :param video_id: video's unique id
+    :param init_time: op creation time (optional, default utc now)
+    :return VideoOp model if succeeded, -1 if no such user, -2 if no such video, -3 if VideoOp exists
+    """
     if len(user_get_by_id(user_id)) == 0:
         # print("No such user")
         return -1 # TODO: error_code
@@ -19,7 +25,9 @@ def video_op_create(user_id: str, video_id: str, init_time=datetime.datetime.utc
         # print("video_op exists")
         return -3 # TODO: error_code
     
-    video_op = VideoOp(user_id=user_id, video_id=video_id, process=0, comment="", like=False, dislike=False, star=False, process_date=init_time, comment_date=init_time, like_date=init_time, dislike_date=init_time, star_date=init_time)
+    video_op = VideoOp(user_id=user_id, video_id=video_id, process=0, comment="", like=False, \
+        dislike=False, star=False, process_date=init_time, comment_date=init_time, \
+        like_date=init_time, dislike_date=init_time, star_date=init_time)
     
     return video_op.save()
 
