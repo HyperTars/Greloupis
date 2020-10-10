@@ -43,7 +43,9 @@ def user_create(user_name: str, user_email: str, user_password: str, user_ip="0.
     login = []
     login.append(LoginDetail(login_ip=user_ip, login_time=datetime.datetime.utcnow()))
     
-    user = User(user_name=user_name, user_email=user_email, user_password=user_password, user_status="private", user_detail = UserDetail(), user_thumbnail=Thumbnail(), user_recent_login=login, user_reg_date=datetime.datetime.utcnow())
+    user = User(user_name=user_name, user_email=user_email, user_password=user_password, \
+        user_status="private", user_detail = UserDetail(), user_thumbnail=Thumbnail(), \
+        user_recent_login=login, user_reg_date=datetime.datetime.utcnow())
     
     return user.save()
 
