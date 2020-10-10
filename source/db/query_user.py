@@ -1,6 +1,8 @@
 from source.models.user import User, LoginDetail, UserDetail, Thumbnail
+from source.models.errors import ErrorCode
 import bson
 import datetime
+import re
 
 
 # User CRUD
@@ -278,3 +280,33 @@ def user_delete(user_id: str):
         return -1  # TODO: error_code
 
     return User.objects(_id=bson.ObjectId(user_id)).delete()
+
+
+def user_search_keyword(**kw):
+    """
+    choose one attribute to search
+    :param keyword_name (optional): single keyword of username to be searched
+    :param keyword_email (optional): single keyword of email to be searched
+    :return: array of searching results (User Model)
+    """
+    if 'keyword_name' in kw:
+        return User.objects.filter(user_name__contains=kw['keyword_name'])
+    elif 'keyword_email' in kw:
+        return User.objects.filter(user_email__contains=kw['keyword_email'])
+    return ErrorCode.MONGODB_INVALID_SEARCH_PARAM
+
+
+def user_search_aggregate(aggr: dict):
+    """
+    :param aggr: dict of searching param
+    :return: array of searching results in dict
+    """
+    return list(User.objects.aggregate(aggr))
+
+
+def user_search_pattern(regex: re.Pattern):
+    """
+    :param regex: searching pattern
+    :return: array of searching results (User Model)
+    """
+    return User.objects(user_name=regex)

@@ -144,10 +144,10 @@ class User(db.Document):
     def get_id(self):
         try:
             # return unicode(self.username)
-            return self.username
+            return self.user_name
 
         except AttributeError:
             raise NotImplementedError('No `username` attribute - override `get_id`')
 
     def __unicode__(self):
-        return self.username
+        return self.user_name
