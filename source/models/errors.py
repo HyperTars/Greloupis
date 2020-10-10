@@ -21,7 +21,9 @@ class ErrorCode(Enum):
     MONGODB_VIDEO_TITLE_TAKEN = {"3105": "MongoDB Error: Video Title Already Taken"}
     MONGODB_THUMBNAIL_MISS_ONE = {"3106": "MongoDB Error: Thumbnail missing one argument, must provide both"}
     MONGODB_EXPECT_LIST = {"3107": "MongoDB Error: type <list> expected"}
-    
+    MONGODB_INVALID_VIDEO_CNT_PARAM = {"3108": "MongoDB Error: Invalid Video Count Param"}
+    MONGODB_VIDEO_CNT_ZERO = {"3109": "MongoDB Error: Video Count Param Already Down To Zero"}
+
     def get_code(self):
         """
         retrive error code based on enum key
