@@ -4,9 +4,9 @@ from flask import Flask, request, g, Blueprint
 from flask_restx import Resource, Api, fields, marshal_with, reqparse, Namespace
 import json
 
-from apis.user import user
-from apis.video import video
-from apis.search import search
+from source.apis.user import user
+from source.apis.video import video
+from source.apis.search import search
 
 blueprint = Blueprint('api', __name__, url_prefix='/')
 api = Api(blueprint)
