@@ -1,8 +1,8 @@
-from flask import Flask
 from flask_mongoengine import MongoEngine
 import datetime
 
 db = MongoEngine
+
 
 # Error Model
 class Error(db.Document):

@@ -27,7 +27,7 @@ def video_create(user_id: str, video_title: str, video_raw_content: str, **kw):
     :param video_title (required): video's title
     :param video_raw_content (required): URI of raw video data (in temp space, to be transcode)
     :param video_raw_status (optional): status of raw video data, default: pending
-    :param video_raw_size (optional): size of raw video data    
+    :param video_raw_size (optional): size of raw video data
     :param video_tag (optional): array of video's tags
     :param video_category (optional): array of video's categories
     :param video_description (optional): video's description
@@ -56,7 +56,7 @@ def video_create(user_id: str, video_title: str, video_raw_content: str, **kw):
     video_language = ""
     video_status = "public"
     video_thumbnail = Thumbnail()
-    video_upload_date=datetime.datetime.utcnow()
+    video_upload_date = datetime.datetime.utcnow()
 
     # Fill if exist
     if 'video_raw_status' in kw:
@@ -77,14 +77,14 @@ def video_create(user_id: str, video_title: str, video_raw_content: str, **kw):
         video_thumbnail = Thumbnail(thumbnail_uri=kw['video_thumbnail_uri'], thumbnail_type=kw['video_thumbnail_type'])
     if 'video_upload_date' in kw:
         video_upload_date = kw['upload_date']
-    
+
     # Construct Video Model
-    video = Video(user_id=user_id, video_title=video_title, video_raw_content=video_raw_content, \
-        video_raw_status=video_raw_status, video_raw_size=video_raw_size, video_tag=video_tag, \
-        video_category=video_category, video_description=video_description, video_language=video_language, \
-        video_status=video_status, video_view=0, video_comment=0, video_like=0,  video_dislike=0, \
-        video_star=0, video_share=0, video_thumbnail=video_thumbnail, video_upload_date=video_upload_date, \
-        video_uri=VideoURI())
+    video = Video(user_id=user_id, video_title=video_title, video_raw_content=video_raw_content,
+                  video_raw_status=video_raw_status, video_raw_size=video_raw_size, video_tag=video_tag,
+                  video_category=video_category, video_description=video_description, video_language=video_language,
+                  video_status=video_status, video_view=0, video_comment=0, video_like=0, video_dislike=0,
+                  video_star=0, video_share=0, video_thumbnail=video_thumbnail, video_upload_date=video_upload_date,
+                  video_uri=VideoURI())
 
     return video.save()
 
@@ -94,7 +94,7 @@ def video_update(video_id: str, **kw):
     :param video_title (required): video's title
     :param video_raw_content (optional): URI of raw video data (in temp space, to be transcode)
     :param video_raw_status (optional): status of raw video data, default: pending
-    :param video_raw_size (optional): size of raw video data    
+    :param video_raw_size (optional): size of raw video data
     :param video_tag (optional): array of video's tags
     :param video_category (optional): array of video's categories
     :param video_description (optional): video's description
@@ -122,5 +122,5 @@ def video_delete(video_id: str):
     videos = video_get_by_id(video_id)
     if len(videos) == 0:
         # print("No such video")
-        return -1 # TODO: error_code
+        return -1  # TODO: error_code
     return Video.objects(_id=bson.ObjectId(video_id)).delete()
