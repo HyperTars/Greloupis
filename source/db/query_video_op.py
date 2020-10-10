@@ -2,6 +2,7 @@ from source.models.video_op import VideoOp
 from source.db.query_user import user_get_by_id
 from source.db.query_video import video_get_by_id
 import bson
+import datetime
 
 
 # VideoOp CRUD
@@ -80,7 +81,7 @@ def video_op_update_comment(op_id: str, comment: str, comment_date=datetime.date
     if len(video_op_get_by_op_id(op_id)) == 0:
         # No such video op
         return -1 # TODO: error_code
-        
+
     return VideoOp.objects(_id=bson.ObjectId(op_id)).update(comment=comment, comment_date=comment_date)
 
 
