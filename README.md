@@ -6,7 +6,7 @@
 ![MongoDB](https://img.shields.io/badge/MongoDB-4.4.0-blue)
 
 ### Project Proposal
-- [Proposal](/Documents/Proposal.md)
+- [Proposal](/documents/Proposal.md)
   
 ### Guide
 
@@ -33,20 +33,21 @@ python -m source.app FLASK_APP=app flask run --host=127.0.0.1 --port=8000
 ```
 
 You should be able to visit http://localhost:5000/ now and see a list of APIs of the application (swagger).
-![API_Preview](Documents/api_preview.png)
+
+![API_Preview](documents/API_Swagger.png)
 
 ### Designs
 #### Coding Style: Naming Convention
-- See full [Naming Convention](/Documents/NamingConventions.md)
+- See full [Naming Convention](/documents/NamingConventions.md)
 
 #### Models Design (Entity)
-- See full [Models Design](/Documents/Models.md)
+- See full [Models Design](/documents/Models.md)
 
 #### Database Design
-- See full [Database Design](/Documents/Database.md)
+- See full [Database Design](/documents/Database.md)
 
 #### APIs Design
-- Overview document [APIs Design](/Documents/APIs.md)
+- Overview document [APIs Design](/documents/APIs.md)
 
 #### Components Design
 1. Processing Queue: Each uploaded video will be pushed to a processing queue to be de-queued later for encoding, thumbnail generation, and storage.
@@ -58,7 +59,7 @@ You should be able to visit http://localhost:5000/ now and see a list of APIs of
 
 
 ### Tests
-- See full [Test Cases](/Documents/Test.md)
+- See full [Test Cases](/documents/Test.md)
 
 
 ### Contributors
