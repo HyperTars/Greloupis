@@ -1,7 +1,8 @@
-from query_user import user_get_by_id
-from query_video import video_get_by_id
-from models import VideoOp
+from source.models import VideoOp
+from source.db.query_user import user_get_by_id
+from source.db.query_video import video_get_by_id
 import bson
+
 
 # VideoOp CRUD
 def video_op_create(user_id: str, video_id: str, init_time=datetime.datetime.now()):
