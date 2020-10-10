@@ -25,9 +25,11 @@ make test
 #### Start server
 - To start server, run
 ```bash
-python source/app.py
+make run
 # OR
-python source/app.py FLASK_APP=app flask run --host=127.0.0.1 --port=8000
+python -m source.app
+# OR
+python -m source.app FLASK_APP=app flask run --host=127.0.0.1 --port=8000
 ```
 
 You should be able to visit http://localhost:5000/ now and see a list of APIs of the application (swagger).

@@ -6,6 +6,9 @@ FORCE:
 
 prod:	tests github
 
+run:
+	python -m source.app FLASK_APP=app flask run --host=127.0.0.1 --port=8000
+	
 github:	FORCE
 	git add .
 	git pull origin master
