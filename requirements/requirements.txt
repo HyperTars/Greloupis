@@ -1,6 +1,7 @@
+flake8
 flask
 flask-restx
-flask-pymongo
+flask-mongoengine
 dnspython
-flake8
 bson
+blinker
