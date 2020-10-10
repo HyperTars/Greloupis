@@ -2,11 +2,7 @@
 # -*- coding: utf-8 -*-
 # mongoengine-0.20.0
 
-import datetime, hashlib, urllib
 from flask_mongoengine import MongoEngine
-from flask import current_app
-from werkzeug.security import generate_password_hash, check_password_hash
-from itsdangerous import TimedJSONWebSignatureSerializer
 
 db = MongoEngine()
 
@@ -26,7 +22,7 @@ class VideoOp(db.Document):
     like_date = db.DateTimeField(required=False)
     dislike_date = db.DateTimeField(required=False)
     star_date = db.DateTimeField(required=False)
-    
+
     # Convert to dict
     def to_dict(self):
         video_op_dict = {}
@@ -43,5 +39,5 @@ class VideoOp(db.Document):
         video_op_dict['like_date'] = self.like_date
         video_op_dict['dislike_date'] = self.dislike_date
         video_op_dict['star_date'] = self.star_date
-        
+
         return video_op_dict

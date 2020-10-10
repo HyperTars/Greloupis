@@ -4,20 +4,10 @@
 
 from flask import Flask
 from flask_mongoengine import MongoEngine
-from wtforms.fields import FieldList, FormField
-from dateutil.parser import parse
-import datetime
-import bson
 from source.db.query_user import *
 from source.db.query_video import *
 from source.db.query_video_op import *
-
-MONGO_ENDPOINT = "mongodb+srv://devops:DevOps@mongodbcluster.v4vtj.mongodb.net/online_video_platform?retryWrites=true&w=majority"
-MONGO_DATABASE = "online_video_platform"
-
-MONGO_TABLE_USER = "user"
-MONGO_TABLE_VIDEO = "video"
-MONGO_TABLE_VIDEO_OP = "video_op"
+from source.db.mongo import *
 
 app = Flask(__name__)
 app.config['MONGODB_SETTINGS'] = {
@@ -100,7 +90,7 @@ user_create("test3", "test2@email.com", "testpasscode") # email conflict
 user_create("test2", "test3@email.com", "testpasscode") # name conflict
 user_create("test4", "test4@email.com", "testpasscode")
 
-print("=============== test: delete user (set status deleted)===============\n")
+print("=============== test: delete user ===============\n")
 user_delete("5f808f78c2ac20387eb8f3c8")
 
 
