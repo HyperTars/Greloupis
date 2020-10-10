@@ -2,6 +2,7 @@ from source.models.user import User, LoginDetail, UserDetail, Thumbnail
 import bson
 import datetime
 
+
 # User CRUD
 def user_get_by_name(user_name: str):
     """

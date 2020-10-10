@@ -8,13 +8,13 @@
 
 ### Collection: user
 - **Document**
-    Attr1 | Type | Attr2 | Type | Attr3 | Type | Data Source | Nullable | Description
+    Attr1 | Type | Attr2 | Type | Data Source | Nullable | Description
     --- | --- | --- | --- | --- | --- | --- | --- | ---
-    user_id / `_id` | ObjectId | - | - Mongo generate | NO | user's unique id
-    user_email | String | - | -  user input | NO | user's email
+    user_id / `_id` | ObjectId | - | - |MongoDB generate | NO | user's unique id
+    user_email | String | - | - | user input | NO | user's email
     user_name | String | - | - | user input | NO | user's nick name
     user_password | String | - | - | user input | NO | user's password, encoded
-    user_detail | Object | first_name | string user input | NO | user's first name
+    user_detail | Object | first_name | string | user input | NO | user's first name
      | | | last_name | String | user input | NO | user's last name
      | | | phone | String | user input | NO | user's phone number
      | | | street1 | string| usre input | YES | user's detail address
@@ -35,7 +35,7 @@
     ```json
     {
         "_id": {
-            "$oid": "5f808f045e03b2165ca4275a"
+            "$oid": "5f812ca71ded3bab106faa3a"
         },
         "user_email": "hypertars@gmail.com",
         "user_name": "hypertars",
@@ -85,7 +85,7 @@
     ```json
     {
         "_id": {
-            "$oid": "5f808f205e03b2165ca4275b"
+            "$oid": "5f812cda1ded3bab106faa3b"
         },
         "user_email": "xx.gmail.com",
         "user_name": "test_user",
@@ -132,18 +132,18 @@
     video_id / `_id` | ObjectId | - | - | Mongo generate | NO | video's unique id
     user_id | String | - | - | user input | NO | uploader's user id
     video_title | String | - | - | user input | NO | video's title
+    video_raw_content | String | - | - | system generate | YES | upload raw video address (temp storage space, to be transcoded)
+    video_raw_status | String | - | - | system generate | YES | default pending
+    video_raw_size | Double | - | - | system generate | YES | video size in MB
     video_tag | Array | `index` | String | user input | YES | array of video's tags
     video_category | Array | `index` | String | user input | YES | array of video's categories
     video_description | String | - | - | user input | YES | video's description
     video_language | String | - | - | user input | YES | video's language
     video_status | String | - | - | user input | NO | default public, private, deleted
-    video_content | String | - | - | system generate | YES | upload streaming address
-    video_content_status | String | - | - | system generate | YES | default pending
-    video_size | Double | - | - | system generate | YES | video size in MB
     video_view | Int64 | - | - | system generate | NO | count of video views (default 0)
+    video_comment | Int64 | - | - | system generate | NO | count of video comments (default 0)
     video_like | Int64 | - | - | system generate | NO | count of video likes (default 0)
     video_dislike | Int64 | - | - | system generate | NO | count of video dislikes (default 0)
-    video_comment | Int64 | - | - | system generate | NO | count of video comments (default 0)
     video_star | Int64 | - | - | system generate | NO | count of video stars (default 0)
     video_share | Int64 | - | - | system generate | NO | count of video shares (default 0)
     video_thumbnail | Object | thumbnail_uri | String | system generate | YES | thumbnail URI
@@ -157,51 +157,51 @@
     ```json
     {
         "_id": {
-            "$oid": "5f72999541bc583c4819d915"
+            "$oid": "5f812dc41ded3bab106faa3c"
         },
-        "user_id": "84215634654asd8",
-        "video_title": "XiXiHaHa",
-        "video_tag": ["politics", "president"],
-        "video_category": ["entertainment"],
-        "video_description": "XiXi and HaHa AMV",
-        "video_languege": "Mandarin",
+        "user_id": "5f808f79c2ac20387eb8f3c9",
+        "video_title": "test film",
+        "video_raw_content": "https://s3.amazon.com/test_film.mp4",
+        "video_raw_status": "pending",
+        "video_raw_size": {
+            "$numberDouble": "0"
+        },
+        "video_tag": ["movie"],
+        "video_category": ["funny", "action"],
+        "video_description": "",
+        "video_language": "",
         "video_status": "public",
-        "video_content": "stream://54asd56a4d5",
-        "video_content_status": "pending",
-        "video_size": {
-            "$numberDouble": "93.66"
-        },
         "video_view": {
-            "$numberLong": "2"
+            "$numberLong": "0"
+        },
+        "video_comment": {
+            "$numberLong": "0"
         },
         "video_like": {
             "$numberLong": "0"
         },
         "video_dislike": {
-            "$numberLong": "1"
-        },
-        "video_comment": {
             "$numberLong": "0"
         },
         "video_star": {
             "$numberLong": "0"
         },
         "video_share": {
-            "$numberLong": "1"
+            "$numberLong": "0"
         },
         "video_thumbnail": {
-            "thumbnail_uri": "https://s3.amazon.asdasdasda.png",
-            "thumbnail_type": "auto"
+            "thumbnail_uri": "",
+            "thumbnail_type": "default"
         },
         "video_upload_date": {
             "$date": {
-                "$numberLong": "-639054000000"
+                "$numberLong": "1602296420019"
             }
         },
         "video_uri": {
             "video_low": "",
             "video_mid": "",
-            "video_high": "https://s3.amazon.com/asdjadasdas.mp4"
+            "video_high": ""
         }
     }
     ```
@@ -212,12 +212,12 @@
     video_op_id / `_id` | ObjectId | Mongo Generate | NO | video_op's unique id (user-video)
     user_id | String | user input | NO | user's id
     video_id | String | user input | NO | video's id
-    process | Int32 | user input | YES | latest watch process (in second)
+    process | Int32 | user input | YES | latest watch process (in second, default 0)
     comment | String | user input | YES | comment content, default NULL (inactive)
     like | Boolean | user input | NO | default false (inactive)
     dislike | Boolean | user input | NO | default false (inactive)
     star | Boolean | user input | NO | default false (inactive)
-    history_date | Date | system generate | YES | latest watch history date
+    process_date | Date | system generate | YES | latest watching process date
     comment_date | Date | system generate | YES | comment date
     like_date | Date | system generate | YES | like date
     dislike_date | Date | system generate | YES | dislike date
@@ -227,47 +227,47 @@
     ```json
     {
         "_id": {
-            "$oid": "5f72921641bc583c4819d912"
+            "$oid": "5f812e0b1ded3bab106faa3d"
         },
-        "user_id": "5f72894b41bc583c4819d90b",
-        "video_id": "4a5s6d4as56d5a64sd56a4d",
+        "user_id": "5f808f79c2ac20387eb8f3c9",
+        "video_id": "5f72999541bc583c4819d915",
         "process": {
-            "$numberInt": "59"
+            "$numberInt": "142"
         },
-        "comment": "Very interesting.",
+        "comment": "Interesting.",
         "like": false,
-        "dislike": true,
-        "star": true,
-        "history_date": {
+        "dislike": false,
+        "star": false,
+        "process_date": {
             "$date": {
-                "$numberLong": "1601477078000"
+                "$numberLong": "1602298353872"
             }
         },
         "comment_date": {
             "$date": {
-                "$numberLong": "1601407862000"
+                "$numberLong": "1602298353872"
             }
         },
         "like_date": {
             "$date": {
-                "$numberLong": "0"
+                "$numberLong": "1602298353872"
             }
         },
         "dislike_date": {
             "$date": {
-                "$numberLong": "1601422364000"
+                "$numberLong": "1602298353872"
             }
         },
         "star_date": {
             "$date": {
-                "$numberLong": "1601421798000"
+                "$numberLong": "1602298353872"
             }
         }
     }
     ```
 
 
-### Wasted Collection Samples
+### Wasted Collection Samples (No Longer Used)
 - **Sample: follow**
     ```json
     {
