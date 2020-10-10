@@ -12,7 +12,6 @@ db = MongoEngine()
 
 
 # VideoOp Model
-
 class VideoOp(db.Document):
     _id = db.StringField()
     user_id = db.StringField(max_length=100, required=True)
@@ -44,4 +43,5 @@ class VideoOp(db.Document):
         video_op_dict['like_date'] = self.like_date
         video_op_dict['dislike_date'] = self.dislike_date
         video_op_dict['star_date'] = self.star_date
+        
         return video_op_dict
