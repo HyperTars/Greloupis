@@ -3,3 +3,4 @@ flask-restx
 flask-pymongo
 dnspython
 flake8
+bson

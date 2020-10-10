@@ -25,8 +25,9 @@ app.config['MONGODB_SETTINGS'] = {
 db = MongoEngine(app)
 
 
+
 class VideoOp(db.Document):
-    _id = db.StringField(max_length=100, required=True)
+    _id = db.StringField()
     user_id = db.StringField(max_length=100, required=True)
     video_id = db.StringField(max_length=100, required=True)
     process = db.IntField(required=False, default=0)
@@ -34,12 +35,13 @@ class VideoOp(db.Document):
     like = db.BooleanField(default=False)
     dislike = db.BooleanField(default=False)
     star = db.BooleanField(default=False)
-    history_date = db.DateTimeField(required=False)
+    process_date = db.DateTimeField(required=False)
     comment_date = db.DateTimeField(required=False)
     like_date = db.DateTimeField(required=False)
     dislike_date = db.DateTimeField(required=False)
     star_date = db.DateTimeField(required=False)
     
+    # Convert to dict
     def to_dict(self):
         video_op_dict = {}
         video_op_dict['video_op_id'] = str(self._id)
@@ -50,7 +52,7 @@ class VideoOp(db.Document):
         video_op_dict['like'] = self.like
         video_op_dict['dislike'] = self.dislike
         video_op_dict['star'] = self.star
-        video_op_dict['history_date'] = self.history_date
+        video_op_dict['process_date'] = self.process_date
         video_op_dict['comment_date'] = self.comment_date
         video_op_dict['like_date'] = self.like_date
         video_op_dict['dislike_date'] = self.dislike_date
@@ -203,7 +205,12 @@ class Video(db.Document):
 
         return video_dict
 
-
+# Video CRUD
+def video_get_by_id(video_id: str):
+    """
+    :return: an array of such Video (len == 0 or 1), len == 0 if no such video_id, len == 1 if found
+    """
+    return Video.objects(_id=bson.ObjectId(video_id))
 
 # User CRUD
 def user_get_by_name(user_name: str):
@@ -224,7 +231,7 @@ def user_get_by_id(user_id: str):
     """
     :return: an array of such User (len == 0 or 1), len == 0 if no such user_id, len == 1 if found
     """
-    return User.objects(_id = bson.ObjectId(user_id))
+    return User.objects(_id=bson.ObjectId(user_id))
 
 
 def user_create(user_name: str, user_email: str, user_password: str, user_ip="0.0.0.0"):
@@ -233,7 +240,7 @@ def user_create(user_name: str, user_email: str, user_password: str, user_ip="0.
     :param user_email: user's unique email
     :param user_password: user's password
     :param user_ip: user's ip address (defaut 0.0.0.0)
-    :return: 1 if succeeded, -1 if name already taken, -2 if email already taken
+    :return: user object if succeeded, -1 if name already taken, -2 if email already taken
     """
     if len(user_get_by_name(user_name)) > 0:
         # print("user name is taken")
@@ -244,8 +251,7 @@ def user_create(user_name: str, user_email: str, user_password: str, user_ip="0.
     login = []
     login.append(LoginDetail(login_ip=user_ip, login_time=datetime.datetime.utcnow()))
     user = User(user_name=user_name, user_email=user_email, user_password=user_password, user_status="private", user_detail = UserDetail(), user_thumbnail=Thumbnail(), user_recent_login=login, user_reg_date=datetime.datetime.utcnow())
-    user.save()
-    return 1
+    return user.save()
 
 
 def user_update_status(user_id: str, user_status: str):
@@ -260,7 +266,7 @@ def user_update_status(user_id: str, user_status: str):
     if user_status not in valid_status:
         # print("Not valid status")
         return -2 # TODO: error_code
-    return User.objects(_id = bson.ObjectId(user_id)).update(user_status=user_status)
+    return User.objects(_id=bson.ObjectId(user_id)).update(user_status=user_status)
 
 
 def user_add_follow(follower_id: str, following_id: str):
@@ -281,8 +287,8 @@ def user_add_follow(follower_id: str, following_id: str):
     if following_id in follower[0].user_following or follower_id in following[0].user_follower:
         # print("following relationship broken, try to remove")
         user_delete_follow(follower_id, following_id)
-    r1 = User.objects(_id = bson.ObjectId(follower_id)).update(add_to_set__user_following=following_id)
-    r2 = User.objects(_id = bson.ObjectId(following_id)).update(add_to_set__user_follower=follower_id)
+    r1 = User.objects(_id=bson.ObjectId(follower_id)).update(add_to_set__user_following=following_id)
+    r2 = User.objects(_id=bson.ObjectId(following_id)).update(add_to_set__user_follower=follower_id)
     if r1 != 1:
         return r1
     elif r2 != 1:
@@ -302,8 +308,8 @@ def user_delete_follow(follower_id: str, following_id: str):
         return -1
     if len(following) == 0:
         return -2
-    r1 = User.objects(_id = bson.ObjectId(follower_id)).update(pull__user_following=following_id)
-    r2 = User.objects(_id = bson.ObjectId(following_id)).update(pull__user_follower=follower_id)
+    r1 = User.objects(_id=bson.ObjectId(follower_id)).update(pull__user_following=following_id)
+    r2 = User.objects(_id=bson.ObjectId(following_id)).update(pull__user_follower=follower_id)
     if r1 != 1:
         return r1
     elif r2 != 1:
@@ -328,7 +334,7 @@ def user_update_name(user_id: str, user_name: str):
     if len(user_get_by_name(user_name)) > 0:
         # print("Name already taken")
         return -3 # TODO: error_code
-    return User.objects(_id = bson.ObjectId(user_id)).update(user_name=user_name)
+    return User.objects(_id=bson.ObjectId(user_id)).update(user_name=user_name)
 
 
 def user_update_password(user_id: str, user_password: str):
@@ -345,7 +351,7 @@ def user_update_password(user_id: str, user_password: str):
     if user_password == old_password:
         # print("Same password as the current")
         return -2 # TODO: error_code
-    return User.objects(_id = bson.ObjectId(user_id)).update(user_password=user_password)
+    return User.objects(_id=bson.ObjectId(user_id)).update(user_password=user_password)
 
 
 def user_update_details(user_id: str, **kw):
@@ -427,7 +433,7 @@ def user_add_login(user_id: str, ip="0.0.0.0", time=datetime.datetime.utcnow()):
     latest_login_time = login_history[-1].login_time
     if len(login_history) >= 10:
         # print("Delete oldest history")
-        User.objects(_id = bson.ObjectId(user_id)).update(pull__user_recent_login__login_time=oldest_login_time)
+        User.objects(_id=bson.ObjectId(user_id)).update(pull__user_recent_login__login_time=oldest_login_time)
     # add new login info
     # print(time)
     # print(latest_login_time)
@@ -435,7 +441,7 @@ def user_add_login(user_id: str, ip="0.0.0.0", time=datetime.datetime.utcnow()):
         # print("Login info already added")
         return -2
     new_login = {'login_ip': ip, 'login_time': time}
-    User.objects(_id = bson.ObjectId(user_id)).update(add_to_set__user_recent_login=[new_login])
+    User.objects(_id=bson.ObjectId(user_id)).update(add_to_set__user_recent_login=[new_login])
     return 0
 
 
@@ -448,8 +454,26 @@ def user_delete(user_id: str):
     if len(users) == 0:
         # print("No such user")
         return -1 # TODO: error_code
-    return User.objects(_id = bson.ObjectId(user_id)).delete()
+    return User.objects(_id=bson.ObjectId(user_id)).delete()
 
+print("=============== RAW TEST =================")
+print("=============== test: get video_op ===============\n")
+vo = VideoOp.objects()
+for v in vo:
+    print(v.to_dict())
+    print("\n")
+
+print("=============== test: get user ===============\n")
+usr = User.objects()
+for u in usr:
+    print(u.to_dict())
+    print("\n")
+
+print("=============== test: get user ===============\n")
+video = Video.objects()
+for v in video:
+    print(v.to_dict())
+    print("\n")
 
 
 print("=============== test: update user thumbnail ===============\n")
@@ -501,20 +525,122 @@ user_create("test4", "test4@email.com", "testpasscode")
 print("=============== test: delete user (set status deleted)===============\n")
 user_delete("5f808f78c2ac20387eb8f3c8")
 
-print("=============== test: get video_op ===============\n")
-vo = VideoOp.objects()
-for v in vo:
-    print(v.to_dict())
-    print("\n")
 
-print("=============== test: get user ===============\n")
-usr = User.objects()
-for u in usr:
-    print(u.to_dict())
-    print("\n")
+# VideoOp CRUD
+def video_op_create(user_id: str, video_id: str, init_time=datetime.datetime.now()):
+    if len(user_get_by_id(user_id)) == 0:
+        # print("No such user")
+        return -1 # TODO: error_code
+    if len(video_get_by_id(video_id)) == 0:
+        # print("No such video")
+        return -2 # TODO: error_code
+    if len(video_op_get_by_user_video(user_id, video_id)) > 0:
+        # print("video_op exists")
+        return -3 # TODO: error_code
+    video_op = VideoOp(user_id=user_id, video_id=video_id, process=0, comment="", like=False, dislike=False, star=False, process_date=init_time, comment_date=init_time, like_date=init_time, dislike_date=init_time, star_date=init_time)
+    return video_op.save()
 
-print("=============== test: get user ===============\n")
-video = Video.objects()
-for v in video:
-    print(v.to_dict())
-    print("\n")
+def video_op_get_by_user_id(user_id: str):
+    """
+    :param: user_id, user's unique id
+    :return: an array of such video_op, len == 0 if no such video_op
+    """
+    return VideoOp.objects(user_id=user_id)
+
+def video_op_get_by_video_id( video_id: str):
+    """
+    :param: video_id, video's unique id
+    :return: an array of such video_op, len == 0 if no such video_op
+    """
+    return VideoOp.objects(video_id=video_id)
+
+def video_op_get_by_user_video(user_id: str, video_id: str):
+    """
+    :param: user_id, user's unique id
+    :param: video_id, video's unique id
+    :return: an array of such video_op (len == 0 or 1), len == 0 if no such video_op, len == 1 if found
+    """
+    return VideoOp.objects(user_id=user_id, video_id=video_id)
+
+def video_op_get_by_op_id(op_id: str):
+    """
+    :param: op_id, video operation unique id
+    :return: an array of such video_op (len == 0 or 1), len == 0 if no such video_op_id, len == 1 if found
+    """
+    return VideoOp.objects(_id=bson.ObjectId(op_id))
+
+
+def video_op_update_process(op_id: str, process: int, process_date=datetime.datetime.now()):
+    """
+    :param: op_id, video op unique id
+    :param: process, video watching process
+    :param: process_date (optional, default utc now)
+    :return: 1 if succeeded, -1 if no such video_op
+    """
+    if len(video_op_get_by_op_id(op_id)) == 0:
+        # No such video op
+        return -1 # TODO: error_code
+    return VideoOp.objects(_id=bson.ObjectId(op_id)).update(process=process, process_date=process_date)
+
+def video_op_update_comment(op_id: str, comment: str, comment_date=datetime.datetime.now()):
+    """
+    :param: op_id, video op unique id
+    :param: comment, video comment
+    :param: comment_date (optional, default utc now)
+    :return: 1 if succeeded, -1 if no such video_op
+    """
+    if len(video_op_get_by_op_id(op_id)) == 0:
+        # No such video op
+        return -1 # TODO: error_code
+    return VideoOp.objects(_id=bson.ObjectId(op_id)).update(comment=comment, comment_date=comment_date)
+
+def video_op_update_like(op_id: str, like: bool, like_date=datetime.datetime.now()):
+    """
+    :param: op_id, video op unique id
+    :param: like, video like (boolean)
+    :param: like_date (optional, default utc now)
+    :return: 1 if succeeded, -1 if no such video_op
+    """
+    if len(video_op_get_by_op_id(op_id)) == 0:
+        # No such video op
+        return -1 # TODO: error_code
+    return VideoOp.objects(_id=bson.ObjectId(op_id)).update(like=like, like_date=like_date)
+
+def video_op_update_dislike(op_id: str, dislike: bool, dislike_date=datetime.datetime.now()):
+    """
+    :param: op_id, video op unique id
+    :param: dislike, video dislike (boolean)
+    :param: dislike_date (optional, default utc now)
+    :return: 1 if succeeded, -1 if no such video_op
+    """
+    if len(video_op_get_by_op_id(op_id)) == 0:
+        # No such video op
+        return -1 # TODO: error_code
+    return VideoOp.objects(_id=bson.ObjectId(op_id)).update(dislike=dislike, dislike_date=dislike_date)
+
+def video_op_update_star(op_id: str, star: bool, star_date=datetime.datetime.now()):
+    """
+    :param: op_id, video op unique id
+    :param: star, video star (boolean)
+    :param: star_date (optional, default utc now)
+    :return: 1 if succeeded, -1 if no such video_op
+    """
+    if len(video_op_get_by_op_id(op_id)) == 0:
+        # No such video op
+        return -1 # TODO: error_code
+    return VideoOp.objects(_id=bson.ObjectId(op_id)).update(star=star, star_date=star_date)
+
+
+video_op_create("5f808f79c2ac20387eb8f3c9", "5f72999541bc583c4819d915")
+video_op_get_by_user_id("5f808f79c2ac20387eb8f3c9")[0].to_json()
+video_op_get_by_video_id("5f72999541bc583c4819d915")[0].to_json()
+video_op_get_by_user_video("5f808f79c2ac20387eb8f3c9", "5f72999541bc583c4819d915")[0].to_json()
+video_op_get_by_op_id("5f80f7b05490b2aef73d6314")[0].to_json()
+video_op_update_process("5f80fd775490b2aef73d6315", 142)
+video_op_update_comment("5f80fd775490b2aef73d6315", "Interesting.")
+video_op_update_like("5f80fd775490b2aef73d6315", True)
+video_op_update_dislike("5f80fd775490b2aef73d6315", True)
+video_op_update_star("5f80fd775490b2aef73d6315", True)
+video_op_update_like("5f80fd775490b2aef73d6315", False)
+video_op_update_dislike("5f80fd775490b2aef73d6315", False)
+video_op_update_star("5f80fd775490b2aef73d6315", False)
