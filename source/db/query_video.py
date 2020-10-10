@@ -88,6 +88,88 @@ def video_create(user_id: str, video_title: str, video_raw_content: str, **kw):
     return video.save()
 
 
+def video_cnt_incr_by_one(video_id: str, video_cnt: str):
+    """
+    This is for incrementing total number of views/comments/likes/dislikes/stars/shares
+    :param video_cnt can choose from (view/comment/like/dislike/star/share)
+    """
+    valid = ['view', 'views', 'video_view',
+             'comment', 'comments', 'video_comment',
+             'like', 'likes', 'video_like',
+             'dislike', 'dislikes', 'video_dislike',
+             'star', 'stars', 'video_star',
+             'share', 'shares', 'video_share']
+    
+    if len(video_get_by_id(video_id)) == 0:
+        return ErrorCode.MONGODB_VIDEO_NOT_FOUND
+
+    if video_cnt not in valid:
+        return ErrorCode.MONGODB_INVALID_VIDEO_CNT_PARAM
+    
+    id = bson.ObjectId(video_id)
+
+    if video_cnt == 'view' or video_cnt == 'views' or video_cnt == 'video_view':
+        Video.objects(_id=id).update(inc__video_view=1)
+    if video_cnt == 'comment' or video_cnt == 'comments' or video_cnt == 'video_comment':
+        Video.objects(_id=id).update(inc__video_comment=1)
+    if video_cnt == 'like' or video_cnt == 'likes' or video_cnt == 'video_like':
+        Video.objects(_id=id).update(inc__video_like=1)
+    if video_cnt == 'dislike' or video_cnt == 'dislikes' or video_cnt == 'video_dislike':
+        Video.objects(_id=id).update(inc__video_dislike=1)
+    if video_cnt == 'star' or video_cnt == 'stars' or video_cnt == 'video_star':
+        Video.objects(_id=id).update(inc__video_star=1)
+    if video_cnt == 'share' or video_cnt == 'shares' or video_cnt == 'video_share':
+        Video.objects(_id=id).update(inc__video_share=1)
+
+
+def video_cnt_decr_by_one(video_id: str, video_cnt: str):
+    """
+    This is for decrementing total number of views/comments/likes/dislikes/stars/shares
+    :param video_cnt can choose from (view/comment/like/dislike/star/share)
+    """
+    valid = ['view', 'views', 'video_view',
+             'comment', 'comments', 'video_comment',
+             'like', 'likes', 'video_like',
+             'dislike', 'dislikes', 'video_dislike',
+             'star', 'stars', 'video_star',
+             'share', 'shares', 'video_share']
+    
+    videos = video_get_by_id(video_id)
+    if len(videos) == 0:
+        return ErrorCode.MONGODB_VIDEO_NOT_FOUND
+
+    if video_cnt not in valid:
+        return ErrorCode.MONGODB_INVALID_VIDEO_CNT_PARAM
+    
+    id = bson.ObjectId(video_id)
+    video = videos[0].to_dict()
+
+    if video_cnt == 'view' or video_cnt == 'views' or video_cnt == 'video_view':
+        if video['video_view'] <= 0:
+            return ErrorCode.MONGODB_VIDEO_CNT_ZERO
+        Video.objects(_id=id).update(dec__video_view=1)
+    if video_cnt == 'comment' or video_cnt == 'comments' or video_cnt == 'video_comment':
+        if video['video_comment'] <= 0:
+            return ErrorCode.MONGODB_VIDEO_CNT_ZERO
+        Video.objects(_id=id).update(dec__video_comment=1)
+    if video_cnt == 'like' or video_cnt == 'likes' or video_cnt == 'video_like':
+        if video['video_like'] <= 0:
+            return ErrorCode.MONGODB_VIDEO_CNT_ZERO
+        Video.objects(_id=id).update(dec__video_like=1)
+    if video_cnt == 'dislike' or video_cnt == 'dislikes' or video_cnt == 'video_dislike':
+        if video['video_dislike'] <= 0:
+            return ErrorCode.MONGODB_VIDEO_CNT_ZERO
+        Video.objects(_id=id).update(dec__video_dislike=1)
+    if video_cnt == 'star' or video_cnt == 'stars' or video_cnt == 'video_star':
+        if video['video_star'] <= 0:
+            return ErrorCode.MONGODB_VIDEO_CNT_ZERO
+        Video.objects(_id=id).update(dec__video_star=1)
+    if video_cnt == 'share' or video_cnt == 'shares' or video_cnt == 'video_share':
+        if video['video_share'] <= 0:
+            return ErrorCode.MONGODB_VIDEO_CNT_ZERO
+        Video.objects(_id=id).update(dec__video_share=1)
+
+
 def video_update(video_id: str, **kw):
     """
     :param video_title (optional): video's new title
@@ -98,15 +180,7 @@ def video_update(video_id: str, **kw):
     :param video_category (optional): array of video's new categories
     :param video_description (optional): video's new description
     :param video_language (optional): video's new language
-    :param video_status (optional): video's new status, default: public
-    
-    :param video_view (optional): new total number of video's views, default = 0
-    :param video_comment (optional): new total number of video's comments, default = 0
-    :param video_like (optional): new total number of video's likes, default = 0
-    :param video_dislike (optional): new total number of video's dislikes, default = 0
-    :param video_star (optional): new total number of video's stars, default = 0
-    :param video_share (optional): new total number of video's shares, default = 0
-    
+    :param video_status (optional): video's new status, default: public    
     :param video_thumbnail_uri (optional): video's new thumbnail uri
     :param video_thumbnail_type (optional): video's new thumbnail type
     :param video_uri_low (optional): video's new final uri (480p low resolution)
@@ -155,6 +229,7 @@ def video_update(video_id: str, **kw):
         Video.objects(_id=id).update(set__video_uri__video_mid=kw['video_uri_mid'])
     if 'video_uri_high' in kw:
         Video.objects(_id=id).update(set__video_uri__video_high=kw['video_uri_high'])
+
 
 def video_delete(video_id: str):
     """
