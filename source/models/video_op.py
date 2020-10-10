@@ -14,7 +14,7 @@ db = MongoEngine()
 # VideoOp Model
 
 class VideoOp(db.Document):
-    _id = db.StringField(max_length=100, required=True)
+    _id = db.StringField()
     user_id = db.StringField(max_length=100, required=True)
     video_id = db.StringField(max_length=100, required=True)
     process = db.IntField(required=False, default=0)
@@ -22,14 +22,13 @@ class VideoOp(db.Document):
     like = db.BooleanField(default=False)
     dislike = db.BooleanField(default=False)
     star = db.BooleanField(default=False)
-    history_date = db.DateTimeField(required=False)
+    process_date = db.DateTimeField(required=False)
     comment_date = db.DateTimeField(required=False)
     like_date = db.DateTimeField(required=False)
     dislike_date = db.DateTimeField(required=False)
     star_date = db.DateTimeField(required=False)
     
-    # to_json() is also supported
-    
+    # Convert to dict
     def to_dict(self):
         video_op_dict = {}
         video_op_dict['video_op_id'] = str(self._id)
@@ -40,7 +39,7 @@ class VideoOp(db.Document):
         video_op_dict['like'] = self.like
         video_op_dict['dislike'] = self.dislike
         video_op_dict['star'] = self.star
-        video_op_dict['history_date'] = self.history_date
+        video_op_dict['process_date'] = self.process_date
         video_op_dict['comment_date'] = self.comment_date
         video_op_dict['like_date'] = self.like_date
         video_op_dict['dislike_date'] = self.dislike_date
