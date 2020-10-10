@@ -46,10 +46,6 @@ class User(db.Document):
     user_recent_login = db.ListField(db.EmbeddedDocumentField('LoginDetail'))
     user_following = db.ListField(db.StringField())
     user_follower = db.ListField(db.StringField())
-
-    meta = {'collection': 'user'}
-
-    # to_json() is also supported
     
     def to_dict(self):
         user_dict = {}
@@ -68,22 +64,22 @@ class User(db.Document):
         user_detail_dict['user_state'] = self.user_detail.state or None
         user_detail_dict['user_country'] = self.user_detail.country or None
         user_detail_dict['user_zip'] = self.user_detail.zip or None
-
+        
         user_thumbnail_dict['user_thumbnail_uri'] = self.user_thumbnail.thumbnail_uri or None
         user_thumbnail_dict['user_thumbnail_type'] = self.user_thumbnail.thumbnail_type or None
-
+        
         for login in self.user_recent_login:
             temp_login_detail = {}
             temp_login_detail['login_ip'] = login.login_ip
             temp_login_detail['login_time'] = login.login_time
-            user_recent_login_array.append(temp_login_detail)
+            user_recent_login_array.append(temp_login_detail)        
         
         for following in self.user_following:
             user_following_array.append(following)
-
+        
         for follower in self.user_follower:
             user_follower_array.append(follower)
-
+        
         user_dict['user_id'] = str(self._id)
         user_dict['user_email'] = self.user_email
         user_dict['user_name'] = self.user_name
@@ -95,6 +91,7 @@ class User(db.Document):
         user_dict['user_recent_login'] = user_recent_login_array
         user_dict['user_following'] = user_following_array
         user_dict['user_follower'] = user_follower_array
+        
         return user_dict
 
     @property
