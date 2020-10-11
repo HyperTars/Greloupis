@@ -23,7 +23,7 @@ unit:	FORCE
 	# test
 
 lint:	FORCE
-	$(LINTER) $(SRC_DIR)/*.py --exit-zero --ignore=W191,E265
+	$(LINTER) $(SRC_DIR)/*.py --exit-zero --ignore=W191,E265,F405
 
 test:	FORCE
 	python $(SRC_DIR)/test.py

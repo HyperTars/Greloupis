@@ -1,4 +1,4 @@
-def service_auth():
+def service_auth(Config):
     return
 
 

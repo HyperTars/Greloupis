@@ -4,8 +4,10 @@ import multiprocessing
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
+
 class config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'this is a secret string'
+
     @staticmethod
     def init_app(app):
         pass
@@ -18,7 +20,9 @@ class DevConfig(object):
     DEBUG = True
 
     # Searching Config
-    IGNORE_CASE = True
+    SEARCH_IGNORE_CASE = True
+    SEARCH_EXACT = False
+    SEARCH_LIKE = True
 
     # Mongo DB
     MONGO_ENDPOINT = "mongodb+srv://devops:DevOps@mongodbcluster.v4vtj.mongodb.net/online_video_platform?retryWrites=true&w=majority"
@@ -30,7 +34,7 @@ class DevConfig(object):
     MONGO_TABLE_USER = "user"
     MONGO_TABLE_VIDEO = "video"
     MONGO_TABLE_VIDEO_OP = "video_op"
-    
+
     # Config Flask
     FLASK_SERVER_NAME = 'localhost:8000'
     FLASK_DEBUG = True
@@ -54,7 +58,9 @@ class TestConfig(object):
     DEBUG = True
 
     # Searching Config
-    IGNORE_CASE = True
+    SEARCH_IGNORE_CASE = True
+    SEARCH_EXACT = False
+    SEARCH_LIKE = True
 
     # Mongo DB
     MONGO_ENDPOINT = "mongodb+srv://devops:DevOps@mongodbcluster.v4vtj.mongodb.net/online_video_platform?retryWrites=true&w=majority"
@@ -66,7 +72,7 @@ class TestConfig(object):
     MONGO_TABLE_USER = "user"
     MONGO_TABLE_VIDEO = "video"
     MONGO_TABLE_VIDEO_OP = "video_op"
-    
+
     # Config Flask
     FLASK_SERVER_NAME = 'localhost:8000'
     FLASK_DEBUG = True
@@ -91,13 +97,18 @@ class ProdConfig(object):
     BACKLOG = 64
     TIMEOUT = 30
 
+    # Searching Config
+    SEARCH_IGNORE_CASE = True
+    SEARCH_EXACT = False
+    SEARCH_LIKE = True
+
     # Debug Mode
     DEBUG = False
 
     # DB URI
     MONGO_ENDPOINT = "mongodb+srv://devops:DevOps@mongodbcluster.v4vtj.mongodb.net/online_video_platform?retryWrites=true&w=majority"
     MONGO_DATABASE = "online_video_platform"
-    
+
     # Config Flask
     FLASK_SERVER_NAME = 'localhost:8888'
     FLASK_DEBUG = False

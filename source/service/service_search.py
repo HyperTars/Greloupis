@@ -4,33 +4,29 @@ from source.config import *
 from source.db.mongo import get_db
 from source.db.query_user import *
 from source.db.query_video import *
+from source.utils.util_pattern import *
 
 
-def service_search_user(**kw):
-    db = get_db(DevConfig)
+def service_search_user(Config, **kw):
+    db = get_db(Config)
     res_ret = []
     res_search = None
 
     # Search configs
-    ignore_case = DevConfig.IGNORE_CASE
-    exact = False
-    if 'ignore_case' in kw and kw['ignore_case'] == False:
-        ignore_case = False
-    if 'exact' in kw and kw['exact'] == True:
-        exact = True
+    if 'ignore_case' not in kw:
+        kw['ignore_case'] = Config.SEARCH_IGNORE_CASE
+    if 'exact' not in kw:
+        kw['exact'] = Config.SEARCH_EXACT
 
     # Search
-    if 'name' in kw:
-        res_search = service_search_user_by_pattern(name=kw['name'], ignore_case=ignore_case, exact=exact)
-    elif 'email' in kw:
-        res_search = service_search_user_by_pattern(email=kw['email'], ignore_case=ignore_case, exact=exact)
-    else:
-        return ErrorCode.MONGODB_INVALID_SEARCH_PARAM
+    # res_search = service_search_video_by_keyword(**kw)
+    res_search = service_search_user_by_pattern(**kw)
+    # res_search = query_user_search_aggregate(**kw)
 
     # Re-construct return data type
     for res_s in res_search:
-        if 'json' in kw and kw['json'] == True \
-                or 'dict' in kw and kw['dict'] == False \
+        if 'json' in kw and kw['json'] is True \
+                or 'dict' in kw and kw['dict'] is False \
                 or 'type' in kw and kw['type'] == "json":
             res_ret.append(res_s.to_json())
         else:
@@ -39,18 +35,16 @@ def service_search_user(**kw):
     return res_ret
 
 
-def service_search_video(**kw):
-    db = get_db(DevConfig)
+def service_search_video(Config, **kw):
+    db = get_db(Config)
     res_ret = []
     res_search = None
 
     # Search configs
-    ignore_case = DevConfig.IGNORE_CASE
-    exact = False
-    if 'ignore_case' in kw and kw['ignore_case'] == False:
-        ignore_case = False
-    if 'exact' in kw and kw['exact'] == True:
-        exact = True
+    if 'ignore_case' not in kw:
+        kw['ignore_case'] = Config.SEARCH_IGNORE_CASE
+    if 'exact' not in kw:
+        kw['exact'] = Config.SEARCH_EXACT
 
     # Search
     # TODO: Pattern & Case Ignore & Aggregation Pipeline
@@ -87,30 +81,11 @@ def service_search_user_by_keyword(**kw):
 
 
 def service_search_user_by_pattern(**kw):
-    # Search by pattern (can ignore case)
-    pattern_string = ""
-    ignore_case = True
-
-    # Construct pattern string
-    if 'name' in kw:
-        pattern_string = kw['name']
-    elif 'email' in kw:
-        pattern_string = kw['email']
-
-    # Pattern flags
-    if ('like' in kw and kw['like'] is False) or ('exact' in kw and kw['exact'] is True):
-        pattern_string = '\\b' + pattern_string + '\\b'
-    else:
-        pattern_string = '.*' + pattern_string + '.*'
-    # TODO: allow typo, allow slice
-
-    # Compile pattern string
-    pattern = re.compile(pattern_string)
-    if 'ignore_case' in kw and kw['ignore_case'] == True:
-        pattern = re.compile(pattern_string, re.IGNORECASE)
+    pattern = util_pattern_compile(**kw)
 
     if 'name' in kw:
         return query_user_search_pattern(pattern_name=pattern)
+
     elif 'email' in kw:
         return query_user_search_pattern(pattern_email=pattern)
 
@@ -148,8 +123,30 @@ def service_search_video_by_keyword(**kw):
         return query_video_search_keyword(kw['title'])
 
 
-def service_search_video_by_pattern():
-    res_ret = []
+def service_search_video_by_pattern(**kw):
+    # Search by pattern (can ignore case)
+    pattern_string = ""
+    ignore_case = True
+
+    # Construct pattern string
+    if 'title' in kw:
+        pattern_string = kw['title']
+    # TODO: add more attr search support
+    else:
+        return ErrorCode.MONGODB_INVALID_SEARCH_PARAM
+    
+    # Pattern flags
+    if ('like' in kw and kw['like'] is False) or ('exact' in kw and kw['exact'] is True):
+        pattern_string = '\\b' + pattern_string + '\\b'
+    else:
+        pattern_string = '.*' + pattern_string + '.*'
+    # TODO: allow typo, allow slice
+
+    # Compile pattern string
+    pattern = re.compile(pattern_string)
+    if 'ignore_case' in kw and kw['ignore_case'] == True:
+        pattern = re.compile(pattern_string, re.IGNORECASE)
+
     return res_ret
 
 

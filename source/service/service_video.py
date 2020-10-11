@@ -1,15 +1,14 @@
-def service_video_upload():
+def service_video_upload(Config):
     return
 
 
-def service_video_info():
+def service_video_info(Config):
     return
 
 
-def service_video_update():
+def service_video_update(Config):
     return
 
 
-def service_video_delete():
+def service_video_delete(Config):
     return
-
