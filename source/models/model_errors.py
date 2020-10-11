@@ -11,6 +11,7 @@ class Error(db.Document):
     response = db.DictField(required=True)
     date = db.DateTimeField(default=datetime.datetime.now(), required=True)
 
+
 class ErrorCode(Enum):
     # Database 3 Series
     MONGODB_CONNECTION_FAILURE = {"3000": "MongoDB Connection Failure"}
@@ -20,7 +21,7 @@ class ErrorCode(Enum):
     MONGODB_USER_NAME_TAKEN = {"3104": "MongoDB Error: User Name Already Taken"}
     MONGODB_VIDEO_TITLE_TAKEN = {"3105": "MongoDB Error: Video Title Already Taken"}
     MONGODB_THUMBNAIL_MISS_ONE = {"3106": "MongoDB Error: Thumbnail missing one argument, must provide both"}
-    MONGODB_EXPECT_LIST = {"3107": "MongoDB Error: type <list> expected"}
+    MONGODB_LIST_EXPECTED = {"3107": "MongoDB Error: type <list> expected"}
     MONGODB_INVALID_VIDEO_CNT_PARAM = {"3108": "MongoDB Error: Invalid Video Count Param"}
     MONGODB_VIDEO_CNT_ZERO = {"3109": "MongoDB Error: Video Count Param Already Down To Zero"}
     MONGODB_INVALID_SEARCH_PARAM = {"3110": "MongoDB Error: Invalid Searching Param"}
@@ -35,6 +36,7 @@ class ErrorCode(Enum):
     MONGODB_FOLLOW_REL_EXISTS = {"3119": "MongoDB Error: Following Relationship Already Exists"}
     MONGODB_FOLLOWER_NOT_FOUND = {"3120": "MongoDB Error: User Follower Not Found"}
     MONGODB_FOLLOWED_NOT_FOUND = {"3121": "MongoDB Error: User To Be Followed Not Found"}
+    MONGODB_RE_PATTERN_EXPECTED = {"3122": "MongoDB Error: type <re:Pattern> Expected"}
 
     def get_code(self):
         """
@@ -56,7 +58,7 @@ if __name__ == '__main__':
     code = ErrorCode.MONGODB_CONNECTION_FAILURE.get_code()
     print("code:", code)
     # print error message
-    msg =  ErrorCode.MONGODB_CONNECTION_FAILURE.get_msg()
+    msg = ErrorCode.MONGODB_CONNECTION_FAILURE.get_msg()
     print("msg:", msg)
 
     print()

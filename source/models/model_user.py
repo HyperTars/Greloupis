@@ -68,9 +68,7 @@ class User(db.Document):
         user_thumbnail_dict['user_thumbnail_type'] = self.user_thumbnail.thumbnail_type or None
 
         for login in self.user_recent_login:
-            temp_login_detail = {}
-            temp_login_detail['login_ip'] = login.login_ip
-            temp_login_detail['login_time'] = login.login_time
+            temp_login_detail = {'login_ip': login.login_ip, 'login_time': login.login_time}
             user_recent_login_array.append(temp_login_detail)
 
         for following in self.user_following:

@@ -25,19 +25,9 @@ class VideoOp(db.Document):
 
     # Convert to dict
     def to_dict(self):
-        video_op_dict = {}
-        video_op_dict['video_op_id'] = str(self._id)
-        video_op_dict['user_id'] = self.user_id
-        video_op_dict['video_id'] = self.video_id
-        video_op_dict['process'] = self.process
-        video_op_dict['comment'] = self.comment
-        video_op_dict['like'] = self.like
-        video_op_dict['dislike'] = self.dislike
-        video_op_dict['star'] = self.star
-        video_op_dict['process_date'] = self.process_date
-        video_op_dict['comment_date'] = self.comment_date
-        video_op_dict['like_date'] = self.like_date
-        video_op_dict['dislike_date'] = self.dislike_date
-        video_op_dict['star_date'] = self.star_date
+        video_op_dict = {'video_op_id': str(self._id), 'user_id': self.user_id, 'video_id': self.video_id,
+                         'process': self.process, 'comment': self.comment, 'like': self.like, 'dislike': self.dislike,
+                         'star': self.star, 'process_date': self.process_date, 'comment_date': self.comment_date,
+                         'like_date': self.like_date, 'dislike_date': self.dislike_date, 'star_date': self.star_date}
 
         return video_op_dict
