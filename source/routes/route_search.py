@@ -68,5 +68,4 @@ class RouteSearchUser(Resource):
                                                  ignore_case=True, exact=False, format="json")
 
         # search_result_dict = search_user(email=keyword, ignore_case=True, format="dict", exact=True)
-        search_result_json = service_search_user(conf=config['default'], name=keyword, ignore_case=True, format="json")
         return api_response(search_result_json, 200)
