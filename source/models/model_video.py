@@ -3,17 +3,12 @@
 # mongoengine-0.20.0
 
 from flask_mongoengine import MongoEngine
+from source.models.model_base import Thumbnail
 
 db = MongoEngine()
 
+
 # Video Models
-
-
-class Thumbnail(db.EmbeddedDocument):
-    thumbnail_uri = db.StringField(max_length=200, required=True)
-    thumbnail_type = db.StringField(max_length=50, required=True)
-
-
 class VideoURI(db.EmbeddedDocument):
     video_low = db.StringField(max_length=200, default="")
     video_mid = db.StringField(max_length=200, default="")

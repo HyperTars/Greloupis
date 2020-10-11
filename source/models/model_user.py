@@ -6,6 +6,7 @@ from flask_mongoengine import MongoEngine
 from flask import current_app
 from werkzeug.security import generate_password_hash, check_password_hash
 from itsdangerous import TimedJSONWebSignatureSerializer
+from source.models.model_base import Thumbnail
 
 db = MongoEngine()
 
@@ -21,11 +22,6 @@ class UserDetail(db.EmbeddedDocument):
     state = db.StringField(max_length=50, default="")
     country = db.StringField(max_length=50, default="")
     zip = db.StringField(max_length=20, default="")
-
-
-class Thumbnail(db.EmbeddedDocument):
-    thumbnail_uri = db.StringField(max_length=200, required=True, default="")
-    thumbnail_type = db.StringField(max_length=50, required=True, default="default")
 
 
 class LoginDetail(db.EmbeddedDocument):
