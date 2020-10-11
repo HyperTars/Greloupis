@@ -1,0 +1,13 @@
+language: python
+before_install:
+  - sudo apt-get make
+  - make dev_env
+# install:
+# before_script:
+script: make run
+# after_failure:
+# after_success:
+# [OPTIONAL] before_deploy
+# [OPTIONAL] deploy
+# [OPTIONAL] after_deploy
+# after_script
