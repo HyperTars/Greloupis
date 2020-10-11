@@ -24,7 +24,7 @@ def search_user(**kw):
     elif 'email' in kw:
         res_search = search_user_by_pattern(email=kw['email'], ignore_case=ignore_case, exact=exact)
     else:
-        ErrorCode.MONGODB_INVALID_SEARCH_PARAM
+        return ErrorCode.MONGODB_INVALID_SEARCH_PARAM
 
     # Re-construct return data type
     for res_s in res_search:
