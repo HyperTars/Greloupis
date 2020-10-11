@@ -238,6 +238,33 @@ def video_delete(video_id: str):
     """
     videos = video_get_by_id(video_id)
     if len(videos) == 0:
-        # print("No such video")
-        return -1  # TODO: error_code
+        return ErrorCode.MONGODB_VIDEO_NOT_FOUND
     return Video.objects(_id=bson.ObjectId(video_id)).delete()
+
+
+def video_search_keyword(title: str):
+    """
+    :param title: string of video title to be searched
+    :return: array of searching results (Video Model)
+    """
+    return Video.objects.filter(video_title__contains=title)
+
+
+def video_search_aggregate(aggr: dict):
+    """
+    :param aggr: dict of searching param
+    :return: array of searching results in dict
+    """
+    return list(Video.objects.aggregate(aggr))
+
+
+def video_search_pattern(**kw):
+    """
+    :param pattern_title (optional): search title pattern
+    :return: array of searching results (Video Model)
+    """
+    if 'pattern_title' in kw:
+        return Video.objects(video_title=kw['pattern_title'])
+    # TODO: multi keyword matching?
+
+    return ErrorCode.MONGODB_INVALID_SEARCH_PARAM

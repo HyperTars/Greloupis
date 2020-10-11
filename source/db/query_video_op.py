@@ -3,6 +3,7 @@ from source.db.query_user import user_get_by_id
 from source.db.query_video import video_get_by_id
 import bson
 import datetime
+from source.models.errors import ErrorCode
 
 
 # VideoOp CRUD
@@ -14,16 +15,13 @@ def video_op_create(user_id: str, video_id: str, init_time=datetime.datetime.utc
     :return VideoOp model if succeeded, -1 if no such user, -2 if no such video, -3 if VideoOp exists
     """
     if len(user_get_by_id(user_id)) == 0:
-        # print("No such user")
-        return -1  # TODO: error_code
+        return ErrorCode.MONGODB_USER_NOT_FOUND
 
     if len(video_get_by_id(video_id)) == 0:
-        # print("No such video")
-        return -2  # TODO: error_code
+        return ErrorCode.MONGODB_VIDEO_NOT_FOUND
 
     if len(video_op_get_by_user_video(user_id, video_id)) > 0:
-        # print("video_op exists")
-        return -3  # TODO: error_code
+        return ErrorCode.MONGODB_VIDEOOP_EXISTS
 
     video_op = VideoOp(user_id=user_id, video_id=video_id, process=0, comment="", like=False,
                        dislike=False, star=False, process_date=init_time, comment_date=init_time,
@@ -74,7 +72,7 @@ def video_op_update_process(op_id: str, process: int, process_date=datetime.date
     """
     if len(video_op_get_by_op_id(op_id)) == 0:
         # No such video op
-        return -1  # TODO: error_code
+        return ErrorCode.MONGODB_VIDEOOP_NOT_FOUND
 
     return VideoOp.objects(_id=bson.ObjectId(op_id)).update(process=process, process_date=process_date)
 
@@ -88,7 +86,7 @@ def video_op_update_comment(op_id: str, comment: str, comment_date=datetime.date
     """
     if len(video_op_get_by_op_id(op_id)) == 0:
         # No such video op
-        return -1  # TODO: error_code
+        return ErrorCode.MONGODB_VIDEOOP_NOT_FOUND
 
     return VideoOp.objects(_id=bson.ObjectId(op_id)).update(comment=comment, comment_date=comment_date)
 
@@ -102,7 +100,7 @@ def video_op_update_like(op_id: str, like: bool, like_date=datetime.datetime.utc
     """
     if len(video_op_get_by_op_id(op_id)) == 0:
         # No such video op
-        return -1  # TODO: error_code
+        return ErrorCode.MONGODB_VIDEOOP_NOT_FOUND
 
     return VideoOp.objects(_id=bson.ObjectId(op_id)).update(like=like, like_date=like_date)
 
@@ -116,7 +114,7 @@ def video_op_update_dislike(op_id: str, dislike: bool, dislike_date=datetime.dat
     """
     if len(video_op_get_by_op_id(op_id)) == 0:
         # No such video op
-        return -1  # TODO: error_code
+        return ErrorCode.MONGODB_VIDEOOP_NOT_FOUND
 
     return VideoOp.objects(_id=bson.ObjectId(op_id)).update(dislike=dislike, dislike_date=dislike_date)
 
@@ -130,6 +128,6 @@ def video_op_update_star(op_id: str, star: bool, star_date=datetime.datetime.utc
     """
     if len(video_op_get_by_op_id(op_id)) == 0:
         # No such video op
-        return -1  # TODO: error_code
+        return ErrorCode.MONGODB_VIDEOOP_NOT_FOUND
 
     return VideoOp.objects(_id=bson.ObjectId(op_id)).update(star=star, star_date=star_date)

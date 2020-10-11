@@ -25,7 +25,17 @@ class ErrorCode(Enum):
     MONGODB_VIDEO_CNT_ZERO = {"3109": "MongoDB Error: Video Count Param Already Down To Zero"}
     MONGODB_INVALID_SEARCH_PARAM = {"3110": "MongoDB Error: Invalid Searching Param"}
     MONGODB_EMPTY_PARAM = {"3111": "MongoDB Error: Empty Input Param"}
-    
+    MONGODB_VIDEOOP_EXISTS = {"3112": "MongoDB Error: Video Op Alrady Exists"}
+    MONGODB_USER_EMAIL_TAKEN = {"3113": "MongoDB Error: User Email Already Taken"}
+    MONGODB_INVALID_USER_STATUS = {"3114": "MongoDB Error: Invalid User Status"}
+    MONGODB_UPDATE_SAME_NAME = {"3115": "MongoDB Error: Update To Same Name"}
+    MONGODB_UPDATE_SAME_PASS = {"3116": "MongoDB Error: Update To Same Password"}
+    MONGODB_INVALID_THUMBNAIL = {"3117": "MongoDB Error: Invalid Thumbnail Type"}
+    MONGODB_LOGIN_INFO_EXISTS = {"3118": "MongoDB Error: Login Info Already Exists"}
+    MONGODB_FOLLOW_REL_EXISTS = {"3119": "MongoDB Error: Following Relationship Already Exists"}
+    MONGODB_FOLLOWER_NOT_FOUND = {"3120": "MongoDB Error: User Follower Not Found"}
+    MONGODB_FOLLOWED_NOT_FOUND = {"3121": "MongoDB Error: User To Be Followed Not Found"}
+
     def get_code(self):
         """
         retrive error code based on enum key
