@@ -26,7 +26,7 @@ lint:	FORCE
 	$(LINTER) $(SRC_DIR)/*.py --exit-zero --ignore=W191,E265,F405
 
 test:	FORCE
-	python $(SRC_DIR)/test.py
+	python -m $(SRC_DIR).test
 
 dev_env:	FORCE
 	pip install -r $(REQ_DIR)/requirements-dev.txt

@@ -10,6 +10,8 @@ from source.service.service_search import *
 from source.config import *
 from source.utils.util_json import *
 
+import logging
+
 search = Namespace('search', description='Search APIs')
 
 user_response_list = search.model(name='ApiResponseWithUserList', model={
@@ -34,7 +36,10 @@ class RouteSearchVideo(Resource):
         """
             Search videos by keyword
         """
-        keyword = request.args.get('keyword')
+        req_dict = util_serializer_request(request.args)
+        if 'keyword' not in req_dict:
+            return {ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_code():
+                    ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg()}, 200, None
 
         # search_result_dict = search_video(title=keyword, ignore_case=True, format="dict", exact=True)
         search_result_json = service_search_video(conf=config['default'], title=keyword,
@@ -52,7 +57,15 @@ class RouteSearchUser(Resource):
         """
             Search users by keyword
         """
-        keyword = request.args.get('keyword')
+        req_dict = util_serializer_request(request.args)
+        # logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+        # logging.debug(type(request.args))
+
+        if 'keyword' not in req_dict:
+            return {ErrorCode.ROUTE_INVALID_REQUEST_PARAM}, 200, None
+
+        search_result_json = service_search_user(conf=config['default'], name=req_dict['keyword'],
+                                                 ignore_case=True, exact=False, format="json")
 
         # search_result_dict = search_user(email=keyword, ignore_case=True, format="dict", exact=True)
         search_result_json = service_search_user(conf=config['default'], name=keyword, ignore_case=True, format="json")
