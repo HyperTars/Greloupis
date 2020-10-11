@@ -38,37 +38,37 @@ def test_raw():
 #############
 def test_user():
     print("=============== test: update user thumbnail ===============\n")
-    print(query_user_update_thumbnail("5f826e97e6c6dfa87b7ffde4", user_thumbnail_uri="s3.amazon.com/aidjasjds",
+    print(query_user_update_thumbnail("5f808f79c2ac20387eb8f3c9", user_thumbnail_uri="s3.amazon.com/aidjasjds",
                                       user_thumbnail_type="origin"))  # invalid type error
-    print(query_user_update_thumbnail("5f826e97e6c6dfa87b7ffde4", user_thumbnail_uri="s3.amazon.com/aidjasjds",
-                                      user_thumbnail_type="default"))  # invalid type error
+    print(query_user_update_thumbnail("5f808f79c2ac20387eb8f3c9", user_thumbnail_uri="s3.amazon.com/aidjasjds",
+                                      user_thumbnail_type="default"))
 
     print("=============== test: update user detail ===============\n")
-    print(query_user_update_details("5f826e97e6c6dfa87b7ffde4", user_first_name="fffff", user_last_name="kkk",
+    print(query_user_update_details("5f808f79c2ac20387eb8f3c9", user_first_name="fffff", user_last_name="kkk",
                                     user_phone="+1313123123", user_zip="11201"))
 
     print("=============== test: update user status ===============\n")
-    print(query_user_update_status("5f826e97e6c6dfa87b7ffde4", "active"))  # invalid status
-    print(query_user_update_status("5f826e97e6c6dfa87b7ffde4", "public"))  # success
-    print(query_user_update_status("5f826e97e6c6dfa87b7ffde4", "private"))  # success
+    print(query_user_update_status("5f808f79c2ac20387eb8f3c9", "active"))  # invalid status
+    print(query_user_update_status("5f808f79c2ac20387eb8f3c9", "public"))  # success
+    print(query_user_update_status("5f808f79c2ac20387eb8f3c9", "private"))  # success
 
     print("=============== test: update user name ===============\n")
-    print(query_user_update_name("5f826e97e6c6dfa87b7ffde4", "test4"))  # name conflict
-    print(query_user_update_name("5f826e97e6c6dfa87b7ffde4", "test2"))  # same as current conflict
-    print(query_user_update_name("5f826e97e6c6dfa87b7ffde4", "test1"))  # success
-    print(query_user_update_name("5f826e97e6c6dfa87b7ffde4", "test2"))  # change back
+    print(query_user_update_name("5f80bef29342f187a0fa2d70", "test4"))  # name conflict
+    print(query_user_update_name("5f80bef29342f187a0fa2d70", "test2"))  # same as current conflict
+    print(query_user_update_name("5f80bef29342f187a0fa2d70", "test1"))  # success
+    print(query_user_update_name("5f80bef29342f187a0fa2d70", "test2"))  # change back
 
     print("=============== test: update user password ===============\n")
-    print(query_user_update_password("5f826e97e6c6dfa87b7ffde4", "testpasscode"))  # same as current conflict
-    print(query_user_update_password("5f826e97e6c6dfa87b7ffde4", "test77888"))  # success
-    print(query_user_update_password("5f826e97e6c6dfa87b7ffde4", "testpasscode"))  # change back
+    print(query_user_update_password("5f80bef29342f187a0fa2d70", "testpasscode"))  # same as current conflict
+    print(query_user_update_password("5f80bef29342f187a0fa2d70", "test77888"))  # success
+    print(query_user_update_password("5f80bef29342f187a0fa2d70", "testpasscode"))  # change back
 
     print("=============== test: add user login ===============\n")
-    print(query_user_add_login("5f826e97e6c6dfa87b7ffde4", ip="127.0.1.1"))
+    print(query_user_add_login("5f80bef29342f187a0fa2d70", ip="127.0.1.1"))
 
     print("=============== test: add/delete user following ===============\n")
-    print(query_user_add_follow("5f826e97e6c6dfa87b7ffde4", "5f808f045e03b2165ca4275a"))
-    print(query_user_delete_follow("5f826e97e6c6dfa87b7ffde4", "5f808f045e03b2165ca4275a"))
+    print(query_user_add_follow("5f80bef29342f187a0fa2d70", "5f808f045e03b2165ca4275a"))
+    print(query_user_delete_follow("5f80bef29342f187a0fa2d70", "5f808f045e03b2165ca4275a"))
 
     """
     print("=============== test: RAW DATA CONSTRUCT TEST ===============\n")
@@ -82,9 +82,6 @@ def test_user():
               user_follower=["89889a7d98as789d", "1h312jj3h12kj312h"])
     tu.save()
     """
-
-    print("=============== test: delete user ===============\n")
-    print(query_user_delete("5f826e97e6c6dfa87b7ffde4"))
 
     print("=============== test: create user ===============\n")
     print(query_user_create("test2", "test2@email.com", "testpasscode"))
@@ -184,3 +181,4 @@ if __name__ == "__main__":
     test_video_op()
     test_video()
     test_search()
+
