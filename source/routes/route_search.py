@@ -8,6 +8,7 @@ from .route_user import user_info, general_response
 from .route_video import video_info, general_response
 from source.service.service_search import *
 from source.config import *
+from source.utils.util_json import *
 
 search = Namespace('search', description='Search APIs')
 
@@ -38,9 +39,7 @@ class RouteSearchVideo(Resource):
         # search_result_dict = search_video(title=keyword, ignore_case=True, format="dict", exact=True)
         search_result_json = service_search_video(conf=config['default'], title=keyword,
                                                   ignore_case=True, format="json")
-        return search_result_json
-        # return {}, 200, None
-
+        return api_response(search_result_json, 200)
 
 @search.route('/user')
 @search.param('keyword', 'Searching keyword')
@@ -57,5 +56,4 @@ class RouteSearchUser(Resource):
 
         # search_result_dict = search_user(email=keyword, ignore_case=True, format="dict", exact=True)
         search_result_json = service_search_user(conf=config['default'], name=keyword, ignore_case=True, format="json")
-        return search_result_json
-        # return {}, 200, None
+        return api_response(search_result_json, 200)
