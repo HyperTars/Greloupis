@@ -47,7 +47,7 @@ class SearchUser(Resource):
         """
             Search users by keyword
         """
-        search_result_dict = search_user(name=keyword,ignore_case=True, type="dict")
-        search_result_json = search_user(email=keyword, ignore_case=True, type="json", exact=True)
+        search_result_dict = search_user(email=keyword, ignore_case=True, type="dict", exact=True)
+        search_result_json = search_user(name=keyword, ignore_case=True, type="json")
         return search_result_json
         # return {}, 200, None
