@@ -42,7 +42,7 @@ class RouteSearchVideo(Resource):
                     ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg()}, 200, None
 
         # search_result_dict = search_video(title=keyword, ignore_case=True, format="dict", exact=True)
-        search_result_json = service_search_video(conf=config['default'], title=keyword,
+        search_result_json = service_search_video(conf=config['default'], title=req_dict['keyword'],
                                                   ignore_case=True, format="json")
         return api_response(search_result_json, 200)
 
