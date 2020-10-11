@@ -1,10 +1,12 @@
 from source.db.query_user import *
 from source.db.query_video import *
 from source.config import *
+from source.db.mongo import get_db
 import re
 import flask_mongoengine
 
 def search_user(**kw):
+    db = get_db(DevConfig)
     res_ret = []
     res_search = None
 
@@ -37,6 +39,7 @@ def search_user(**kw):
 
 
 def search_video(**kw):
+    db = get_db(DevConfig)
     res_ret = []
     res_search = None
 
