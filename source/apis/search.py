@@ -33,7 +33,7 @@ class SearchVideo(Resource):
         """
             Search videos by keyword
         """
-        keyword = request.args.get('title')
+        keyword = request.args.get('keyword')
 
         # search_result_dict = search_video(title=keyword, ignore_case=True, format="dict", exact=True)
         search_result_json = service_search_video(conf=config['default'], title=keyword, ignore_case=True, format="json")
@@ -52,7 +52,7 @@ class SearchUser(Resource):
         """
             Search users by keyword
         """
-        keyword = request.args.get('name')
+        keyword = request.args.get('keyword')
 
         # search_result_dict = search_user(email=keyword, ignore_case=True, format="dict", exact=True)
         search_result_json = service_search_user(conf=config['default'], name=keyword, ignore_case=True, format="json")
