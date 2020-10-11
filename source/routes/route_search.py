@@ -46,6 +46,7 @@ class RouteSearchVideo(Resource):
                                                   ignore_case=True, format="json")
         return api_response(search_result_json, 200)
 
+
 @search.route('/user')
 @search.param('keyword', 'Searching keyword')
 @search.response(200, 'Successfully got user search results.', user_response_list)
@@ -62,7 +63,8 @@ class RouteSearchUser(Resource):
         # logging.debug(type(request.args))
 
         if 'keyword' not in req_dict:
-            return {ErrorCode.ROUTE_INVALID_REQUEST_PARAM}, 200, None
+            return {ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_code():
+                    ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg()}, 200, None
 
         search_result_json = service_search_user(conf=config['default'], name=req_dict['keyword'],
                                                  ignore_case=True, exact=False, format="json")
