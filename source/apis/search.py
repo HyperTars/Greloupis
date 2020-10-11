@@ -32,6 +32,7 @@ class SearchVideo(Resource):
         """
         search_result_dict = search_video(title=keyword, type="dict")
         search_result_json = search_video(title=keyword, type="json")
+        print(search_result_json)
         return {}, 200, None
 
 
@@ -45,4 +46,5 @@ class SearchUser(Resource):
     def get(self, keyword):
         search_result_dict = search_user(name=keyword, ignore_case=True, type="dict")
         search_result_json = search_user(email=keyword, ignore_case=True, type="json", exact=True)
-        return {}, 200, None
+        print(search_result_json)
+        return {}, 200, search_result_json

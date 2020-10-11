@@ -17,6 +17,5 @@ def test_search_video():
 
 
 if __name__ == "__main__":
-    db = get_db(TestConfig)
     # test_search_user()
     test_search_video()
