@@ -37,6 +37,7 @@ class ErrorCode(Enum):
     MONGODB_FOLLOWER_NOT_FOUND = {"3120": "MongoDB Error: User Follower Not Found"}
     MONGODB_FOLLOWED_NOT_FOUND = {"3121": "MongoDB Error: User To Be Followed Not Found"}
     MONGODB_RE_PATTERN_EXPECTED = {"3122": "MongoDB Error: type <re:Pattern> Expected"}
+    MONGODB_INVALID_PATTERN_PARAM = {"3123": "MongoDB Error: Pattern Compile Param Not Supported"}
 
     def get_code(self):
         """
