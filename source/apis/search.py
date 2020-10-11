@@ -30,7 +30,8 @@ class SearchVideo(Resource):
         """
             Search videos by keyword
         """
-        search_result = []
+        search_result_dict = search_video(title=keyword, type="dict")
+        search_result_json = search_video(title=keyword, type="json")
         return {}, 200, None
 
 
