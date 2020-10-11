@@ -5,6 +5,7 @@
 ![React](https://img.shields.io/badge/React-16.3.1-blue)
 ![MongoDB](https://img.shields.io/badge/MongoDB-4.4.0-blue)
 
+![build](https://travis-ci.com/HyperTars/Online-Video-Platform.svg?token=btA3ungCKHqWzLxCoxT7&branch=master)
 ### Project Proposal
 - [Proposal](/documents/Proposal.md)
   
