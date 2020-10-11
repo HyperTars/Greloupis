@@ -17,6 +17,9 @@ class DevConfig(object):
     # Debug Mode
     DEBUG = True
 
+    # Searching Config
+    IGNORE_CASE = True
+
     # Mongo DB
     MONGO_ENDPOINT = "mongodb+srv://devops:DevOps@mongodbcluster.v4vtj.mongodb.net/online_video_platform?retryWrites=true&w=majority"
     MONGO_DATABASE = "online_video_platform"
@@ -49,6 +52,9 @@ class TestConfig(object):
     """Config Core Class"""
     # Debug Mode
     DEBUG = True
+
+    # Searching Config
+    IGNORE_CASE = True
 
     # Mongo DB
     MONGO_ENDPOINT = "mongodb+srv://devops:DevOps@mongodbcluster.v4vtj.mongodb.net/online_video_platform?retryWrites=true&w=majority"
