@@ -1,10 +1,20 @@
 language: python
-before_install:
-  - sudo apt-get make
-  - make dev_env
-# install:
+#before_install:
+install: true
 # before_script:
-script: make run
+script:
+  - make dev_env
+  - make run
+deploy:
+  provider: releases
+  api_key: $GITHUB_TOKEN
+  file_glob: true
+  file:
+    - source/*
+  skip_cleanup: true
+  on:
+    tags: true
+
 # after_failure:
 # after_success:
 # [OPTIONAL] before_deploy
