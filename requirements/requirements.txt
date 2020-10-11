@@ -3,5 +3,4 @@ flask
 flask-restx
 flask-mongoengine
 dnspython
-bson
 blinker
