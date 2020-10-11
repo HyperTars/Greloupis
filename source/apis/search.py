@@ -7,6 +7,7 @@ import json
 from .user import user_info, general_response
 from .video import video_info, general_response
 from source.service.service_search import *
+from source.config import *
 
 search = Namespace('search', description='Search APIs')
 
@@ -34,8 +35,8 @@ class SearchVideo(Resource):
         """
         keyword = request.args.get('title')
 
-        # search_result_dict = search_video(title=keyword, ignore_case=True, type="dict", exact=True)
-        search_result_json = service_search_video(title=keyword, ignore_case=True, type="json")
+        # search_result_dict = search_video(title=keyword, ignore_case=True, format="dict", exact=True)
+        search_result_json = service_search_video(conf=config['default'], title=keyword, ignore_case=True, format="json")
         return search_result_json
         # return {}, 200, None
 
@@ -53,7 +54,7 @@ class SearchUser(Resource):
         """
         keyword = request.args.get('name')
 
-        # search_result_dict = search_user(email=keyword, ignore_case=True, type="dict", exact=True)
-        search_result_json = service_search_user(name=keyword, ignore_case=True, type="json")
+        # search_result_dict = search_user(email=keyword, ignore_case=True, format="dict", exact=True)
+        search_result_json = service_search_user(conf=config['default'], name=keyword, ignore_case=True, format="json")
         return search_result_json
         # return {}, 200, None
