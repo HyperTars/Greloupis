@@ -23,6 +23,7 @@ class DevConfig(object):
     SEARCH_IGNORE_CASE = True
     SEARCH_EXACT = False
     SEARCH_LIKE = True
+    DATA_FORMAT = "dict"
 
     # Mongo DB
     MONGO_ENDPOINT = "mongodb+srv://devops:DevOps@mongodbcluster.v4vtj.mongodb.net/online_video_platform?retryWrites=true&w=majority"
@@ -61,6 +62,7 @@ class TestConfig(object):
     SEARCH_IGNORE_CASE = True
     SEARCH_EXACT = False
     SEARCH_LIKE = True
+    DATA_FORMAT = "dict"
 
     # Mongo DB
     MONGO_ENDPOINT = "mongodb+srv://devops:DevOps@mongodbcluster.v4vtj.mongodb.net/online_video_platform?retryWrites=true&w=majority"
@@ -101,6 +103,7 @@ class ProdConfig(object):
     SEARCH_IGNORE_CASE = True
     SEARCH_EXACT = False
     SEARCH_LIKE = True
+    DATA_FORMAT = "dict"
 
     # Debug Mode
     DEBUG = False

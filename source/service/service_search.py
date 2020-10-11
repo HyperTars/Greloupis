@@ -5,18 +5,26 @@ from source.db.mongo import get_db
 from source.db.query_user import *
 from source.db.query_video import *
 from source.utils.util_pattern import *
+from source.utils.util_serializer import *
 
 
-def service_search_user(Config, **kw):
-    db = get_db(Config)
+# Service Search User
+def service_search_user(conf=config['default'], **kw):
+    db = get_db(conf)
     res_ret = []
     res_search = None
 
     # Search configs
     if 'ignore_case' not in kw:
-        kw['ignore_case'] = Config.SEARCH_IGNORE_CASE
+        kw['ignore_case'] = conf.SEARCH_IGNORE_CASE
     if 'exact' not in kw:
-        kw['exact'] = Config.SEARCH_EXACT
+        kw['exact'] = conf.SEARCH_EXACT
+    format = conf.DATA_FORMAT
+    if 'json' in kw and kw['json'] is True \
+            or 'dict' in kw and kw['dict'] is False \
+            or 'format' in kw and kw['format'] == "json":
+        format = "json"
+    # TODO: add typo allowance, etc.
 
     # Search
     # res_search = service_search_video_by_keyword(**kw)
@@ -24,47 +32,45 @@ def service_search_user(Config, **kw):
     # res_search = query_user_search_aggregate(**kw)
 
     # Re-construct return data type
-    for res_s in res_search:
-        if 'json' in kw and kw['json'] is True \
-                or 'dict' in kw and kw['dict'] is False \
-                or 'type' in kw and kw['type'] == "json":
-            res_ret.append(res_s.to_json())
-        else:
-            res_ret.append(res_s.to_dict())
+    res_ret = util_serializer_mongo_results_to_array(res_search, format=format)
 
     return res_ret
 
 
-def service_search_video(Config, **kw):
-    db = get_db(Config)
+# Service Search Video
+def service_search_video(conf=config['default'], **kw):
+    db = get_db(conf)
     res_ret = []
     res_search = None
 
     # Search configs
     if 'ignore_case' not in kw:
-        kw['ignore_case'] = Config.SEARCH_IGNORE_CASE
+        kw['ignore_case'] = conf.SEARCH_IGNORE_CASE
     if 'exact' not in kw:
-        kw['exact'] = Config.SEARCH_EXACT
+        kw['exact'] = conf.SEARCH_EXACT
+    format = conf.DATA_FORMAT
+    if 'json' in kw and kw['json'] is True \
+            or 'dict' in kw and kw['dict'] is False \
+            or 'format' in kw and kw['format'] == "json":
+        format = "json"
+    # TODO: add typo allowance, etc.
 
     # Search
-    # TODO: Pattern & Case Ignore & Aggregation Pipeline
-    if 'title' in kw:
-        res_search = service_search_video_by_keyword(title=kw['title'])
-    else:
-        return ErrorCode.MONGODB_INVALID_SEARCH_PARAM
+    # TODO: Aggregation Pipeline
+    # res_search = service_search_video_by_keyword(**kw)
+    res_search = service_search_video_by_pattern(**kw)
+    # res_search = service_search_video_by_aggregation(**kw)
 
     # Re-construct return data type
-    for res_s in res_search:
-        if 'json' in kw and kw['json'] == True \
-                or 'dict' in kw and kw['dict'] == False \
-                or 'type' in kw and kw['type'] == "json":
-            res_ret.append(res_s.to_json())
-        else:
-            res_ret.append(res_s.to_dict())
+    # Re-construct return data type
+    res_ret = util_serializer_mongo_results_to_array(res_search, format=format)
 
     return res_ret
 
 
+###########
+# Helpers #
+###########
 def service_search_user_by_keyword(**kw):
     """
     choose one attribute to search one keyword, case sensitive
@@ -92,7 +98,7 @@ def service_search_user_by_pattern(**kw):
     return ErrorCode.MONGODB_INVALID_SEARCH_PARAM
 
 
-def service_search_user_by_aggregation(pipeline):
+def service_search_user_by_aggregation(**kw):
     # Search by aggregate (can search multi attributes)
     """
     example:
@@ -104,6 +110,7 @@ def service_search_user_by_aggregation(pipeline):
             }
         }
     ]
+    """
     pipeline2 = [
         { "$unwind": "$user_detail" },
         { "$match":
@@ -114,8 +121,8 @@ def service_search_user_by_aggregation(pipeline):
         }
     ]
     print(query_user_search_aggregate(pipeline2))
-    """
-    return query_user_search_aggregate(pipeline)
+
+    return query_user_search_aggregate(pipeline2)
 
 
 def service_search_video_by_keyword(**kw):
@@ -124,33 +131,15 @@ def service_search_video_by_keyword(**kw):
 
 
 def service_search_video_by_pattern(**kw):
-    # Search by pattern (can ignore case)
-    pattern_string = ""
-    ignore_case = True
+    pattern = util_pattern_compile(**kw)
 
-    # Construct pattern string
     if 'title' in kw:
-        pattern_string = kw['title']
-    # TODO: add more attr search support
-    else:
-        return ErrorCode.MONGODB_INVALID_SEARCH_PARAM
-    
-    # Pattern flags
-    if ('like' in kw and kw['like'] is False) or ('exact' in kw and kw['exact'] is True):
-        pattern_string = '\\b' + pattern_string + '\\b'
-    else:
-        pattern_string = '.*' + pattern_string + '.*'
-    # TODO: allow typo, allow slice
+        return query_video_search_pattern(pattern_title=pattern)
 
-    # Compile pattern string
-    pattern = re.compile(pattern_string)
-    if 'ignore_case' in kw and kw['ignore_case'] == True:
-        pattern = re.compile(pattern_string, re.IGNORECASE)
-
-    return res_ret
+    return ErrorCode.MONGODB_INVALID_SEARCH_PARAM
 
 
-def service_search_video_by_aggregation(pipeline):
+def service_search_video_by_aggregation(**kw):
     # Search by aggregate (can search multi attributes)
     """
     example:
@@ -172,4 +161,4 @@ def service_search_video_by_aggregation(pipeline):
         }
     ]
     """
-    return query_video_search_aggregate(pipeline)
+    return query_video_search_aggregate()
