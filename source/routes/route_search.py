@@ -4,8 +4,8 @@ from flask import Flask, request, g, Blueprint
 from flask_restx import Resource, Api, fields, marshal_with, reqparse, Namespace
 import json
 
-from .user import user_info, general_response
-from .video import video_info, general_response
+from .route_user import user_info, general_response
+from .route_video import video_info, general_response
 from source.service.service_search import *
 from source.config import *
 

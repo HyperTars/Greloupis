@@ -4,7 +4,7 @@ from flask import Flask, request, g, Blueprint
 from flask_restx import Resource, Api, fields, marshal_with, reqparse, Namespace
 import json
 
-from .user import thumbnail, general_response, star, comment, like, dislike, \
+from .route_user import thumbnail, general_response, star, comment, like, dislike, \
     star_response_list, comment_response_list, like_response_list, dislike_response_list
 
 video = Namespace('video', description='Video APIs')
