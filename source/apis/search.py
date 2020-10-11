@@ -36,7 +36,7 @@ class SearchVideo(Resource):
         return {}, 200, None
 
 
-@search.route('/user?q=<string:keyword>')
+@search.route('/user/<string:keyword>')
 @search.param('keyword', 'Searching keyword')
 @search.response(200, 'Successfully got user search results.', user_response_list)
 @search.response(400, 'Bad request.', general_response)
@@ -44,7 +44,10 @@ class SearchVideo(Resource):
 class SearchUser(Resource):
     @search.doc(responses={200: 'Successfully got user search results.'})
     def get(self, keyword):
-        search_result_dict = search_user(name=keyword, ignore_case=True, type="dict")
+        """
+            Search users by keyword
+        """
+        search_result_dict = search_user(name=keyword,ignore_case=True, type="dict")
         search_result_json = search_user(email=keyword, ignore_case=True, type="json", exact=True)
-        print(search_result_json)
-        return {}, 200, search_result_json
+        return search_result_json
+        # return {}, 200, None
