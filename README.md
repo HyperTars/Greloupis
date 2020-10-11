@@ -63,7 +63,10 @@ You should be able to visit http://localhost:5000/ now and see a list of APIs of
 
 ### Tests
 - See full [Test Cases](/documents/Test.md)
-
+- Connect to AWS EC2 server:
+    ```bash
+    make connect
+    ```
 
 ### Contributors
   
