@@ -24,6 +24,7 @@ class ErrorCode(Enum):
     MONGODB_INVALID_VIDEO_CNT_PARAM = {"3108": "MongoDB Error: Invalid Video Count Param"}
     MONGODB_VIDEO_CNT_ZERO = {"3109": "MongoDB Error: Video Count Param Already Down To Zero"}
     MONGODB_INVALID_SEARCH_PARAM = {"3110": "MongoDB Error: Invalid Searching Param"}
+    MONGODB_EMPTY_PARAM = {"3111": "MongoDB Error: Empty Input Param"}
     
     def get_code(self):
         """

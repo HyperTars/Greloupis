@@ -42,5 +42,6 @@ class SearchVideo(Resource):
 class SearchUser(Resource):
     @search.doc(responses={200: 'Successfully got user search results.'})
     def get(self, keyword):
-        search_result = search_user_by_keyword(name=keyword)
+        search_result_dict = search_user(name=keyword, ignore_case=True, type="dict")
+        search_result_json = search_user(email=keyword, ignore_case=True, type="json", exact=True)
         return {}, 200, None

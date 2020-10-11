@@ -304,9 +304,52 @@ def user_search_aggregate(aggr: dict):
     return list(User.objects.aggregate(aggr))
 
 
-def user_search_pattern(regex: re.Pattern):
+def user_search_pattern(**kw):
     """
-    :param regex: searching pattern
+    search user by pattern (re.Pattern)
+    :param pattern_name (optional): search name pattern
+    :param pattern_email (optional): search email pattern
+    :param pattern_first_name (optional): search first_name pattern
+    :param pattern_last_name (optional): search last_name pattern
+    :param pattern_phone (optional): search phone pattern
+    :param pattern_street1 (optional): search street1 pattern
+    :param pattern_street2 (optional): search street2 pattern
+    :param pattern_city (optional): search city pattern
+    :param pattern_state (optional): search state pattern
+    :param pattern_country (optional): search country pattern
+    :param pattern_zip (optional): search zip pattern
+    :param pattern_status (optional): search status pattern
+    :param pattern_reg_date (optional): search reg_date pattern
     :return: array of searching results (User Model)
     """
-    return User.objects(user_name=regex)
+    if len(kw) == 0:
+        return ErrorCode.MONGODB_EMPTY_PARAM
+
+    if 'pattern_name' in kw:
+        return User.objects(user_name=kw['pattern_name'])
+    elif 'pattern_email' in kw:
+        return User.objects(user_email=kw['pattern_email'])
+    elif 'pattern_first_name' in kw:
+        return User.objects(user_detail__first_name=kw['pattern_first_name'])
+    elif 'pattern_last_name' in kw:
+        return User.objects(user_detail__last_name=kw['pattern_last_name'])
+    elif 'pattern_phone' in kw:
+        return User.objects(user_detail__phone=kw['pattern_phone'])
+    elif 'pattern_street1' in kw:
+        return User.objects(user_detail__street1=kw['pattern_street1'])
+    elif 'pattern_street2' in kw:
+        return User.objects(user_detail__street2=kw['pattern_street2'])
+    elif 'pattern_city' in kw:
+        return User.objects(user_detail__city=kw['pattern_city'])
+    elif 'pattern_state' in kw:
+        return User.objects(user_detail__state=kw['pattern_state'])
+    elif 'pattern_country' in kw:
+        return User.objects(user_detail__country=kw['pattern_country'])
+    elif 'pattern_zip' in kw:
+        return User.objects(user_detail__zip=kw['pattern_zip'])
+    elif 'pattern_status' in kw:
+        return User.objects(user_status=kw['pattern_status'])
+    elif 'pattern_reg_date' in kw:
+        return User.objects(user_reg_date=kw['pattern_reg_date'])
+    
+    return ErrorCode.MONGODB_INVALID_SEARCH_PARAM

@@ -165,6 +165,7 @@ def test_search():
 
 if __name__ == "__main__":
     db = get_db(TestConfig)
+    print(user_search_pattern(pattern_zip=re.compile(".*11201.*", re.IGNORECASE)))
     # test_raw()
     # test_user()
     # test_video_op()
