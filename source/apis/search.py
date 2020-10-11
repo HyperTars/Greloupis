@@ -20,12 +20,14 @@ video_response_list = search.model(name='ApiResponseWithVideoList', model={
     'body': fields.List(fields.Nested(video_info))
 })
 
+
 @search.route('/video')
 @search.param('keyword', 'Searching keyword')
 @search.response(200, 'Successfully got video search results.', video_response_list)
 @search.response(400, 'Bad request.', general_response)
 @search.response(500, 'Internal server error.', general_response)
 class SearchVideo(Resource):
+    @search.doc(responses={200: 'Successfully got video search results.'})
     def get(self):
         """
             Search videos by keyword
@@ -33,7 +35,7 @@ class SearchVideo(Resource):
         keyword = request.args.get('title')
 
         # search_result_dict = search_video(title=keyword, ignore_case=True, type="dict", exact=True)
-        search_result_json = search_video(title=keyword, ignore_case=True, type="json")
+        search_result_json = service_search_video(title=keyword, ignore_case=True, type="json")
         return search_result_json
         # return {}, 200, None
 
@@ -52,6 +54,6 @@ class SearchUser(Resource):
         keyword = request.args.get('name')
 
         # search_result_dict = search_user(email=keyword, ignore_case=True, type="dict", exact=True)
-        search_result_json = search_user(name=keyword, ignore_case=True, type="json")
+        search_result_json = service_search_user(name=keyword, ignore_case=True, type="json")
         return search_result_json
         # return {}, 200, None
