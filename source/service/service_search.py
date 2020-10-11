@@ -8,6 +8,7 @@ def search_user(**kw):
     res_ret = []
     res_search = None
 
+    # Search configs
     ignore_case = DevConfig.IGNORE_CASE
     exact = False
     if 'ignore_case' in kw and kw['ignore_case'] == False:
@@ -15,6 +16,7 @@ def search_user(**kw):
     if 'exact' in kw and kw['exact'] == True:
         exact = True
 
+    # Seach
     if 'name' in kw:
         res_search = search_user_by_pattern(name=kw['name'], ignore_case=ignore_case, exact=exact)
     elif 'email' in kw:
@@ -22,6 +24,7 @@ def search_user(**kw):
     else:
         ErrorCode.MONGODB_INVALID_SEARCH_PARAM
 
+    # Re-construct return data type
     for res_s in res_search:
         if 'json' in kw and kw['json'] == True \
             or 'dict' in kw and kw['dict'] == False \
@@ -31,6 +34,38 @@ def search_user(**kw):
             res_ret.append(res_s.to_dict())
 
     return res_ret
+
+
+def search_video(**kw):
+    res_ret = []
+    res_search = None
+
+    # Search configs
+    ignore_case = DevConfig.IGNORE_CASE
+    exact = False
+    if 'ignore_case' in kw and kw['ignore_case'] == False:
+        ignore_case = False
+    if 'exact' in kw and kw['exact'] == True:
+        exact = True
+
+    # Search
+    # TODO: Pattern & Case Ignore & Aggregation Pipeline
+    if 'title' in kw:
+        res_search = search_video_by_keyword(title=kw['title'])
+    else:
+        return ErrorCode.MONGODB_INVALID_SEARCH_PARAM
+    
+    # Re-construct return data type
+    for res_s in res_search:
+        if 'json' in kw and kw['json'] == True \
+            or 'dict' in kw and kw['dict'] == False \
+            or 'type' in kw and kw['type'] == "json":
+            res_ret.append(res_s.to_json())
+        else:
+            res_ret.append(res_s.to_dict())
+
+    return res_ret
+
 
 def search_user_by_keyword(**kw):
     """
@@ -104,15 +139,35 @@ def search_user_by_aggregation(pipeline):
     """
     return user_search_aggregate(pipeline)
 
-def search_video_by_keyword():
-    res_ret = []
-    return res_ret
+def search_video_by_keyword(**kw):
+    if 'title' in kw:
+        return video_search_keyword(kw['title'])
 
 
 def search_video_by_pattern():
     res_ret = []
     return res_ret
 
-def search_video_by_aggregation():
-    res_ret = []
-    return res_ret
+def search_video_by_aggregation(pipeline):
+    # Search by aggregate (can search multi attributes)
+    """
+    example:
+    pipeline1 = [
+        { "$match":
+            {
+                "user_name": {"$regex": "es"}, 
+                "user_status": "active" 
+            }
+        }
+    ]
+    pipeline2 = [
+        { "$unwind": "$user_detail" },
+        { "$match":
+            { 
+                "user_detail.street1": {"$regex": "343"}, 
+                "user_status": "public" 
+            }
+        }
+    ]
+    """
+    return video_search_aggregate(pipeline)
