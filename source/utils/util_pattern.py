@@ -61,10 +61,9 @@ def util_pattern_format_search_param(**kw):
 
 def util_pattern_slice(**kw):
     if 'video_title' in kw:
-        kw['video_title'] = '.*'.join(kw['video_title'].split(" "))
+        kw['video_title'] = '.*'.join(kw['video_title'].replace("%20", " ").split(" "))
     elif 'video_description' in kw:
-        kw['video_description'] = '.*'.join(kw['video_description'].split(" "))
-
+        kw['video_description'] = '.*'.join(kw['video_description'].replace("%20", " ").split(" "))
     return kw
 
 
@@ -84,7 +83,7 @@ def util_pattern_build(**kw):
     elif 'video_tag' in kw:
         kw['video_tag'] = util_pattern_compile(kw['video_tag'], kw['exact'], kw['ignore_case'])
     elif 'video_category' in kw:
-        kw['video_category'] = util.pattern_compile(kw['video_category'], kw['exact'], kw['ignore_case'])
+        kw['video_category'] = util_pattern_compile(kw['video_category'], kw['exact'], kw['ignore_case'])
     elif 'video_description' in kw:
         kw['video_description'] = util_pattern_compile(kw['video_description'], kw['exact'], kw['ignore_case'])
 

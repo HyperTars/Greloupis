@@ -99,11 +99,11 @@ class User(db.Document):
         return check_password_hash(self.password_hash, password)
 
     def generate_confirmation_token(self, expiration=3600):
-        serializer = TimedJSONWebSignatureSerializer(current_app.config['SECRET_KEY'], expiration)
+        serializer = TimedJSONWebSignatureSerializer(current_app.BaseConfig['SECRET_KEY'], expiration)
         return serializer.dumps({'confirm': self.username})
 
     def confirm_email(self, token, expiration=3600):
-        s = TimedJSONWebSignatureSerializer(current_app.config['SECRET_KEY'])
+        s = TimedJSONWebSignatureSerializer(current_app.BaseConfig['SECRET_KEY'])
         try:
             data = s.loads(token)
         except Exception:
@@ -115,12 +115,12 @@ class User(db.Document):
         return True
 
     def generate_reset_token(self, expiration=3600):
-        serializer = TimedJSONWebSignatureSerializer(current_app.config['SECRET_KEY'], expiration)
+        serializer = TimedJSONWebSignatureSerializer(current_app.BaseConfig['SECRET_KEY'], expiration)
         return serializer.dumps({'reset': self.username})
 
     @staticmethod
     def reset_password(token, new_password):
-        serializer = TimedJSONWebSignatureSerializer(current_app.config['SECRET_KEY'])
+        serializer = TimedJSONWebSignatureSerializer(current_app.BaseConfig['SECRET_KEY'])
         try:
             data = serializer.loads(token)
         except:
