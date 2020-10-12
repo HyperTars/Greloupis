@@ -14,12 +14,11 @@ github:	FORCE
 	git commit -a
 	git push origin master
 
-test:	lint unit
-	echo "lint unit tests"
+test:	unit #lint
+	echo "unittest and lint check finished"
 
 unit:	FORCE
-	echo "We have to write some tests!"
-	# test
+	python -m source.test
 
 lint:	FORCE
 	$(LINTER) $(SRC_DIR)/*.py --exit-zero --ignore=W191,E265,F405

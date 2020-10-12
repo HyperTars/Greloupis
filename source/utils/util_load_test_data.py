@@ -6,15 +6,15 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
 def util_load_test_data():    
-    sys = pf.system()
+    os_ver = pf.system()
     cwd = os.getcwd()
 
-    if sys == 'Darwin' or sys == 'Linux':
+    if os_ver == 'Darwin' or os_ver == 'Linux':
         path = cwd + '/source/tests/test_data/'
-    if sys == 'Windows':
+    elif os_ver == 'Windows':
         path = cwd + '\\source\\tests\\test_data\\'
     else:
-        print("System not supported")
+        print("System not supported.")
 
     data = {}
     data['user'] = get_json_data(path + "data_user.json")
