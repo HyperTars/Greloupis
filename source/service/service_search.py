@@ -22,6 +22,8 @@ def service_search_user(conf=config['default'], **kw):
     kw = util_pattern_format_search_param(**kw)
 
     # Search configs
+    if 'slice' in kw and kw['slice'] is True:
+        return ErrorCode.SERVICE_PARAM_SLICE_NOT_SUPPORT
     if 'ignore_case' not in kw:
         kw['ignore_case'] = conf.SEARCH_IGNORE_CASE
     if 'exact' not in kw:
@@ -30,7 +32,7 @@ def service_search_user(conf=config['default'], **kw):
     # TODO: add typo allowance, etc.
 
     # Search
-    # TODO: Support aggregation pipeline, keyword slice (pattern), etc.
+    # TODO: Support aggregation pipeline, etc.
     if kw['ignore_case'] is False or kw['exact'] is True:
         kw = util_pattern_build(**kw)
         res_search = service_search_user_by_pattern(**kw)
@@ -65,6 +67,8 @@ def service_search_video(conf=config['default'], **kw):
     kw = util_pattern_format_search_param(**kw)
 
     # Search configs
+    if 'slice' not in kw:
+        kw['slice'] = conf.SEARCH_SLICE
     if 'ignore_case' not in kw:
         kw['ignore_case'] = conf.SEARCH_IGNORE_CASE
     if 'exact' not in kw:
@@ -72,8 +76,9 @@ def service_search_video(conf=config['default'], **kw):
     # TODO: add typo allowance, etc.
 
     # Search
-    # TODO: Support aggregation pipeline, keyword slice (pattern), etc.
-    if kw['ignore_case'] is False or kw['exact'] is True:
+    # TODO: Support aggregation pipeline
+    if kw['ignore_case'] is False or kw['exact'] is True or kw['slice'] is True:
+        kw = util_pattern_slice(**kw)
         kw = util_pattern_build(**kw)
         res_search = service_search_video_by_pattern(**kw)
     elif 'pattern' in kw and kw['pattern'] is True:
@@ -222,7 +227,7 @@ def service_search_user_by_pattern(**kw):
 
 
 def service_search_video_by_pattern(**kw):
-    if kw['ignore_case'] is False or kw['exact'] is True:
+    if kw['ignore_case'] is False or kw['exact'] is True or kw['slice'] is True:
         if 'video_title' in kw:
             return query_video_search_by_pattern(pattern_title=kw['video_title'])
         elif 'video_channel' in kw:

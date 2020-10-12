@@ -22,6 +22,10 @@ def test_search_video():
     print(service_search_video(TestConfig, video_category="A"))
     print("\n===================== Test Search Video: Tag =========================")
     print(service_search_video(TestConfig, video_tag="O"))
+    print("\n===================== Test Search Video: Title slice =========================")
+    print(service_search_video(TestConfig, title="a h", slice=True))
+    print("\n===================== Test Search Video: Title slice =========================")
+    print(service_search_video(TestConfig, title="i a", slice=True))
 
 
 if __name__ == "__main__":

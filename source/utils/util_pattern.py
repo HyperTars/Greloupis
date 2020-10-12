@@ -59,6 +59,15 @@ def util_pattern_format_search_param(**kw):
     return kw
 
 
+def util_pattern_slice(**kw):
+    if 'video_title' in kw:
+        kw['video_title'] = '.*'.join(kw['video_title'].split(" "))
+    elif 'video_description' in kw:
+        kw['video_description'] = '.*'.join(kw['video_description'].split(" "))
+
+    return kw
+
+
 def util_pattern_build(**kw):
     # Construct pattern string
     # User

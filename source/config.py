@@ -23,6 +23,7 @@ class DevConfig(object):
     SEARCH_IGNORE_CASE = True
     SEARCH_EXACT = False
     SEARCH_LIKE = True
+    SEARCH_SLICE = False
     DATA_FORMAT = "dict"
 
     # Mongo DB
@@ -62,6 +63,7 @@ class TestConfig(object):
     SEARCH_IGNORE_CASE = True
     SEARCH_EXACT = False
     SEARCH_LIKE = True
+    SEARCH_SLICE = False
     DATA_FORMAT = "dict"
 
     # Mongo DB
@@ -103,6 +105,7 @@ class ProdConfig(object):
     SEARCH_IGNORE_CASE = True
     SEARCH_EXACT = False
     SEARCH_LIKE = True
+    SEARCH_SLICE = False
     DATA_FORMAT = "dict"
 
     # Debug Mode
