@@ -35,6 +35,6 @@ docs:	#FORCE
 	cd $(SRC_DIR); make docs
 
 connect:
-	chmod 400 DevOps.pem
-	ssh -i "DevOps.pem" ubuntu@ec2-54-205-45-145.compute-1.amazonaws.com
+	chmod 400 documents/DevOps.pem
+	ssh -i "documents/DevOps.pem" ubuntu@ec2-54-205-45-145.compute-1.amazonaws.com
 
