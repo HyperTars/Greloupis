@@ -1,5 +1,5 @@
 from source.service.service_search import *
-from source.config import *
+from source.configs import *
 
 
 def test_search_user(conf):
