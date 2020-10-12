@@ -17,7 +17,7 @@ class ErrorCode(Enum):
     ROUTE_INVALID_REQUEST_PARAM = {"2001": "Route Error: Invalid Request Parameters"}
 
     # Service 3 Series
-
+    SERVICE_PARAM_SLICE_NOT_SUPPORT = {"3001": "Service Error: Current Param Does Not Support Slice"}
     # Database 4 Series
     MONGODB_CONNECTION_FAILURE = {"4000": "MongoDB Connection Failure"}
     MONGODB_USER_NOT_FOUND = {"4101": "MongoDB Error: User Not Found"}
