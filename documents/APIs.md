@@ -212,15 +212,16 @@ video_get | get video content cache | GET | /video/{video_id}
 
 ### Video Upload
 - **Function**
-  - video_upload (api_dev_key, video_title, video_tag, video_category, video_description, video_language, video_status, video_contents)
+  - video_upload (api_dev_key, video_title, video_channel, video_tag, video_category, video_description, video_language, video_status, video_contents)
 
 - **Parameters**
   Name | Type | Description
     --- | --- | ---
     api_dev_key | string | This will be used to, among other things, throttle users based on their allocated quota.
     video_title | string | video title
+    video_channel | string | video channel
     video_tag | string[] | (optional) video tags
-    video_category | string | category of video, e.g., Movie, Vlog, Song, News, Tech, etc.
+    video_category | string[] | category of video, e.g., Movie, Vlog, Song, News, Tech, etc.
     video_description | string | (optional) video description
     video_language | string | e.g., English, Mandarin, Hindi, etc.
     video_status | string | (optional, default public) e.g., public, private, limited share.
@@ -244,12 +245,13 @@ video_get | get video content cache | GET | /video/{video_id}
 
 ### Video Update
 - **Function**
-  - video_update (api_dev_key, video_title, video_tag, video_category, video_description, video_language, video_status)
+  - video_update (api_dev_key, video_title, video_channel, video_tag, video_category, video_description, video_language, video_status)
 
 - **Parameters**
   ```
   "body": {
     "video_title": string,
+    "video_channel": string,
     "video_tag": string[],
     "video_category": string[],
     "video_description": string,
@@ -264,6 +266,7 @@ video_get | get video content cache | GET | /video/{video_id}
         "video_id": string,
         "user_id": string,
         "video_title": string,
+        "video_channel": string
         "video_tag": string[],
         "video_category": string[],
         "video_description": string,

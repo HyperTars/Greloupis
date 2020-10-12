@@ -8,8 +8,9 @@
 
 ### Collection: user
 - **Document**
+
     Attr1 | Type | Attr2 | Type | Data Source | Nullable | Description
-    --- | --- | --- | --- | --- | --- | --- | --- | ---
+    --- | --- | --- | --- | --- | --- | ---
     user_id / `_id` | ObjectId | - | - |MongoDB generate | NO | user's unique id
     user_email | String | - | - | user input | NO | user's email
     user_name | String | - | - | user input | NO | user's nick name
@@ -127,6 +128,7 @@
 
 ### Collection: video
 - **Document**
+
     Attr1 | Type | Attr2 | Type | Data Source | Nullable | Description
     --- | --- | --- | --- | --- | --- | ---
     video_id / `_id` | ObjectId | - | - | Mongo generate | NO | video's unique id
@@ -135,6 +137,8 @@
     video_raw_content | String | - | - | system generate | YES | upload raw video address (temp storage space, to be transcoded)
     video_raw_status | String | - | - | system generate | YES | default pending
     video_raw_size | Double | - | - | system generate | YES | video size in MB
+    video_duration | Int | - | - | system generate | YES | video duration in second
+    video_channel | String | - | - | user input | YES | video's channel, default: user-made
     video_tag | Array | `index` | String | user input | YES | array of video's tags
     video_category | Array | `index` | String | user input | YES | array of video's categories
     video_description | String | - | - | user input | YES | video's description
@@ -166,6 +170,10 @@
         "video_raw_size": {
             "$numberDouble": "0"
         },
+        "video_duration": {
+            "$numberInt": "971"
+        },
+        "video_channel": "self-made",
         "video_tag": ["movie"],
         "video_category": ["funny", "action"],
         "video_description": "",
