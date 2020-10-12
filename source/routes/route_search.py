@@ -7,7 +7,7 @@ import json
 from .route_user import user_info, general_response
 from .route_video import video_info, general_response
 from source.service.service_search import *
-from source.configs import *
+from source.settings import *
 from source.utils.util_serializer import *
 
 import logging
@@ -42,7 +42,7 @@ class RouteSearchVideo(Resource):
                     ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg()}, 200, None
 
         # search_result_dict = search_video(title=keyword, ignore_case=True, format="dict", exact=True)
-        search_result_json = service_search_video(conf, title=req_dict['keyword'],
+        search_result_json = service_search_video(conf=config['default'], title=req_dict['keyword'],
                                                   ignore_case=True, format="json", slice=True)
         return util_serializer_api_response(search_result_json, 200)
 
@@ -66,7 +66,7 @@ class RouteSearchUser(Resource):
             return {ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_code():
                     ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg()}, 200, None
 
-        search_result_json = service_search_user(conf, name=req_dict['keyword'],
+        search_result_json = service_search_user(conf=config['default'], name=req_dict['keyword'],
                                                  ignore_case=True, exact=False, format="json")
 
         # search_result_dict = search_user(email=keyword, ignore_case=True, format="dict", exact=True)

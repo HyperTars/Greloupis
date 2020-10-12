@@ -2,7 +2,7 @@
 
 import re
 
-from source.configs import *
+from source.settings import *
 from source.db.mongo import get_db
 from source.db.query_user import *
 from source.db.query_video import *
