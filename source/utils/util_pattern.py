@@ -7,12 +7,29 @@ def util_pattern_compile(**kw):
     pattern_string = ""
 
     # Construct pattern string
+    # Video
     if 'title' in kw:
         pattern_string = kw['title']
+    elif 'video_title' in kw:
+        pattern_string = kw['video_title']
+    elif 'description' in kw:
+        pattern_string = kw['description']
+    elif 'video_description' in kw:
+        pattern_string = kw['video_description']
+    # User
     elif 'name' in kw:
         pattern_string = kw['name']
+    elif 'user_name' in kw:
+        pattern_string = kw['user_name']
     elif 'email' in kw:
         pattern_string = kw['email']
+    elif 'user_email' in kw:
+        pattern_string = kw['user_email']
+    # VideoOp
+    elif 'comment' in kw:
+        pattern_string = kw['comment']
+    elif 'video_op_comment' in kw:
+        pattern_string = kw['video_op_comment']
     # TODO: add more attr search support
     else:
         return ErrorCode.MONGODB_INVALID_PATTERN_PARAM
