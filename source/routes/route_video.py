@@ -19,22 +19,24 @@ video_info = video.model(name='Video', model={
     'video_id': fields.String,
     'user_id': fields.String,
     'video_title': fields.String,
+    'video_raw_content': fields.String,
+    'video_raw_status': fields.String,
+    'video_raw_size': fields.Float,
+    'video_duration': fields.Integer,
+    'video_channel': fields.String,
     'video_tag': fields.List(fields.String),
     'video_category': fields.List(fields.String),
     'video_description': fields.String,
     'video_language': fields.String,
     'video_status': fields.String,
-    'video_content': fields.String,
-    'video_status': fields.String,
-    'video_size': fields.Float,
     'video_view': fields.Integer,
+    'video_comment': fields.Integer,
     'video_like': fields.Integer,
     'video_dislike': fields.Integer,
-    'video_comment': fields.Integer,
     'video_star': fields.Integer,
-    'video_uri': fields.Nested(video_uri),
     'video_thumbnail': fields.Nested(thumbnail),
-    'video_upload_date': fields.DateTime
+    'video_upload_date': fields.DateTime,
+    'video_uri': fields.Nested(video_uri)
 })
 
 view = video.model(name='View', model={
