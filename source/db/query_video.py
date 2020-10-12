@@ -5,20 +5,9 @@ import bson
 import datetime
 
 
-def query_video_get_by_id(video_id: str):
-    """
-    :return: an array of such Video (len == 0 or 1), len == 0 if no such video_id, len == 1 if found
-    """
-    return Video.objects(_id=bson.ObjectId(video_id))
-
-
-def query_video_get_by_title(video_title: str):
-    """
-    :return: an array of such Video (len == 0 or 1), len == 0 if no such video_id, len == 1 if found
-    """
-    return Video.objects(video_title=video_title)
-
-
+##########
+# CREATE #
+##########
 def query_video_create(user_id: str, video_title: str, video_raw_content: str, **kw):
     # video_raw_content description: user will get a raw video URI after uploading raw video to cache (temp storage
     # space where videos waiting for transcoding) transcoder will start transcoding, but user can create a video now
@@ -26,16 +15,18 @@ def query_video_create(user_id: str, video_title: str, video_raw_content: str, *
     :param user_id: (required) user's unique id
     :param video_title: (required) video's title
     :param video_raw_content: (required) URI of raw video data (in temp space, to be transcode)
-    :param video_raw_status (optional): status of raw video data, default: pending
-    :param video_raw_size (optional): size of raw video data
-    :param video_tag (optional): array of video's tags
-    :param video_category (optional): array of video's categories
-    :param video_description (optional): video's description
-    :param video_language (optional): video's language
-    :param video_status (optional): video's status, default: public
-    :param video_thumbnail_uri (optional): video's thumbnail uri
-    :param video_thumbnail_type (optional): video's thumbnail type
-    :param video_upload_date (optional): video's upload date
+    :param video_channel: (optional) channel of video (default self-made)
+    :param video_duration: (optional) duration of video in second
+    :param video_raw_status: (optional) status of raw video data, default: pending
+    :param video_raw_size: (optional) size of raw video data
+    :param video_tag: (optional) array of video's tags
+    :param video_category: (optional) array of video's categories
+    :param video_description: (optional) video's description
+    :param video_language: (optional) video's language
+    :param video_status: (optional) video's status, default: public
+    :param video_thumbnail_uri: (optional) video's thumbnail uri
+    :param video_thumbnail_type: (optional) video's thumbnail type
+    :param video_upload_date: (optional) video's upload date
     :return: video created (Video Model)
     """
 
@@ -48,6 +39,8 @@ def query_video_create(user_id: str, video_title: str, video_raw_content: str, *
     # Default
     video_raw_status = "pending"
     video_raw_size = 0.00
+    video_channel = "self-made"
+    video_duration = 0
     video_tag = []
     video_category = []
     video_description = ""
@@ -61,6 +54,10 @@ def query_video_create(user_id: str, video_title: str, video_raw_content: str, *
         video_raw_status = kw['video_raw_status']
     if 'video_raw_size' in kw:
         video_raw_size = kw['video_raw_size']
+    if 'video_channel' in kw:
+        video_channel = kw['video_channel']
+    if 'video_duration' in kw:
+        video_duration = kw['video_duration']
     if 'video_tag' in kw:
         video_tag = kw['video_tag']
     if 'video_category' in kw:
@@ -78,15 +75,37 @@ def query_video_create(user_id: str, video_title: str, video_raw_content: str, *
 
     # Construct Video Model
     video = Video(user_id=user_id, video_title=video_title, video_raw_content=video_raw_content,
-                  video_raw_status=video_raw_status, video_raw_size=video_raw_size, video_tag=video_tag,
-                  video_category=video_category, video_description=video_description, video_language=video_language,
-                  video_status=video_status, video_view=0, video_comment=0, video_like=0, video_dislike=0,
-                  video_star=0, video_share=0, video_thumbnail=video_thumbnail, video_upload_date=video_upload_date,
-                  video_uri=VideoURI())
+                  video_raw_status=video_raw_status, video_raw_size=video_raw_size, video_channel=video_channel,
+                  video_duration=video_duration, video_tag=video_tag, video_category=video_category,
+                  video_description=video_description, video_language=video_language, video_status=video_status,
+                  video_view=0, video_comment=0, video_like=0, video_dislike=0, video_star=0, video_share=0,
+                  video_thumbnail=video_thumbnail, video_upload_date=video_upload_date, video_uri=VideoURI())
 
     return video.save()
 
 
+############
+# RETRIEVE #
+############
+def query_video_get_by_id(video_id: str):
+    """
+    :param video_id: video's unique id
+    :return: an array of such Video (len == 0 or 1), len == 0 if no such video_id, len == 1 if found
+    """
+    return Video.objects(_id=bson.ObjectId(video_id))
+
+
+def query_video_get_by_title(video_title: str):
+    """
+    :param video_title: video's unique title
+    :return: an array of such Video (len == 0 or 1), len == 0 if no such video_id, len == 1 if found
+    """
+    return Video.objects(video_title=video_title)
+
+
+##########
+# UPDATE #
+##########
 def query_video_cnt_incr_by_one(video_id: str, video_cnt: str):
     """
     This is for incrementing total number of views/comments/likes/dislikes/stars/shares
@@ -184,6 +203,8 @@ def query_video_update(video_id: str, **kw):
     :param video_raw_content (optional): new URI of raw video data (in temp space, to be transcode)
     :param video_raw_status (optional): new status of raw video data, default
     :param video_raw_size (optional): new size of raw video data
+    :param video_channel: (optional) channel of video (default self-made)
+    :param video_duration: (optional) duration of video in second
     :param video_tag (optional): array of video's new tags
     :param video_category (optional): array of video's new categories
     :param video_description (optional): video's new description
@@ -213,6 +234,10 @@ def query_video_update(video_id: str, **kw):
         Video.objects(_id=_id).update(video_status=kw['video_raw_status'])
     if 'video_raw_size' in kw:
         Video.objects(_id=_id).update(video_raw_size=kw['video_raw_size'])
+    if 'video_channel' in kw:
+        Video.objects(_id=_id).update(video_channel=kw['video_channel'])
+    if 'video_duration' in kw:
+        Video.objects(_id=_id).update(video_duration=kw['video_duration'])
     if 'video_tag' in kw:
         if type(kw['video_tag']) is not list:
             return ErrorCode.MONGODB_LIST_EXPECTED
@@ -242,6 +267,9 @@ def query_video_update(video_id: str, **kw):
     return 1
 
 
+##########
+# DELETE #
+##########
 def query_video_delete(video_id: str):
     """
     :param video_id: video's unique id
@@ -253,15 +281,35 @@ def query_video_delete(video_id: str):
     return Video.objects(_id=bson.ObjectId(video_id)).delete()
 
 
-def query_video_search_keyword(title: str):
+##########
+# Search #
+##########
+# Search by i-contains
+def query_video_search_by_contains(**kw):
     """
-    :param title: string of video title to be searched
+    Search video by icontains (ignore case)
+    :param video_id: (optional) video's unique id
+    :param video_title: (optional) string of video title to be searched
+    :param video_channel: (optional) channel of videos
+    :param video_video_category: (optional) category of videos
     :return: array of searching results (Video Model)
     """
-    return Video.objects.filter(video_title__contains=title)
+    if 'video_id' in kw:
+        return query_video_get_by_id(kw['video_id'])
+    elif 'video_title' in kw:
+        return Video.objects.filter(video_title__icontains=kw['video_title'])
+    elif 'video_channel' in kw:
+        return Video.objects.filter(video_channel__icontains=kw['video_channel'])
+    elif 'video_category' in kw:
+        return Video.objects.filter(video_category__icontains=kw['video_category'])
+    elif 'video_tag' in kw:
+        return Video.objects.filter(video_tag__icontains=kw['video_tag'])
+
+    return ErrorCode.MONGODB_INVALID_SEARCH_PARAM
 
 
-def query_video_search_aggregate(aggr: dict):
+# Search by aggregate
+def query_video_search_by_aggregate(aggr: dict):
     """
     :param aggr: dict of searching param
     :return: array of searching results in dict
@@ -269,13 +317,16 @@ def query_video_search_aggregate(aggr: dict):
     return list(Video.objects.aggregate(aggr))
 
 
-def query_video_search_pattern(**kw):
+# Search by pattern
+def query_video_search_by_pattern(**kw):
     """
-    :param pattern_title (optional): search title pattern
+    :param pattern_title: (optional) search title pattern
+    :param pattern description: (optional) search description pattern
     :return: array of searching results (Video Model)
     """
     if 'pattern_title' in kw:
         return Video.objects(video_title=kw['pattern_title'])
-    # TODO: multi keyword matching?
+    elif 'pattern_description' in kw:
+        return Video.objects(video_description=kw['pattern_description'])
 
     return ErrorCode.MONGODB_INVALID_SEARCH_PARAM
