@@ -68,6 +68,11 @@ You should be able to visit http://localhost:5000/ now and see a list of APIs of
     make connect
     ```
 
+### CI / CD (TBD)
+- We use `Travis` to do CI/CD works
+- See our [travis conf](.travis.yml)
+- We will deploy our project to our website: www.hypertars.me (under construction)
+
 ### Contributors
   
   GitHub | Name | NetID

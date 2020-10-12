@@ -21,13 +21,16 @@ class Video(db.Document):
     video_title = db.StringField(max_length=50, required=True, unique=True)
     """
     video_raw_content description:
-    user will get a raw video URI after uploading raw video to cache (temp storage space where videos waiting for being transcoded)
+    user will get a raw video URI after uploading raw video to cache 
+    (temp storage space where videos waiting for being transcoded)
     transcoder will start transcoding, but user can create a video now
     """
     video_raw_content = db.StringField(required=True)
     video_raw_status = db.StringField(max_length=20, default="pending", required=True)
-    video_raw_size = db.FloatField(default=0)
-    video_tag = db.ListField(db.StringField())  # default: self-made
+    video_raw_size = db.FloatField(default=0)  # in MB
+    video_duration = db.IntField(default=0)  # in second
+    video_channel = db.StringField(default="self-made")
+    video_tag = db.ListField(db.StringField())
     video_category = db.ListField(db.StringField())
     video_description = db.StringField(max_length=1000, default="")
     video_language = db.StringField(max_length=20)
@@ -67,6 +70,8 @@ class Video(db.Document):
         video_dict['video_raw_content'] = self.video_raw_content
         video_dict['video_raw_status'] = self.video_raw_status
         video_dict['video_raw_size'] = self.video_raw_size or None
+        video_dict['video_duration'] = self.video_duration
+        video_dict['video_channel'] = self.video_channel
         video_dict['video_tag'] = video_tag_array
         video_dict['video_category'] = video_category_array
         video_dict['video_description'] = self.video_description

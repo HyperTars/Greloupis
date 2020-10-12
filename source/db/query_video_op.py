@@ -3,10 +3,13 @@ from source.db.query_user import query_user_get_by_id
 from source.db.query_video import query_video_get_by_id
 import bson
 import datetime
+import re
 from source.models.model_errors import ErrorCode
 
 
-# VideoOp CRUD
+##########
+# CREATE #
+##########
 def query_video_op_create(user_id: str, video_id: str, init_time=datetime.datetime.utcnow()):
     """
     :param user_id: user's unique id
@@ -30,6 +33,9 @@ def query_video_op_create(user_id: str, video_id: str, init_time=datetime.dateti
     return video_op.save()
 
 
+############
+# RETRIEVE #
+############
 def query_video_op_get_by_user_id(user_id: str):
     """
     :param: user_id, user's unique id
@@ -63,6 +69,9 @@ def query_video_op_get_by_op_id(op_id: str):
     return VideoOp.objects(_id=bson.ObjectId(op_id))
 
 
+##########
+# UPDATE #
+##########
 def query_video_op_update_process(op_id: str, process: int, process_date=datetime.datetime.utcnow()):
     """
     :param: op_id, video op unique id
@@ -131,3 +140,45 @@ def query_video_op_update_star(op_id: str, star: bool, star_date=datetime.dateti
         return ErrorCode.MONGODB_VIDEOOP_NOT_FOUND
 
     return VideoOp.objects(_id=bson.ObjectId(op_id)).update(star=star, star_date=star_date)
+
+
+##########
+# DELETE #
+##########
+def query_video_op_delete(op_id: str):
+    """
+    :param video_id: video's unique id
+    :return: 1 if succeeded, -1 if no such video
+    """
+    if len(query_video_op_get_by_op_id(op_id)) == 0:
+        # No such video op
+        return ErrorCode.MONGODB_VIDEOOP_NOT_FOUND
+
+    return VideoOp.objects(_id=bson.ObjectId(op_id)).delete()
+
+
+##########
+# SEARCH #
+##########
+# Search by i-contains (ignore case)
+def query_video_op_search_comment_by_contains(comment: str):
+    """
+    Search video op by comment keyword
+    :param comment: comment keyword
+    :return: result array of VideoOp Model
+    """
+    return VideoOp.objects.filter(comment__icontains=comment)
+
+
+# Search by pattern
+def query_video_op_search_comment_by_pattern(comment):
+    """
+    Search video op by comment pattern
+    :param comment: comment pattern
+    :return: result array of VideoOp Model
+    """
+    # Check input param
+    if type(comment) != re.Pattern:
+        return ErrorCode.MONGODB_RE_PATTERN_EXPECTED
+
+    return VideoOp.Objects(comment=comment)
