@@ -2,7 +2,7 @@
 
 import re
 
-from source.config import TestConfig
+from source.configs import *
 from source.db.mongo import get_db
 from source.db.query_user import *
 from source.db.query_video import *
