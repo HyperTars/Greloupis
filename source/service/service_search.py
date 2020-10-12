@@ -16,7 +16,7 @@ from source.utils.util_serializer import *
 # TODO: by uploader: search User.user_id -> user_id -> Video.user_id
 
 # Search User Caller
-def service_search_user(conf=config['default'], **kw):
+def service_search_user(conf, **kw):
     db = get_db(conf)
     kw['search'] = 'user'
     kw = util_pattern_format_search_param(**kw)
@@ -61,7 +61,7 @@ def service_search_user(conf=config['default'], **kw):
 
 
 # Search Video Caller
-def service_search_video(conf=config['default'], **kw):
+def service_search_video(conf, **kw):
     db = get_db(conf)
     kw['search'] = 'video'
     kw = util_pattern_format_search_param(**kw)
@@ -162,7 +162,7 @@ def service_search_video_by_contains(**kw):
     elif 'video_description' in kw:
         return query_video_search_by_contains(video_description=kw['video_description'])
 
-    return ErrorCode.MONGODB_INVALID_SEARCH_PARAM
+    return ErrorCode.SERVICE_PATTERN_SEARCH_NOT_SUPPORT
 
 
 # Search by pattern
@@ -243,7 +243,7 @@ def service_search_video_by_pattern(**kw):
         elif 'video_description' in kw:
             return query_video_search_by_pattern(pattern_description=re.compile(kw['video_description']))
 
-    return ErrorCode.MONGODB_INVALID_SEARCH_PARAM
+    return ErrorCode.SERVICE_PATTERN_SEARCH_NOT_SUPPORT
 
 
 # Search by aggregate

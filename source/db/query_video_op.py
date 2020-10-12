@@ -1,10 +1,10 @@
 from source.models.model_video_op import VideoOp
 from source.db.query_user import query_user_get_by_id
 from source.db.query_video import query_video_get_by_id
+from source.models.model_errors import ErrorCode
 import bson
 import datetime
 import re
-from source.models.model_errors import ErrorCode
 
 
 ##########

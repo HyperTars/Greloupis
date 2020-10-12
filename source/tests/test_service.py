@@ -1,33 +1,36 @@
 from source.service.service_search import *
-from source.config import TestConfig
+from source.config import *
 
 
-def test_search_user():
+def test_search_user(conf):
     print("\n===================== Test Search User =========================")
-    print(service_search_user(TestConfig, name="t", ignore_case=False, format="json"))
+    print(service_search_user(conf, name="t", ignore_case=False, format="json"))
     print("\n===================== Test Search User (exact not found) =========================")
-    print(service_search_user(TestConfig, name="test", ignore_case=True, format="dict", exact=True))
+    print(service_search_user(conf, name="test", ignore_case=True, format="dict", exact=True))
     print("\n===================== Test Search User =========================")
-    print(service_search_user(TestConfig, name="test_user", ignore_case=True, format="dict", exact=True))
+    print(service_search_user(conf, name="test_user", ignore_case=True, format="dict", exact=True))
 
 
-def test_search_video():
+def test_search_video(conf):
     print("\n===================== Test Search Video: Title =========================")
-    print(service_search_video(TestConfig, title="Xi"))
+    print(service_search_video(conf, title="Xi"))
     print("\n===================== Test Search Video: Title (case not found) =========================")
-    print(service_search_video(TestConfig, title="xi", ignore_case=False))
+    print(service_search_video(conf, title="xi", ignore_case=False))
     print("\n===================== Test Search Video: Title, json =========================")
-    print(service_search_video(TestConfig, title="E", format="json"))
+    print(service_search_video(conf, title="E", format="json"))
     print("\n===================== Test Search Video: Category =========================")
-    print(service_search_video(TestConfig, video_category="A"))
+    print(service_search_video(conf, video_category="A"))
     print("\n===================== Test Search Video: Tag =========================")
-    print(service_search_video(TestConfig, video_tag="O"))
+    print(service_search_video(conf, video_tag="O"))
     print("\n===================== Test Search Video: Title slice =========================")
-    print(service_search_video(TestConfig, title="a h", slice=True))
+    print(service_search_video(conf, title="a h", slice=True))
     print("\n===================== Test Search Video: Title slice =========================")
-    print(service_search_video(TestConfig, title="i a", slice=True))
+    print(service_search_video(conf, title="i a", slice=True))
+    print("\n===================== Test Search Video: Title slice =========================")
+    print(service_search_video(conf, title="i%20a", slice=True))
 
 
 if __name__ == "__main__":
-    test_search_user()
-    test_search_video()
+    conf = config['test']
+    test_search_user(conf)
+    test_search_video(conf)

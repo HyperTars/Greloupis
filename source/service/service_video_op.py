@@ -1,50 +1,50 @@
-def service_video_op_add_view(Config):
+def service_video_op_add_view():
     return
 
 
-def service_video_op_add_comment(Config):
+def service_video_op_add_comment():
     return
 
 
-def service_video_op_update_comment(Config):
+def service_video_op_update_comment():
     return
 
 
-def service_video_op_cancel_comment(Config):
+def service_video_op_cancel_comment():
     return
 
 
-def service_video_op_add_process(Config):
+def service_video_op_add_process():
     return
 
 
-def service_video_op_update_process(Config):
+def service_video_op_update_process():
     return
 
 
-def service_video_op_cancel_process(Config):
+def service_video_op_cancel_process():
     return
 
 
-def service_video_op_add_like(Config):
+def service_video_op_add_like():
     return
 
 
-def service_video_op_cancel_like(Config):
+def service_video_op_cancel_like():
     return
 
 
-def service_video_op_add_dislike(Config):
+def service_video_op_add_dislike():
     return
 
 
-def service_video_op_cancel_dislike(Config):
+def service_video_op_cancel_dislike():
     return
 
 
-def service_video_op_add_star(Config):
+def service_video_op_add_star():
     return
 
 
-def service_video_op_cancel_star(Config):
+def service_video_op_cancel_star():
     return
