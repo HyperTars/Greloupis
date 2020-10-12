@@ -1,20 +1,15 @@
 import unittest
+from source.apiv1 import *
 
-class TestStringMethods(unittest.TestCase):
+class TestApiV1(unittest.TestCase):
 
-    def test_upper(self):
-        self.assertEqual('foo'.upper(), 'FOO')
+    def test_api(self):
+        self.assertIsNotNone(api, "Flask API with blueprint initialization check")
+        self.assertEqual(api.namespaces[0].name, "default", "Blueprint default namespace check")
+        self.assertEqual(api.namespaces[1].name, "user", "Blueprint user namespace check")
+        self.assertEqual(api.namespaces[2].name, "video", "Blueprint video namespace check")
+        self.assertEqual(api.namespaces[3].name, "search", "Blueprint search namespace check")
 
-    def test_isupper(self):
-        self.assertTrue('FOO'.isupper())
-        self.assertFalse('Foo'.isupper())
-
-    def test_split(self):
-        s = 'hello world'
-        self.assertEqual(s.split(), ['hello', 'world'])
-        # check that s.split fails when the separator is not a string
-        with self.assertRaises(TypeError):
-            s.split(2)
 
 if __name__ == '__main__':
     unittest.main()
