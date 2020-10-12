@@ -70,18 +70,20 @@ see our [latest online document - sheet: Models](https://docs.google.com/spreads
     `video_id` | string | video's unique id | system generated
     `user_id` | string | user who uploads the video | api dev key
     `video_title` | string | video title | user input
+    `video_raw_content` | stream | video uploading stream | system generated
+    `video_raw_status` | enum | content uploading & releasing status<br>(e.g., pending, processing, succeeded, failed, rejected) | system generated
+    `video_raw_size` | float | size of the video | system generated
+    `video_duration` | int | duration of video in second | system generated
+    `video_channel` | string | channel of video, default self-made
     `video_tag` | string[] | array of video tags | user input
     `video_category` | string[] | array of video category<br>(e.g., Movie, Vlog, Game, Technology, News, Song, etc.) | user input
     `video_description` | string | video description | user input
     `video_language` | enum | video language<br>(e.g., English, Mandarin, Hindi, etc.) | user input
     `video_status` | enum | video status<br>(e.g., public, private, limited share, deleted) | default
-    `video_content` | stream | video uploading stream | system generated
-    `video_content_status` | enum | content uploading & releasing status<br>(e.g., pending, processing, succeeded, failed, rejected) | system generated
-    `video_size` | float | size of the video | system generated
     `video_view` | big int | count of video views | system generated
+    `video_comment` | big int | count of video comments | system generated
     `video_like` | big int | count of video likes | system generated
     `video_dislike` | big int | count of video dislikes | system generated
-    `video_comment` | big int | count of video comments | system generated
     `video_star` | big int | count of video stars | system generated
     `video_share` | big int | count of video shares | system generated
     `video_thumbnail` | Thumbnail | video thumbnail | system generated
