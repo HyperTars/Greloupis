@@ -143,12 +143,12 @@ def test_video():
 ###############
 def test_search():
     # Search by keyword (case sensitive)
-    print(query_user_search_keyword(keyword_name="test"))
-    print(query_user_search_keyword(keyword_email="test"))
+    print(query_user_search_by_contains(keyword_name="test"))
+    print(query_user_search_by_contains(keyword_email="test"))
 
     # Search by pattern (can ignore case)
-    print(query_user_search_pattern(pattern_zip=re.compile(".*11201.*", re.IGNORECASE)))
-    print(query_user_search_pattern(pattern_name=re.compile('.*E.*T.*', re.IGNORECASE)))  # Ignore case
+    print(query_user_search_by_pattern(pattern_zip=re.compile(".*11201.*", re.IGNORECASE)))
+    print(query_user_search_by_pattern(pattern_name=re.compile('.*E.*T.*', re.IGNORECASE)))  # Ignore case
 
     # Search by aggregate (can search multi attributes)
     pipeline1 = [
@@ -171,7 +171,7 @@ def test_search():
         }
     ]
     print("\nAggregate search:")
-    print(query_user_search_aggregate(pipeline2))
+    print(query_user_search_by_aggregate(pipeline2))
 
 
 if __name__ == "__main__":

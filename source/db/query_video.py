@@ -3,6 +3,7 @@ from source.db.query_user import query_user_get_by_id
 from source.models.model_errors import ErrorCode
 import bson
 import datetime
+import re
 
 
 ##########
@@ -287,7 +288,7 @@ def query_video_delete(video_id: str):
 # Search by i-contains
 def query_video_search_by_contains(**kw):
     """
-    Search video by icontains (ignore case)
+    Search video by i-contains (ignore case)
     :param video_id: (optional) video's unique id
     :param video_title: (optional) string of video title to be searched
     :param video_channel: (optional) channel of videos
@@ -304,6 +305,33 @@ def query_video_search_by_contains(**kw):
         return Video.objects.filter(video_category__icontains=kw['video_category'])
     elif 'video_tag' in kw:
         return Video.objects.filter(video_tag__icontains=kw['video_tag'])
+    elif 'video_description' in kw:
+        return Video.objects.filter(video_description__icontains=kw['video_description'])
+
+    return ErrorCode.MONGODB_INVALID_SEARCH_PARAM
+
+
+# Search by pattern
+def query_video_search_by_pattern(**kw):
+    """
+    :param pattern_title: (optional) search title pattern
+    :param pattern description: (optional) search description pattern
+    :return: array of searching results (Video Model)
+    """
+    # Check input param
+    if len(kw) == 0:
+        return ErrorCode.MONGODB_EMPTY_PARAM
+
+    for arg in kw:
+        if type(kw[arg]) != re.Pattern:
+            return ErrorCode.MONGODB_RE_PATTERN_EXPECTED
+
+    if 'pattern_title' in kw:
+        return Video.objects(video_title=kw['pattern_title'])
+    elif 'pattern_channel' in kw:
+        return Video.objects(video_channel=kw['pattern_channel'])
+    elif 'pattern_description' in kw:
+        return Video.objects(video_description=kw['pattern_description'])
 
     return ErrorCode.MONGODB_INVALID_SEARCH_PARAM
 
@@ -317,16 +345,4 @@ def query_video_search_by_aggregate(aggr: dict):
     return list(Video.objects.aggregate(aggr))
 
 
-# Search by pattern
-def query_video_search_by_pattern(**kw):
-    """
-    :param pattern_title: (optional) search title pattern
-    :param pattern description: (optional) search description pattern
-    :return: array of searching results (Video Model)
-    """
-    if 'pattern_title' in kw:
-        return Video.objects(video_title=kw['pattern_title'])
-    elif 'pattern_description' in kw:
-        return Video.objects(video_description=kw['pattern_description'])
 
-    return ErrorCode.MONGODB_INVALID_SEARCH_PARAM
