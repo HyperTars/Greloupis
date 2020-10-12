@@ -13,7 +13,7 @@ def util_serializer_mongo_results_to_array(results):
 def util_serializer_array_dict_to_json(array_dict):
     res = []
     for d in array_dict:
-        res.append(json.dumps(d, cls=DateEncoder))
+        res.append(json.dumps(d, cls=JSONDateEncoder))
     return res
 
 
@@ -29,7 +29,7 @@ def util_serializer_api_response(body, code):
     return Response(result, status=code, mimetype='application/json')
 
 
-class DateEncoder(json.JSONEncoder):
+class JSONDateEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, datetime.datetime):
             return obj.strftime('%Y-%m-%d %H:%M:%S')

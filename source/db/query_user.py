@@ -5,28 +5,9 @@ import datetime
 import re
 
 
-# User CRUD
-def query_user_get_by_name(user_name: str):
-    """
-    :return: an array of such User, len == 0 if no such user_name, len == 1 if found
-    """
-    return User.objects(user_name=user_name)
-
-
-def query_user_get_by_email(user_email: str):
-    """
-    :return: an array of such User (len == 0 or 1), len == 0 if no such user_email, len == 1 if found
-    """
-    return User.objects(user_email=user_email)
-
-
-def query_user_get_by_id(user_id: str):
-    """
-    :return: an array of such User (len == 0 or 1), len == 0 if no such user_id, len == 1 if found
-    """
-    return User.objects(_id=bson.ObjectId(user_id))
-
-
+##########
+# CREATE #
+##########
 def query_user_create(user_name: str, user_email: str, user_password: str, user_ip="0.0.0.0"):
     """
     :param user_name: user's unique nickname
@@ -50,6 +31,33 @@ def query_user_create(user_name: str, user_email: str, user_password: str, user_
     return user.save()
 
 
+############
+# RETRIEVE #
+############
+def query_user_get_by_name(user_name: str):
+    """
+    :return: an array of such User, len == 0 if no such user_name, len == 1 if found
+    """
+    return User.objects(user_name=user_name)
+
+
+def query_user_get_by_email(user_email: str):
+    """
+    :return: an array of such User (len == 0 or 1), len == 0 if no such user_email, len == 1 if found
+    """
+    return User.objects(user_email=user_email)
+
+
+def query_user_get_by_id(user_id: str):
+    """
+    :return: an array of such User (len == 0 or 1), len == 0 if no such user_id, len == 1 if found
+    """
+    return User.objects(_id=bson.ObjectId(user_id))
+
+
+##########
+# UPDATE #
+##########
 def query_user_update_status(user_id: str, user_status: str):
     """
     :param user_id: user's unique id
@@ -256,6 +264,9 @@ def query_user_add_login(user_id: str, ip="0.0.0.0", time=datetime.datetime.utcn
     return 1
 
 
+##########
+# DELETE #
+##########
 def query_user_delete(user_id: str):
     """
     :param user_id: user's unique id
@@ -268,29 +279,62 @@ def query_user_delete(user_id: str):
     return User.objects(_id=bson.ObjectId(user_id)).delete()
 
 
-def query_user_search_keyword(**kw):
+##########
+# SEARCH #
+##########
+# Search by i-contains
+def query_user_search_by_contains(**kw):
     """
-    choose one attribute to search
-    :param keyword_name (optional): single keyword of username to be searched
-    :param keyword_email (optional): single keyword of email to be searched
+    Search user by i-contains (ignore case)
+    :param user_name: (optional) single keyword of username to be searched
+    :param user_email: (optional) single keyword of email to be searched
+    :param user_first_name: (optional) single keyword of first_name to be searched
+    :param user_last_name: (optional) single keyword of last_name to be searched
+    :param user_phone: (optional) single keyword of phone to be searched
+    :param user_street1: (optional) single keyword of street1 to be searched
+    :param user_street2: (optional) single keyword of street2 to be searched
+    :param user_city: (optional) single keyword of city to be searched
+    :param user_state: (optional) single keyword of state to be searched
+    :param user_country: (optional) single keyword of country to be searched
+    :param user_zip: (optional) single keyword of zip to be searched
+    :param user_status: (optional) single keyword of status to be searched
+    :param user_reg_date: (optional) single keyword of reg_date to be searched
     :return: array of searching results (User Model)
     """
-    if 'keyword_name' in kw:
-        return User.objects.filter(user_name__contains=kw['keyword_name'])
-    elif 'keyword_email' in kw:
-        return User.objects.filter(user_email__contains=kw['keyword_email'])
+    if 'user_id' in kw:
+        return query_user_get_by_id(kw['user_id'])
+    elif 'user_name' in kw:
+        return User.objects.filter(user_name__icontains=kw['user_name'])
+    elif 'user_email' in kw:
+        return User.objects.filter(user_email__icontains=kw['user_email'])
+    elif 'user_first_name' in kw:
+        return User.objects.filter(user_detail__first_name__icontains=kw['user_first_name'])
+    elif 'user_last_name' in kw:
+        return User.objects.filter(user_detail__last_name__icontains=kw['user_last_name'])
+    elif 'user_phone' in kw:
+        return User.objects.filter(user_detail__phone__icontains=kw['user_phone'])
+    elif 'user_street1' in kw:
+        return User.objects.filter(user_detail__street1__icontains=kw['user_street1'])
+    elif 'user_street2' in kw:
+        return User.objects.filter(user_detail__street2__icontains=kw['user_street2'])
+    elif 'user_city' in kw:
+        return User.objects.filter(user_detail__city__icontains=kw['user_city'])
+    elif 'user_state' in kw:
+        return User.objects.filter(user_detail__state__icontains=kw['user_state'])
+    elif 'user_country' in kw:
+        return User.objects.filter(user_detail__country__icontains=kw['user_country'])
+    elif 'user_zip' in kw:
+        return User.objects.filter(user_detail__zip__icontains=kw['user_zip'])
+    elif 'user_status' in kw:
+        return User.objects.filter(user_status__icontains=kw['user_status'])
+    elif 'user_reg_date' in kw:
+        return User.objects.filter(user_reg_date__icontains=kw['user_reg_date'])
+
     return ErrorCode.MONGODB_INVALID_SEARCH_PARAM
 
 
-def query_user_search_aggregate(aggr: dict):
-    """
-    :param aggr: dict of searching param
-    :return: array of searching results in dict
-    """
-    return list(User.objects.aggregate(aggr))
-
-
-def query_user_search_pattern(**kw):
+# Search by pattern
+def query_user_search_by_pattern(**kw):
     """
     search user by pattern (re.Pattern)
     :param pattern_name (optional): search name pattern
@@ -344,3 +388,12 @@ def query_user_search_pattern(**kw):
         return User.objects(user_reg_date=kw['pattern_reg_date'])
 
     return ErrorCode.MONGODB_INVALID_SEARCH_PARAM
+
+
+# Search by aggregate
+def query_user_search_by_aggregate(aggr: dict):
+    """
+    :param aggr: dict of searching param
+    :return: array of searching results in dict
+    """
+    return list(User.objects.aggregate(aggr))
