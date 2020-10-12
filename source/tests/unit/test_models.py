@@ -1,20 +1,19 @@
 import unittest
+from source.utils.util_load_test_data import *
+from source.models.model_user import *
 
-class TestStringMethods(unittest.TestCase):
 
-    def test_upper(self):
-        self.assertEqual('foo'.upper(), 'FOO')
+class TestModels(unittest.TestCase):
+    def setUp(self):
+        self.data = util_load_test_data()
 
-    def test_isupper(self):
-        self.assertTrue('FOO'.isupper())
-        self.assertFalse('Foo'.isupper())
+    def test_user_model_load(self):
+        test_load_data = self.data['user'][0] 
+        user = User(**test_load_data)
+        self.assertEqual(user.user_name, 'hypertars', msg='Test Model Loading Result')
+        self.assertEqual(user.user_detail.first_name, 'Brian',  msg='Test Model Loading Result')
+        self.assertEqual(user.user_recent_login[0].login_time, {'$date': {'$numberLong': '1601195652000'}}, msg='Test Model Loading Result')
 
-    def test_split(self):
-        s = 'hello world'
-        self.assertEqual(s.split(), ['hello', 'world'])
-        # check that s.split fails when the separator is not a string
-        with self.assertRaises(TypeError):
-            s.split(2)
 
 if __name__ == '__main__':
     unittest.main()

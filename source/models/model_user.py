@@ -25,7 +25,7 @@ class UserDetail(db.EmbeddedDocument):
 
 
 class LoginDetail(db.EmbeddedDocument):
-    login_ip = db.StringField(max_length=50, required=True)
+    login_ip = db.StringField(max_length=50, default="0.0.0.0",  required=True)
     login_time = db.DateTimeField()
 
 
@@ -33,11 +33,11 @@ class User(db.Document):
     _id = db.StringField()
     user_email = db.StringField(max_length=50, required=True, unique=True)
     user_name = db.StringField(max_length=60, required=True, unique=True)
-    user_password = db.StringField(max_length=200, required=True)
+    user_password = db.StringField(max_length=200, required=True, default="")
     user_detail = db.EmbeddedDocumentField('UserDetail', required=True)
-    user_status = db.StringField(max_length=50, required=True)
+    user_status = db.StringField(max_length=50, required=True, default="public")
     user_thumbnail = db.EmbeddedDocumentField('Thumbnail', required=True)
-    user_reg_date = db.DateTimeField(required=True)
+    user_reg_date = db.DateTimeField()
     user_recent_login = db.ListField(db.EmbeddedDocumentField('LoginDetail'))
     user_following = db.ListField(db.StringField())
     user_follower = db.ListField(db.StringField())
@@ -50,18 +50,18 @@ class User(db.Document):
         user_following_array = []
         user_follower_array = []
 
-        user_detail_dict['user_first_name'] = self.user_detail.first_name or None
-        user_detail_dict['user_last_name'] = self.user_detail.last_name or None
-        user_detail_dict['user_phone'] = self.user_detail.phone or None
-        user_detail_dict['user_street1'] = self.user_detail.street1 or None
-        user_detail_dict['user_street2'] = self.user_detail.street2 or None
-        user_detail_dict['user_city'] = self.user_detail.city or None
-        user_detail_dict['user_state'] = self.user_detail.state or None
-        user_detail_dict['user_country'] = self.user_detail.country or None
-        user_detail_dict['user_zip'] = self.user_detail.zip or None
+        user_detail_dict['user_first_name'] = self.user_detail.first_name or ""
+        user_detail_dict['user_last_name'] = self.user_detail.last_name or ""
+        user_detail_dict['user_phone'] = self.user_detail.phone or ""
+        user_detail_dict['user_street1'] = self.user_detail.street1 or ""
+        user_detail_dict['user_street2'] = self.user_detail.street2 or ""
+        user_detail_dict['user_city'] = self.user_detail.city or ""
+        user_detail_dict['user_state'] = self.user_detail.state or ""
+        user_detail_dict['user_country'] = self.user_detail.country or ""
+        user_detail_dict['user_zip'] = self.user_detail.zip or ""
 
-        user_thumbnail_dict['user_thumbnail_uri'] = self.user_thumbnail.thumbnail_uri or None
-        user_thumbnail_dict['user_thumbnail_type'] = self.user_thumbnail.thumbnail_type or None
+        user_thumbnail_dict['user_thumbnail_uri'] = self.user_thumbnail.thumbnail_uri or ""
+        user_thumbnail_dict['user_thumbnail_type'] = self.user_thumbnail.thumbnail_type or ""
 
         for login in self.user_recent_login:
             temp_login_detail = {'login_ip': login.login_ip, 'login_time': login.login_time}
