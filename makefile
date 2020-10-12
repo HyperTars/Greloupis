@@ -10,12 +10,11 @@ run:
 	python -m source.app FLASK_APP=app flask run --host=127.0.0.1 --port=8000
 	
 github:	FORCE
-	git add .
 	git pull origin master
 	git commit -a
 	git push origin master
 
-tests:	lint unit
+test:	lint unit
 	echo "lint unit tests"
 
 unit:	FORCE
