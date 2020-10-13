@@ -1,4 +1,10 @@
-def service_user_reg():
+from source.models.model_errors import *
+
+
+def service_user_reg(**kw):
+    # user_name: str, user_email: str, user_password: str, user_ip = "0.0.0.0"
+    if 'user_name' not in kw or 'user_email' not in kw or 'user_password' not in kw:
+        return ErrorCode.SERVICE_MISSING_PARAM
     return
 
 

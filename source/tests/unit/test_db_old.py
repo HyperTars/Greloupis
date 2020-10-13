@@ -176,15 +176,7 @@ def test_search():
 
 if __name__ == "__main__":
     db = get_db(TestConfig)
-    print(db.app.config)
-    print(query_user_create("test2", "test2@email.com", "testpasscode"))
-    print(query_user_create("test3", "test2@email.com", "testpasscode"))  # email conflict
-    print(query_user_create("test2", "test3@email.com", "testpasscode"))  # name conflict
-    print(query_user_create("test4", "test4@email.com", "testpasscode"))
-    #print(query_video_create("5f808f79c2ac20387eb8f3c9", "test video", "https://s3.amazon.com/test_video.mp4"))
-    #print(query_video_create("5f808f79c2ac20387eb8f3c9", "test film", "https://s3.amazon.com/test_film.mp4",
-    #                         video_tag=['movie'], video_category=['funny', 'action']))
-    #print(query_video_op_create("5f808f79c2ac20387eb8f3c9", "5f72999541bc583c4819d915"))
+    print(query_user_create("tttt", "172.0.0.0"))
     #test_raw()
     #test_user()
     #test_video_op()

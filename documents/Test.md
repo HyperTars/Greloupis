@@ -73,6 +73,17 @@
 
 #### test_db
 - **query_user**
+    - To test database query, we designed a series of sentences to ensure the idempotence of each test result.
+    - Usually, we store our most data in `test_data/data_user.json` as a json array
+
+    #Data | Operation | Description | Param | Expectation
+    --- | --- | --- | --- | ---
+    #0 | Init | Construct a complete data document | Full Model | return 1
+    #1 | Create | Create full param | `user_name`, `user_email`,<br>`user_password`, `user_ip` | return User object
+    #2 | Create | Create with part param | `user_name`, `user_email`,<br>`user_password` | return User object auto ip=0.0.0.0
+    #3 | Create | Create with insufficient param | return `TypeError: query_user_create() missing 1 required positional argument: 'user_password'`
+    #4 | Create | Create with taken user name | `user_name`, `user_email`, `user_password` | return `ErrorCode.MONGODB_USER_NAME_TAKEN`
+    #5 | Create | Create with taken user email | `user_name`, `user_email`, `user_password` | return `ErrorCode.MONGODB_USER_EMAIL_TAKEN`
 
 - **query_video**
 
