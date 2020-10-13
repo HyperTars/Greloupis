@@ -304,6 +304,11 @@ def query_user_search_by_contains(**kw):
     :param user_reg_date: (optional) single keyword of reg_date to be searched
     :return: array of searching results (User Model)
     """
+
+    for arg in kw:
+        if type(kw[arg]) != str:
+            return ErrorCode.MONGODB_PARAM_STR_EXPECTED
+
     if 'user_id' in kw:
         return query_user_get_by_id(kw['user_id'])
     elif 'user_name' in kw:
@@ -330,8 +335,6 @@ def query_user_search_by_contains(**kw):
         return User.objects.filter(user_detail__zip__icontains=kw['user_zip'])
     elif 'user_status' in kw:
         return User.objects.filter(user_status__icontains=kw['user_status'])
-    elif 'user_reg_date' in kw:
-        return User.objects.filter(user_reg_date__icontains=kw['user_reg_date'])
 
     return ErrorCode.MONGODB_INVALID_SEARCH_PARAM
 

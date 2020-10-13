@@ -37,20 +37,22 @@ def test_raw():
 # User Test #
 #############
 def test_user():
+    """
     print("=============== test: update user thumbnail ===============\n")
     print(query_user_update_thumbnail("5f808f79c2ac20387eb8f3c9", user_thumbnail_uri="s3.amazon.com/aidjasjds",
                                       user_thumbnail_type="origin"))  # invalid type error
     print(query_user_update_thumbnail("5f808f79c2ac20387eb8f3c9", user_thumbnail_uri="s3.amazon.com/aidjasjds",
                                       user_thumbnail_type="default"))
-
+    
     print("=============== test: update user detail ===============\n")
     print(query_user_update_details("5f808f79c2ac20387eb8f3c9", user_first_name="fffff", user_last_name="kkk",
                                     user_phone="+1313123123", user_zip="11201"))
-
+    
     print("=============== test: update user status ===============\n")
     print(query_user_update_status("5f808f79c2ac20387eb8f3c9", "active"))  # invalid status
     print(query_user_update_status("5f808f79c2ac20387eb8f3c9", "public"))  # success
     print(query_user_update_status("5f808f79c2ac20387eb8f3c9", "private"))  # success
+    
 
     print("=============== test: update user name ===============\n")
     print(query_user_update_name("5f80bef29342f187a0fa2d70", "test4"))  # name conflict
@@ -70,7 +72,6 @@ def test_user():
     print(query_user_add_follow("5f80bef29342f187a0fa2d70", "5f808f045e03b2165ca4275a"))
     print(query_user_delete_follow("5f80bef29342f187a0fa2d70", "5f808f045e03b2165ca4275a"))
 
-    """
     print("=============== test: RAW DATA CONSTRUCT TEST ===============\n")
     tu_detail = UserDetail(first_name="first_name", last_name="test_user", phone="+1xxxxxx", street1="str1",
                            street2="str2", city="cty", state="stt", country="ctry", zip="zip")
@@ -81,7 +82,7 @@ def test_user():
               user_recent_login=[tu_login], user_following=["kl12j3lk12j3l12k"],
               user_follower=["89889a7d98as789d", "1h312jj3h12kj312h"])
     tu.save()
-    """
+    
 
     print("=============== test: create user ===============\n")
     print(query_user_create("test2", "test2@email.com", "testpasscode"))
@@ -91,7 +92,7 @@ def test_user():
 
     print("=============== test: delete user ===============\n")
     print(query_user_delete("5f826e97e6c6dfa87b7ffde4"))
-
+    """
 
 #################
 # Video Op Test #

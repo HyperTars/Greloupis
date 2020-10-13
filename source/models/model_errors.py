@@ -45,7 +45,7 @@ class ErrorCode(Enum):
     MONGODB_FOLLOWER_NOT_FOUND = {"4120": "MongoDB Error: User Follower Not Found"}
     MONGODB_FOLLOWED_NOT_FOUND = {"4121": "MongoDB Error: User To Be Followed Not Found"}
     MONGODB_RE_PATTERN_EXPECTED = {"4122": "MongoDB Error: type <re:Pattern> Expected"}
-
+    MONGODB_PARAM_STR_EXPECTED = {"4123": "MongoDB Error: type <str> Expected"}
     # Util 5 Series
     UTIL_INVALID_PATTERN_PARAM = {"4001": "Util Error: Pattern Compile Param Not Supported"}
 
