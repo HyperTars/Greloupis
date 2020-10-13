@@ -19,6 +19,7 @@ class ErrorCode(Enum):
     # Service 3 Series
     SERVICE_PARAM_SLICE_NOT_SUPPORT = {"3001": "Service Error: Current Param Does Not Support Slice"}
     SERVICE_PATTERN_SEARCH_NOT_SUPPORT = {"3002": "Service Error: Current Param Does Not Support Pattern Search"}
+    SERVICE_MISSING_PARAM = {"3003": "Service Error: Missing Essential Param"}
 
     # Database 4 Series
     MONGODB_CONNECTION_FAILURE = {"4000": "MongoDB Connection Failure"}
