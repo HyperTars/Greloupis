@@ -137,8 +137,6 @@ def service_search_user_by_contains(**kw):
         return query_user_search_by_contains(user_zip=kw['user_zip'])
     elif 'user_status' in kw:
         return query_user_search_by_contains(user_status=kw['user_status'])
-    elif 'user_reg_date' in kw:
-        return query_user_search_by_contains(user_reg_date=kw['user_reg_date'])
 
     return ErrorCode.MONGODB_INVALID_SEARCH_PARAM
 
