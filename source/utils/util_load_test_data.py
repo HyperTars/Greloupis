@@ -17,9 +17,9 @@ def util_load_test_data():
         print("System not supported.")
 
     data = {}
-    data['user'] = get_json_data(path + "data_user.json")
-    data['video'] = get_json_data(path + "data_video.json")
-    data['video_op'] = get_json_data(path + "data_video_op.json")
+    data['user'] = get_json_data(path + "model_user.json")
+    data['video'] = get_json_data(path + "model_video.json")
+    data['video_op'] = get_json_data(path + "model_video_op.json")
     return data
 
 

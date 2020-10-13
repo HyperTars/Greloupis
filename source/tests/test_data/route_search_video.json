@@ -1,5 +1,7 @@
-{
-    "body": [
-        {"video_id": "5f72999541bc583c4819d915", "video_title": "XiXiHaHa", "video_raw_content": "https://s3.amazon.com/54asd56a4d5asdasd.mp4", "video_raw_status": "pending", "video_raw_size": 93.66, "video_duration": 0, "video_channel": "self-made", "video_tag": ["politics", "president"], "video_category": ["entertainment"], "video_description": "XiXi and HaHa AMV", "video_language": "Mandarin", "video_status": "public", "video_view": 18, "video_comment": 22, "video_like": 22, "video_dislike": 23, "video_star": 0, "video_share": 23, "video_thumbnail": {"video_thumbnail_uri": "https://s3.amazon.asdasdasda.png", "video_thumbnail_type": "auto"}, "video_upload_date": "1949-10-01 13:00:00", "video_uri": {"video_uri_high": "https://s3.amazon.com/asdjadasdas.mp4", "video_uri_mid": "", "video_uri_low": "https://s3.amazon.com/test_low_quality.mp4"}}
-    ]
-}
+[
+    {
+        "body": [
+            {"video_id": "5f72999541bc583c4819d915", "video_title": "XiXiHaHa", "video_raw_content": "https://s3.amazon.com/54asd56a4d5asdasd.mp4", "video_raw_status": "pending", "video_raw_size": 93.66, "video_duration": 0, "video_channel": "self-made", "video_tag": ["politics", "president"], "video_category": ["entertainment"], "video_description": "XiXi and HaHa AMV", "video_language": "Mandarin", "video_status": "public", "video_view": 18, "video_comment": 22, "video_like": 22, "video_dislike": 23, "video_star": 0, "video_share": 23, "video_thumbnail": {"video_thumbnail_uri": "https://s3.amazon.asdasdasda.png", "video_thumbnail_type": "auto"}, "video_upload_date": "1949-10-01 13:00:00", "video_uri": {"video_uri_high": "https://s3.amazon.com/asdjadasdas.mp4", "video_uri_mid": "", "video_uri_low": "https://s3.amazon.com/test_low_quality.mp4"}}
+        ]
+    }
+]

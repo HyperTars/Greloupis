@@ -1,5 +1,7 @@
-{
-    "body": [
-        {"user_id": "5f808f045e03b2165ca4275a", "user_email": "hypertars@gmail.com", "user_name": "hypertars", "user_detail": {"user_first_name": "Brian", "user_last_name": "Lee", "user_phone": "+13474051241", "user_street1": "343 Gold St", "user_street2": "Apt 3810", "user_city": "Brooklyn", "user_state": "New York", "user_country": "United States", "user_zip": "11201"}, "user_status": "public", "user_thumbnail": {"user_thumbnail_uri": "https://xxx.png", "user_thumbnail_type": "user_specified"}, "user_reg_date": "2020-09-26 17:56:42", "user_recent_login": [{"login_ip": "8.8.8.8", "login_time": "2020-09-27 08:34:12"}, {"login_ip": "4.4.4.4", "login_time": "2020-09-28 20:12:07"}], "user_following": ["46a5sd465as4d56as4", "7asdas654das98da8as"], "user_follower": []}
-    ]
-}
+[
+    {
+        "body": [
+            {"user_id": "5f808f045e03b2165ca4275a", "user_email": "hypertars@gmail.com", "user_name": "hypertars", "user_detail": {"user_first_name": "Brian", "user_last_name": "Lee", "user_phone": "+13474051241", "user_street1": "343 Gold St", "user_street2": "Apt 3810", "user_city": "Brooklyn", "user_state": "New York", "user_country": "United States", "user_zip": "11201"}, "user_status": "public", "user_thumbnail": {"user_thumbnail_uri": "https://xxx.png", "user_thumbnail_type": "user_specified"}, "user_reg_date": "2020-09-26 17:56:42", "user_recent_login": [{"login_ip": "8.8.8.8", "login_time": "2020-09-27 08:34:12"}, {"login_ip": "4.4.4.4", "login_time": "2020-09-28 20:12:07"}], "user_following": ["46a5sd465as4d56as4", "7asdas654das98da8as"], "user_follower": []}
+        ]
+    }
+]
