@@ -98,7 +98,9 @@ def test_user():
 # Video Op Test #
 #################
 def test_video_op():
+    
     print("=============== test: Video Op CRUD ===============\n")
+    """
     print(query_video_op_create("5f808f79c2ac20387eb8f3c9", "5f72999541bc583c4819d915"))
     print(query_video_op_get_by_user_id("5f808f79c2ac20387eb8f3c9")[0].to_json())
     print(query_video_op_get_by_video_id("5f72999541bc583c4819d915")[0].to_json())
@@ -112,7 +114,7 @@ def test_video_op():
     print(query_video_op_update_like("5f80fd775490b2aef73d6315", False))
     print(query_video_op_update_dislike("5f80fd775490b2aef73d6315", False))
     print(query_video_op_update_star("5f80fd775490b2aef73d6315", False))
-
+    """
 
 ##############
 # Video Test #
