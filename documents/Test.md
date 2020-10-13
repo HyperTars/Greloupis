@@ -88,8 +88,8 @@
     #07 | CREATE | Create user with taken user email conflict | `user_name`, `user_email`, `user_password` | return `ErrorCode.MONGODB_USER_EMAIL_TAKEN` | `query_user_create("test3", "test2@email.com", "testpasscode4", "218.85.157.99)`
     #08 | CREATE | Create user with full param | `user_name`, `user_email`,<br>`user_password`, `user_ip` | return User object | `query_user_create("test3", "test3@email.com", "testpasscode3", "34.172.45.33)`
     #09 | CREATE | Create user with full param | `user_name`, `user_email`,<br>`user_password`, `user_ip` | return User object | `query_user_create("test4", "test4@email.com", "testpasscode4", "218.85.157.99)`
-    # | RETRIEVE | 
-    # | RETRIEVE |
+    #00 | RETRIEVE | 
+    #00 | RETRIEVE |
     #10 | Update | Add user login | `query_user_add_login("5f80bef29342f187a0fa2d70", ip="127.0.1.1")`
     #11 | Update | Add user login (trigger clean when up to 10) | `query_user_add_login("5f80bef29342f187a0fa2d70", ip="127.0.1.1")`
     #12 | Update | Add user following | `query_user_add_follow("5f80bef29342f187a0fa2d70", "5f808f045e03b2165ca4275a")`
@@ -144,58 +144,58 @@
 
     #Case | Operation | Description | Param | Expectation | Code
     --- | --- | --- | --- | --- | ---
-    # | CREATE | `query_video_op_create("5f808f79c2ac20387eb8f3c9", "5f72999541bc583c4819d915")`
-    # | RETRIEVE | `query_video_op_get_by_user_id("5f808f79c2ac20387eb8f3c9")`
-    # | RETRIEVE | `query_video_op_get_by_video_id("5f72999541bc583c4819d915")`
-    # | RETRIEVE | `query_video_op_get_by_user_video("5f808f79c2ac20387eb8f3c9", "5f72999541bc583c4819d915")`
-    # | RETRIEVE | `query_video_op_get_by_op_id("5f80fd775490b2aef73d6315")`
-    # | UPDATE | `query_video_op_update_process("5f80fd775490b2aef73d6315", 142)`
-    # | UPDATE | `query_video_op_update_comment("5f80fd775490b2aef73d6315", "Interesting.")`
-    # | UPDATE | `query_video_op_update_like("5f80fd775490b2aef73d6315", True)`
-    # | UPDATE | `query_video_op_update_dislike("5f80fd775490b2aef73d6315", True)`
-    # | UPDATE | `query_video_op_update_star("5f80fd775490b2aef73d6315", True)`
-    # | UPDATE | `query_video_op_update_like("5f80fd775490b2aef73d6315", False)`
-    # | UPDATE | `query_video_op_update_dislike("5f80fd775490b2aef73d6315", False)`
-    # | UPDATE | `query_video_op_update_star("5f80fd775490b2aef73d6315", False)`
-    # | DELETE | ``
+    #0 | CREATE | `query_video_op_create("5f808f79c2ac20387eb8f3c9", "5f72999541bc583c4819d915")`
+    #0 | RETRIEVE | `query_video_op_get_by_user_id("5f808f79c2ac20387eb8f3c9")`
+    #0 | RETRIEVE | `query_video_op_get_by_video_id("5f72999541bc583c4819d915")`
+    #0 | RETRIEVE | `query_video_op_get_by_user_video("5f808f79c2ac20387eb8f3c9", "5f72999541bc583c4819d915")`
+    #0 | RETRIEVE | `query_video_op_get_by_op_id("5f80fd775490b2aef73d6315")`
+    #0 | UPDATE | `query_video_op_update_process("5f80fd775490b2aef73d6315", 142)`
+    #0 | UPDATE | `query_video_op_update_comment("5f80fd775490b2aef73d6315", "Interesting.")`
+    #0 | UPDATE | `query_video_op_update_like("5f80fd775490b2aef73d6315", True)`
+    #0 | UPDATE | `query_video_op_update_dislike("5f80fd775490b2aef73d6315", True)`
+    #0 | UPDATE | `query_video_op_update_star("5f80fd775490b2aef73d6315", True)`
+    #0 | UPDATE | `query_video_op_update_like("5f80fd775490b2aef73d6315", False)`
+    #0 | UPDATE | `query_video_op_update_dislike("5f80fd775490b2aef73d6315", False)`
+    #0 | UPDATE | `query_video_op_update_star("5f80fd775490b2aef73d6315", False)`
+    #0 | DELETE | ``
 
 - **query_video_op**
 
     #Case | Operation | Description | Param | Expectation | Code
     --- | --- | --- | --- | --- | ---
-    # | CREATE | `query_video_create("5f808f79c2ac20387eb8f3c9", "test video", "https://s3.amazon.com/test_video.mp4")`
-    # | CREATE | `query_video_create("5f808f79c2ac20387eb8f3c9", "test film", "https://s3.amazon.com/test_film.mp4", video_tag=['movie'], video_category=['funny', 'action'])`
-    # | RETRIEVE | `query_video_get_by_title("XiXiHaHa")[0].to_dict()`
-    # | RETRIEVE | `query_video_get_by_id("5f72999541bc583c4819d915")[0].to_dict()`
-    # | UPDATE | `query_video_update("5f72999541bc583c4819d915", video_uri_low="https://s3.amazon.com/test_low_quality.mp4")`
-    # | UPDATE | `query_video_cnt_incr_by_one("5f72999541bc583c4819d915", "view")`
-    # | UPDATE | `query_video_cnt_incr_by_one("5f72999541bc583c4819d915", "comments")`
-    # | UPDATE | `query_video_cnt_incr_by_one("5f72999541bc583c4819d915", "likes")`
-    # | UPDATE | `query_video_cnt_incr_by_one("5f72999541bc583c4819d915", "video_dislike")`
-    # | UPDATE | `query_video_cnt_incr_by_one("5f72999541bc583c4819d915", "video_star")`
-    # | UPDATE | `query_video_cnt_incr_by_one("5f72999541bc583c4819d915", "share")`
-    # | UPDATE | `query_video_cnt_decr_by_one("5f72999541bc583c4819d915", "video_star")`
-    # | UPDATE | decr stop at zero |`query_video_cnt_decr_by_one("5f72999541bc583c4819d915", "video_star")`
-    # | DELETE | `query_video_delete("5f810903cd3d45e0e5989891")`
+    #0 | CREATE | `query_video_create("5f808f79c2ac20387eb8f3c9", "test video", "https://s3.amazon.com/test_video.mp4")`
+    #0 | CREATE | `query_video_create("5f808f79c2ac20387eb8f3c9", "test film", "https://s3.amazon.com/test_film.mp4", video_tag=['movie'], video_category=['funny', 'action'])`
+    #0 | RETRIEVE | `query_video_get_by_title("XiXiHaHa")[0].to_dict()`
+    #0 | RETRIEVE | `query_video_get_by_id("5f72999541bc583c4819d915")[0].to_dict()`
+    #0 | UPDATE | `query_video_update("5f72999541bc583c4819d915", video_uri_low="https://s3.amazon.com/test_low_quality.mp4")`
+    #0 | UPDATE | `query_video_cnt_incr_by_one("5f72999541bc583c4819d915", "view")`
+    #0 | UPDATE | `query_video_cnt_incr_by_one("5f72999541bc583c4819d915", "comments")`
+    #0 | UPDATE | `query_video_cnt_incr_by_one("5f72999541bc583c4819d915", "likes")`
+    #0 | UPDATE | `query_video_cnt_incr_by_one("5f72999541bc583c4819d915", "video_dislike")`
+    #0 | UPDATE | `query_video_cnt_incr_by_one("5f72999541bc583c4819d915", "video_star")`
+    #0 | UPDATE | `query_video_cnt_incr_by_one("5f72999541bc583c4819d915", "share")`
+    #0 | UPDATE | `query_video_cnt_decr_by_one("5f72999541bc583c4819d915", "video_star")`
+    #0 | UPDATE | decr stop at zero |`query_video_cnt_decr_by_one("5f72999541bc583c4819d915", "video_star")`
+    #0 | DELETE | `query_video_delete("5f810903cd3d45e0e5989891")`
     
 #### test_service
 - **service_search**
 
     #Case | Operation | Description | Param | Expectation | Code
     --- | --- | --- | --- | --- | ---
-    # | Search user by contains | 
-    # | Search user by contains | 
-    # | Search user by pattern | 
-    # | Search user by pattern | 
-    # | Search user by aggregate | 
-    # | Search user by aggregate | 
-    # | Search video by contains | 
-    # | Search video by contains | 
-    # | Search video by pattern custom| 
-    # | Search video by pattern slice | 
-    # | Search video by pattern case sensitive | 
-    # | Search video by pattern exact | 
-    # | Search video by aggregate | 
-    # | Search video by aggregate | 
+    #0 | Search user by contains | 
+    #0 | Search user by contains | 
+    #0 | Search user by pattern | 
+    #0 | Search user by pattern | 
+    #0 | Search user by aggregate | 
+    #0 | Search user by aggregate | 
+    #0 | Search video by contains | 
+    #0 | Search video by contains | 
+    #0 | Search video by pattern custom| 
+    #0 | Search video by pattern slice | 
+    #0 | Search video by pattern case sensitive | 
+    #0 | Search video by pattern exact | 
+    #0 | Search video by aggregate | 
+    #0 | Search video by aggregate | 
     
 #### test_route
