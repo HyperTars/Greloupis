@@ -1,5 +1,7 @@
 language: python
-sudo: enabled
+sudo: required
+services:
+  -docker
 env:
   global:
     - TRAVIS=true
@@ -20,7 +22,8 @@ deploy:
     tags: true
 
 # after_failure:
-# after_success:
+after_success:
+  - sh .travis/deploy_dockerhub.sh
 # [OPTIONAL] before_deploy
 # [OPTIONAL] deploy
 # [OPTIONAL] after_deploy

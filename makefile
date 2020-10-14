@@ -7,7 +7,7 @@ FORCE:
 prod:	tests github
 
 run:
-	python -m source.app FLASK_APP=app flask run --host=127.0.0.1 --port=8000
+	python3 -m source.app FLASK_APP=app flask run --host=127.0.0.1 --port=8000
 	
 github:	FORCE
 	git pull origin master
@@ -18,13 +18,13 @@ test:	unit #lint
 	echo "unittest and lint check finished"
 
 unit:	FORCE
-	python -m source.test
+	python3 -m source.test
 
 lint:	FORCE
 	$(LINTER) $(SRC_DIR)/*.py --exit-zero --ignore=W191,E265,F405
 
 dev_env:	FORCE
-	pip install -r $(REQ_DIR)/requirements-dev.txt
+	pip3 install -r $(REQ_DIR)/requirements-dev.txt
 
 docs:	#FORCE
 	cd $(SRC_DIR); make docs
