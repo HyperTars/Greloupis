@@ -36,7 +36,7 @@ def util_serializer_api_response(body, code):
 
 
 class JSONDateEncoder(json.JSONEncoder):
-    def default(self, obj):
+    def default(self, obj, date):
         if isinstance(obj, datetime.datetime):
             return obj.strftime('%Y-%m-%d %H:%M:%S')
         elif isinstance(obj, datetime.date):
