@@ -4,7 +4,7 @@ REQ_DIR = requirements
 
 FORCE:
 
-prod:	tests github
+prod:	test github
 
 run:
 	python3 -m source.app FLASK_APP=app flask run --host=127.0.0.1 --port=8000
@@ -14,7 +14,7 @@ github:	FORCE
 	git commit -a
 	git push origin master
 
-test:	unit #lint
+test:	unit lint
 	echo "unittest and lint check finished"
 
 unit:	FORCE
@@ -22,6 +22,7 @@ unit:	FORCE
 
 lint:	FORCE
 	$(LINTER) $(SRC_DIR)/*.py --exit-zero --ignore=W191,E265,F405
+	$(LINTER) $(SRC_DIR)/*/*.py --exit-zero --ignore=W191,E265,F405
 
 dev_env:	FORCE
 	pip3 install -r $(REQ_DIR)/requirements-dev.txt
