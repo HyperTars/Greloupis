@@ -343,6 +343,3 @@ def query_video_search_by_aggregate(aggr: dict):
     :return: array of searching results in dict
     """
     return list(Video.objects.aggregate(aggr))
-
-
-
