@@ -21,6 +21,7 @@ unit:	FORCE
 	python3 -m source.test
 
 lint:	FORCE
+	$(LINTER) $(SRC_DIR)/*.py --exit-zero --ignore=W191,E265,F405
 	$(LINTER) $(SRC_DIR)/*/*.py --exit-zero --ignore=W191,E265,F405
 
 dev_env:	FORCE
