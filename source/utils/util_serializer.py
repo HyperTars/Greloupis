@@ -22,15 +22,14 @@ def util_serializer_request(request, format="dict"):
 
 
 def util_serializer_api_response(body, code):
-    response = {}
-    response['body'] = body
+    response = {'body': body}
     result = json.dumps(response, indent=4, sort_keys=True, separators=(',', ': ')) \
         .replace('\\"', "'").replace('"{', '{').replace('}"', '}').replace("'", '"')
     return Response(result, status=code, mimetype='application/json')
 
 
 class JSONDateEncoder(json.JSONEncoder):
-    def default(self, obj):
+    def default(self, obj, date):
         if isinstance(obj, datetime.datetime):
             return obj.strftime('%Y-%m-%d %H:%M:%S')
         elif isinstance(obj, date):
