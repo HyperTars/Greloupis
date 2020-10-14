@@ -1,4 +1,4 @@
-language: python
+language: python3
 sudo: required
 services:
   -docker
@@ -22,8 +22,10 @@ deploy:
     tags: true
 
 # after_failure:
-after_success:
-  - sh .travis/deploy_dockerhub.sh
+# after_success:
+  # - sh .travis/deploy_dockerhub.sh
+  # - test "$TRAVIS_BRANCH"="master" && sh .travis_deploy_heroku.sh
+
 # [OPTIONAL] before_deploy
 # [OPTIONAL] deploy
 # [OPTIONAL] after_deploy
