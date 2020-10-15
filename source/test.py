@@ -14,3 +14,14 @@ if __name__ == '__main__':
     TestModels()
     TestRoutes()
     unittest.main()
+
+
+"""
+dev param
+
+from source.settings import config
+from source.db.mongo import *
+
+conf = config['dev']
+db = get_db(conf)
+"""

@@ -1,10 +1,7 @@
 import unittest
 from source.settings import *
 from source.db.mongo import get_db
-from source.db.query_user import *
-from source.db.query_video import *
-from source.db.query_video_op import *
-from source.utils.util_load_test_data import *
+from source.tests.unit.test_load_data import *
 
 
 class TestUser(unittest.TestCase):

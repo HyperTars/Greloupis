@@ -1,4 +1,4 @@
-from source.models.model_video import Video, Thumbnail, VideoURI
+from source.models.model_video import *
 from source.db.query_user import query_user_get_by_id
 from source.models.model_errors import ErrorCode
 import bson
@@ -47,7 +47,7 @@ def query_video_create(user_id: str, video_title: str, video_raw_content: str, *
     video_description = ""
     video_language = ""
     video_status = "public"
-    video_thumbnail = Thumbnail()
+    video_thumbnail = VideoThumbnail()
     video_upload_date = datetime.datetime.utcnow()
 
     # Fill if exist
@@ -70,7 +70,8 @@ def query_video_create(user_id: str, video_title: str, video_raw_content: str, *
     if 'video_status' in kw:
         video_status = kw['video_status']
     if 'video_thumbnail_uri' in kw and 'video_thumbnail_type' in kw:
-        video_thumbnail = Thumbnail(thumbnail_uri=kw['video_thumbnail_uri'], thumbnail_type=kw['video_thumbnail_type'])
+        video_thumbnail = VideoThumbnail(video_thumbnail_uri=kw['video_thumbnail_uri'],
+                                         video_thumbnail_type=kw['video_thumbnail_type'])
     if 'video_upload_date' in kw:
         video_upload_date = kw['upload_date']
 
@@ -254,16 +255,17 @@ def query_video_update(video_id: str, **kw):
     if 'video_status' in kw:
         Video.objects(_id=_id).update(video_language=kw['video_status'])
     if 'video_thumbnail_uri' in kw and 'video_thumbnail_type' in kw:
-        video_thumbnail = Thumbnail(thumbnail_uri=kw['video_thumbnail_uri'], thumbnail_type=kw['video_thumbnail_type'])
+        video_thumbnail = VideoThumbnail(video_thumbnail_uri=kw['video_thumbnail_uri'],
+                                         video_thumbnail_type=kw['video_thumbnail_type'])
         Video.objects(_id=_id).update(video_thumbnail=video_thumbnail)
     if 'video_thumbnail_uri' in kw or 'video_thumbnail_type' in kw:
         return ErrorCode.MONGODB_THUMBNAIL_MISS_ONE
     if 'video_uri_low' in kw:
-        Video.objects(_id=_id).update(set__video_uri__video_low=kw['video_uri_low'])
+        Video.objects(_id=_id).update(set__video_uri__video_uri_low=kw['video_uri_low'])
     if 'video_uri_mid' in kw:
-        Video.objects(_id=_id).update(set__video_uri__video_mid=kw['video_uri_mid'])
+        Video.objects(_id=_id).update(set__video_uri__video_uri_mid=kw['video_uri_mid'])
     if 'video_uri_high' in kw:
-        Video.objects(_id=_id).update(set__video_uri__video_high=kw['video_uri_high'])
+        Video.objects(_id=_id).update(set__video_uri__video_uri_high=kw['video_uri_high'])
 
     return 1
 

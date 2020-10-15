@@ -3,16 +3,20 @@
 # mongoengine-0.20.0
 
 from flask_mongoengine import MongoEngine
-from source.models.model_base import Thumbnail
 
 db = MongoEngine()
 
 
 # Video Models
+class VideoThumbnail(db.EmbeddedDocument):
+    video_thumbnail_uri = db.StringField(max_length=200, required=True, default="")
+    video_thumbnail_type = db.StringField(max_length=50, required=True, default="default")
+
+
 class VideoURI(db.EmbeddedDocument):
-    video_low = db.StringField(max_length=200, default="")
-    video_mid = db.StringField(max_length=200, default="")
-    video_high = db.StringField(max_length=200, default="")
+    video_uri_low = db.StringField(max_length=200, required=True, default="")
+    video_uri_mid = db.StringField(max_length=200, required=True, default="")
+    video_uri_high = db.StringField(max_length=200, required=True, default="")
 
 
 class Video(db.Document):
@@ -41,7 +45,7 @@ class Video(db.Document):
     video_dislike = db.LongField(default=0)
     video_star = db.LongField(default=0)
     video_share = db.LongField(default=0)
-    video_thumbnail = db.EmbeddedDocumentField('Thumbnail', required=True)
+    video_thumbnail = db.EmbeddedDocumentField('VideoThumbnail', required=True)
     video_upload_date = db.DateTimeField(required=True)
     video_uri = db.EmbeddedDocumentField('VideoURI')
 
@@ -58,33 +62,33 @@ class Video(db.Document):
         for category in self.video_category:
             video_category_array.append(category)
 
-        video_thumbnail_dict['video_thumbnail_uri'] = self.video_thumbnail.thumbnail_uri or None
-        video_thumbnail_dict['video_thumbnail_type'] = self.video_thumbnail.thumbnail_type or None
+        video_thumbnail_dict['video_thumbnail_uri'] = self.video_thumbnail.video_thumbnail_uri or ""
+        video_thumbnail_dict['video_thumbnail_type'] = self.video_thumbnail.video_thumbnail_type or ""
 
-        video_uri_dict['video_uri_high'] = self.video_uri.video_high
-        video_uri_dict['video_uri_mid'] = self.video_uri.video_mid
-        video_uri_dict['video_uri_low'] = self.video_uri.video_low
+        video_uri_dict['video_uri_high'] = self.video_uri.video_uri_high or ""
+        video_uri_dict['video_uri_mid'] = self.video_uri.video_uri_mid or ""
+        video_uri_dict['video_uri_low'] = self.video_uri.video_uri_low or ""
 
         video_dict['video_id'] = str(self._id)
-        video_dict['video_title'] = self.video_title
-        video_dict['video_raw_content'] = self.video_raw_content
-        video_dict['video_raw_status'] = self.video_raw_status
-        video_dict['video_raw_size'] = self.video_raw_size or None
-        video_dict['video_duration'] = self.video_duration
-        video_dict['video_channel'] = self.video_channel
-        video_dict['video_tag'] = video_tag_array
-        video_dict['video_category'] = video_category_array
-        video_dict['video_description'] = self.video_description
-        video_dict['video_language'] = self.video_language
-        video_dict['video_status'] = self.video_status
-        video_dict['video_view'] = self.video_view
-        video_dict['video_comment'] = self.video_comment
-        video_dict['video_like'] = self.video_like
-        video_dict['video_dislike'] = self.video_dislike
-        video_dict['video_star'] = self.video_star
-        video_dict['video_share'] = self.video_share
-        video_dict['video_thumbnail'] = video_thumbnail_dict
-        video_dict['video_upload_date'] = self.video_upload_date
-        video_dict['video_uri'] = video_uri_dict
+        video_dict['video_title'] = self.video_title or ""
+        video_dict['video_raw_content'] = self.video_raw_content or ""
+        video_dict['video_raw_status'] = self.video_raw_status or ""
+        video_dict['video_raw_size'] = self.video_raw_size or 0
+        video_dict['video_duration'] = self.video_duration or ""
+        video_dict['video_channel'] = self.video_channel or ""
+        video_dict['video_tag'] = video_tag_array or []
+        video_dict['video_category'] = video_category_array or []
+        video_dict['video_description'] = self.video_description or ""
+        video_dict['video_language'] = self.video_language or ""
+        video_dict['video_status'] = self.video_status or ""
+        video_dict['video_view'] = self.video_view or 0
+        video_dict['video_comment'] = self.video_comment or 0
+        video_dict['video_like'] = self.video_like or 0
+        video_dict['video_dislike'] = self.video_dislike or 0
+        video_dict['video_star'] = self.video_star or 0
+        video_dict['video_share'] = self.video_share or 0
+        video_dict['video_thumbnail'] = video_thumbnail_dict or VideoThumbnail()
+        video_dict['video_upload_date'] = self.video_upload_date or None
+        video_dict['video_uri'] = video_uri_dict or VideoURI()
 
         return video_dict
