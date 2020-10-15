@@ -3,9 +3,6 @@
 # mongoengine-0.20.0
 
 from flask_mongoengine import MongoEngine
-from flask import current_app
-from werkzeug.security import generate_password_hash, check_password_hash
-from itsdangerous import TimedJSONWebSignatureSerializer
 from source.models.model_base import Thumbnail
 
 db = MongoEngine()
@@ -33,7 +30,7 @@ class User(db.Document):
     _id = db.StringField()
     user_email = db.StringField(max_length=50, required=True, unique=True)
     user_name = db.StringField(max_length=60, required=True, unique=True)
-    user_password = db.StringField(max_length=200, required=True, default="")
+    user_password = db.StringField(max_length=512, required=True, default="")
     user_detail = db.EmbeddedDocumentField('UserDetail', required=True)
     user_status = db.StringField(max_length=50, required=True, default="public")
     user_thumbnail = db.EmbeddedDocumentField('Thumbnail', required=True)
@@ -85,65 +82,3 @@ class User(db.Document):
         user_dict['user_follower'] = user_follower_array
 
         return user_dict
-
-    def check_password(self, password):
-        return self.user_password == password
-
-    @property
-    def password(self):
-        raise AttributeError('Password is not allowed to read')
-
-    @password.setter
-    def password(self, password):
-        self.password_hash = generate_password_hash(password)
-
-    def verify_password(self, password):
-        return check_password_hash(self.password_hash, password)
-
-    def generate_confirmation_token(self, expiration=3600):
-        serializer = TimedJSONWebSignatureSerializer(current_app.BaseConfig['SECRET_KEY'], expiration)
-        return serializer.dumps({'confirm': self.username})
-
-    def confirm_email(self, token, expiration=3600):
-        s = TimedJSONWebSignatureSerializer(current_app.BaseConfig['SECRET_KEY'])
-        try:
-            data = s.loads(token)
-        except Exception:
-            return False
-        if data.get('confirm') != self.username:
-            return False
-        self.is_email_confirmed = True
-        self.save()
-        return True
-
-    def generate_reset_token(self, expiration=3600):
-        serializer = TimedJSONWebSignatureSerializer(current_app.BaseConfig['SECRET_KEY'], expiration)
-        return serializer.dumps({'reset': self.username})
-
-    @staticmethod
-    def reset_password(token, new_password):
-        serializer = TimedJSONWebSignatureSerializer(current_app.BaseConfig['SECRET_KEY'])
-        try:
-            data = serializer.loads(token)
-        except Exception:
-            return False
-
-        try:
-            user = User.objects.get(username=data.get('reset'))
-        except Exception:
-            return False
-
-        user.password = new_password
-        user.save()
-        return True
-
-    def get_id(self):
-        try:
-            # return unicode(self.username)
-            return self.user_name
-
-        except AttributeError:
-            raise NotImplementedError('No `username` attribute - override `get_id`')
-
-    def __unicode__(self):
-        return self.user_name

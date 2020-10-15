@@ -1,3 +1,6 @@
+venv/
+*venv*
+
 ### VS Code ###
 vs_code/
 .vscode

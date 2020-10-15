@@ -1,5 +1,6 @@
 from source.models.model_user import User, LoginDetail, UserDetail, Thumbnail
 from source.models.model_errors import ErrorCode
+from source.utils.util_hash import *
 import bson
 import datetime
 import re
