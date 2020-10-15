@@ -4,9 +4,9 @@
 ![Python](https://img.shields.io/badge/python-3.8-blue)
 ![npm](https://img.shields.io/badge/npm-6.2.0-blue)
 ![Flask](https://img.shields.io/badge/Flask-1.1.2-blue)
-![Video.js](https://img.shields.io/badge/Video.js-7.8.4-blue)
 ![React](https://img.shields.io/badge/React-16.3.1-blue)
 ![MongoDB](https://img.shields.io/badge/MongoDB-4.4.0-blue)
+<!-- [Video.js](https://img.shields.io/badge/Video.js-7.8.4-blue) -->
 
 
 ### Project Proposal
@@ -35,12 +35,10 @@ make test
 ```bash
 make run
 # OR
-python -m source.app
-# OR
 python -m source.app FLASK_APP=app flask run --host=127.0.0.1 --port=8000
 ```
 
-- You should be able to visit http://localhost:5000/ now and see a list of APIs of the application (swagger).
+- You should be able to visit http://localhost:5000/ now and see a list of swagger APIs.
 
     ![API_Preview](documents/API_Swagger.png)
 
@@ -56,7 +54,7 @@ python -m source.app FLASK_APP=app flask run --host=127.0.0.1 --port=8000
 - See full [Database Design](/documents/Database.md)
 
 #### APIs Design
-- Overview document [APIs Design](/documents/APIs.md)
+- See full [APIs Design](/documents/APIs.md)
 
 #### Components Design
 1. Processing Queue: Each uploaded video will be pushed to a processing queue to be de-queued later for encoding, thumbnail generation, and storage.
