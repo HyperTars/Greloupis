@@ -7,6 +7,10 @@ import json
 from .route_user import thumbnail, general_response, star, comment, like, dislike, \
     star_response_list, comment_response_list, like_response_list, dislike_response_list
 
+from source.service.service_video import *
+from source.utils.util_serializer import *
+from source.settings import *
+
 video = Namespace('video', description='Video APIs')
 
 video_uri = video.model(name='VideoURI', model={
@@ -96,7 +100,14 @@ class VideoVideoId(Resource):
         """
             Get video information by video ID
         """
-        return {}, 200, None
+        video_id = request.url.split('/')[-1]
+        # if 'video_id' not in req_dict:
+        #     return {ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_code():
+        #             ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg()}, 200, None
+
+        search_result = service_video_info(conf=config['default'], video_id=video_id)
+        search_result_json = util_serializer_array_dict_to_json(util_serializer_mongo_results_to_array(search_result))
+        return util_serializer_api_response(search_result_json, 200)
 
     @video.response(405, 'Method not allowed')
     def put(self, video_id):
