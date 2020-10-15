@@ -17,6 +17,12 @@ def util_serializer_array_dict_to_json(array_dict):
     return res
 
 
+# Simply use this function to call the two functions above if we don't perform extra operations on array_dict
+def util_serializer_mongo_results_to_json(results):
+    array_dict = util_serializer_mongo_results_to_array(results)
+    return util_serializer_array_dict_to_json(array_dict)
+
+
 def util_serializer_dict_to_json(d):
     return json.dumps(d, cls=JSONDateEncoder)
 
