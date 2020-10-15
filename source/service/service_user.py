@@ -25,6 +25,3 @@ def service_user_info():
     # table: video (belong to this user)
     # table: video_op (belong to this user)
     return
-
-
-

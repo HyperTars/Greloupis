@@ -210,7 +210,7 @@ def query_video_update(video_id: str, **kw):
     :param video_category (optional): array of video's new categories
     :param video_description (optional): video's new description
     :param video_language (optional): video's new language
-    :param video_status (optional): video's new status, default: public    
+    :param video_status (optional): video's new status, default: public
     :param video_thumbnail_uri (optional): video's new thumbnail uri
     :param video_thumbnail_type (optional): video's new thumbnail type
     :param video_uri_low (optional): video's new final uri (480p low resolution)
