@@ -279,17 +279,17 @@ def service_search_video_by_aggregation(**kw):
     pipeline1 = [
         { "$match":
             {
-                "user_name": {"$regex": "es"}, 
-                "user_status": "active" 
+                "user_name": {"$regex": "es"},
+                "user_status": "active"
             }
         }
     ]
     pipeline2 = [
         { "$unwind": "$user_detail" },
         { "$match":
-            { 
-                "user_detail.street1": {"$regex": "343"}, 
-                "user_status": "public" 
+            {
+                "user_detail.street1": {"$regex": "343"},
+                "user_status": "public"
             }
         }
     ]

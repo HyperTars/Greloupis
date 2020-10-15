@@ -21,7 +21,7 @@ class Video(db.Document):
     video_title = db.StringField(max_length=50, required=True, unique=True)
     """
     video_raw_content description:
-    user will get a raw video URI after uploading raw video to cache 
+    user will get a raw video URI after uploading raw video to cache
     (temp storage space where videos waiting for being transcoded)
     transcoder will start transcoding, but user can create a video now
     """

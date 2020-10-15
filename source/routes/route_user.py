@@ -104,6 +104,7 @@ comment_response_list = user.model(name='ApiResponseWithCommentList', model={
     'body': fields.List(fields.Nested(comment))
 })
 
+
 @user.route('')
 @user.response(200, 'Successful operation', user_response)
 @user.response(400, 'Invalid user information', general_response)
@@ -116,6 +117,7 @@ class User(Resource):
             User sign up
         """
         return {}, 200, None
+
 
 @user.route('/<string:user_id>')
 @user.param('user_id', 'User ID')
@@ -131,14 +133,12 @@ class UserUserId(Resource):
         """
         return {}, 200, None
 
-
     @user.response(405, 'Method not allowed')
     def put(self, user_id):
         """
             Update user information by id
         """
         return {}, 200, None
-
 
     @user.response(405, 'Method not allowed')
     def delete(self, user_id):
@@ -172,6 +172,7 @@ class UserLogout(Resource):
         """
         return None, 200
 
+
 @user.route('/<string:user_id>/like')
 @user.param('user_id', 'User ID')
 @user.response(200, 'Successful operation', like_response_list)
@@ -185,6 +186,7 @@ class UserUserIdLike(Resource):
             Get a list of like by user id
         """
         return {}, 200, None
+
 
 @user.route('/<string:user_id>/dislike')
 @user.param('user_id', 'User ID')
@@ -200,6 +202,7 @@ class UserUserIdDislike(Resource):
         """
         return {}, 200, None
 
+
 @user.route('/<string:user_id>/star')
 @user.param('user_id', 'User ID')
 @user.response(200, 'Successful operation', star_response_list)
@@ -213,6 +216,7 @@ class UserUserIdStar(Resource):
             Get a list of star by user id
         """
         return {}, 200, None
+
 
 @user.route('/<string:user_id>/comment')
 @user.param('user_id', 'User ID')

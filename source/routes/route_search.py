@@ -5,7 +5,7 @@ from flask_restx import Resource, Api, fields, marshal_with, reqparse, Namespace
 import json
 
 from .route_user import user_info, general_response
-from .route_video import video_info, general_response
+from .route_video import video_info
 from source.service.service_search import *
 from source.settings import *
 from source.utils.util_serializer import *

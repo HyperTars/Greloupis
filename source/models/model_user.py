@@ -25,7 +25,7 @@ class UserDetail(db.EmbeddedDocument):
 
 
 class LoginDetail(db.EmbeddedDocument):
-    login_ip = db.StringField(max_length=50, default="0.0.0.0",  required=True)
+    login_ip = db.StringField(max_length=50, default="0.0.0.0", required=True)
     login_time = db.DateTimeField()
 
 
@@ -123,7 +123,7 @@ class User(db.Document):
         serializer = TimedJSONWebSignatureSerializer(current_app.BaseConfig['SECRET_KEY'])
         try:
             data = serializer.loads(token)
-        except:
+        except Exception:
             return False
 
         try:
