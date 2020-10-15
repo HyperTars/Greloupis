@@ -3,24 +3,13 @@ import json
 import datetime
 
 
-def util_serializer_mongo_results_to_array(results):
+def util_serializer_mongo_results_to_array(results, format="dict"):
     res = []
     for r in results:
+        if format == "json":
+            res.append(util_serializer_dict_to_json(r.to_dict()))
         res.append(r.to_dict())
     return res
-
-
-def util_serializer_array_dict_to_json(array_dict):
-    res = []
-    for d in array_dict:
-        res.append(util_serializer_dict_to_json(d))
-    return res
-
-
-# Simply use this function to call the two functions above if we don't perform extra operations on array_dict
-def util_serializer_mongo_results_to_json(results):
-    array_dict = util_serializer_mongo_results_to_array(results)
-    return util_serializer_array_dict_to_json(array_dict)
 
 
 def util_serializer_dict_to_json(d):

@@ -43,21 +43,14 @@ def service_search_user(conf, **kw):
     else:
         res_search = service_search_user_by_contains(**kw)
 
-    # Convert to dict
-    res_array = util_serializer_mongo_results_to_array(res_search)
-
-    # Remove password
-    for res in res_array:
-        if 'user_password' in res:
-            res.pop('user_password')
-
     # Convert to json (if format="json")
     if 'json' in kw and kw['json'] is True \
             or 'dict' in kw and kw['dict'] is False \
             or 'format' in kw and kw['format'] == "json":
-        return util_serializer_array_dict_to_json(res_array)
+        return util_serializer_mongo_results_to_array(res_search, format="json")
 
-    return res_array
+    # default format="dict"
+    return util_serializer_mongo_results_to_array(res_search)
 
 
 # Search Video Caller
@@ -88,16 +81,14 @@ def service_search_video(conf, **kw):
     else:
         res_search = service_search_video_by_contains(**kw)  # Contains keyword (single) search
 
-    # Convert to dict
-    res_array = util_serializer_mongo_results_to_array(res_search)
-
     # Convert to json (if format="json")
     if 'json' in kw and kw['json'] is True \
             or 'dict' in kw and kw['dict'] is False \
             or 'format' in kw and kw['format'] == "json":
-        return util_serializer_array_dict_to_json(res_array)
+        return util_serializer_mongo_results_to_array(res_search, format="json")
 
-    return res_array
+    # default format="dict"
+    return util_serializer_mongo_results_to_array(res_search)
 
 
 ###########

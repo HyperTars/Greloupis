@@ -106,7 +106,7 @@ class VideoVideoId(Resource):
         #             ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg()}, 200, None
 
         search_result = service_video_info(conf=config['default'], video_id=video_id)
-        search_result_json = util_serializer_mongo_results_to_json(search_result)
+        search_result_json = util_serializer_mongo_results_to_array(search_result, format="json")
         return util_serializer_api_response(search_result_json, 200)
 
     @video.response(405, 'Method not allowed')

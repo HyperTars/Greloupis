@@ -76,7 +76,6 @@ class User(db.Document):
         user_dict['user_id'] = str(self._id)
         user_dict['user_email'] = self.user_email
         user_dict['user_name'] = self.user_name
-        user_dict['user_password'] = self.user_password
         user_dict['user_detail'] = user_detail_dict
         user_dict['user_status'] = self.user_status
         user_dict['user_thumbnail'] = user_thumbnail_dict
@@ -86,6 +85,9 @@ class User(db.Document):
         user_dict['user_follower'] = user_follower_array
 
         return user_dict
+
+    def check_password(self, password):
+        return self.user_password == password
 
     @property
     def password(self):
