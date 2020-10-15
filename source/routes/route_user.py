@@ -2,7 +2,10 @@
 from __future__ import absolute_import, print_function
 from flask import Flask, request, g, Blueprint
 from flask_restx import Resource, Api, fields, marshal_with, reqparse, Namespace
-import json
+
+from source.service.service_user import *
+from source.utils.util_serializer import *
+from source.settings import *
 
 user = Namespace('user', description='User APIs')
 
@@ -131,7 +134,20 @@ class UserUserId(Resource):
         """
             Get user information by id
         """
-        return {}, 200, None
+        user_id = request.url.split('/')[-1]
+
+        # Invalid video ID
+        if not bson.objectid.ObjectId.is_valid(user_id):
+            return util_serializer_api_response(400, msg=ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg())
+
+        search_result = service_user_info(conf=config['default'], user_id=user_id)
+        search_result_json = util_serializer_mongo_results_to_array(search_result, format="json")
+
+        # Check if find result in database
+        if len(search_result_json) > 0:
+            return util_serializer_api_response(200, body=search_result_json, msg="Successfully got user by ID")
+        else:
+            return util_serializer_api_response(404, msg=ErrorCode.MONGODB_USER_NOT_FOUND.get_msg())
 
     @user.response(405, 'Method not allowed')
     def put(self, user_id):

@@ -24,8 +24,20 @@ def util_serializer_request(request, format="dict"):
         return request.to_dict()
 
 
-def util_serializer_api_response(body, code):
-    response = {'body': body}
+def util_serializer_api_response(code, body=[{}], msg=""):
+    if code == 200:
+        response = {"code": code, "body": body, "detailed_msg": msg}
+
+    else:
+        code = str(code)
+        general_message = {
+            "400": "Bad Request",
+            "404": "Resource Not Found",
+            "405": "Method Not Allowed",
+            "500": "Internal Server Error"
+        }
+        response = {"code": code, "general_msg": general_message[code], "detailed_msg": msg}
+
     result = json.dumps(response, indent=4, sort_keys=True, separators=(',', ': ')) \
         .replace('\\"', "'").replace('"{', '{').replace('}"', '}').replace("'", '"')
     return Response(result, status=code, mimetype='application/json')

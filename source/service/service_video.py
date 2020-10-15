@@ -5,8 +5,8 @@ from source.utils.util_pattern import *
 from source.utils.util_serializer import *
 
 
-def service_video_upload():
-    return
+def service_video_upload(conf, **kw):
+    db = get_db(conf)
 
 
 def service_video_info(conf, **kw):
