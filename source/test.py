@@ -9,11 +9,11 @@ from source.tests.unit.test_apiv1 import TestApiV1
 if __name__ == '__main__':
     conf = config['test']
 
-    TestApp()
-    TestApiV1()
+    # TestApp()
+    # TestApiV1()
     # TestModels()
-    TestRoutes()
-    unittest.main()
+    # TestRoutes()
+    # unittest.main()
 
 
 """
