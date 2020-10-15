@@ -1,5 +1,5 @@
 import unittest
-from source.utils.util_load_test_data import *
+from source.tests.unit.test_load_data import *
 from source.models.model_user import *
 
 

@@ -1,6 +1,5 @@
-from source.models.model_user import User, LoginDetail, UserDetail, Thumbnail
+from source.models.model_user import *
 from source.models.model_errors import ErrorCode
-from source.utils.util_hash import *
 import bson
 import datetime
 import re
@@ -14,8 +13,9 @@ def query_user_create(user_name: str, user_email: str, user_password: str, user_
     :param user_name: user's unique nickname
     :param user_email: user's unique email
     :param user_password: user's password
-    :param user_ip: user's ip address (defaut 0.0.0.0)
+    :param user_ip: user's ip address (default 0.0.0.0)
     :return: user object if succeeded
+    Test: query_user_create(user_name="dev_user", user_email="dev@gmail.com", user_password="dev")
     """
     if len(query_user_get_by_name(user_name)) > 0:
         return ErrorCode.MONGODB_USER_NAME_TAKEN
@@ -23,13 +23,13 @@ def query_user_create(user_name: str, user_email: str, user_password: str, user_
     elif len(query_user_get_by_email(user_email)) > 0:
         return ErrorCode.MONGODB_USER_EMAIL_TAKEN
 
-    login = [LoginDetail(login_ip=user_ip, login_time=datetime.datetime.utcnow())]
+    login = [UserLogin(user_login_ip=user_ip, user_login_time=datetime.datetime.utcnow())]
 
     # EmbeddedDocument must be included when creating
     # user_detail, user_thumbnail, user_reg_date
     user = User(user_name=user_name, user_email=user_email, user_password=user_password,
-                user_detail=UserDetail(), user_status="private", user_thumbnail=Thumbnail(),
-                user_reg_date=datetime.datetime.utcnow(), user_recent_login=login,
+                user_detail=UserDetail(), user_status="private", user_thumbnail=UserThumbnail(),
+                user_reg_date=datetime.datetime.utcnow(), user_login=login,
                 user_following=[], user_follower=[])
 
     return user.save()
@@ -192,23 +192,23 @@ def query_user_update_details(user_id: str, **kw):
     id = bson.ObjectId(user_id)
 
     if 'user_first_name' in kw:
-        User.objects(_id=id).update(set__user_detail__first_name=kw['user_first_name'])
+        User.objects(_id=id).update(set__user_detail__user_first_name=kw['user_first_name'])
     if 'user_last_name' in kw:
-        User.objects(_id=id).update(set__user_detail__last_name=kw['user_last_name'])
+        User.objects(_id=id).update(set__user_detail__user_last_name=kw['user_last_name'])
     if 'user_phone' in kw:
-        User.objects(_id=id).update(set__user_detail__phone=kw['user_phone'])
+        User.objects(_id=id).update(set__user_detail__user_phone=kw['user_phone'])
     if 'user_street1' in kw:
-        User.objects(_id=id).update(set__user_detail__street1=kw['user_street1'])
+        User.objects(_id=id).update(set__user_detail__user_street1=kw['user_street1'])
     if 'user_street2' in kw:
-        User.objects(_id=id).update(set__user_detail__street2=kw['user_street2'])
+        User.objects(_id=id).update(set__user_detail__user_street2=kw['user_street2'])
     if 'user_city' in kw:
-        User.objects(_id=id).update(set__user_detail__city=kw['user_city'])
+        User.objects(_id=id).update(set__user_detail__user_city=kw['user_city'])
     if 'user_state' in kw:
-        User.objects(_id=id).update(set__user_detail__state=kw['user_state'])
+        User.objects(_id=id).update(set__user_detail__user_state=kw['user_state'])
     if 'user_country' in kw:
-        User.objects(_id=id).update(set__user_detail__country=kw['user_country'])
+        User.objects(_id=id).update(set__user_detail__user_country=kw['user_country'])
     if 'user_zip' in kw:
-        User.objects(_id=id).update(set__user_detail__zip=kw['user_zip'])
+        User.objects(_id=id).update(set__user_detail__user_zip=kw['user_zip'])
 
     return 1
 
@@ -227,11 +227,11 @@ def query_user_update_thumbnail(user_id: str, **kw):
 
     valid_type = ['default', 'user', 'system']
     if 'user_thumbnail_uri' in kw:
-        User.objects(_id=id).update(set__user_thumbnail__thumbnail_uri=kw['user_thumbnail_uri'])
+        User.objects(_id=id).update(set__user_thumbnail__user_thumbnail_uri=kw['user_thumbnail_uri'])
     if 'user_thumbnail_type' in kw:
         if kw['user_thumbnail_type'] not in valid_type:
             return ErrorCode.MONGODB_INVALID_THUMBNAIL
-        User.objects(_id=id).update(set__user_thumbnail__thumbnail_type=kw['user_thumbnail_type'])
+        User.objects(_id=id).update(set__user_thumbnail__user_thumbnail_type=kw['user_thumbnail_type'])
 
     return 1
 
@@ -253,7 +253,7 @@ def query_user_add_login(user_id: str, ip="0.0.0.0", time=datetime.datetime.utcn
     latest_login_time = login_history[-1].login_time
     if len(login_history) >= 10:
         # Delete oldest history
-        User.objects(_id=bson.ObjectId(user_id)).update(pull__user_recent_login__login_time=oldest_login_time)
+        User.objects(_id=bson.ObjectId(user_id)).update(pull__user_login__login_time=oldest_login_time)
 
     # TODO: update latest 10 login info method, some bugs for current version
     # add new login info
@@ -261,9 +261,9 @@ def query_user_add_login(user_id: str, ip="0.0.0.0", time=datetime.datetime.utcn
     # print(latest_login_time)
     if time == latest_login_time:
         return ErrorCode.MONGODB_LOGIN_INFO_EXISTS
-    new_login = {'login_ip': ip, 'login_time': time}
+    new_login = {'user_login_ip': ip, 'user_login_time': time}
 
-    User.objects(_id=bson.ObjectId(user_id)).update(add_to_set__user_recent_login=[new_login])
+    User.objects(_id=bson.ObjectId(user_id)).update(add_to_set__user_login=[new_login])
 
     return 1
 
@@ -317,23 +317,23 @@ def query_user_search_by_contains(**kw):
     elif 'user_email' in kw:
         return User.objects.filter(user_email__icontains=kw['user_email'])
     elif 'user_first_name' in kw:
-        return User.objects.filter(user_detail__first_name__icontains=kw['user_first_name'])
+        return User.objects.filter(user_detail__user_first_name__icontains=kw['user_first_name'])
     elif 'user_last_name' in kw:
-        return User.objects.filter(user_detail__last_name__icontains=kw['user_last_name'])
+        return User.objects.filter(user_detail__user_last_name__icontains=kw['user_last_name'])
     elif 'user_phone' in kw:
-        return User.objects.filter(user_detail__phone__icontains=kw['user_phone'])
+        return User.objects.filter(user_detail__user_phone__icontains=kw['user_phone'])
     elif 'user_street1' in kw:
-        return User.objects.filter(user_detail__street1__icontains=kw['user_street1'])
+        return User.objects.filter(user_detail__user_street1__icontains=kw['user_street1'])
     elif 'user_street2' in kw:
-        return User.objects.filter(user_detail__street2__icontains=kw['user_street2'])
+        return User.objects.filter(user_detail__user_street2__icontains=kw['user_street2'])
     elif 'user_city' in kw:
-        return User.objects.filter(user_detail__city__icontains=kw['user_city'])
+        return User.objects.filter(user_detail__user_city__icontains=kw['user_city'])
     elif 'user_state' in kw:
-        return User.objects.filter(user_detail__state__icontains=kw['user_state'])
+        return User.objects.filter(user_detail__user_state__icontains=kw['user_state'])
     elif 'user_country' in kw:
-        return User.objects.filter(user_detail__country__icontains=kw['user_country'])
+        return User.objects.filter(user_detail__user_country__icontains=kw['user_country'])
     elif 'user_zip' in kw:
-        return User.objects.filter(user_detail__zip__icontains=kw['user_zip'])
+        return User.objects.filter(user_detail__user_zip__icontains=kw['user_zip'])
     elif 'user_status' in kw:
         return User.objects.filter(user_status__icontains=kw['user_status'])
 
@@ -372,23 +372,23 @@ def query_user_search_by_pattern(**kw):
     elif 'pattern_email' in kw:
         return User.objects(user_email=kw['pattern_email'])
     elif 'pattern_first_name' in kw:
-        return User.objects(user_detail__first_name=kw['pattern_first_name'])
+        return User.objects(user_detail__user_first_name=kw['pattern_first_name'])
     elif 'pattern_last_name' in kw:
-        return User.objects(user_detail__last_name=kw['pattern_last_name'])
+        return User.objects(user_detail__user_last_name=kw['pattern_last_name'])
     elif 'pattern_phone' in kw:
-        return User.objects(user_detail__phone=kw['pattern_phone'])
+        return User.objects(user_detail__user_phone=kw['pattern_phone'])
     elif 'pattern_street1' in kw:
-        return User.objects(user_detail__street1=kw['pattern_street1'])
+        return User.objects(user_detail__user_street1=kw['pattern_street1'])
     elif 'pattern_street2' in kw:
-        return User.objects(user_detail__street2=kw['pattern_street2'])
+        return User.objects(user_detail__user_street2=kw['pattern_street2'])
     elif 'pattern_city' in kw:
-        return User.objects(user_detail__city=kw['pattern_city'])
+        return User.objects(user_detail__user_city=kw['pattern_city'])
     elif 'pattern_state' in kw:
-        return User.objects(user_detail__state=kw['pattern_state'])
+        return User.objects(user_detail__user_state=kw['pattern_state'])
     elif 'pattern_country' in kw:
-        return User.objects(user_detail__country=kw['pattern_country'])
+        return User.objects(user_detail__user_country=kw['pattern_country'])
     elif 'pattern_zip' in kw:
-        return User.objects(user_detail__zip=kw['pattern_zip'])
+        return User.objects(user_detail__user_zip=kw['pattern_zip'])
     elif 'pattern_status' in kw:
         return User.objects(user_status=kw['pattern_status'])
     elif 'pattern_reg_date' in kw:
