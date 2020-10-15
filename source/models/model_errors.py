@@ -13,6 +13,7 @@ class Error(db.Document):
 
 
 class ErrorCode(Enum):
+
     # Routes 2 Series
     ROUTE_INVALID_REQUEST_PARAM = {"2001": "Route Error: Invalid Request Parameters"}
 
@@ -20,6 +21,9 @@ class ErrorCode(Enum):
     SERVICE_PARAM_SLICE_NOT_SUPPORT = {"3001": "Service Error: Current Param Does Not Support Slice"}
     SERVICE_PATTERN_SEARCH_NOT_SUPPORT = {"3002": "Service Error: Current Param Does Not Support Pattern Search"}
     SERVICE_MISSING_PARAM = {"3003": "Service Error: Missing Essential Param"}
+    SERVICE_USER_NOT_FOUND = {"3004": "Service Error: User Not Found"}
+    SERVICE_USER_CREATION_FAILURE = {"3005": "Service Error: User Creation Failure"}
+    SERVICE_USER_AUTH_FAILURE = {"3006": "Service Error: User Auth Failure"}
 
     # Database 4 Series
     MONGODB_CONNECTION_FAILURE = {"4000": "MongoDB Connection Failure"}
@@ -46,10 +50,12 @@ class ErrorCode(Enum):
     MONGODB_FOLLOWED_NOT_FOUND = {"4121": "MongoDB Error: User To Be Followed Not Found"}
     MONGODB_RE_PATTERN_EXPECTED = {"4122": "MongoDB Error: type <re:Pattern> Expected"}
     MONGODB_PARAM_STR_EXPECTED = {"4123": "MongoDB Error: type <str> Expected"}
-    # Util 5 Series
-    UTIL_INVALID_PATTERN_PARAM = {"4001": "Util Error: Pattern Compile Param Not Supported"}
 
-    # Model Error 6 Series
+    # Model Error 5 Series
+    MODEL_PASS_NOT_READABLE = {"5001": "Password Is Not Readable"}
+
+    # Util 6 Series
+    UTIL_INVALID_PATTERN_PARAM = {"6001": "Util Error: Pattern Compile Param Not Supported"}
 
     def get_code(self):
         """

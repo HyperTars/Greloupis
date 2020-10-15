@@ -2,7 +2,7 @@ import re
 from source.models.model_errors import *
 
 
-def util_pattern_format_search_param(**kw):
+def util_pattern_format_param(**kw):
     # ID
     if kw['search'] == 'user':
         if '_id' in kw:
@@ -33,6 +33,9 @@ def util_pattern_format_search_param(**kw):
     if 'email' in kw and 'user_email' not in kw:
         kw['user_email'] = kw['email']
         kw.pop('email')
+    if 'password' in kw and 'user_password' not in kw:
+        kw['user_password'] = kw['password']
+        kw.pop('password')
 
     # Video
     if 'title' in kw and 'video_title' not in kw:

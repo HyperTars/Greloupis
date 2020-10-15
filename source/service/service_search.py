@@ -19,7 +19,7 @@ from source.utils.util_serializer import *
 def service_search_user(conf, **kw):
     db = get_db(conf)
     kw['search'] = 'user'
-    kw = util_pattern_format_search_param(**kw)
+    kw = util_pattern_format_param(**kw)
 
     # Search configs
     if 'slice' in kw and kw['slice'] is True:
@@ -57,7 +57,7 @@ def service_search_user(conf, **kw):
 def service_search_video(conf, **kw):
     db = get_db(conf)
     kw['search'] = 'video'
-    kw = util_pattern_format_search_param(**kw)
+    kw = util_pattern_format_param(**kw)
 
     # Search configs
     if 'slice' not in kw:
