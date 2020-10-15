@@ -8,7 +8,8 @@ def util_serializer_mongo_results_to_array(results, format="dict"):
     for r in results:
         if format == "json":
             res.append(util_serializer_dict_to_json(r.to_dict()))
-        res.append(r.to_dict())
+        else:
+            res.append(r.to_dict())
     return res
 
 

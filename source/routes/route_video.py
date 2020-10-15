@@ -107,6 +107,7 @@ class VideoVideoId(Resource):
 
         search_result = service_video_info(conf=config['default'], video_id=video_id)
         search_result_json = util_serializer_mongo_results_to_array(search_result, format="json")
+
         return util_serializer_api_response(search_result_json, 200)
 
     @video.response(405, 'Method not allowed')
