@@ -32,7 +32,7 @@ video_response_list = search.model(name='ApiResponseWithVideoList', model={
 @search.response(500, 'Internal server error.', general_response)
 class RouteSearchVideo(Resource):
     @search.doc(responses={200: 'Successfully got video search results.'})
-    def get(self):
+    def get(self, conf=config["default"]):
         """
             Search videos by keyword
         """
@@ -41,7 +41,7 @@ class RouteSearchVideo(Resource):
             return {ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_code():
                     ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg()}, 200, None
 
-        search_result_json = service_search_video(conf=config['default'], title=req_dict['keyword'],
+        search_result_json = service_search_video(conf=conf, title=req_dict['keyword'],
                                                   ignore_case=True, format="json", slice=True)
         return util_serializer_api_response(search_result_json, 200)
 
@@ -53,7 +53,7 @@ class RouteSearchVideo(Resource):
 @search.response(500, 'Internal server error.', general_response)
 class RouteSearchUser(Resource):
     @search.doc(responses={200: 'Successfully got user search results.'})
-    def get(self):
+    def get(self, conf=config["default"]):
         """
             Search users by keyword
         """
@@ -65,7 +65,7 @@ class RouteSearchUser(Resource):
             return {ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_code():
                     ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg()}, 200, None
 
-        search_result_json = service_search_user(conf=config['default'], name=req_dict['keyword'],
+        search_result_json = service_search_user(conf=conf, name=req_dict['keyword'],
                                                  ignore_case=True, exact=False, format="json")
 
         return util_serializer_api_response(search_result_json, 200)
