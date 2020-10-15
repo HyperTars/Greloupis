@@ -8,11 +8,6 @@ db = MongoEngine()
 
 
 # Video Models
-class VideoThumbnail(db.EmbeddedDocument):
-    video_thumbnail_uri = db.StringField(max_length=200, required=True, default="")
-    video_thumbnail_type = db.StringField(max_length=50, required=True, default="default")
-
-
 class VideoURI(db.EmbeddedDocument):
     video_uri_low = db.StringField(max_length=200, required=True, default="")
     video_uri_mid = db.StringField(max_length=200, required=True, default="")
@@ -45,7 +40,7 @@ class Video(db.Document):
     video_dislike = db.LongField(default=0)
     video_star = db.LongField(default=0)
     video_share = db.LongField(default=0)
-    video_thumbnail = db.EmbeddedDocumentField('VideoThumbnail', required=True)
+    video_thumbnail = db.StringField(max_length=200, required=True, default="")
     video_upload_date = db.DateTimeField(required=True)
     video_uri = db.EmbeddedDocumentField('VideoURI')
 
@@ -53,7 +48,6 @@ class Video(db.Document):
         video_dict = {}
         video_tag_array = []
         video_category_array = []
-        video_thumbnail_dict = {}
         video_uri_dict = {}
 
         for tag in self.video_tag:
@@ -61,9 +55,6 @@ class Video(db.Document):
 
         for category in self.video_category:
             video_category_array.append(category)
-
-        video_thumbnail_dict['video_thumbnail_uri'] = self.video_thumbnail.video_thumbnail_uri or ""
-        video_thumbnail_dict['video_thumbnail_type'] = self.video_thumbnail.video_thumbnail_type or ""
 
         video_uri_dict['video_uri_high'] = self.video_uri.video_uri_high or ""
         video_uri_dict['video_uri_mid'] = self.video_uri.video_uri_mid or ""
@@ -87,7 +78,7 @@ class Video(db.Document):
         video_dict['video_dislike'] = self.video_dislike or 0
         video_dict['video_star'] = self.video_star or 0
         video_dict['video_share'] = self.video_share or 0
-        video_dict['video_thumbnail'] = video_thumbnail_dict or VideoThumbnail()
+        video_dict['video_thumbnail'] = self.video_thumbnail or ""
         video_dict['video_upload_date'] = self.video_upload_date or None
         video_dict['video_uri'] = video_uri_dict or VideoURI()
 

@@ -8,11 +8,6 @@ db = MongoEngine()
 
 
 # User Models
-class UserThumbnail(db.EmbeddedDocument):
-    user_thumbnail_uri = db.StringField(max_length=200, required=True, default="")
-    user_thumbnail_type = db.StringField(max_length=50, required=True, default="default")
-
-
 class UserDetail(db.EmbeddedDocument):
     user_first_name = db.StringField(max_length=50, default="")
     user_last_name = db.StringField(max_length=50, default="")
@@ -37,7 +32,7 @@ class User(db.Document):
     user_password = db.StringField(max_length=512, required=True, default="")
     user_detail = db.EmbeddedDocumentField('UserDetail', required=True)
     user_status = db.StringField(max_length=50, required=True, default="public")
-    user_thumbnail = db.EmbeddedDocumentField('UserThumbnail', required=True)
+    user_thumbnail = db.StringField(max_length=200, required=True, default="")
     user_reg_date = db.DateTimeField()
     user_login = db.ListField(db.EmbeddedDocumentField('UserLogin'))
     user_following = db.ListField(db.StringField())
@@ -46,7 +41,6 @@ class User(db.Document):
     def to_dict(self):
         user_dict = {}
         user_detail_dict = {}
-        user_thumbnail_dict = {}
         user_login_array = []
         user_following_array = []
         user_follower_array = []
@@ -60,9 +54,6 @@ class User(db.Document):
         user_detail_dict['user_state'] = self.user_detail.user_state or ""
         user_detail_dict['user_country'] = self.user_detail.user_country or ""
         user_detail_dict['user_zip'] = self.user_detail.user_zip or ""
-
-        user_thumbnail_dict['user_thumbnail_uri'] = self.user_thumbnail.user_thumbnail_uri or ""
-        user_thumbnail_dict['user_thumbnail_type'] = self.user_thumbnail.user_thumbnail_type or ""
 
         for login in self.user_login:
             temp_login = {'user_login_ip': login.user_login_ip, 'login_time': login.user_login_time}
@@ -78,9 +69,9 @@ class User(db.Document):
         user_dict['user_email'] = self.user_email
         user_dict['user_name'] = self.user_name
         user_dict['user_detail'] = user_detail_dict
-        user_dict['user_status'] = self.user_status
-        user_dict['user_thumbnail'] = user_thumbnail_dict
-        user_dict['user_reg_date'] = self.user_reg_date
+        user_dict['user_status'] = self.user_status or ""
+        user_dict['user_thumbnail'] = self.user_thumbnail or ""
+        user_dict['user_reg_date'] = self.user_reg_date or None
         user_dict['user_login'] = user_login_array
         user_dict['user_following'] = user_following_array
         user_dict['user_follower'] = user_follower_array

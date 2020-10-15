@@ -7,6 +7,8 @@ import bson
 import datetime
 import re
 
+VALID_USER_STATUS = ["public", "private", "closed"]
+
 
 ##########
 # CREATE #
@@ -31,10 +33,10 @@ def query_user_create(user_name: str, user_email: str, user_password: str, user_
     login = [UserLogin(user_login_ip=user_ip, user_login_time=datetime.datetime.utcnow())]
 
     # EmbeddedDocument must be included when creating
-    # user_detail, user_thumbnail, user_reg_date
+    # user_detail, user_reg_date
     try:
         user = User(user_name=user_name, user_email=user_email, user_password=user_password,
-                    user_detail=UserDetail(), user_status="private", user_thumbnail=UserThumbnail(),
+                    user_detail=UserDetail(), user_status="private", user_thumbnail="",
                     user_reg_date=datetime.datetime.utcnow(), user_login=login,
                     user_following=[], user_follower=[])
     except Exception:
@@ -79,8 +81,7 @@ def query_user_update_status(user_id: str, user_status: str):
     if len(query_user_get_by_id(user_id)) == 0:
         raise MongoError(ErrorCode.MONGODB_USER_NOT_FOUND)
 
-    valid_status = ["public", "private", "closed"]
-    if user_status not in valid_status:
+    if user_status not in VALID_USER_STATUS:
         raise MongoError(ErrorCode.MONGODB_INVALID_USER_STATUS)
 
     return User.objects(_id=bson.ObjectId(user_id)).update(user_status=user_status)
@@ -177,6 +178,22 @@ def query_user_update_password(user_id: str, user_password: str):
     return User.objects(_id=bson.ObjectId(user_id)).update(user_password=user_password)
 
 
+def query_user_update_thumbnail(user_id: str, user_thumbnail: str):
+    """
+    :param user_id: user's id
+    :param user_thumbnail: thumbnail URI
+    :return: array of user Model
+    """
+    users = query_user_get_by_id(user_id)
+    if len(users) == 0:
+        raise MongoError(ErrorCode.MONGODB_USER_NOT_FOUND)
+
+    if type(user_thumbnail) != str:
+        raise MongoError(ErrorCode.MONGODB_PARAM_STR_EXPECTED)
+
+    User.objects(_id=bson.ObjectId(user_id)).update(user_thumbnail=user_thumbnail)
+
+
 def query_user_update_details(user_id: str, **kw):
     """
     :param user_id: user's unique id
@@ -215,29 +232,6 @@ def query_user_update_details(user_id: str, **kw):
         User.objects(_id=_id).update(set__user_detail__user_country=kw['user_country'])
     if 'user_zip' in kw:
         User.objects(_id=_id).update(set__user_detail__user_zip=kw['user_zip'])
-
-    return 1
-
-
-def query_user_update_thumbnail(user_id: str, **kw):
-    """
-    :param user_id: user's unique id
-    :param user_thumbnail_uri: thumbnail uri
-    :param user_thumbnail_type: must be in ['default', 'user', 'system']
-    :return 1 if succeeded
-    """
-    users = query_user_get_by_id(user_id)
-    _id = bson.ObjectId(user_id)
-    if len(users) == 0:
-        raise MongoError(ErrorCode.MONGODB_USER_NOT_FOUND)
-
-    valid_type = ['default', 'user', 'system']
-    if 'user_thumbnail_uri' in kw:
-        User.objects(_id=_id).update(set__user_thumbnail__user_thumbnail_uri=kw['user_thumbnail_uri'])
-    if 'user_thumbnail_type' in kw:
-        if kw['user_thumbnail_type'] not in valid_type:
-            raise MongoError(ErrorCode.MONGODB_INVALID_THUMBNAIL)
-        User.objects(_id=_id).update(set__user_thumbnail__user_thumbnail_type=kw['user_thumbnail_type'])
 
     return 1
 
