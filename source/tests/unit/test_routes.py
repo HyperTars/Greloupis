@@ -35,7 +35,7 @@ class TestRoutes(unittest.TestCase):
             # self.assertEqual(response_json["body"][0]["user_name"], service_search_json["body"][0]["user_name"],
             #                  msg="First matched user name")
 
-            self.assertEqual(response_json["body"][0]["user_id"], "5f887100ddbec35968356a98",
+            self.assertEqual(response_json["body"][0]["user_id"], "5f88bff77a6eb86b0eccc8d1",
                              msg="First matched user id")
             self.assertEqual(response_json["body"][0]["user_email"], "hypertars@gmail.com",
                              msg="First matched user email")
@@ -52,7 +52,7 @@ class TestRoutes(unittest.TestCase):
 
             response_json = RouteSearchVideo().get(conf).get_json()
             self.assertIsNotNone(response_json["body"], msg="Response json should contains body")
-            self.assertEqual(response_json["body"][0]["video_id"], "5f8871e4ddbec35968356a99",
+            self.assertEqual(response_json["body"][0]["video_id"], "5f88c0307a6eb86b0eccc8d2",
                              msg="First matched video id")
             self.assertEqual(response_json["body"][0]["video_title"], "XiXiHaHa", msg="First matched video title")
             self.assertEqual(response_json["body"][0]["video_raw_content"],

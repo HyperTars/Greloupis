@@ -1,0 +1,47 @@
+[
+  {
+    "_id": {
+        "$oid": "5f88c0307a6eb86b0eccc8d2"
+    },
+    "video_title": "XiXiHaHa",
+    "video_raw_content": "https://s3.amazon.com/54asd56a4d5asdasd.mp4",
+    "video_raw_status": "pending",
+    "video_raw_size": {
+        "$numberDouble": "93.66"
+    },
+    "video_duration": {
+        "$numberInt": "0"
+    },
+    "video_channel": "self-made",
+    "video_tag": ["politics", "president"],
+    "video_category": ["entertainment"],
+    "video_description": "XiXi and HaHa AMV",
+    "video_language": "Mandarin",
+    "video_status": "public",
+    "video_view": {
+        "$numberInt": "18"
+    },
+    "video_comment": {
+        "$numberInt": "22"
+    },
+    "video_like": {
+        "$numberInt": "22"
+    },
+    "video_dislike": {
+        "$numberInt": "23"
+    },
+    "video_star": {
+        "$numberInt": "0"
+    },
+    "video_share": {
+        "$numberInt": "23"
+    },
+    "video_thumbnail": "https://s3.amazon.asdasdasda.png",
+    "video_upload_date": "1949-10-01 13:00:00",
+    "video_uri": {
+        "video_uri_high": "https://s3.amazon.com/asdjadasdas.mp4",
+        "video_uri_mid": "",
+        "video_uri_low": "https://s3.amazon.com/test_low_quality.mp4"
+    }
+  }
+]
