@@ -12,7 +12,7 @@ class TestModels(unittest.TestCase):
         user = User(**test_load_data)
         self.assertEqual(user.user_name, 'hypertars', msg='Test Model Loading Result')
         self.assertEqual(user.user_detail.first_name, 'Brian',  msg='Test Model Loading Result')
-        self.assertEqual(user.user_recent_login[0].login_time, {'$date': {'$numberLong': '1601195652000'}},
+        self.assertEqual(user.user_login[0].login_time, {'$date': {'$numberLong': '1601195652000'}},
                          msg='Test Model Loading Result')
 
 
