@@ -1,6 +1,7 @@
 from flask_mongoengine import MongoEngine
 from enum import Enum, unique
 import datetime
+import sys
 
 db = MongoEngine()
 
@@ -12,50 +13,55 @@ class Error(db.Document):
     date = db.DateTimeField(default=datetime.datetime.now(), required=True)
 
 
+@unique
 class ErrorCode(Enum):
+    # General 1 Series
+    ERR_INCORRECT_CODE = {1001: "Error Code: Incorrect Error Code"}
 
     # Routes 2 Series
-    ROUTE_INVALID_REQUEST_PARAM = {"2001": "Route Error: Invalid Request Parameters"}
+    ROUTE_INVALID_REQUEST_PARAM = {2001: "Route Error: Invalid Request Parameters"}
 
     # Service 3 Series
-    SERVICE_PARAM_SLICE_NOT_SUPPORT = {"3001": "Service Error: Current Param Does Not Support Slice"}
-    SERVICE_PATTERN_SEARCH_NOT_SUPPORT = {"3002": "Service Error: Current Param Does Not Support Pattern Search"}
-    SERVICE_MISSING_PARAM = {"3003": "Service Error: Missing Essential Param"}
-    SERVICE_USER_NOT_FOUND = {"3004": "Service Error: User Not Found"}
-    SERVICE_USER_CREATION_FAILURE = {"3005": "Service Error: User Creation Failure"}
-    SERVICE_USER_AUTH_FAILURE = {"3006": "Service Error: User Auth Failure"}
+    SERVICE_PARAM_SLICE_NOT_SUPPORT = {3001: "Service Error: Current Param Does Not Support Slice"}
+    SERVICE_PATTERN_SEARCH_NOT_SUPPORT = {3002: "Service Error: Current Param Does Not Support Pattern Search"}
+    SERVICE_MISSING_PARAM = {3003: "Service Error: Missing Essential Param"}
+    SERVICE_USER_NOT_FOUND = {3004: "Service Error: User Not Found"}
+    SERVICE_USER_CREATION_FAILURE = {3005: "Service Error: User Creation Failure"}
+    SERVICE_USER_AUTH_FAILURE = {3006: "Service Error: User Auth Failure"}
 
     # Database 4 Series
-    MONGODB_CONNECTION_FAILURE = {"4000": "MongoDB Connection Failure"}
-    MONGODB_USER_NOT_FOUND = {"4101": "MongoDB Error: User Not Found"}
-    MONGODB_VIDEO_NOT_FOUND = {"4102": "MongoDB Error: Video Not Found"}
-    MONGODB_VIDEOOP_NOT_FOUND = {"4103": "MongoDB Error: VideoOp Not Found"}
-    MONGODB_USER_NAME_TAKEN = {"4104": "MongoDB Error: User Name Already Taken"}
-    MONGODB_VIDEO_TITLE_TAKEN = {"4105": "MongoDB Error: Video Title Already Taken"}
-    MONGODB_THUMBNAIL_MISS_ONE = {"4106": "MongoDB Error: Thumbnail missing one argument, must provide both"}
-    MONGODB_LIST_EXPECTED = {"4107": "MongoDB Error: type <list> expected"}
-    MONGODB_INVALID_VIDEO_CNT_PARAM = {"4108": "MongoDB Error: Invalid Video Count Param"}
-    MONGODB_VIDEO_CNT_ZERO = {"4109": "MongoDB Error: Video Count Param Already Down To Zero"}
-    MONGODB_INVALID_SEARCH_PARAM = {"4110": "MongoDB Error: Invalid Searching Param"}
-    MONGODB_EMPTY_PARAM = {"4111": "MongoDB Error: Empty Input Param"}
-    MONGODB_VIDEOOP_EXISTS = {"4112": "MongoDB Error: Video Op Alrady Exists"}
-    MONGODB_USER_EMAIL_TAKEN = {"4113": "MongoDB Error: User Email Already Taken"}
-    MONGODB_INVALID_USER_STATUS = {"4114": "MongoDB Error: Invalid User Status"}
-    MONGODB_UPDATE_SAME_NAME = {"4115": "MongoDB Error: Update To Same Name"}
-    MONGODB_UPDATE_SAME_PASS = {"4116": "MongoDB Error: Update To Same Password"}
-    MONGODB_INVALID_THUMBNAIL = {"4117": "MongoDB Error: Invalid Thumbnail Type"}
-    MONGODB_LOGIN_INFO_EXISTS = {"4118": "MongoDB Error: Login Info Already Exists"}
-    MONGODB_FOLLOW_REL_EXISTS = {"4119": "MongoDB Error: Following Relationship Already Exists"}
-    MONGODB_FOLLOWER_NOT_FOUND = {"4120": "MongoDB Error: User Follower Not Found"}
-    MONGODB_FOLLOWED_NOT_FOUND = {"4121": "MongoDB Error: User To Be Followed Not Found"}
-    MONGODB_RE_PATTERN_EXPECTED = {"4122": "MongoDB Error: type <re:Pattern> Expected"}
-    MONGODB_PARAM_STR_EXPECTED = {"4123": "MongoDB Error: type <str> Expected"}
-
+    MONGODB_CONNECTION_FAILURE = {4000: "MongoDB Connection Failure"}
+    MONGODB_USER_NOT_FOUND = {4101: "MongoDB Error: User Not Found"}
+    MONGODB_VIDEO_NOT_FOUND = {4102: "MongoDB Error: Video Not Found"}
+    MONGODB_VIDEOOP_NOT_FOUND = {4103: "MongoDB Error: VideoOp Not Found"}
+    MONGODB_USER_NAME_TAKEN = {4104: "MongoDB Error: User Name Already Taken"}
+    MONGODB_VIDEO_TITLE_TAKEN = {4105: "MongoDB Error: Video Title Already Taken"}
+    MONGODB_THUMBNAIL_MISS_ONE = {4106: "MongoDB Error: Thumbnail missing one argument, must provide both"}
+    MONGODB_LIST_EXPECTED = {4107: "MongoDB Error: type <list> expected"}
+    MONGODB_INVALID_VIDEO_CNT_PARAM = {4108: "MongoDB Error: Invalid Video Count Param"}
+    MONGODB_VIDEO_CNT_ZERO = {4109: "MongoDB Error: Video Count Param Already Down To Zero"}
+    MONGODB_INVALID_SEARCH_PARAM = {4110: "MongoDB Error: Invalid Searching Param"}
+    MONGODB_EMPTY_PARAM = {4111: "MongoDB Error: Empty Input Param"}
+    MONGODB_VIDEOOP_EXISTS = {4112: "MongoDB Error: Video Op Alrady Exists"}
+    MONGODB_USER_EMAIL_TAKEN = {4113: "MongoDB Error: User Email Already Taken"}
+    MONGODB_INVALID_USER_STATUS = {4114: "MongoDB Error: Invalid User Status"}
+    MONGODB_UPDATE_SAME_NAME = {4115: "MongoDB Error: Update To Same Name"}
+    MONGODB_UPDATE_SAME_PASS = {4116: "MongoDB Error: Update To Same Password"}
+    MONGODB_INVALID_THUMBNAIL = {4117: "MongoDB Error: Invalid Thumbnail Type"}
+    MONGODB_LOGIN_INFO_EXISTS = {4118: "MongoDB Error: Login Info Already Exists"}
+    MONGODB_FOLLOW_REL_EXISTS = {4119: "MongoDB Error: Following Relationship Already Exists"}
+    MONGODB_FOLLOWER_NOT_FOUND = {4120: "MongoDB Error: User Follower Not Found"}
+    MONGODB_FOLLOWED_NOT_FOUND = {4121: "MongoDB Error: User To Be Followed Not Found"}
+    MONGODB_RE_PATTERN_EXPECTED = {4122: "MongoDB Error: type <re:Pattern> Expected"}
+    MONGODB_PARAM_STR_EXPECTED = {4123: "MongoDB Error: type <str> Expected"}
+    MONGODB_USER_CREATE_FAILURE = {4124: "MongoDB Error: User Creation Failure"}
+    MONGODB_USER_CREATE_FOLLOW_FAILURE = {4125: "MongoDB Error: User Create Follow Relationship Failure"}
+    MONGODB_USER_DELETE_FOLLOW_FAILURE = {4125: "MongoDB Error: User Delete Follow Relationship Failure"}
     # Model Error 5 Series
-    MODEL_PASS_NOT_READABLE = {"5001": "Password Is Not Readable"}
+    MODEL_PASS_NOT_READABLE = {5001: "Password Is Not Readable"}
 
     # Util 6 Series
-    UTIL_INVALID_PATTERN_PARAM = {"6001": "Util Error: Pattern Compile Param Not Supported"}
+    UTIL_INVALID_PATTERN_PARAM = {6001: "Util Error: Pattern Compile Param Not Supported"}
 
     def get_code(self):
         """
@@ -70,6 +76,41 @@ class ErrorCode(Enum):
         :return: error message
         """
         return list(self.value.values())[0]
+
+
+class ModelError(Exception):
+    pass
+
+
+class MongoError(Exception):
+    def __init__(self, error_code, message='', *args, **kwargs):
+        if not isinstance(error_code, ErrorCode):
+            msg = "Error code passed in the error_code param must be of type ErrorCode"
+            raise MongoError(ErrorCode.ERR_INCORRECT_CODE)
+
+        self.error_code = error_code
+        self.traceback = sys.exc_info()
+        try:
+            msg = '[{0}], {1}'.format(error_code.name, message.format(*args, **kwargs))
+        except (IndexError, KeyError):
+            msg = '[{0}] {1}'.format(error_code.name, message)
+
+        super().__init__(msg)
+
+    def __str__(self):
+        return repr(self.error_code)
+
+
+class ServiceError(Exception):
+    pass
+
+
+class RouteError(Exception):
+    pass
+
+
+class UtilError(Exception):
+    pass
 
 
 if __name__ == '__main__':

@@ -1,5 +1,8 @@
 from source.models.model_user import *
-from source.models.model_errors import ErrorCode
+from source.models.model_errors import *
+from mongoengine.connection import ConnectionFailure
+from mongoengine.errors import *
+from pymongo.errors import *
 import bson
 import datetime
 import re
@@ -15,22 +18,27 @@ def query_user_create(user_name: str, user_email: str, user_password: str, user_
     :param user_password: user's password
     :param user_ip: user's ip address (default 0.0.0.0)
     :return: user object if succeeded
-    Test: query_user_create(user_name="dev_user", user_email="dev@gmail.com", user_password="dev")
+    Test:
+    from source.db.query_user import *
+    query_user_create(user_name="dev_user", user_email="dev@gmail.com", user_password="dev")
     """
     if len(query_user_get_by_name(user_name)) > 0:
-        return ErrorCode.MONGODB_USER_NAME_TAKEN
+        raise MongoError(ErrorCode.MONGODB_USER_NAME_TAKEN)
 
     elif len(query_user_get_by_email(user_email)) > 0:
-        return ErrorCode.MONGODB_USER_EMAIL_TAKEN
+        raise MongoError(ErrorCode.MONGODB_USER_EMAIL_TAKEN)
 
     login = [UserLogin(user_login_ip=user_ip, user_login_time=datetime.datetime.utcnow())]
 
     # EmbeddedDocument must be included when creating
     # user_detail, user_thumbnail, user_reg_date
-    user = User(user_name=user_name, user_email=user_email, user_password=user_password,
-                user_detail=UserDetail(), user_status="private", user_thumbnail=UserThumbnail(),
-                user_reg_date=datetime.datetime.utcnow(), user_login=login,
-                user_following=[], user_follower=[])
+    try:
+        user = User(user_name=user_name, user_email=user_email, user_password=user_password,
+                    user_detail=UserDetail(), user_status="private", user_thumbnail=UserThumbnail(),
+                    user_reg_date=datetime.datetime.utcnow(), user_login=login,
+                    user_following=[], user_follower=[])
+    except Exception:
+        raise MongoError(ErrorCode.MONGODB_USER_CREATE_FAILURE)
 
     return user.save()
 
@@ -69,67 +77,65 @@ def query_user_update_status(user_id: str, user_status: str):
     :return: array of User Model
     """
     if len(query_user_get_by_id(user_id)) == 0:
-        return ErrorCode.MONGODB_USER_NOT_FOUND
+        raise MongoError(ErrorCode.MONGODB_USER_NOT_FOUND)
 
     valid_status = ["public", "private", "closed"]
     if user_status not in valid_status:
-        return ErrorCode.MONGODB_INVALID_USER_STATUS
+        raise MongoError(ErrorCode.MONGODB_INVALID_USER_STATUS)
 
     return User.objects(_id=bson.ObjectId(user_id)).update(user_status=user_status)
 
 
 def query_user_add_follow(follower_id: str, following_id: str):
     """
-    :param follower_id: follower's user id
-    :param following_id: uploader's user_id
+    :param follower_id: follower user id
+    :param following_id: uploader user_id
     :return: 1 if succeeded
     """
     follower = query_user_get_by_id(follower_id)
     following = query_user_get_by_id(following_id)
 
     if len(follower) == 0:
-        return ErrorCode.MONGODB_FOLLOWER_NOT_FOUND
+        raise MongoError(ErrorCode.MONGODB_FOLLOWER_NOT_FOUND)
 
     if len(following) == 0:
-        return ErrorCode.MONGODB_FOLLOWED_NOT_FOUND
+        raise MongoError(ErrorCode.MONGODB_FOLLOWED_NOT_FOUND)
 
     if following_id in follower[0].user_following and follower_id in following[0].user_follower:
-        return ErrorCode.MONGODB_FOLLOW_REL_EXISTS
+        raise MongoError(ErrorCode.MONGODB_FOLLOW_REL_EXISTS)
 
     if following_id in follower[0].user_following or follower_id in following[0].user_follower:
         # print("following relationship broken, try to remove")
         query_user_delete_follow(follower_id, following_id)
 
-    r1 = User.objects(_id=bson.ObjectId(follower_id)).update(add_to_set__user_following=following_id)
-    r2 = User.objects(_id=bson.ObjectId(following_id)).update(add_to_set__user_follower=follower_id)
-    if r1 != 1:
-        return r1
-    elif r2 != 1:
-        return r2
+    try:
+        User.objects(_id=bson.ObjectId(follower_id)).update(add_to_set__user_following=following_id)
+        User.objects(_id=bson.ObjectId(following_id)).update(add_to_set__user_follower=follower_id)
+    except Exception:
+        raise MongoError(ErrorCode.MONGODB_USER_DELETE_FOLLOW_FAILURE)
 
     return 1
 
 
 def query_user_delete_follow(follower_id: str, following_id: str):
     """
-    :param follower_id: follower's user id
-    :param following_id: uploader's user_id
+    :param follower_id: follower user id
+    :param following_id: uploader user_id
     :return: 1 if succeeded
     """
     follower = query_user_get_by_id(follower_id)
     following = query_user_get_by_id(following_id)
 
     if len(follower) == 0:
-        return ErrorCode.MONGODB_FOLLOWER_NOT_FOUND
+        raise MongoError(ErrorCode.MONGODB_FOLLOWER_NOT_FOUND)
     if len(following) == 0:
-        return ErrorCode.MONGODB_FOLLOWED_NOT_FOUND
+        raise MongoError(ErrorCode.MONGODB_FOLLOWED_NOT_FOUND)
 
-    r1 = User.objects(_id=bson.ObjectId(follower_id)).update(pull__user_following=following_id)
-    r2 = User.objects(_id=bson.ObjectId(following_id)).update(pull__user_follower=follower_id)
-    if r1 != 1:
-        return r1
-    elif r2 != 1:
-        return r2
+    try:
+        User.objects(_id=bson.ObjectId(follower_id)).update(pull__user_following=following_id)
+        User.objects(_id=bson.ObjectId(following_id)).update(pull__user_follower=follower_id)
+    except Exception:
+        raise MongoError(ErrorCode.MONGODB_USER_DELETE_FOLLOW_FAILURE)
 
     return 1
 
@@ -142,14 +148,14 @@ def query_user_update_name(user_id: str, user_name: str):
     """
     users = query_user_get_by_id(user_id)
     if len(users) == 0:
-        return ErrorCode.MONGODB_USER_NOT_FOUND
+        raise MongoError(ErrorCode.MONGODB_USER_NOT_FOUND)
 
     old_name = users[0].user_name
     if user_name == old_name:
-        return ErrorCode.MONGODB_UPDATE_SAME_NAME
+        raise MongoError(ErrorCode.MONGODB_UPDATE_SAME_NAME)
 
     if len(query_user_get_by_name(user_name)) > 0:
-        return ErrorCode.MONGODB_USER_NAME_TAKEN
+        raise MongoError(ErrorCode.MONGODB_USER_NAME_TAKEN)
 
     return User.objects(_id=bson.ObjectId(user_id)).update(user_name=user_name)
 
@@ -162,11 +168,11 @@ def query_user_update_password(user_id: str, user_password: str):
     """
     users = query_user_get_by_id(user_id)
     if len(users) == 0:
-        return ErrorCode.MONGODB_USER_NOT_FOUND
+        raise MongoError(ErrorCode.MONGODB_USER_NOT_FOUND)
 
     old_password = users[0].user_password
     if user_password == old_password:
-        return ErrorCode.MONGODB_UPDATE_SAME_PASS
+        raise MongoError(ErrorCode.MONGODB_UPDATE_SAME_PASS)
 
     return User.objects(_id=bson.ObjectId(user_id)).update(user_password=user_password)
 
@@ -187,28 +193,28 @@ def query_user_update_details(user_id: str, **kw):
     """
     users = query_user_get_by_id(user_id)
     if len(users) == 0:
-        return ErrorCode.MONGODB_USER_NOT_FOUND
+        raise MongoError(ErrorCode.MONGODB_USER_NOT_FOUND)
 
-    id = bson.ObjectId(user_id)
+    _id = bson.ObjectId(user_id)
 
     if 'user_first_name' in kw:
-        User.objects(_id=id).update(set__user_detail__user_first_name=kw['user_first_name'])
+        User.objects(_id=_id).update(set__user_detail__user_first_name=kw['user_first_name'])
     if 'user_last_name' in kw:
-        User.objects(_id=id).update(set__user_detail__user_last_name=kw['user_last_name'])
+        User.objects(_id=_id).update(set__user_detail__user_last_name=kw['user_last_name'])
     if 'user_phone' in kw:
-        User.objects(_id=id).update(set__user_detail__user_phone=kw['user_phone'])
+        User.objects(_id=_id).update(set__user_detail__user_phone=kw['user_phone'])
     if 'user_street1' in kw:
-        User.objects(_id=id).update(set__user_detail__user_street1=kw['user_street1'])
+        User.objects(_id=_id).update(set__user_detail__user_street1=kw['user_street1'])
     if 'user_street2' in kw:
-        User.objects(_id=id).update(set__user_detail__user_street2=kw['user_street2'])
+        User.objects(_id=_id).update(set__user_detail__user_street2=kw['user_street2'])
     if 'user_city' in kw:
-        User.objects(_id=id).update(set__user_detail__user_city=kw['user_city'])
+        User.objects(_id=_id).update(set__user_detail__user_city=kw['user_city'])
     if 'user_state' in kw:
-        User.objects(_id=id).update(set__user_detail__user_state=kw['user_state'])
+        User.objects(_id=_id).update(set__user_detail__user_state=kw['user_state'])
     if 'user_country' in kw:
-        User.objects(_id=id).update(set__user_detail__user_country=kw['user_country'])
+        User.objects(_id=_id).update(set__user_detail__user_country=kw['user_country'])
     if 'user_zip' in kw:
-        User.objects(_id=id).update(set__user_detail__user_zip=kw['user_zip'])
+        User.objects(_id=_id).update(set__user_detail__user_zip=kw['user_zip'])
 
     return 1
 
@@ -221,17 +227,17 @@ def query_user_update_thumbnail(user_id: str, **kw):
     :return 1 if succeeded
     """
     users = query_user_get_by_id(user_id)
-    id = bson.ObjectId(user_id)
+    _id = bson.ObjectId(user_id)
     if len(users) == 0:
-        return ErrorCode.MONGODB_USER_NOT_FOUND
+        raise MongoError(ErrorCode.MONGODB_USER_NOT_FOUND)
 
     valid_type = ['default', 'user', 'system']
     if 'user_thumbnail_uri' in kw:
-        User.objects(_id=id).update(set__user_thumbnail__user_thumbnail_uri=kw['user_thumbnail_uri'])
+        User.objects(_id=_id).update(set__user_thumbnail__user_thumbnail_uri=kw['user_thumbnail_uri'])
     if 'user_thumbnail_type' in kw:
         if kw['user_thumbnail_type'] not in valid_type:
-            return ErrorCode.MONGODB_INVALID_THUMBNAIL
-        User.objects(_id=id).update(set__user_thumbnail__user_thumbnail_type=kw['user_thumbnail_type'])
+            raise MongoError(ErrorCode.MONGODB_INVALID_THUMBNAIL)
+        User.objects(_id=_id).update(set__user_thumbnail__user_thumbnail_type=kw['user_thumbnail_type'])
 
     return 1
 
@@ -245,7 +251,7 @@ def query_user_add_login(user_id: str, ip="0.0.0.0", time=datetime.datetime.utcn
     """
     users = query_user_get_by_id(user_id)
     if len(users) == 0:
-        return ErrorCode.MONGODB_USER_NOT_FOUND
+        raise MongoError(ErrorCode.MONGODB_USER_NOT_FOUND)
 
     # only keep 10 login info
     login_history = users[0].user_recent_login
@@ -260,7 +266,7 @@ def query_user_add_login(user_id: str, ip="0.0.0.0", time=datetime.datetime.utcn
     # print(time)
     # print(latest_login_time)
     if time == latest_login_time:
-        return ErrorCode.MONGODB_LOGIN_INFO_EXISTS
+        raise MongoError(ErrorCode.MONGODB_LOGIN_INFO_EXISTS)
     new_login = {'user_login_ip': ip, 'user_login_time': time}
 
     User.objects(_id=bson.ObjectId(user_id)).update(add_to_set__user_login=[new_login])
@@ -278,7 +284,7 @@ def query_user_delete(user_id: str):
     """
     users = query_user_get_by_id(user_id)
     if len(users) == 0:
-        return ErrorCode.MONGODB_USER_NOT_FOUND
+        raise MongoError(ErrorCode.MONGODB_USER_NOT_FOUND)
 
     return User.objects(_id=bson.ObjectId(user_id)).delete()
 
@@ -308,7 +314,7 @@ def query_user_search_by_contains(**kw):
 
     for arg in kw:
         if type(kw[arg]) != str:
-            return ErrorCode.MONGODB_PARAM_STR_EXPECTED
+            raise MongoError(ErrorCode.MONGODB_PARAM_STR_EXPECTED)
 
     if 'user_id' in kw:
         return query_user_get_by_id(kw['user_id'])
@@ -337,7 +343,7 @@ def query_user_search_by_contains(**kw):
     elif 'user_status' in kw:
         return User.objects.filter(user_status__icontains=kw['user_status'])
 
-    return ErrorCode.MONGODB_INVALID_SEARCH_PARAM
+    raise MongoError(ErrorCode.MONGODB_INVALID_SEARCH_PARAM)
 
 
 # Search by pattern
@@ -361,11 +367,11 @@ def query_user_search_by_pattern(**kw):
     """
     # Check input param
     if len(kw) == 0:
-        return ErrorCode.MONGODB_EMPTY_PARAM
+        raise MongoError(ErrorCode.MONGODB_EMPTY_PARAM)
 
     for arg in kw:
         if type(kw[arg]) != re.Pattern:
-            return ErrorCode.MONGODB_RE_PATTERN_EXPECTED
+            raise MongoError(ErrorCode.MONGODB_RE_PATTERN_EXPECTED)
 
     if 'pattern_name' in kw:
         return User.objects(user_name=kw['pattern_name'])
@@ -394,7 +400,7 @@ def query_user_search_by_pattern(**kw):
     elif 'pattern_reg_date' in kw:
         return User.objects(user_reg_date=kw['pattern_reg_date'])
 
-    return ErrorCode.MONGODB_INVALID_SEARCH_PARAM
+    raise MongoError(ErrorCode.MONGODB_INVALID_SEARCH_PARAM)
 
 
 # Search by aggregate
