@@ -2,6 +2,7 @@
 ![build](https://travis-ci.com/HyperTars/Online-Video-Platform.svg?token=btA3ungCKHqWzLxCoxT7&branch=master)
 
 ![Python](https://img.shields.io/badge/python-3.8-blue)
+![npm](https://img.shields.io/badge/npm-6.2.0-blue)
 ![Flask](https://img.shields.io/badge/Flask-1.1.2-blue)
 ![Video.js](https://img.shields.io/badge/Video.js-7.8.4-blue)
 ![React](https://img.shields.io/badge/React-16.3.1-blue)
@@ -12,6 +13,10 @@
 - [Proposal](/documents/Proposal.md)
   
 ### Guide
+
+#### Requirement
+- Python 3.7+ (3.6 or below is not supported)
+- npm
 
 #### Install dependencies
 - To install dependencies, run
@@ -35,9 +40,10 @@ python -m source.app
 python -m source.app FLASK_APP=app flask run --host=127.0.0.1 --port=8000
 ```
 
-You should be able to visit http://localhost:5000/ now and see a list of APIs of the application (swagger).
+- You should be able to visit http://localhost:5000/ now and see a list of APIs of the application (swagger).
 
-![API_Preview](documents/API_Swagger.png)
+    ![API_Preview](documents/API_Swagger.png)
+
 
 ### Designs
 #### Coding Style: Naming Convention
@@ -73,6 +79,7 @@ You should be able to visit http://localhost:5000/ now and see a list of APIs of
 - See our [travis conf](.travis.yml)
 - Docker page: [docker page](https://hub.docker.com/r/hypertars/online-video-platform)
 - We will deploy our project to our website: www.hypertars.me (under construction)
+
 
 ### Contributors
   
