@@ -12,6 +12,7 @@ class UserThumbnail(db.EmbeddedDocument):
     user_thumbnail_uri = db.StringField(max_length=200, required=True, default="")
     user_thumbnail_type = db.StringField(max_length=50, required=True, default="default")
 
+
 class UserDetail(db.EmbeddedDocument):
     user_first_name = db.StringField(max_length=50, default="")
     user_last_name = db.StringField(max_length=50, default="")

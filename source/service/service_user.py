@@ -52,8 +52,14 @@ def service_user_cancel():
     return
 
 
-def service_user_info():
+def service_user_info(conf, **kw):
     # table: user
     # table: video (belong to this user)
     # table: video_op (belong to this user)
-    return
+
+    db = get_db(conf)
+
+    if "user_id" in kw:
+        result = query_user_get_by_id(kw["user_id"])
+
+    return result

@@ -101,14 +101,19 @@ class VideoVideoId(Resource):
             Get video information by video ID
         """
         video_id = request.url.split('/')[-1]
-        # if 'video_id' not in req_dict:
-        #     return {ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_code():
-        #             ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg()}, 200, None
+
+        # Invalid video ID
+        if not bson.objectid.ObjectId.is_valid(video_id):
+            return util_serializer_api_response(400, msg=ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg())
 
         search_result = service_video_info(conf=config['default'], video_id=video_id)
         search_result_json = util_serializer_mongo_results_to_array(search_result, format="json")
 
-        return util_serializer_api_response(search_result_json, 200)
+        # Check if find result in database
+        if len(search_result_json) > 0:
+            return util_serializer_api_response(200, body=search_result_json, msg="Successfully got video by ID")
+        else:
+            return util_serializer_api_response(404, msg=ErrorCode.MONGODB_VIDEO_NOT_FOUND.get_msg())
 
     @video.response(405, 'Method not allowed')
     def put(self, video_id):

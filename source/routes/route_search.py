@@ -43,7 +43,7 @@ class RouteSearchVideo(Resource):
 
         search_result_json = service_search_video(conf=conf, title=req_dict['keyword'],
                                                   ignore_case=True, format="json", slice=True)
-        return util_serializer_api_response(search_result_json, 200)
+        return util_serializer_api_response(200, body=search_result_json, msg="Successfully got user search results")
 
 
 @search.route('/user')
@@ -68,4 +68,4 @@ class RouteSearchUser(Resource):
         search_result_json = service_search_user(conf=conf, name=req_dict['keyword'],
                                                  ignore_case=True, exact=False, format="json")
 
-        return util_serializer_api_response(search_result_json, 200)
+        return util_serializer_api_response(200, body=search_result_json, msg="Successfully got user search results")
