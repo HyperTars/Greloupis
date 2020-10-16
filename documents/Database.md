@@ -16,19 +16,18 @@
     user_name | String | - | - | user input | NO | user's nick name
     user_password | String | - | - | user input | NO | user's password, encoded
     user_detail | Object | first_name | string | user input | NO | user's first name
-     | | | last_name | String | user input | NO | user's last name
-     | | | phone | String | user input | NO | user's phone number
-     | | | street1 | string| usre input | YES | user's detail address
-     | | | street2 | String|  user input | YES |
-     | | | city | String|  user input | YES |
-     | | | state | String|  user input | YES |
-     | | | country | String|  user inpu | YES |
-     | | | zip | String |  user input | YES |
+     | | | user_last_name | String | user input | NO | user's last name
+     | | | user_phone | String | user input | NO | user's phone number
+     | | | user_street1 | string| usre input | YES | user's detail address
+     | | | user_street2 | String|  user input | YES | user's detail address
+     | | | user_city | String|  user input | YES |  user's detail address
+     | | | user_state | String|  user input | YES | user's detail address
+     | | | user_country | String|  user inpu | YES | user's detail address
+     | | | user_zip | String |  user input | YES | user's detail address
     user_status | String | - | - | user input | NO | user's profile status (default public) 
-    user_thumbnail | Object | thumbnail_uri | String | system generate | YES | user's thumbnail URI
-     | | | thumbnail_type | String | user input | NO | default: system auto
+    user_thumbnail | String | - | - | system generate | YES | user's thumbnail URI
     user_reg_date | Date | - | - | system generate | NO | user's registration date 
-    user_recent_login | Array | `index` | (Object)<br>login_ip - String /<br>login_time - Date | user input /<br>system generate | NO | array of user's recent logins
+    user_login | Array | `index` | (Object)<br>user_login_ip - String /<br>user_login_time - Date | user input /<br>system generate | NO | array of user's recent logins
     user_following | Array | `index` | String | user input | YES | array of following uploaders' ids
     user_follower | Array | `index` | String | system generated | YES | array of user's followers
 
@@ -64,11 +63,11 @@
     video_dislike | Int64 | - | - | system generate | NO | count of video dislikes (default 0)
     video_star | Int64 | - | - | system generate | NO | count of video stars (default 0)
     video_share | Int64 | - | - | system generate | NO | count of video shares (default 0)
-    video_thumbnail | Object | thumbnail_uri | String | system generate | YES | thumbnail URI
+    video_thumbnail | String | - | - | system generate | YES | thumbnail URI
     video_upload_date | Date | - | - | system generate | NO | video upload date
     video_uri | Object | video_low | String | system generate | YES | 480p video URI
-     | | | video_mid | String | system generate | YES | 720p video URI
-     | | | video_high | String | system generate | YES | 1080p video URI
+     | | | video_uri_mid | String | system generate | YES | 720p video URI
+     | | | video_uri_high | String | system generate | YES | 1080p video URI
 
 - **Model Design**
     - [Video Model](../source/models/model_video.py)
