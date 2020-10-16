@@ -1,33 +1,117 @@
 [
   {
     "_id": {
-        "$oid": "5f88bff77a6eb86b0eccc8d1"
+      "$oid": "5f88f883e6ac4f89900ac983"
     },
     "user_email": "hypertars@gmail.com",
     "user_name": "hypertars",
     "user_password": "hypertars_pass",
     "user_detail": {
-        "user_first_name": "Brian",
-        "user_last_name": "Lee",
-        "user_phone": "+13474051241",
-        "user_street1": "343 Gold St",
-        "user_street2": "Apt 3810",
-        "user_city": "Brooklyn",
-        "user_state": "New York",
-        "user_country": "United States",
-        "user_zip": "11201"
+      "user_first_name": "Brian",
+      "user_last_name": "Lee",
+      "user_phone": "+13474051241",
+      "user_street1": "343 Gold St",
+      "user_street2": "Apt 3810",
+      "user_city": "Brooklyn",
+      "user_state": "New York",
+      "user_country": "United States",
+      "user_zip": "11201"
     },
     "user_status": "public",
     "user_thumbnail": "https://xxx.png",
     "user_reg_date": "2020-09-26 17:56:42",
-    "user_login": [{
+    "user_login": [
+      {
         "user_login_ip": "8.8.8.8",
         "user_login_time": "2020-09-27 08:34:12"
-    }, {
+      },
+      {
         "user_login_ip": "4.4.4.4",
         "user_login_time": "2020-09-28 20:12:07"
-    }],
-    "user_following": ["46a5sd465as4d56as4", "7asdas654das98da8as"],
+      }
+    ],
+    "user_following": [
+      "5f89ad4f02139585a94eaab2"
+    ],
+    "user_follower": [
+      "5f89ad4f02139585a94eaab2",
+      "5f89aeaa6e95124396ca11fe"
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "5f89ad4f02139585a94eaab2"
+    },
+    "user_email": "milvus@gmail.com",
+    "user_name": "milvus",
+    "user_password": "milvus_pass",
+    "user_detail": {
+      "user_first_name": "Milvus",
+      "user_last_name": "Zerk",
+      "user_phone": "+746950412",
+      "user_street1": "Freiburg",
+      "user_street2": "",
+      "user_city": "Freiburg",
+      "user_state": "Breisgau",
+      "user_country": "Germany",
+      "user_zip": "79085"
+    },
+    "user_status": "public",
+    "user_thumbnail": "https://yyy.png",
+    "user_reg_date": "2020-10-11 07:46:32",
+    "user_login": [
+      {
+        "user_login_ip": "8.8.8.8",
+        "user_login_time": "2020-10-11 08:34:12"
+      },
+      {
+        "user_login_ip": "4.4.4.4",
+        "user_login_time": "2020-10-15 20:12:07"
+      }
+    ],
+    "user_following": [
+      "5f88f883e6ac4f89900ac983"
+    ],
+    "user_follower": [
+      "5f88f883e6ac4f89900ac983",
+      "5f89aeaa6e95124396ca11fe"
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "5f89aeaa6e95124396ca11fe"
+    },
+    "user_email": "eclipse@gmail.com",
+    "user_name": "eclipse",
+    "user_password": "eclipse_pass",
+    "user_detail": {
+      "user_first_name": "Jinpi",
+      "user_last_name": "Xi",
+      "user_phone": "+860101010101",
+      "user_street1": "W Chang'an Ave, Xicheng District",
+      "user_street2": "",
+      "user_city": "Beijing",
+      "user_state": "Beijing",
+      "user_country": "China",
+      "user_zip": "100060"
+    },
+    "user_status": "private",
+    "user_thumbnail": "https://xixi.png",
+    "user_reg_date": "2020-09-11 16:31:57",
+    "user_login": [
+      {
+        "user_login_ip": "8.8.8.8",
+        "user_login_time": "2020-10-01 04:34:12"
+      },
+      {
+        "user_login_ip": "4.4.4.4",
+        "user_login_time": "2020-10-01 10:10:10"
+      }
+    ],
+    "user_following": [
+      "5f88f883e6ac4f89900ac983",
+      "5f89ad4f02139585a94eaab2"
+    ],
     "user_follower": []
   }
 ]

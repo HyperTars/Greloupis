@@ -7,38 +7,40 @@ from source.models.model_errors import MongoError
 
 
 class TestQueryUser(unittest.TestCase):
-    # temp name
-    temp_name = "temp_name"
-    temp_email = "temp@gmail.com"
-    temp_password = "temp"
-    permanent_name = "hypertars"
-    permanent_email = "hypertars@gmail.com"
-    permanent_password = "hypertars_pass"
+
+    data = util_load_test_data()
+    const_user_0 = data['const_user'][0]
+    const_user_1 = data['const_user'][1]
+    const_user_2 = data['const_user'][2]
+
+    temp_user_0 = data['temp_user'][0]
 
     def setUp(self):
-        self.data = util_load_test_data()
+        pass
 
     def test_user_create(self):
         # Create successfully
-        self.assertEqual(query_user_create(user_name=self.temp_name, user_email=self.temp_email,
-                                           user_password=self.temp_password).user_name, self.temp_name)
+        self.assertEqual(query_user_create(user_name=self.temp_user_0['user_name'],
+                                           user_email=self.temp_user_0['user_email'],
+                                           user_password=self.temp_user_0['user_password']).user_name,
+                         self.temp_user_0['user_name'])
 
         # Raise Error: ErrorCode.MONGODB_USER_NAME_TAKEN
         with self.assertRaises(MongoError) as e1:
-            query_user_create(user_name=self.temp_name, user_email=self.temp_email,
-                              user_password=self.temp_password)
+            query_user_create(user_name=self.temp_user_0['user_name'], user_email="NotImportantEmail",
+                              user_password="NotImportantPassword")
         self.assertEqual(e1.exception.error_code, ErrorCode.MONGODB_USER_NAME_TAKEN)
 
         # Raise Error: ErrorCode.MONGODB_USER_EMAIL_TAKEN
         with self.assertRaises(MongoError) as e2:
-            query_user_create(user_name="NotImportantName", user_email=self.temp_email,
-                              user_password=self.temp_password)
+            query_user_create(user_name="NotImportantName", user_email=self.temp_user_0['user_email'],
+                              user_password="NotImportantPassword")
         self.assertEqual(e2.exception.error_code, ErrorCode.MONGODB_USER_EMAIL_TAKEN)
 
     def test_user_get_by_name(self):
         # Get successfully
-        temp_model = query_user_get_by_name(self.permanent_name)[0]
-        self.assertEqual(temp_model.user_email, self.permanent_email)
+        temp_model = query_user_get_by_name(self.const_user_0['user_name'])[0]
+        self.assertEqual(temp_model.user_email, self.const_user_0['user_email'])
 
     def test_user_get_by_email(self):
         pass
@@ -71,7 +73,7 @@ class TestQueryUser(unittest.TestCase):
         pass
 
     def test_user_delete_by_id(self):
-        temp_model = query_user_get_by_name(self.temp_name)[0]
+        temp_model = query_user_get_by_name(self.temp_user_0['user_name'])[0]
         self.assertEqual(query_user_delete_by_id(temp_model._id), 1)
 
     def test_user_delete_by_name(self):
