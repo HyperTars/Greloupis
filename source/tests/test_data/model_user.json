@@ -1,10 +1,11 @@
 [
     {
     "_id": {
-        "$oid": "5f88bff77a6eb86b0eccc8d1"
+        "$oid": "5f88f883e6ac4f89900ac983"
     },
     "user_email": "hypertars@gmail.com",
     "user_name": "hypertars",
+    "user_password": "hypertars_pass",
     "user_detail": {
         "user_first_name": "Brian",
         "user_last_name": "Lee",
@@ -28,5 +29,5 @@
     }],
     "user_following": ["46a5sd465as4d56as4", "7asdas654das98da8as"],
     "user_follower": []
-  }
+}
 ]

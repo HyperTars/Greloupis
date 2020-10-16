@@ -35,7 +35,7 @@ class TestRoutes(unittest.TestCase):
             # self.assertEqual(response_json["body"][0]["user_name"], service_search_json["body"][0]["user_name"],
             #                  msg="First matched user name")
 
-            self.assertEqual(response_json["body"][0]["user_id"], "5f88bff77a6eb86b0eccc8d1",
+            self.assertEqual(response_json["body"][0]["user_id"], "5f88f883e6ac4f89900ac983",
                              msg="First matched user id")
             self.assertEqual(response_json["body"][0]["user_email"], "hypertars@gmail.com",
                              msg="First matched user email")
