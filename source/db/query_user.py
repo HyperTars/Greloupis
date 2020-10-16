@@ -24,6 +24,9 @@ def query_user_create(user_name: str, user_email: str, user_password: str, user_
     from source.db.query_user import *
     query_user_create(user_name="dev_user", user_email="dev@gmail.com", user_password="dev")
     """
+    if type(user_name) != str or type(user_email) != str or type(user_password) != str:
+        raise MongoError(ErrorCode.MONGODB_STR_EXPECTED)
+
     if len(query_user_get_by_name(user_name)) > 0:
         raise MongoError(ErrorCode.MONGODB_USER_NAME_TAKEN)
 
@@ -52,6 +55,9 @@ def query_user_get_by_name(user_name: str):
     """
     :return: an array of such User, len == 0 if no such user_name, len == 1 if found
     """
+    if type(user_name) != str:
+        raise MongoError(ErrorCode.MONGODB_STR_EXPECTED)
+
     return User.objects(user_name=user_name)
 
 
@@ -59,6 +65,9 @@ def query_user_get_by_email(user_email: str):
     """
     :return: an array of such User (len == 0 or 1), len == 0 if no such user_email, len == 1 if found
     """
+    if type(user_email) != str:
+        raise MongoError(ErrorCode.MONGODB_STR_EXPECTED)
+
     return User.objects(user_email=user_email)
 
 
@@ -66,6 +75,9 @@ def query_user_get_by_id(user_id: str):
     """
     :return: an array of such User (len == 0 or 1), len == 0 if no such user_id, len == 1 if found
     """
+    if type(user_id) != str:
+        raise MongoError(ErrorCode.MONGODB_STR_EXPECTED)
+
     return User.objects(_id=bson.ObjectId(user_id))
 
 
@@ -78,6 +90,9 @@ def query_user_update_status(user_id: str, user_status: str):
     :param user_status: user's new status
     :return: array of User Model
     """
+    if type(user_id) != str or type(user_status) != str:
+        raise MongoError(ErrorCode.MONGODB_STR_EXPECTED)
+
     if len(query_user_get_by_id(user_id)) == 0:
         raise MongoError(ErrorCode.MONGODB_USER_NOT_FOUND)
 
@@ -93,6 +108,9 @@ def query_user_add_follow(follower_id: str, following_id: str):
     :param following_id: uploader user_id
     :return: 1 if succeeded
     """
+    if type(follower_id) != str or type(following_id) != str:
+        raise MongoError(ErrorCode.MONGODB_STR_EXPECTED)
+
     follower = query_user_get_by_id(follower_id)
     following = query_user_get_by_id(following_id)
 
@@ -124,6 +142,10 @@ def query_user_delete_follow(follower_id: str, following_id: str):
     :param following_id: uploader user_id
     :return: 1 if succeeded
     """
+
+    if type(follower_id) != str or type(following_id) != str:
+        raise MongoError(ErrorCode.MONGODB_STR_EXPECTED)
+
     follower = query_user_get_by_id(follower_id)
     following = query_user_get_by_id(following_id)
 
@@ -147,6 +169,9 @@ def query_user_update_name(user_id: str, user_name: str):
     :param user_name: user's name
     :return: array of User Model
     """
+    if type(user_id) != str or type(user_name) != str:
+        raise MongoError(ErrorCode.MONGODB_STR_EXPECTED)
+
     users = query_user_get_by_id(user_id)
     if len(users) == 0:
         raise MongoError(ErrorCode.MONGODB_USER_NOT_FOUND)
@@ -167,6 +192,9 @@ def query_user_update_password(user_id: str, user_password: str):
     :param user_password: user's password
     :return: array of User Model
     """
+    if type(user_id) != str or type(user_password) != str:
+        raise MongoError(ErrorCode.MONGODB_STR_EXPECTED)
+
     users = query_user_get_by_id(user_id)
     if len(users) == 0:
         raise MongoError(ErrorCode.MONGODB_USER_NOT_FOUND)
@@ -184,12 +212,15 @@ def query_user_update_thumbnail(user_id: str, user_thumbnail: str):
     :param user_thumbnail: thumbnail URI
     :return: array of user Model
     """
+    if type(user_id) != str or type(user_thumbnail) != str:
+        raise MongoError(ErrorCode.MONGODB_STR_EXPECTED)
+
     users = query_user_get_by_id(user_id)
     if len(users) == 0:
         raise MongoError(ErrorCode.MONGODB_USER_NOT_FOUND)
 
     if type(user_thumbnail) != str:
-        raise MongoError(ErrorCode.MONGODB_PARAM_STR_EXPECTED)
+        raise MongoError(ErrorCode.MONGODB_STR_EXPECTED)
 
     User.objects(_id=bson.ObjectId(user_id)).update(user_thumbnail=user_thumbnail)
 
@@ -208,6 +239,13 @@ def query_user_update_details(user_id: str, **kw):
     :param user_zip (optional): new user's zip
     :return 1 if succeeded
     """
+    if type(user_id) != str:
+        raise MongoError(ErrorCode.MONGODB_STR_EXPECTED)
+
+    for arg in kw:
+        if type(kw[arg]) != str:
+            raise MongoError(ErrorCode.MONGODB_STR_EXPECTED)
+
     users = query_user_get_by_id(user_id)
     if len(users) == 0:
         raise MongoError(ErrorCode.MONGODB_USER_NOT_FOUND)
@@ -243,6 +281,9 @@ def query_user_add_login(user_id: str, ip="0.0.0.0", time=datetime.datetime.utcn
     :param time: user's login time (utc, optional), default: current system time (utc)
     :return: 1 if succeeded
     """
+    if type(user_id) != str or type(ip) != str or type(time) != datetime.datetime:
+        raise MongoError(ErrorCode.MONGODB_STR_EXPECTED)
+
     users = query_user_get_by_id(user_id)
     if len(users) == 0:
         raise MongoError(ErrorCode.MONGODB_USER_NOT_FOUND)
@@ -276,6 +317,9 @@ def query_user_delete_by_id(user_id: str):
     :param user_id: user's unique id
     :return: 1 if succeeded
     """
+    if type(user_id) != str:
+        raise MongoError(ErrorCode.MONGODB_STR_EXPECTED)
+
     users = query_user_get_by_id(user_id)
     if len(users) == 0:
         raise MongoError(ErrorCode.MONGODB_USER_NOT_FOUND)
@@ -288,6 +332,9 @@ def query_user_delete_by_name(user_name: str):
     :param user_name: user's name
     :return: 1 if succeeded
     """
+    if type(user_name) != str:
+        raise MongoError(ErrorCode.MONGODB_STR_EXPECTED)
+
     users = query_user_get_by_name(user_name)
     if len(users) == 0:
         raise MongoError(ErrorCode.MONGODB_USER_NOT_FOUND)
@@ -317,10 +364,12 @@ def query_user_search_by_contains(**kw):
     :param user_reg_date: (optional) single keyword of reg_date to be searched
     :return: array of searching results (User Model)
     """
+    if len(kw) == 0:
+        raise MongoError(ErrorCode.MONGODB_EMPTY_PARAM)
 
     for arg in kw:
         if type(kw[arg]) != str:
-            raise MongoError(ErrorCode.MONGODB_PARAM_STR_EXPECTED)
+            raise MongoError(ErrorCode.MONGODB_STR_EXPECTED)
 
     if 'user_id' in kw:
         return query_user_get_by_id(kw['user_id'])
@@ -415,4 +464,6 @@ def query_user_search_by_aggregate(aggr: dict):
     :param aggr: dict of searching param
     :return: array of searching results in dict
     """
+    if type(aggr) != dict:
+        raise MongoError(ErrorCode.MONGODB_DICT_EXPECTED)
     return list(User.objects.aggregate(aggr))
