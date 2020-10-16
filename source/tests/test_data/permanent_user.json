@@ -5,6 +5,7 @@
     },
     "user_email": "hypertars@gmail.com",
     "user_name": "hypertars",
+    "user_password": "hypertars_pass",
     "user_detail": {
         "user_first_name": "Brian",
         "user_last_name": "Lee",
