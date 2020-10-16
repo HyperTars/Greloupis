@@ -61,5 +61,7 @@ def service_user_info(conf, **kw):
 
     if "user_id" in kw:
         result = query_user_get_by_id(kw["user_id"])
+    else:
+        result = [{}]
 
     return result
