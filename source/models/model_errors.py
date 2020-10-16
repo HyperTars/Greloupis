@@ -53,12 +53,13 @@ class ErrorCode(Enum):
     MONGODB_FOLLOWER_NOT_FOUND = {4120: "MongoDB Error: User Follower Not Found"}
     MONGODB_FOLLOWED_NOT_FOUND = {4121: "MongoDB Error: User To Be Followed Not Found"}
     MONGODB_RE_PATTERN_EXPECTED = {4122: "MongoDB Error: type <re:Pattern> Expected"}
-    MONGODB_PARAM_STR_EXPECTED = {4123: "MongoDB Error: type <str> Expected"}
+    MONGODB_STR_EXPECTED = {4123: "MongoDB Error: type <str> Expected"}
     MONGODB_USER_CREATE_FAILURE = {4124: "MongoDB Error: User Creation Failure"}
     MONGODB_USER_CREATE_FOLLOW_FAILURE = {4125: "MongoDB Error: User Create Follow Relationship Failure"}
     MONGODB_USER_DELETE_FOLLOW_FAILURE = {4126: "MongoDB Error: User Delete Follow Relationship Failure"}
     MONGODB_VIDEO_CREATE_FAILURE = {4127: "MongoDB Error: Video Creation Failure"}
     MONGODB_VIDEO_INVALID_STATUS = {4128: "MongoDB Error: Video Invalid Status"}
+    MONGODB_DICT_EXPECTED = {4129: "MongoDB Error: type <dict> Expected"}
     # Model Error 5 Series
     MODEL_PASS_NOT_READABLE = {5001: "Password Is Not Readable"}
 
