@@ -32,8 +32,12 @@
     user_following | Array | `index` | String | user input | YES | array of following uploaders' ids
     user_follower | Array | `index` | String | system generated | YES | array of user's followers
 
+- **Model Design**
+    - [User Model](../source/models/model_user.py)
+
 - **Sample**
-    - [User Sample](../source/tests/test_data/permanent_user.json)
+    - [User Sample - Constant](../source/tests/test_data/const_user.json)
+    - [User Sample - Temporary](../source/tests/test_data/temp_user.json)
 
 
 ### Collection: video
@@ -66,8 +70,12 @@
      | | | video_mid | String | system generate | YES | 720p video URI
      | | | video_high | String | system generate | YES | 1080p video URI
 
+- **Model Design**
+    - [Video Model](../source/models/model_video.py)
+    
 - **Sample**
-    - [Video Sample](../source/tests/test_data/permanent_video.json)
+    - [Video Sample - Const](../source/tests/test_data/const_video.json)
+    - [Video Sample - Temp](../source/tests/test_data/temp_video.json)
     
 ### Collection: video_op (including watch history, comment, like, dislike, star)
 - **Document**
@@ -88,6 +96,10 @@
     dislike_date | Date | system generate | YES | dislike date
     star_date | Date | system generate | YES | star date
 
+- **Model Design**
+    - [VideoOp Model](../source/models/model_video_op.py)
+    
 - **Sample**
-    - [VideoOp Sample](../source/tests/test_data/permanent_video_op.json)
+    - [VideoOp Sample - Const](../source/tests/test_data/const_video_op.json)
+    - [VideoOp Sample - Temp](../source/tests/test_data/temp_video_op.json)
 
