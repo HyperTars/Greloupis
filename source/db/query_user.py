@@ -271,16 +271,28 @@ def query_user_add_login(user_id: str, ip="0.0.0.0", time=datetime.datetime.utcn
 ##########
 # DELETE #
 ##########
-def query_user_delete(user_id: str):
+def query_user_delete_by_id(user_id: str):
     """
     :param user_id: user's unique id
-    :return: array of User Model
+    :return: 1 if succeeded
     """
     users = query_user_get_by_id(user_id)
     if len(users) == 0:
         raise MongoError(ErrorCode.MONGODB_USER_NOT_FOUND)
 
     return User.objects(_id=bson.ObjectId(user_id)).delete()
+
+
+def query_user_delete_by_name(user_name: str):
+    """
+    :param user_name: user's name
+    :return: 1 if succeeded
+    """
+    users = query_user_get_by_name(user_name)
+    if len(users) == 0:
+        raise MongoError(ErrorCode.MONGODB_USER_NOT_FOUND)
+
+    return User.objects(user_name=user_name).delete()
 
 
 ##########
