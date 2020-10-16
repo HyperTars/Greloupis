@@ -85,7 +85,16 @@ class Video(Resource):
         """
             User upload a video
         """
-        return {}, 200, None
+        mock_body = {
+            "user_id": "5f88bff77a6eb86b0eccc8d1",
+            "video_title": "mock_video",
+            "video_raw_content": "https://s3.amazon.com/mock_video.mp4"
+        }
+
+        post_result = service_video_upload(conf=config['default'], body=mock_body)
+        post_result_json = util_serializer_mongo_results_to_array(post_result, format="json")
+
+        return util_serializer_api_response(200, body=post_result_json, msg="Successfully posted video")
 
 
 @video.route('/<string:video_id>')
