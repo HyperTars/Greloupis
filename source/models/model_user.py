@@ -56,7 +56,7 @@ class User(db.Document):
         user_detail_dict['user_zip'] = self.user_detail.user_zip or ""
 
         for login in self.user_login:
-            temp_login = {'user_login_ip': login.user_login_ip, 'login_time': login.user_login_time}
+            temp_login = {'user_login_ip': login.user_login_ip, 'user_login_time': login.user_login_time}
             user_login_array.append(temp_login)
 
         for following in self.user_following:

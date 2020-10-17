@@ -2,6 +2,7 @@ from source.models.model_video_op import VideoOp
 from source.db.query_user import *
 from source.db.query_video import *
 from source.models.model_errors import *
+from source.utils.util_time import get_time_now_utc
 import bson
 import datetime
 import re
@@ -10,7 +11,7 @@ import re
 ##########
 # CREATE #
 ##########
-def query_video_op_create(user_id: str, video_id: str, init_time=datetime.datetime.utcnow()):
+def query_video_op_create(user_id: str, video_id: str, init_time=get_time_now_utc()):
     """
     :param user_id: user's unique id
     :param video_id: video's unique id
@@ -72,7 +73,7 @@ def query_video_op_get_by_op_id(op_id: str):
 ##########
 # UPDATE #
 ##########
-def query_video_op_update_process(op_id: str, process: int, process_date=datetime.datetime.utcnow()):
+def query_video_op_update_process(op_id: str, process: int, process_date=get_time_now_utc()):
     """
     :param: op_id, video op unique id
     :param: process, video watching process
@@ -86,7 +87,7 @@ def query_video_op_update_process(op_id: str, process: int, process_date=datetim
     return VideoOp.objects(_id=bson.ObjectId(op_id)).update(process=process, process_date=process_date)
 
 
-def query_video_op_update_comment(op_id: str, comment: str, comment_date=datetime.datetime.utcnow()):
+def query_video_op_update_comment(op_id: str, comment: str, comment_date=get_time_now_utc()):
     """
     :param: op_id, video op unique id
     :param: comment, video comment
@@ -100,7 +101,7 @@ def query_video_op_update_comment(op_id: str, comment: str, comment_date=datetim
     return VideoOp.objects(_id=bson.ObjectId(op_id)).update(comment=comment, comment_date=comment_date)
 
 
-def query_video_op_update_like(op_id: str, like: bool, like_date=datetime.datetime.utcnow()):
+def query_video_op_update_like(op_id: str, like: bool, like_date=get_time_now_utc()):
     """
     :param: op_id, video op unique id
     :param: like, video like (boolean)
@@ -114,7 +115,7 @@ def query_video_op_update_like(op_id: str, like: bool, like_date=datetime.dateti
     return VideoOp.objects(_id=bson.ObjectId(op_id)).update(like=like, like_date=like_date)
 
 
-def query_video_op_update_dislike(op_id: str, dislike: bool, dislike_date=datetime.datetime.utcnow()):
+def query_video_op_update_dislike(op_id: str, dislike: bool, dislike_date=get_time_now_utc()):
     """
     :param: op_id, video op unique id
     :param: dislike, video dislike (boolean)
@@ -128,7 +129,7 @@ def query_video_op_update_dislike(op_id: str, dislike: bool, dislike_date=dateti
     return VideoOp.objects(_id=bson.ObjectId(op_id)).update(dislike=dislike, dislike_date=dislike_date)
 
 
-def query_video_op_update_star(op_id: str, star: bool, star_date=datetime.datetime.utcnow()):
+def query_video_op_update_star(op_id: str, star: bool, star_date=get_time_now_utc()):
     """
     :param: op_id, video op unique id
     :param: star, video star (boolean)
