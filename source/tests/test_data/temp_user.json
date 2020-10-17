@@ -7,6 +7,7 @@
     {
         "user_email": "temp_user2@gmail.com",
         "user_name": "temp_user2",
-        "user_password": "temp_pass2"
+        "user_password": "temp_pass2",
+        "user_reg_ip": "207.237.64.22"
     }
 ]

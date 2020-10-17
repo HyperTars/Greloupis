@@ -1,6 +1,7 @@
 from source.models.model_video import *
 from source.db.query_user import query_user_get_by_id
 from source.models.model_errors import *
+from source.utils.util_time import get_time_now_utc
 import bson
 import datetime
 import re
@@ -59,7 +60,7 @@ def query_video_create(user_id: str, video_title: str, video_raw_content: str, *
     video_language = ""
     video_status = "public"
     video_thumbnail = ""
-    video_upload_date = datetime.datetime.utcnow()
+    video_upload_date = get_time_now_utc()
 
     # Fill if exist
     if 'video_raw_status' in kw:

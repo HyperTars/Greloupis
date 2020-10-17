@@ -1,5 +1,6 @@
 from source.models.model_user import *
 from source.models.model_errors import *
+from source.utils.util_time import *
 from mongoengine.connection import ConnectionFailure
 from mongoengine.errors import *
 from pymongo.errors import *
@@ -33,14 +34,14 @@ def query_user_create(user_name: str, user_email: str, user_password: str, user_
     elif len(query_user_get_by_email(user_email)) > 0:
         raise MongoError(ErrorCode.MONGODB_USER_EMAIL_TAKEN)
 
-    login = [UserLogin(user_login_ip=user_ip, user_login_time=datetime.datetime.utcnow())]
+    login = [UserLogin(user_login_ip=user_ip, user_login_time=get_time_now_utc())]
 
     # EmbeddedDocument must be included when creating
     # user_detail, user_reg_date
     try:
         user = User(user_name=user_name, user_email=user_email, user_password=user_password,
                     user_detail=UserDetail(), user_status="private", user_thumbnail="",
-                    user_reg_date=datetime.datetime.utcnow(), user_login=login,
+                    user_reg_date=get_time_now_utc(), user_login=login,
                     user_following=[], user_follower=[])
     except Exception:
         raise MongoError(ErrorCode.MONGODB_USER_CREATE_FAILURE)
@@ -274,7 +275,7 @@ def query_user_update_details(user_id: str, **kw):
     return 1
 
 
-def query_user_add_login(user_id: str, ip="0.0.0.0", time=datetime.datetime.utcnow()):
+def query_user_add_login(user_id: str, ip="0.0.0.0", time=get_time_now_utc()):
     """
     :param user_id: user's unique id
     :param ip: user's login ip address
@@ -289,12 +290,12 @@ def query_user_add_login(user_id: str, ip="0.0.0.0", time=datetime.datetime.utcn
         raise MongoError(ErrorCode.MONGODB_USER_NOT_FOUND)
 
     # only keep 10 login info
-    login_history = users[0].user_recent_login
-    oldest_login_time = login_history[0].login_time
-    latest_login_time = login_history[-1].login_time
+    login_history = users[0].user_login
+    oldest_login_time = login_history[0].user_login_time
+    latest_login_time = login_history[-1].user_login_time
     if len(login_history) >= 10:
         # Delete oldest history
-        User.objects(_id=bson.ObjectId(user_id)).update(pull__user_login__login_time=oldest_login_time)
+        User.objects(_id=bson.ObjectId(user_id)).update(pull__user_login__user_login_time=oldest_login_time)
 
     # TODO: update latest 10 login info method, some bugs for current version
     # add new login info
@@ -459,11 +460,11 @@ def query_user_search_by_pattern(**kw):
 
 
 # Search by aggregate
-def query_user_search_by_aggregate(aggr: dict):
+def query_user_search_by_aggregate(aggr: list or dict):
     """
     :param aggr: dict of searching param
     :return: array of searching results in dict
     """
-    if type(aggr) != dict:
-        raise MongoError(ErrorCode.MONGODB_DICT_EXPECTED)
+    if type(aggr) != list and type(aggr) != dict:
+        raise MongoError(ErrorCode.MONGODB_LIST_EXPECTED)
     return list(User.objects.aggregate(aggr))
