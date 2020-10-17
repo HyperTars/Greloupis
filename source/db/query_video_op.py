@@ -146,12 +146,13 @@ def query_video_op_update_star(op_id: str, star: bool, star_date=get_time_now_ut
 ##########
 # DELETE #
 ##########
-def query_video_op_delete(op_id: str):
+def query_video_op_delete(op_id: str, silent=False):
     """
     :param op_id: op's unique id
+    :param silent: delete video op regardless of existence
     :return: 1 if succeeded, -1 if no such video
     """
-    if len(query_video_op_get_by_op_id(op_id)) == 0:
+    if len(query_video_op_get_by_op_id(op_id)) == 0 and silent is False:
         # No such video op
         raise MongoError(ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND)
 

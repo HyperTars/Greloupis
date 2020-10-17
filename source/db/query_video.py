@@ -20,25 +20,26 @@ VALID_VIDEO_CNT = ['view', 'views', 'video_view',
 # CREATE #
 ##########
 def query_video_create(user_id: str, video_title: str, video_raw_content: str, **kw):
-
     """
+    Create Video
     :param user_id: (required) user's unique id
     :param video_title: (required) video's title
     :param video_raw_content: (required) URI of raw video data (in temp space, to be transcode)
-    :param video_channel: (optional) channel of video (default self-made)
-    :param video_duration: (optional) duration of video in second
-    :param video_raw_status: (optional) status of raw video data, default: pending
-    :param video_raw_size: (optional) size of raw video data
-    :param video_tag: (optional) array of video's tags
-    :param video_category: (optional) array of video's categories
-    :param video_description: (optional) video's description
-    :param video_language: (optional) video's language
-    :param video_status: (optional) video's status, default: public
-    :param video_thumbnail: (optional) video's thumbnail uri
-    :param video_upload_date: (optional) video's upload date
+    :param kw:
+        :key "video_channel": (optional) channel of video (default self-made)
+        :key "video_duration": (optional) duration of video in second
+        :key "video_raw_status": (optional) status of raw video data, default: pending
+        :key "video_raw_size": (optional) size of raw video data
+        :key "video_tag": (optional) array of video's tags
+        :key "video_category": (optional) array of video's categories
+        :key "video_description": (optional) video's description
+        :key "video_language": (optional) video's language
+        :key "video_status": (optional) video's status, default: public
+        :key "video_thumbnail": (optional) video's thumbnail uri
+        :key "video_upload_date": (optional) video's upload date
     :return: video created (Video Model)
 
-    video_raw_content: user will get a raw video URI after uploading raw video to cache
+    \nvideo_raw_content: user will get a raw video URI after uploading raw video to cache
     (temp storage space where videos waiting for trans-coding)
     user is allowed to create video info before trans-coding completed
     """
@@ -209,23 +210,26 @@ def query_video_cnt_decr_by_one(video_id: str, video_cnt: str):
 
 def query_video_update(video_id: str, **kw):
     """
+    Update Video Info
     :param video_id: video's unique id
-    :param video_title (optional): video's new title
-    :param video_raw_content (optional): new URI of raw video data (in temp space, to be transcode)
-    :param video_raw_status (optional): new status of raw video data, default
-    :param video_raw_size (optional): new size of raw video data
-    :param video_duration: (optional) duration of video in second
-    :param video_channel: (optional) channel of video (default self-made)
-    :param video_tag (optional): array of video's new tags
-    :param video_category (optional): array of video's new categories
-    :param video_description (optional): video's new description
-    :param video_language (optional): video's new language
-    :param video_status (optional): video's new status, default: public
-    :param video_thumbnail (optional): video's new thumbnail uri
-    :param video_uri_low (optional): video's new final uri (480p low resolution)
-    :param video_uri_mid (optional): video's new final uri (720p mid resolution)
-    :param video_uri_high (optional): video's new final uri (1080p high resolution)
-    :return 1 if succeeded
+    :param kw:
+        :key "video_title": (```str```, optional) new title
+        :key "video_raw_content": (```str```, optional) new URI of raw video data (in temp space, to be transcode)
+        :key "video_raw_status": (```str```, optional) new status of raw video data, default
+        :key "video_raw_size": (```float```, optional) new size of raw video data
+        :key "video_duration": (```int```, optional) duration of video in second
+        :key "video_channel": (```str```, optional) channel of video (default self-made)
+        :key "video_tag": (```list```, optional) array of new tags
+        :key "video_category": (```list```, optional) array of new categories
+        :key "video_description": (```str```, optional) new description
+        :key "video_language": (```str```, optional) new language
+        :key "video_status": (```str```, optional) new status, default: public
+        :key "video_thumbnail": (```str```, optional) new thumbnail uri
+        :key "video_uri_low": (```str```, optional) new final uri (480p low resolution)
+        :key "video_uri_mid": (```str```, optional) new final uri (720p mid resolution)
+        :key "video_uri_high": (```str```, optional) new final uri (1080p high resolution)
+    \nAt least one key must be provided
+    :return: 1 if succeeded
     """
 
     if len(query_video_get_by_video_id(video_id)) == 0:
@@ -279,13 +283,14 @@ def query_video_update(video_id: str, **kw):
 ##########
 # DELETE #
 ##########
-def query_video_delete(video_id: str):
+def query_video_delete(video_id: str, silent=False):
     """
     :param video_id: video's unique id
+    :param silent: delete video regardless of existence
     :return: 1 if succeeded, -1 if no such video
     """
     videos = query_video_get_by_video_id(video_id)
-    if len(videos) == 0:
+    if len(videos) == 0 and silent is False:
         raise MongoError(ErrorCode.MONGODB_VIDEO_NOT_FOUND)
 
     return Video.objects(_id=bson.ObjectId(video_id)).delete()
@@ -298,11 +303,13 @@ def query_video_delete(video_id: str):
 def query_video_search_by_contains(**kw):
     """
     Search video by i-contains (ignore case)
-    :param video_id: (optional) video's unique id
-    :param user_id: (optional) user's unique id
-    :param video_title: (optional) string of video title to be searched
-    :param video_channel: (optional) channel of videos
-    :param video_category: (optional) category of videos
+    :param kw: keyword arguments
+        :key "video_id": (```str```, optional) video's unique id
+        :key "user_id": (```str```, optional) user's unique id
+        :key "video_title": (```str```, optional) string of video title to be searched
+        :key "video_channel": (```str```, optional) channel of videos
+        :key "video_category": (```str```, optional) category of videos
+    \nAt least one key must be provided
     :return: array of searching results (Video Model)
     """
     if 'video_id' in kw:
@@ -326,8 +333,11 @@ def query_video_search_by_contains(**kw):
 # Search by pattern
 def query_video_search_by_pattern(**kw):
     """
-    :param pattern_title: (optional) search title pattern
-    :param pattern description: (optional) search description pattern
+    Search video by pattern
+    :param kw: keyword arguments
+        :key "pattern_title": (```str```, optional) search title pattern
+        :key "pattern_description": (```str```, optional) search description pattern
+    \nAt least one key must be provided
     :return: array of searching results (Video Model)
     """
     # Check input param
