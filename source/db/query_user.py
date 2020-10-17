@@ -228,17 +228,20 @@ def query_user_update_thumbnail(user_id: str, user_thumbnail: str):
 
 def query_user_update_details(user_id: str, **kw):
     """
-    :param user_id: user's unique id
-    :param user_first_name (optional): new user's first name
-    :param user_last_name (optional): new user's last_name
-    :param user_phone (optional): new user's phone
-    :param user_street1 (optional): new user's street1
-    :param user_street2 (optional): new user's street2
-    :param user_city (optional): new user's city
-    :param user_state (optional): new user's state
-    :param user_country (optional): new user's country
-    :param user_zip (optional): new user's zip
-    :return 1 if succeeded
+    Update user details
+    :param user_id: user unique id
+    :param kw:
+        :key "user_first_name": (```str```, optional) new user first name
+        :key "user_last_name": (```str```, optional) new user last name
+        :key "user_phone": (```str```, optional) new user phone
+        :key "user_street1": (```str```, optional) new user street1
+        :key "user_street2": (```str```, optional) new user street2
+        :key "user_city": (```str```, optional) new user city
+        :key "user_state": (```str```, optional) new user state
+        :key "user_country": (```str```, optional) new user country
+        :key "user_zip": (```str```, optional) new user zip
+    \nAt least one key must be provided
+    :return: 1 if succeeded
     """
     if type(user_id) != str:
         raise MongoError(ErrorCode.MONGODB_STR_EXPECTED)
@@ -313,31 +316,33 @@ def query_user_add_login(user_id: str, ip="0.0.0.0", time=get_time_now_utc()):
 ##########
 # DELETE #
 ##########
-def query_user_delete_by_id(user_id: str):
+def query_user_delete_by_id(user_id: str, silent=False):
     """
     :param user_id: user's unique id
+    :param silent: delete user regardless of existence
     :return: 1 if succeeded
     """
     if type(user_id) != str:
         raise MongoError(ErrorCode.MONGODB_STR_EXPECTED)
 
     users = query_user_get_by_id(user_id)
-    if len(users) == 0:
+    if len(users) == 0 and silent is False:
         raise MongoError(ErrorCode.MONGODB_USER_NOT_FOUND)
 
     return User.objects(_id=bson.ObjectId(user_id)).delete()
 
 
-def query_user_delete_by_name(user_name: str):
+def query_user_delete_by_name(user_name: str, silent=False):
     """
     :param user_name: user's name
+    :param silent: delete user regardless of existence
     :return: 1 if succeeded
     """
     if type(user_name) != str:
         raise MongoError(ErrorCode.MONGODB_STR_EXPECTED)
 
     users = query_user_get_by_name(user_name)
-    if len(users) == 0:
+    if len(users) == 0 and silent is False:
         raise MongoError(ErrorCode.MONGODB_USER_NOT_FOUND)
 
     return User.objects(user_name=user_name).delete()
@@ -350,19 +355,21 @@ def query_user_delete_by_name(user_name: str):
 def query_user_search_by_contains(**kw):
     """
     Search user by i-contains (ignore case)
-    :param user_name: (optional) single keyword of username to be searched
-    :param user_email: (optional) single keyword of email to be searched
-    :param user_first_name: (optional) single keyword of first_name to be searched
-    :param user_last_name: (optional) single keyword of last_name to be searched
-    :param user_phone: (optional) single keyword of phone to be searched
-    :param user_street1: (optional) single keyword of street1 to be searched
-    :param user_street2: (optional) single keyword of street2 to be searched
-    :param user_city: (optional) single keyword of city to be searched
-    :param user_state: (optional) single keyword of state to be searched
-    :param user_country: (optional) single keyword of country to be searched
-    :param user_zip: (optional) single keyword of zip to be searched
-    :param user_status: (optional) single keyword of status to be searched
-    :param user_reg_date: (optional) single keyword of reg_date to be searched
+    :param kw: keyword arguments
+        :key "user_name": (optional) single keyword of username to be searched
+        :key "user_email": (optional) single keyword of email to be searched
+        :key "user_first_name": (optional) single keyword of first name to be searched
+        :key "user_last_name": (optional) single keyword of last name to be searched
+        :key "user_phone": (optional) single keyword of phone to be searched
+        :key "user_street1": (optional) single keyword of street1 to be searched
+        :key "user_street2": (optional) single keyword of street2 to be searched
+        :key "user_city": (optional) single keyword of city to be searched
+        :key "user_state": (optional) single keyword of state to be searched
+        :key "user_country": (optional) single keyword of country to be searched
+        :key "user_zip": (optional) single keyword of zip to be searched
+        :key "user_status": (optional) single keyword of status to be searched
+        :key "user_reg_date": (optional) single keyword of reg date to be searched
+    \nAt least one key must be provided
     :return: array of searching results (User Model)
     """
     if len(kw) == 0:
@@ -406,19 +413,21 @@ def query_user_search_by_contains(**kw):
 def query_user_search_by_pattern(**kw):
     """
     search user by pattern (re.Pattern)
-    :param pattern_name (optional): search name pattern
-    :param pattern_email (optional): search email pattern
-    :param pattern_first_name (optional): search first_name pattern
-    :param pattern_last_name (optional): search last_name pattern
-    :param pattern_phone (optional): search phone pattern
-    :param pattern_street1 (optional): search street1 pattern
-    :param pattern_street2 (optional): search street2 pattern
-    :param pattern_city (optional): search city pattern
-    :param pattern_state (optional): search state pattern
-    :param pattern_country (optional): search country pattern
-    :param pattern_zip (optional): search zip pattern
-    :param pattern_status (optional): search status pattern
-    :param pattern_reg_date (optional): search reg_date pattern
+    :param kw: keyword arguments
+        :key "user_name": (optional) single keyword of username to be searched
+        :key "user_email": (optional) single keyword of email to be searched
+        :key "user_first_name": (optional) single keyword of first name to be searched
+        :key "user_last_name": (optional) single keyword of last name to be searched
+        :key "user_phone": (optional) single keyword of phone to be searched
+        :key "user_street1": (optional) single keyword of street1 to be searched
+        :key "user_street2": (optional) single keyword of street2 to be searched
+        :key "user_city": (optional) single keyword of city to be searched
+        :key "user_state": (optional) single keyword of state to be searched
+        :key "user_country": (optional) single keyword of country to be searched
+        :key "user_zip": (optional) single keyword of zip to be searched
+        :key "user_status": (optional) single keyword of status to be searched
+        :key "user_reg_date": (optional) single keyword of reg date to be searched
+    \nAt least one key must be provided
     :return: array of searching results (User Model)
     """
     # Check input param

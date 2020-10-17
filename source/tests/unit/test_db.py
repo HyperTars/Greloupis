@@ -3,7 +3,9 @@ from source.settings import *
 from source.db.mongo import get_db
 from source.tests.unit.test_load_data import *
 from source.db.query_user import *
-from source.models.model_errors import MongoError
+from source.db.query_video import *
+from source.db.query_video_op import *
+from source.models.model_errors import *
 from source.utils.util_pattern import *
 
 
@@ -209,13 +211,86 @@ class TestQueryUser(unittest.TestCase):
 
 
 class TestQueryVideo(unittest.TestCase):
+    data = util_load_test_data()
+
+    const_video_0 = data['const_video'][0]
+
+    temp_video_0 = data['temp_video'][0]
+
     def setUp(self):
-        self.data = util_load_test_data()
+        pass
+
+    def test_a_query_video_create(self):
+        query_video_create()
+
+    def test_b_query_video_get_by_video_id(self):
+        query_video_get_by_video_id()
+
+    def test_c_query_video_get_by_user_id(self):
+        query_video_get_by_user_id()
+
+    def test_d_query_video_get_by_title(self):
+        query_video_get_by_title()
+
+    def test_e_query_video_cnt_incr_by_one(self):
+        query_video_cnt_incr_by_one()
+
+    def test_f_query_video_cnt_decr_by_one(self):
+        query_video_cnt_decr_by_one()
+
+    def test_g_query_video_update(self):
+        query_video_update()
+
+    def test_h_query_video_update(self):
+        query_video_delete()
+
+    def test_i_query_video_search_by_contains(self):
+        query_video_search_by_contains()
+
+    def test_j_query_video_search_by_pattern(self):
+        query_video_search_by_pattern()
+
+    def test_k_query_video_search_by_aggregate(self):
+        query_video_search_by_aggregate()
 
 
 class TestQueryVideoOp(unittest.TestCase):
+    data = util_load_test_data()
+
+    const_video_op_0 = data['const_video_op'][0]
+
+    temp_video_op_0 = data['temp_video_op'][0]
+
     def setUp(self):
-        self.data = util_load_test_data()
+        pass
+
+    def test_a_query_video_op_create(self):
+        query_video_op_create()
+
+    def test_b_query_video_op_get_by_user_id(self):
+        query_video_op_get_by_user_id()
+
+        query_video_op_get_by_video_id()
+
+        query_video_op_get_by_user_video()
+
+        query_video_op_get_by_op_id()
+
+        query_video_op_update_process()
+
+        query_video_op_update_comment()
+
+        query_video_op_update_like()
+
+        query_video_op_update_dislike()
+
+        query_video_op_update_star()
+
+        query_video_op_delete()
+
+        query_video_op_search_comment_by_contains()
+
+        query_video_op_search_comment_by_pattern()
 
 
 if __name__ == "__main__":
