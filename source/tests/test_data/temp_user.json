@@ -9,5 +9,38 @@
         "user_name": "temp_user2",
         "user_password": "temp_pass2",
         "user_reg_ip": "207.237.64.22"
+    },
+    {
+        "user_email": "temp_user3@gmail.com",
+        "user_name": "temp_user3",
+        "user_password": "temp_pass3",
+        "user_detail": {
+          "user_first_name": "t",
+          "user_last_name": "x",
+          "user_phone": "+12312312321",
+          "user_street1": "asdadad",
+          "user_street2": "Apt 3810",
+          "user_city": "Brooklyn",
+          "user_state": "New York",
+          "user_country": "United States",
+          "user_zip": "11201"
+        },
+        "user_login": [
+          {
+            "user_login_ip": "8.8.8.8",
+            "user_login_time": "2020-09-27 08:34:12"
+          },
+          {
+            "user_login_ip": "4.4.4.4",
+            "user_login_time": "2020-09-28 20:12:07"
+          }
+        ],
+        "user_following": [
+          "5f89ad4f02139585a94eaab2"
+        ],
+        "user_follower": [
+          "5f89ad4f02139585a94eaab2",
+          "5f89aeaa6e95124396ca11fe"
+        ]
     }
 ]
