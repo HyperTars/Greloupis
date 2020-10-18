@@ -21,9 +21,6 @@ def query_user_create(user_name: str, user_email: str, user_password: str, user_
     :param user_password: user's password
     :param user_ip: user's ip address (default 0.0.0.0)
     :return: user object if succeeded
-    Test:
-    from source.db.query_user import *
-    query_user_create(user_name="dev_user", user_email="dev@gmail.com", user_password="dev")
     """
     if type(user_name) != str or type(user_email) != str or type(user_password) != str:
         raise MongoError(ErrorCode.MONGODB_STR_EXPECTED)
@@ -54,6 +51,7 @@ def query_user_create(user_name: str, user_email: str, user_password: str, user_
 ############
 def query_user_get_by_name(user_name: str):
     """
+    :param user_name: user name
     :return: an array of such User, len == 0 if no such user_name, len == 1 if found
     """
     if type(user_name) != str:
@@ -64,6 +62,7 @@ def query_user_get_by_name(user_name: str):
 
 def query_user_get_by_email(user_email: str):
     """
+    :param user_email: user email
     :return: an array of such User (len == 0 or 1), len == 0 if no such user_email, len == 1 if found
     """
     if type(user_email) != str:
@@ -74,6 +73,7 @@ def query_user_get_by_email(user_email: str):
 
 def query_user_get_by_id(user_id: str):
     """
+    :param user_id: user id
     :return: an array of such User (len == 0 or 1), len == 0 if no such user_id, len == 1 if found
     """
     if type(user_id) != str:
