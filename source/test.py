@@ -1,6 +1,6 @@
 import unittest
 from source.settings import config
-# from source.tests.unit.test_models import TestModels
+from source.tests.unit.test_models import TestModels
 from source.db.mongo import *
 from source.tests.unit.test_routes import TestRoutes
 from source.tests.unit.test_app import TestApp
@@ -13,7 +13,7 @@ if __name__ == '__main__':
 
     TestApp()
     TestApiV1()
-    # TestModels()
+    TestModels()
     TestRoutes()
     TestQueryUser()
     unittest.main()

@@ -8,13 +8,10 @@ class TestModels(unittest.TestCase):
         self.data = util_load_test_data()
 
     def test_user_model_load(self):
-        test_load_data = self.data['user'][0] 
+        test_load_data = self.data['temp_user'][0]
         user = User(**test_load_data)
-        self.assertEqual(user.user_name, 'hypertars', msg='Test Model Loading Result')
-        self.assertEqual(user.user_detail.first_name, 'Brian',  msg='Test Model Loading Result')
-        self.assertEqual(user.user_login[0].login_time, {'$date': {'$numberLong': '1601195652000'}},
-                         msg='Test Model Loading Result')
-
+        self.assertEqual(user.user_name, 'temp_user', msg='Test User Name Loading Result')
+        self.assertEqual(user.user_email, 'temp_test_user@gmail.com', msg='Test User Email Loading Result')
 
 if __name__ == '__main__':
     unittest.main()
