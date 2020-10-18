@@ -1,1 +1,7 @@
-[{}]
+[
+  {
+    "user_id": "5f88f883e6ac4f89900ac983",
+    "video_title": "test_video_title",
+    "video_raw_content": "https://s3.amazon.com/ovp/temp-storage/139123810.mp4"
+  }
+]

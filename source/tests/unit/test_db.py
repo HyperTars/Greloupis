@@ -221,29 +221,80 @@ class TestQueryVideo(unittest.TestCase):
         pass
 
     def test_a_query_video_create(self):
-        query_video_create()
+        self.assertEqual(query_video_create(user_id=self.temp_video_0['user_id'],
+                                            video_title=self.temp_video_0['video_title'],
+                                            video_raw_content=self.temp_video_0['video_raw_content']).video_title,
+                         self.temp_video_0['video_title'])
 
     def test_b_query_video_get_by_video_id(self):
-        query_video_get_by_video_id()
+        self.assertEqual(query_video_get_by_video_id(str(self.const_video_0['_id']['$oid']))[0].video_title,
+                         self.const_video_0['video_title'])
 
     def test_c_query_video_get_by_user_id(self):
-        query_video_get_by_user_id()
+        self.assertEqual(len(query_video_get_by_user_id(self.temp_video_0['user_id'])), 1)
 
     def test_d_query_video_get_by_title(self):
-        query_video_get_by_title()
+        self.assertEqual(query_video_get_by_title(self.temp_video_0['video_title'])[0].user_id,
+                         self.temp_video_0['user_id'])
 
     def test_e_query_video_cnt_incr_by_one(self):
-        query_video_cnt_incr_by_one()
+        temp_model = query_video_get_by_title(self.temp_video_0['video_title'])[0].to_dict()
+        temp_video_id = temp_model['video_id']
+        temp_video_view = temp_model['video_view']
+        temp_video_comment = temp_model['video_comment']
+        temp_video_like = temp_model['video_like']
+        temp_video_dislike = temp_model['video_dislike']
+        temp_video_star = temp_model['video_star']
+        temp_video_share = temp_model['video_share']
+
+        query_video_cnt_incr_by_one(temp_video_id, "video_view")
+        self.assertEqual(query_video_get_by_video_id(temp_video_id)[0].video_view, temp_video_view + 1)
+        query_video_cnt_incr_by_one(temp_video_id, "video_comment")
+        self.assertEqual(query_video_get_by_video_id(temp_video_id)[0].video_view, temp_video_comment + 1)
+        query_video_cnt_incr_by_one(temp_video_id, "video_like")
+        self.assertEqual(query_video_get_by_video_id(temp_video_id)[0].video_view, temp_video_like + 1)
+        query_video_cnt_incr_by_one(temp_video_id, "video_dislike")
+        self.assertEqual(query_video_get_by_video_id(temp_video_id)[0].video_view, temp_video_dislike + 1)
+        query_video_cnt_incr_by_one(temp_video_id, "video_star")
+        self.assertEqual(query_video_get_by_video_id(temp_video_id)[0].video_view, temp_video_star + 1)
+        query_video_cnt_incr_by_one(temp_video_id, "video_share")
+        self.assertEqual(query_video_get_by_video_id(temp_video_id)[0].video_view, temp_video_share + 1)
 
     def test_f_query_video_cnt_decr_by_one(self):
-        query_video_cnt_decr_by_one()
+        temp_model = query_video_get_by_title(self.temp_video_0['video_title'])[0].to_dict()
+        temp_video_id = temp_model['video_id']
+        temp_video_view = temp_model['video_view']
+        temp_video_comment = temp_model['video_comment']
+        temp_video_like = temp_model['video_like']
+        temp_video_dislike = temp_model['video_dislike']
+        temp_video_star = temp_model['video_star']
+        temp_video_share = temp_model['video_share']
+
+        query_video_cnt_decr_by_one(temp_video_id, "video_view")
+        self.assertEqual(query_video_get_by_video_id(temp_video_id)[0].video_view, temp_video_view - 1)
+        query_video_cnt_decr_by_one(temp_video_id, "video_comment")
+        self.assertEqual(query_video_get_by_video_id(temp_video_id)[0].video_view, temp_video_comment - 1)
+        query_video_cnt_decr_by_one(temp_video_id, "video_like")
+        self.assertEqual(query_video_get_by_video_id(temp_video_id)[0].video_view, temp_video_like - 1)
+        query_video_cnt_decr_by_one(temp_video_id, "video_dislike")
+        self.assertEqual(query_video_get_by_video_id(temp_video_id)[0].video_view, temp_video_dislike - 1)
+        query_video_cnt_decr_by_one(temp_video_id, "video_star")
+        self.assertEqual(query_video_get_by_video_id(temp_video_id)[0].video_view, temp_video_star - 1)
+        query_video_cnt_decr_by_one(temp_video_id, "video_share")
+        self.assertEqual(query_video_get_by_video_id(temp_video_id)[0].video_view, temp_video_share - 1)
 
     def test_g_query_video_update(self):
-        query_video_update()
+        temp_video_id = query_video_get_by_title(self.temp_video_0['video_title'])[0].to_dict()['video_id']
 
-    def test_h_query_video_update(self):
-        query_video_delete()
+        new_raw_content = "some new content uri"
+        query_video_update(temp_video_id, video_raw_content=new_raw_content)
+        self.assertEqual(query_video_get_by_video_id(temp_video_id)[0].video_raw_content, new_raw_content)
 
+    def test_h_query_video_delete(self):
+        temp_video_id = query_video_get_by_title(self.temp_video_0['video_title'])[0].to_dict()['video_id']
+        self.assertEqual(query_video_delete(temp_video_id), 1)
+
+"""
     def test_i_query_video_search_by_contains(self):
         query_video_search_by_contains()
 
@@ -252,8 +303,8 @@ class TestQueryVideo(unittest.TestCase):
 
     def test_k_query_video_search_by_aggregate(self):
         query_video_search_by_aggregate()
-
-
+"""
+"""
 class TestQueryVideoOp(unittest.TestCase):
     data = util_load_test_data()
 
@@ -291,7 +342,7 @@ class TestQueryVideoOp(unittest.TestCase):
         query_video_op_search_comment_by_contains()
 
         query_video_op_search_comment_by_pattern()
-
+"""
 
 if __name__ == "__main__":
     db = get_db(TestConfig)
