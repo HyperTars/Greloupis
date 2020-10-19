@@ -3,6 +3,7 @@ from source.db.query_user import *
 from source.db.query_video import *
 from source.utils.util_pattern import *
 from source.utils.util_serializer import *
+from source.utils.util_validator import *
 from source.models.model_errors import *
 
 
@@ -21,12 +22,16 @@ def service_video_upload(conf, **kw):
             result = query_video_get_by_title(kw["body"]["video_title"])
 
         except Exception as e:
-            return extract_error_msg(str(e)[1:-1])
+            result = extract_error_msg(str(e))
 
     else:
         result = [{}]
 
-    return result
+    if not isinstance(result, str):
+        post_result_json = util_serializer_mongo_results_to_array(result, format="json")
+        return util_serializer_api_response(200, body=post_result_json, msg="Successfully uploaded video")
+    else:
+        return util_serializer_api_response(500, msg=result)
 
 
 def service_video_info(conf, **kw):
@@ -34,13 +39,21 @@ def service_video_info(conf, **kw):
 
     if "video_id" in kw:
         try:
+            if not is_valid_id(kw["video_id"]):
+                return util_serializer_api_response(400, msg=ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg())
+
             result = query_video_get_by_video_id(kw["video_id"])
         except Exception as e:
-            return extract_error_msg(str(e)[1:-1])
+            result = extract_error_msg(str(e))
     else:
         result = [{}]
 
-    return result
+    search_result_json = util_serializer_mongo_results_to_array(result, format="json")
+    # Check if find result in database
+    if len(search_result_json) > 0 and isinstance(search_result_json, list):
+        return util_serializer_api_response(200, body=search_result_json, msg="Successfully got video by ID")
+    else:
+        return util_serializer_api_response(404, msg=ErrorCode.MONGODB_VIDEO_NOT_FOUND.get_msg())
 
 
 def service_video_update(conf, **kw):
@@ -48,6 +61,10 @@ def service_video_update(conf, **kw):
 
     if "video_id" in kw and "body" in kw:
         try:
+            # Invalid video id
+            if not is_valid_id(kw["video_id"]):
+                return util_serializer_api_response(400, msg=ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg())
+
             result = query_video_get_by_video_id(kw["video_id"])
             original = json.loads(util_serializer_mongo_results_to_array(result, format="json")[0])
 
@@ -95,12 +112,17 @@ def service_video_update(conf, **kw):
             result = query_video_get_by_video_id(kw["video_id"])
 
         except Exception as e:
-            return extract_error_msg(str(e))
+            result = extract_error_msg(str(e))
 
     else:
         result = [{}]
 
-    return result
+    # Check if find result in database
+    if len(result) == 1:
+        update_result_json = util_serializer_mongo_results_to_array(result, format="json")
+        return util_serializer_api_response(200, body=update_result_json, msg="Successfully updated video")
+    else:
+        return util_serializer_api_response(500, msg=ErrorCode.MONGODB_VIDEO_UPDATE_FAILURE.get_msg())
 
 
 def service_video_delete(conf, **kw):
@@ -108,11 +130,18 @@ def service_video_delete(conf, **kw):
 
     if "video_id" in kw:
         try:
+            # Invalid video ID
+            if not is_valid_id(kw["video_id"]):
+                return util_serializer_api_response(400, msg=ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg())
+
             result = query_video_delete(kw["video_id"])
         except Exception as e:
-            return extract_error_msg(str(e)[1:-1])
+            result = extract_error_msg(str(e))
 
     else:
         result = -1
 
-    return result
+    if result == 1:
+        return util_serializer_api_response(200, msg="Successfully deleted video by ID")
+    else:
+        return util_serializer_api_response(500, msg=result)
