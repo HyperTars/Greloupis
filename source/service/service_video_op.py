@@ -1,4 +1,6 @@
-def service_video_op_add_view():
+def service_video_op_add_view(conf, **kw):
+    db = get_db(conf)
+
     return
 
 
