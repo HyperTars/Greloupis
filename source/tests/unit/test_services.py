@@ -1,7 +1,8 @@
+import unittest
 from source.service.service_search import *
 from source.settings import *
 
-
+"""
 def test_search_user(conf):
     print("\n===================== Test Search User =========================")
     print(service_search_user(conf, name="t", ignore_case=False, format="json"))
@@ -28,9 +29,7 @@ def test_search_video(conf):
     print(service_search_video(conf, title="i a", slice=True))
     print("\n===================== Test Search Video: Title slice =========================")
     print(service_search_video(conf, title="i%20a", slice=True))
-
+"""
 
 if __name__ == "__main__":
-    conf = config['test']
-    test_search_user(conf)
-    test_search_video(conf)
+    unittest.main()
