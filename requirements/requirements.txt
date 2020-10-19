@@ -5,3 +5,4 @@ flask-mongoengine
 dnspython
 blinker
 coveralls
+pyyaml
