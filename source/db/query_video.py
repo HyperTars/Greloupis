@@ -22,6 +22,7 @@ VALID_VIDEO_CNT = ['view', 'views', 'video_view',
 def query_video_create(user_id: str, video_title: str, video_raw_content: str, **kw):
     """
     Create Video
+
     :param user_id: (required) user's unique id
     :param video_title: (required) video's title
     :param video_raw_content: (required) URI of raw video data (in temp space, to be transcode)
@@ -164,7 +165,8 @@ def query_video_cnt_incr_by_one(video_id: str, video_cnt: str):
 
 def query_video_cnt_decr_by_one(video_id: str, video_cnt: str):
     """
-    This is for decrementing total number of views/comments/likes/dislikes/stars/shares
+    This is for decrementing total number of views/comments/likes/dislikes/stars/shares.
+
     :param video_id: video's unique id
     :param video_cnt: can choose from (view/comment/like/dislike/star/share)
     :return: 1 if succeeded
@@ -245,7 +247,7 @@ def query_video_update(video_id: str, **kw):
     if 'video_raw_content' in kw:
         Video.objects(_id=_id).update(video_raw_content=kw['video_raw_content'])
     if 'video_raw_status' in kw:
-        Video.objects(_id=_id).update(video_status=kw['video_raw_status'])
+        Video.objects(_id=_id).update(video_raw_status=kw['video_raw_status'])
     if 'video_raw_size' in kw:
         Video.objects(_id=_id).update(video_raw_size=kw['video_raw_size'])
     if 'video_duration' in kw:
@@ -271,11 +273,11 @@ def query_video_update(video_id: str, **kw):
     if 'video_thumbnail' in kw:
         Video.objects(_id=_id).update(video_thumbnail=kw['video_thumbnail'])
     if 'video_uri_low' in kw:
-        Video.objects(_id=_id).update(set__video_uri__video_uri_low=kw['video_uri_low'])
+        Video.objects(_id=_id).update(video_uri__video_uri_low=kw['video_uri_low'])
     if 'video_uri_mid' in kw:
-        Video.objects(_id=_id).update(set__video_uri__video_uri_mid=kw['video_uri_mid'])
+        Video.objects(_id=_id).update(video_uri__video_uri_mid=kw['video_uri_mid'])
     if 'video_uri_high' in kw:
-        Video.objects(_id=_id).update(set__video_uri__video_uri_high=kw['video_uri_high'])
+        Video.objects(_id=_id).update(video_uri__video_uri_high=kw['video_uri_high'])
 
     return 1
 
@@ -359,9 +361,11 @@ def query_video_search_by_pattern(**kw):
 
 
 # Search by aggregate
-def query_video_search_by_aggregate(aggr: dict):
+def query_video_search_by_aggregate(aggr: dict or list):
     """
-    :param aggr: dict of searching param
+    :param aggr: dict or list of searching param
     :return: array of searching results in dict
     """
+    if type(aggr) != list and type(aggr) != dict:
+        raise MongoError(ErrorCode.MONGODB_LIST_EXPECTED)
     return list(Video.objects.aggregate(aggr))
