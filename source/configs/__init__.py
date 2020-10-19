@@ -1,3 +1,4 @@
+"""
 from os import environ
 
 PROFILE = environ.get("PROFILE", "dev")
@@ -11,5 +12,6 @@ else:
 
 
 def get(name, default=None):
-    import config as this_module
+    import source.settings as this_module
     return getattr(this_module, name, default)
+"""

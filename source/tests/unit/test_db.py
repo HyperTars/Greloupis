@@ -20,7 +20,7 @@ class TestQueryUser(unittest.TestCase):
     temp_user_1 = data['temp_user'][1]
 
     def setUp(self):
-        pass
+        get_db(config['test'])
 
     def test_a_user_create(self):
         # Create successfully
@@ -218,7 +218,7 @@ class TestQueryVideo(unittest.TestCase):
     temp_video_0 = data['temp_video'][0]
 
     def setUp(self):
-        pass
+        get_db(config['test'])
 
     def test_a_query_video_create(self):
         self.assertEqual(query_video_create(user_id=self.temp_video_0['user_id'],
@@ -443,7 +443,7 @@ class TestQueryVideoOp(unittest.TestCase):
     temp_video_op_0 = data['temp_video_op'][0]
 
     def setUp(self):
-        pass
+        get_db(config['test'])
 
     def test_a_query_video_op_create(self):
         self.assertEqual(query_video_op_create(user_id=self.temp_video_op_0['user_id'],
@@ -567,5 +567,4 @@ class TestQueryVideoOp(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    db = get_db(TestConfig)
     unittest.main()
