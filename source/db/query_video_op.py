@@ -13,6 +13,8 @@ import re
 ##########
 def query_video_op_create(user_id: str, video_id: str, init_time=get_time_now_utc()):
     """
+    Create video operations
+
     :param user_id: user's unique id
     :param video_id: video's unique id
     :param init_time: op creation time (optional, default utc now)
@@ -183,4 +185,4 @@ def query_video_op_search_comment_by_pattern(comment):
     if type(comment) != re.Pattern:
         raise MongoError(ErrorCode.MONGODB_RE_PATTERN_EXPECTED)
 
-    return VideoOp.Objects(comment=comment)
+    return VideoOp.objects(comment=comment)

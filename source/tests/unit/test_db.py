@@ -437,45 +437,134 @@ class TestQueryVideo(unittest.TestCase):
         self.assertEqual(videos[0]['video_title'], self.const_video_0['video_title'])
 
 
-"""
 class TestQueryVideoOp(unittest.TestCase):
     data = util_load_test_data()
-
     const_video_op_0 = data['const_video_op'][0]
-
     temp_video_op_0 = data['temp_video_op'][0]
 
     def setUp(self):
         pass
 
     def test_a_query_video_op_create(self):
-        query_video_op_create()
+        self.assertEqual(query_video_op_create(user_id=self.temp_video_op_0['user_id'],
+                                               video_id=self.temp_video_op_0['video_id']).video_id,
+                         self.temp_video_op_0['video_id'])
 
     def test_b_query_video_op_get_by_user_id(self):
-        query_video_op_get_by_user_id()
+        self.assertEqual(query_video_op_get_by_user_id(self.temp_video_op_0['user_id'])[0].video_id,
+                         self.temp_video_op_0['video_id'])
 
-        query_video_op_get_by_video_id()
+    def test_c_query_video_op_get_by_video_id(self):
+        self.assertEqual(query_video_op_get_by_video_id(self.temp_video_op_0['video_id'])[0].user_id,
+                         self.temp_video_op_0['user_id'])
 
-        query_video_op_get_by_user_video()
+    def test_d_query_video_op_get_by_user_video(self):
+        temp_video_op = query_video_op_get_by_user_video(user_id=self.temp_video_op_0['user_id'],
+                                                         video_id=self.temp_video_op_0['video_id'])[0].to_dict()
+        self.assertEqual(temp_video_op['video_id'], self.temp_video_op_0['video_id'])
+        self.assertEqual(temp_video_op['user_id'], self.temp_video_op_0['user_id'])
 
-        query_video_op_get_by_op_id()
+    def test_e_query_video_op_get_by_op_id(self):
+        temp_video_op = query_video_op_get_by_user_video(user_id=self.temp_video_op_0['user_id'],
+                                                         video_id=self.temp_video_op_0['video_id'])[0].to_dict()
+        temp_video_op_alter = query_video_op_get_by_op_id(temp_video_op['video_op_id'])
+        self.assertEqual(temp_video_op_alter[0].to_dict()['video_op_id'], temp_video_op['video_op_id'])
 
-        query_video_op_update_process()
+    def test_f_query_video_op_update_process(self):
+        new_process = 777
+        new_process_date = get_time_now_utc()
+        temp_video_op = query_video_op_get_by_user_video(user_id=self.temp_video_op_0['user_id'],
+                                                         video_id=self.temp_video_op_0['video_id'])[0].to_dict()
+        query_video_op_update_process(temp_video_op['video_op_id'], new_process, new_process_date)
+        temp_video_op_new = query_video_op_get_by_op_id(temp_video_op['video_op_id'])[0]
+        self.assertEqual(temp_video_op_new.process, new_process)
+        self.assertEqual(temp_video_op_new.process_date, new_process_date)
 
-        query_video_op_update_comment()
+    def test_g_query_video_op_update_comment(self):
+        new_comment = "this is just a new comment"
+        new_comment_date = get_time_now_utc()
+        temp_video_op = query_video_op_get_by_user_video(user_id=self.temp_video_op_0['user_id'],
+                                                         video_id=self.temp_video_op_0['video_id'])[0].to_dict()
+        query_video_op_update_comment(temp_video_op['video_op_id'], new_comment, new_comment_date)
+        temp_video_op_new = query_video_op_get_by_op_id(temp_video_op['video_op_id'])[0]
+        self.assertEqual(temp_video_op_new.comment, new_comment)
+        self.assertEqual(temp_video_op_new.comment_date, new_comment_date)
 
-        query_video_op_update_like()
+    def test_h_query_video_op_update_like(self):
+        new_like_date = get_time_now_utc()
+        temp_video_op = query_video_op_get_by_user_video(user_id=self.temp_video_op_0['user_id'],
+                                                         video_id=self.temp_video_op_0['video_id'])[0].to_dict()
+        query_video_op_update_like(temp_video_op['video_op_id'], True, new_like_date)
+        temp_video_op_new = query_video_op_get_by_op_id(temp_video_op['video_op_id'])[0]
+        self.assertEqual(temp_video_op_new.like, True)
+        self.assertEqual(temp_video_op_new.like_date, new_like_date)
 
-        query_video_op_update_dislike()
+        new_like_date_2 = get_time_now_utc()
+        query_video_op_update_like(temp_video_op['video_op_id'], False, new_like_date_2)
+        temp_video_op_new_2 = query_video_op_get_by_op_id(temp_video_op['video_op_id'])[0]
+        self.assertEqual(temp_video_op_new_2.like, False)
+        self.assertEqual(temp_video_op_new_2.like_date, new_like_date_2)
 
-        query_video_op_update_star()
+    def test_i_query_video_op_update_dislike(self):
+        new_dislike_date = get_time_now_utc()
+        temp_video_op = query_video_op_get_by_user_video(user_id=self.temp_video_op_0['user_id'],
+                                                         video_id=self.temp_video_op_0['video_id'])[0].to_dict()
+        query_video_op_update_dislike(temp_video_op['video_op_id'], True, new_dislike_date)
+        temp_video_op_new = query_video_op_get_by_op_id(temp_video_op['video_op_id'])[0]
+        self.assertEqual(temp_video_op_new.dislike, True)
+        self.assertEqual(temp_video_op_new.dislike_date, new_dislike_date)
 
-        query_video_op_delete()
+        new_dislike_date_2 = get_time_now_utc()
+        query_video_op_update_dislike(temp_video_op['video_op_id'], False, new_dislike_date_2)
+        temp_video_op_new_2 = query_video_op_get_by_op_id(temp_video_op['video_op_id'])[0]
+        self.assertEqual(temp_video_op_new_2.dislike, False)
+        self.assertEqual(temp_video_op_new_2.dislike_date, new_dislike_date_2)
 
-        query_video_op_search_comment_by_contains()
+    def test_j_query_video_op_update_star(self):
+        new_star_date = get_time_now_utc()
+        temp_video_op = query_video_op_get_by_user_video(user_id=self.temp_video_op_0['user_id'],
+                                                         video_id=self.temp_video_op_0['video_id'])[0].to_dict()
+        query_video_op_update_star(temp_video_op['video_op_id'], True, new_star_date)
+        temp_video_op_new = query_video_op_get_by_op_id(temp_video_op['video_op_id'])[0]
+        self.assertEqual(temp_video_op_new.star, True)
+        self.assertEqual(temp_video_op_new.star_date, new_star_date)
 
-        query_video_op_search_comment_by_pattern()
-"""
+        new_star_date_2 = get_time_now_utc()
+        query_video_op_update_star(temp_video_op['video_op_id'], False, new_star_date_2)
+        temp_video_op_new_2 = query_video_op_get_by_op_id(temp_video_op['video_op_id'])[0]
+        self.assertEqual(temp_video_op_new_2.star, False)
+        self.assertEqual(temp_video_op_new_2.star_date, new_star_date_2)
+
+    def test_k_query_video_op_delete(self):
+        temp_video_op = query_video_op_get_by_user_video(user_id=self.temp_video_op_0['user_id'],
+                                                         video_id=self.temp_video_op_0['video_id'])[0]
+        self.assertEqual(query_video_op_delete(temp_video_op.to_dict()['video_op_id']), 1)
+
+    def test_l_query_video_op_search_comment_by_contains(self):
+        video_op = query_video_op_search_comment_by_contains(self.const_video_op_0['comment'][1:10])[0].to_dict()
+        self.assertEqual(video_op['video_id'], self.const_video_op_0['video_id'])
+
+    def test_m_query_video_op_search_comment_by_pattern(self):
+        search_comment = self.const_video_op_0['comment']
+
+        # Search exact fail
+        pattern_exact_fail = util_pattern_compile(search_comment[1:10], exact=True, ignore_case=True)
+        self.assertEqual(len(query_video_op_search_comment_by_pattern(pattern_exact_fail)), 0)
+
+        # Search exact successfully
+        pattern_exact_success = util_pattern_compile(search_comment, exact=True, ignore_case=True)
+        self.assertEqual(query_video_op_search_comment_by_pattern(pattern_exact_success)[0].comment,
+                         search_comment)
+
+        # Search case fail
+        pattern_case_fail = util_pattern_compile(search_comment[1:10].upper(), exact=False, ignore_case=False)
+        self.assertEqual(len(query_video_op_search_comment_by_pattern(pattern_case_fail)), 0)
+
+        # Search case successfully
+        pattern_case_success = util_pattern_compile(search_comment[1:10].upper(), exact=False, ignore_case=True)
+        self.assertEqual(query_video_op_search_comment_by_pattern(pattern_case_success)[0].comment,
+                         search_comment)
+
 
 if __name__ == "__main__":
     db = get_db(TestConfig)

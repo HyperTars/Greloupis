@@ -1,6 +1,7 @@
 import unittest
 from source.app import *
 
+
 class TestApp(unittest.TestCase):
 
     def test_app(self):
