@@ -19,7 +19,8 @@ class TestQueryUser(unittest.TestCase):
     temp_user_0 = data['temp_user'][0]
     temp_user_1 = data['temp_user'][1]
 
-    def setUp(self):
+    @classmethod
+    def setUpClass(cls) -> None:
         get_db(config['test'])
 
     def test_a_user_create(self):
@@ -217,7 +218,8 @@ class TestQueryVideo(unittest.TestCase):
 
     temp_video_0 = data['temp_video'][0]
 
-    def setUp(self):
+    @classmethod
+    def setUpClass(cls) -> None:
         get_db(config['test'])
 
     def test_a_query_video_create(self):
@@ -442,7 +444,8 @@ class TestQueryVideoOp(unittest.TestCase):
     const_video_op_0 = data['const_video_op'][0]
     temp_video_op_0 = data['temp_video_op'][0]
 
-    def setUp(self):
+    @classmethod
+    def setUpClass(cls) -> None:
         get_db(config['test'])
 
     def test_a_query_video_op_create(self):
