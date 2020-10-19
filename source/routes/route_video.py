@@ -8,8 +8,8 @@ from .route_user import thumbnail, general_response, star, comment, like, dislik
     star_response_list, comment_response_list, like_response_list, dislike_response_list
 
 from source.service.service_video import *
+from source.service.service_video_op import *
 from source.utils.util_serializer import *
-from source.utils.util_validator import *
 from source.settings import *
 
 video = Namespace('video', description='Video APIs')
@@ -88,20 +88,14 @@ class Video(Resource):
         """
         mock_body = {
             "user_id": "5f88f883e6ac4f89900ac983",
-            "video_title": "mock_video",
+            "video_title": "mock_video_2",
             "video_raw_content": "https://s3.amazon.com/mock_video.mp4",
             "video_raw_size": 1.23
         }
 
         # user_id = request.form.get("user_id")
 
-        post_result = service_video_upload(conf=config['default'], body=mock_body)
-
-        if not isinstance(post_result, str):
-            post_result_json = util_serializer_mongo_results_to_array(post_result, format="json")
-            return util_serializer_api_response(200, body=post_result_json, msg="Successfully uploaded video")
-        else:
-            return util_serializer_api_response(500, msg=post_result)
+        return service_video_upload(conf=config['default'], body=mock_body)
 
 
 @video.route('/<string:video_id>', methods=['DELETE', 'GET', 'PUT'])
@@ -118,18 +112,7 @@ class VideoVideoId(Resource):
         """
         video_id = request.url.split('/')[-1]
 
-        # Invalid video ID
-        if not is_valid_id(video_id):
-            return util_serializer_api_response(400, msg=ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg())
-
-        search_result = service_video_info(conf=config['default'], video_id=video_id)
-        search_result_json = util_serializer_mongo_results_to_array(search_result, format="json")
-
-        # Check if find result in database
-        if len(search_result_json) > 0 and isinstance(search_result_json, list):
-            return util_serializer_api_response(200, body=search_result_json, msg="Successfully got video by ID")
-        else:
-            return util_serializer_api_response(404, msg=ErrorCode.MONGODB_VIDEO_NOT_FOUND.get_msg())
+        return service_video_info(conf=config['default'], video_id=video_id)
 
     @video.response(405, 'Method not allowed')
     def put(self, video_id):
@@ -138,24 +121,14 @@ class VideoVideoId(Resource):
         """
         video_id = request.url.split('/')[-1]
 
-        # Invalid video ID
-        if not is_valid_id(video_id):
-            return util_serializer_api_response(400, msg=ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg())
-
         mock_body = {
             "video_title": "mock_video_updated",
             "video_status": "public",
             "video_raw_size": 51.23
         }
 
-        update_result = service_video_update(conf=config['default'], video_id=video_id, body=mock_body)
+        return service_video_update(conf=config['default'], video_id=video_id, body=mock_body)
 
-        # Check if find result in database
-        if len(update_result) == 1:
-            update_result_json = util_serializer_mongo_results_to_array(update_result, format="json")
-            return util_serializer_api_response(200, body=update_result_json, msg="Successfully updated video")
-        else:
-            return util_serializer_api_response(500, msg=ErrorCode.MONGODB_VIDEO_UPDATE_FAILURE.get_msg())
 
     def delete(self, video_id):
         """
@@ -163,18 +136,7 @@ class VideoVideoId(Resource):
         """
         video_id = request.url.split('/')[-1]
 
-        # Invalid video ID
-        if not is_valid_id(video_id):
-            return util_serializer_api_response(400, msg=ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg())
-
-        delete_result = service_video_delete(conf=config['default'], video_id=video_id)
-
-        if delete_result == 1:
-            return util_serializer_api_response(200, msg="Successfully deleted video by ID")
-        else:
-            return util_serializer_api_response(500, msg=delete_result)
-
-        return delete_result
+        return service_video_delete(conf=config['default'], video_id=video_id)
 
 
 @video.route('/<string:video_id>/view', methods=['GET', 'PUT'])
@@ -191,25 +153,16 @@ class VideoVideoIdView(Resource):
         """
         video_id = request.url.split('/')[-2]
 
-        # Invalid video ID
-        if not is_valid_id(video_id):
-            return util_serializer_api_response(400, msg=ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg())
-
-        search_result = service_video_info(conf=config['default'], video_id=video_id)
-        search_result_json = util_serializer_mongo_results_to_array(search_result, format="json")
-
-        # Check if find result in database
-        if len(search_result_json) > 0 and isinstance(search_result_json, list):
-            return util_serializer_api_response(200, body=search_result_json, msg="Successfully got video by ID")
-        else:
-            return util_serializer_api_response(404, msg=ErrorCode.MONGODB_VIDEO_NOT_FOUND.get_msg())
+        return service_video_op_get_view(conf=config['default'], video_id=video_id)
 
     @video.response(405, 'Method not allowed')
     def put(self, video_id):
         """
             Increment video view count by 1 by video ID
         """
-        return {}, 200, None
+        video_id = request.url.split('/')[-2]
+
+        return service_video_op_add_view(conf=config['default'], video_id=video_id)
 
 
 @video.route('/<string:video_id>/comment', methods=['GET'])

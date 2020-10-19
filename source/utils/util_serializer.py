@@ -41,7 +41,7 @@ def extract_error_msg(message):
 
 def util_serializer_api_response(code, body=[{}], msg=""):
     if code == 200:
-        response = {"code": code, "body": body, "detailed_msg": msg}
+        response = {"code": code, "body": body, "detailed_msg": str(msg)}
 
     else:
         code = str(code)
@@ -51,7 +51,7 @@ def util_serializer_api_response(code, body=[{}], msg=""):
             "405": "Method Not Allowed",
             "500": "Internal Server Error"
         }
-        response = {"code": code, "general_msg": general_message[code], "detailed_msg": msg}
+        response = {"code": code, "general_msg": general_message[code], "detailed_msg": str(msg)}
 
     result = json.dumps(response, indent=4, sort_keys=True, separators=(',', ': ')) \
         .replace('\\"', "'").replace('"{', '{').replace('}"', '}').replace("'", '"')
