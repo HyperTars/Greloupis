@@ -4,3 +4,4 @@ flask-restx
 flask-mongoengine
 dnspython
 blinker
+coveralls
