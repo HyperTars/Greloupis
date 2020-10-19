@@ -190,20 +190,20 @@ class TestQueryUser(unittest.TestCase):
         pipeline1 = [
             {
                 "$match":
-                {
-                    "user_name": {"$regex": "l"},
-                    "user_status": "public"
-                }
+                    {
+                        "user_name": {"$regex": "l"},
+                        "user_status": "public"
+                    }
             }
         ]
         pipeline2 = [
             {"$unwind": "$user_detail"},
             {
                 "$match":
-                {
-                    "user_detail.user_street1": {"$regex": "343"},
-                    "user_status": "public"
-                }
+                    {
+                        "user_detail.user_street1": {"$regex": "343"},
+                        "user_status": "public"
+                    }
             }
         ]
         self.assertEqual(query_user_search_by_aggregate(pipeline1)[0]['user_name'], "milvus")
@@ -231,7 +231,7 @@ class TestQueryVideo(unittest.TestCase):
                          self.const_video_0['video_title'])
 
     def test_c_query_video_get_by_user_id(self):
-        self.assertEqual(len(query_video_get_by_user_id(self.temp_video_0['user_id'])), 1)
+        self.assertEqual(len(query_video_get_by_user_id(self.temp_video_0['user_id'])), 2)
 
     def test_d_query_video_get_by_title(self):
         self.assertEqual(query_video_get_by_title(self.temp_video_0['video_title'])[0].user_id,
@@ -286,24 +286,157 @@ class TestQueryVideo(unittest.TestCase):
     def test_g_query_video_update(self):
         temp_video_id = query_video_get_by_title(self.temp_video_0['video_title'])[0].to_dict()['video_id']
 
+        old_title = self.temp_video_0['video_title']
+        new_title = "new_title"
         new_raw_content = "some new content uri"
-        query_video_update(temp_video_id, video_raw_content=new_raw_content)
-        self.assertEqual(query_video_get_by_video_id(temp_video_id)[0].video_raw_content, new_raw_content)
+        new_raw_status = "finished"
+        new_raw_size = 123.45
+        new_duration = 777
+        new_channel = "tc"
+        new_tag = ["lol", "ooo"]
+        new_category = ["movie"]
+        new_description = "dessss"
+        new_language = "alien lan"
+        new_status = "public"
+        new_thumbnail = "https://thumbnail.jpg"
+        new_uri_low = "https://uri_low.mp4"
+        new_uri_mid = "https://uri_mid.mp4"
+        new_uri_high = "https://uri_high.mp4"
+
+        query_video_update(temp_video_id, video_title=new_title, video_raw_content=new_raw_content,
+                           video_raw_status=new_raw_status, video_raw_size=new_raw_size, video_duration=new_duration,
+                           video_channel=new_channel, video_tag=new_tag, video_category=new_category,
+                           video_description=new_description, video_language=new_language, video_status=new_status,
+                           video_thumbnail=new_thumbnail, video_uri_low=new_uri_low, video_uri_mid=new_uri_mid,
+                           video_uri_high=new_uri_high)
+
+        new_model = query_video_get_by_video_id(temp_video_id)[0]
+        self.assertEqual(new_model.video_title, new_title)
+        self.assertEqual(new_model.video_raw_content, new_raw_content)
+        self.assertEqual(new_model.video_raw_status, new_raw_status)
+        self.assertEqual(new_model.video_raw_size, new_raw_size)
+        self.assertEqual(new_model.video_duration, new_duration)
+        self.assertEqual(new_model.video_channel, new_channel)
+        self.assertEqual(new_model.video_tag, new_tag)
+        self.assertEqual(new_model.video_category, new_category)
+        self.assertEqual(new_model.video_description, new_description)
+        self.assertEqual(new_model.video_language, new_language)
+        self.assertEqual(new_model.video_status, new_status)
+        self.assertEqual(new_model.video_thumbnail, new_thumbnail)
+        self.assertEqual(new_model.video_uri.video_uri_low, new_uri_low)
+        self.assertEqual(new_model.video_uri.video_uri_mid, new_uri_mid)
+        self.assertEqual(new_model.video_uri.video_uri_high, new_uri_high)
+
+        query_video_update(temp_video_id, video_title=old_title)
+        self.assertEqual(query_video_get_by_video_id(temp_video_id)[0].video_title, old_title)
 
     def test_h_query_video_delete(self):
-        temp_video_id = query_video_get_by_title(self.temp_video_0['video_title'])[0].to_dict()['video_id']
-        self.assertEqual(query_video_delete(temp_video_id), 1)
+        temp_video_id_0 = query_video_get_by_title(self.temp_video_0['video_title'])[0].to_dict()['video_id']
+        self.assertEqual(query_video_delete(temp_video_id_0), 1)
 
-"""
     def test_i_query_video_search_by_contains(self):
-        query_video_search_by_contains()
+        video = query_video_search_by_contains(video_id=self.const_video_0['_id']['$oid'])[0]  # exact video_id
+        self.assertEqual(video.video_title, self.const_video_0['video_title'])
+
+        video = query_video_search_by_contains(user_id=self.const_video_0['user_id'])[0]  # exact user_id
+        self.assertEqual(video.video_title, self.const_video_0['video_title'])
+
+        video = query_video_search_by_contains(video_title=self.const_video_0['video_title'][1:2])[0]
+        self.assertEqual(video.video_title, self.const_video_0['video_title'])
+
+        video = query_video_search_by_contains(video_channel=self.const_video_0['video_channel'])[0]
+        self.assertEqual(video.video_title, self.const_video_0['video_title'])
+
+        video = query_video_search_by_contains(video_category=self.const_video_0['video_category'][0])[0]
+        self.assertEqual(video.video_title, self.const_video_0['video_title'])
+
+        video = query_video_search_by_contains(video_tag=self.const_video_0['video_tag'][0])[0]
+        self.assertEqual(video.video_title, self.const_video_0['video_title'])
+
+        video = query_video_search_by_contains(video_description=self.const_video_0['video_description'][2:3])[0]
+        self.assertEqual(video.video_title, self.const_video_0['video_title'])
 
     def test_j_query_video_search_by_pattern(self):
-        query_video_search_by_pattern()
+        search_video_title = self.const_video_0['video_title']
+        search_video_channel = self.const_video_0['video_channel']
+        search_video_description = self.const_video_0['video_description']
+
+        # SEARCH BY TITLE PATTERN #
+        # Search exact fail
+        pattern_exact_fail = util_pattern_compile(search_video_title[1:2], exact=True, ignore_case=True)
+        self.assertEqual(len(query_video_search_by_pattern(pattern_title=pattern_exact_fail)), 0)
+
+        # Search exact successfully
+        pattern_exact_success = util_pattern_compile(search_video_title, exact=True, ignore_case=True)
+        self.assertEqual(query_video_search_by_pattern(pattern_title=pattern_exact_success)[0].video_title,
+                         search_video_title)
+
+        # Search case fail
+        pattern_case_fail = util_pattern_compile(search_video_title[1:2].upper(), exact=False, ignore_case=False)
+        self.assertEqual(len(query_video_search_by_pattern(pattern_title=pattern_case_fail)), 0)
+
+        # Search case successfully
+        pattern_case_success = util_pattern_compile(search_video_title[1:2].upper(), exact=False, ignore_case=True)
+        self.assertEqual(query_video_search_by_pattern(pattern_title=pattern_case_success)[0].video_title,
+                         search_video_title)
+
+        # SEARCH BY CHANNEL PATTERN #
+        # Search exact fail
+        pattern_exact_fail = util_pattern_compile(search_video_channel[1:2], exact=True, ignore_case=True)
+        self.assertEqual(len(query_video_search_by_pattern(pattern_channel=pattern_exact_fail)), 0)
+
+        # Search exact successfully
+        pattern_exact_success = util_pattern_compile(search_video_channel, exact=True, ignore_case=True)
+        self.assertEqual(query_video_search_by_pattern(pattern_channel=pattern_exact_success)[0].video_channel,
+                         search_video_channel)
+
+        # Search case fail
+        pattern_case_fail = util_pattern_compile(search_video_channel[1:2].upper(), exact=False, ignore_case=False)
+        self.assertEqual(len(query_video_search_by_pattern(pattern_channel=pattern_case_fail)), 0)
+
+        # Search case successfully
+        pattern_case_success = util_pattern_compile(search_video_channel[1:2].upper(), exact=False, ignore_case=True)
+        self.assertEqual(query_video_search_by_pattern(pattern_channel=pattern_case_success)[0].video_channel,
+                         search_video_channel)
+
+        # SEARCH BY DESCRIPTION PATTERN #
+        # Search exact fail
+        pattern_exact_fail = util_pattern_compile(search_video_description[1:2], exact=True, ignore_case=True)
+        self.assertEqual(len(query_video_search_by_pattern(pattern_description=pattern_exact_fail)), 0)
+
+        # Search exact successfully
+        pattern_exact_success = util_pattern_compile(search_video_description, exact=True, ignore_case=True)
+        self.assertEqual(query_video_search_by_pattern(pattern_description=pattern_exact_success)[0].video_description,
+                         search_video_description)
+
+        # Search case fail
+        pattern_case_fail = util_pattern_compile(search_video_description[1:2].upper(), exact=False, ignore_case=False)
+        self.assertEqual(len(query_video_search_by_pattern(pattern_description=pattern_case_fail)), 0)
+
+        # Search case successfully
+        pattern_case_success = util_pattern_compile(search_video_description[1:2].upper(),
+                                                    exact=False, ignore_case=True)
+        self.assertEqual(query_video_search_by_pattern(pattern_description=pattern_case_success)[0].video_description,
+                         search_video_description)
 
     def test_k_query_video_search_by_aggregate(self):
-        query_video_search_by_aggregate()
-"""
+        pipeline = [
+            {"$unwind": "$video_tag"},
+            {"$unwind": "$video_category"},
+            {"$unwind": "$video_uri"},
+            {
+                "$match":
+                    {
+                        "video_tag": {"$in": ["politics"]},
+                        "video_title": {"$regex": "Ha"},
+                        "video_uri.video_uri_mid": ""
+                    }
+            }
+        ]
+        videos = query_video_search_by_aggregate(pipeline)
+        self.assertEqual(videos[0]['video_title'], self.const_video_0['video_title'])
+
+
 """
 class TestQueryVideoOp(unittest.TestCase):
     data = util_load_test_data()
