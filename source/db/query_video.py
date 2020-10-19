@@ -83,7 +83,7 @@ def query_video_create(user_id: str, video_title: str, video_raw_content: str, *
     if 'video_status' in kw:
         video_status = kw['video_status']
     if 'video_thumbnail' in kw:
-        video_thumbnail = kw['video_thumbnail'],
+        video_thumbnail = kw['video_thumbnail']
     if 'video_upload_date' in kw:
         video_upload_date = kw['upload_date']
 
@@ -239,7 +239,7 @@ def query_video_update(video_id: str, **kw):
 
     if 'video_title' in kw:
         videos = query_video_get_by_title(kw['video_title'])
-        if len(videos) == 0:
+        if len(videos) != 0:
             raise MongoError(ErrorCode.MONGODB_VIDEO_TITLE_TAKEN)
         Video.objects(_id=_id).update(video_title=kw['video_title'])
     if 'video_raw_content' in kw:
@@ -259,7 +259,7 @@ def query_video_update(video_id: str, **kw):
     if 'video_category' in kw:
         if type(kw['video_category']) is not list:
             raise MongoError(ErrorCode.MONGODB_LIST_EXPECTED)
-        Video.objects(_id=_id).update(video_categoty=kw['video_category'])
+        Video.objects(_id=_id).update(video_category=kw['video_category'])
     if 'video_description' in kw:
         Video.objects(_id=_id).update(video_description=kw['video_description'])
     if 'video_language' in kw:
@@ -267,7 +267,7 @@ def query_video_update(video_id: str, **kw):
     if 'video_status' in kw:
         if kw['video_status'] not in VALID_VIDEO_STATUS:
             raise MongoError(ErrorCode.MONGODB_INVALID_USER_STATUS)
-        Video.objects(_id=_id).update(video_language=kw['video_status'])
+        Video.objects(_id=_id).update(video_status=kw['video_status'])
     if 'video_thumbnail' in kw:
         Video.objects(_id=_id).update(video_thumbnail=kw['video_thumbnail'])
     if 'video_uri_low' in kw:

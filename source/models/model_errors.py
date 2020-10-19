@@ -60,6 +60,7 @@ class ErrorCode(Enum):
     MONGODB_VIDEO_CREATE_FAILURE = {4127: "MongoDB Error: Video Creation Failure"}
     MONGODB_VIDEO_INVALID_STATUS = {4128: "MongoDB Error: Video Invalid Status"}
     MONGODB_DICT_EXPECTED = {4129: "MongoDB Error: type <dict> Expected"}
+    MONGODB_VIDEO_UPDATE_FAILURE = {4130: "MongoDB Error: Video Update Failure"}
     # Model Error 5 Series
     MODEL_PASS_NOT_READABLE = {5001: "Password Is Not Readable"}
 

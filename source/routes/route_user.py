@@ -108,7 +108,7 @@ comment_response_list = user.model(name='ApiResponseWithCommentList', model={
 })
 
 
-@user.route('')
+@user.route('', methods=['POST'])
 @user.response(200, 'Successful operation', user_response)
 @user.response(400, 'Invalid user information', general_response)
 @user.response(405, 'Method not allowed', general_response)
@@ -122,7 +122,7 @@ class User(Resource):
         return {}, 200, None
 
 
-@user.route('/<string:user_id>')
+@user.route('/<string:user_id>', methods=['DELETE', 'GET', 'PUT'])
 @user.param('user_id', 'User ID')
 @user.response(200, 'Successful operation', user_response)
 @user.response(400, 'Invalid user information', general_response)
@@ -164,7 +164,7 @@ class UserUserId(Resource):
         return {}, 200, None
 
 
-@user.route('/login')
+@user.route('/login', methods=['POST'])
 @user.response(200, 'Successful operation', user_response)
 @user.response(400, 'Invalid user information', general_response)
 @user.response(500, 'Internal server error', general_response)
@@ -176,7 +176,7 @@ class UserLogin(Resource):
         return None, 200
 
 
-@user.route('/logout')
+@user.route('/logout', methods=['POST'])
 @user.response(200, 'Successful operation', user_response)
 @user.response(400, 'Bad request', general_response)
 @user.response(500, 'Internal server error', general_response)
@@ -189,7 +189,7 @@ class UserLogout(Resource):
         return None, 200
 
 
-@user.route('/<string:user_id>/like')
+@user.route('/<string:user_id>/like', methods=['GET'])
 @user.param('user_id', 'User ID')
 @user.response(200, 'Successful operation', like_response_list)
 @user.response(400, 'Invalid user id', general_response)
@@ -204,7 +204,7 @@ class UserUserIdLike(Resource):
         return {}, 200, None
 
 
-@user.route('/<string:user_id>/dislike')
+@user.route('/<string:user_id>/dislike', methods=['GET'])
 @user.param('user_id', 'User ID')
 @user.response(200, 'Successful operation', dislike_response_list)
 @user.response(400, 'Invalid user id', general_response)
@@ -219,7 +219,7 @@ class UserUserIdDislike(Resource):
         return {}, 200, None
 
 
-@user.route('/<string:user_id>/star')
+@user.route('/<string:user_id>/star', methods=['GET'])
 @user.param('user_id', 'User ID')
 @user.response(200, 'Successful operation', star_response_list)
 @user.response(400, 'Invalid user id', general_response)
@@ -234,7 +234,7 @@ class UserUserIdStar(Resource):
         return {}, 200, None
 
 
-@user.route('/<string:user_id>/comment')
+@user.route('/<string:user_id>/comment', methods=['GET'])
 @user.param('user_id', 'User ID')
 @user.response(200, 'Successful operation', comment_response_list)
 @user.response(400, 'Invalid user id', general_response)

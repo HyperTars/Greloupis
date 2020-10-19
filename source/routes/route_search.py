@@ -25,7 +25,7 @@ video_response_list = search.model(name='ApiResponseWithVideoList', model={
 })
 
 
-@search.route('/video')
+@search.route('/video', methods=['GET'])
 @search.param('keyword', 'Searching keyword')
 @search.response(200, 'Successfully got video search results.', video_response_list)
 @search.response(400, 'Bad request.', general_response)
@@ -46,7 +46,7 @@ class RouteSearchVideo(Resource):
         return util_serializer_api_response(200, body=search_result_json, msg="Successfully got user search results")
 
 
-@search.route('/user')
+@search.route('/user', methods=['GET'])
 @search.param('keyword', 'Searching keyword')
 @search.response(200, 'Successfully got user search results.', user_response_list)
 @search.response(400, 'Bad request.', general_response)
