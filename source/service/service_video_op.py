@@ -25,7 +25,7 @@ def service_video_op_add_view(conf, **kw):
     if len(result) == 1:
         video_result_json = util_serializer_mongo_results_to_array(result, format="json")
         video_view = json.loads(video_result_json[0])["video_view"]
-        return_body ={
+        return_body = {
             "video_id": kw["video_id"],
             "view_count": video_view
         }
@@ -53,7 +53,7 @@ def service_video_op_get_view(conf, **kw):
     if len(result) == 1:
         video_result_json = util_serializer_mongo_results_to_array(result, format="json")
         video_view = json.loads(video_result_json[0])["video_view"]
-        return_body ={
+        return_body = {
             "video_id": kw["video_id"],
             "view_count": video_view
         }

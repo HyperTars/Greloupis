@@ -129,7 +129,6 @@ class VideoVideoId(Resource):
 
         return service_video_update(conf=config['default'], video_id=video_id, body=mock_body)
 
-
     def delete(self, video_id):
         """
             Delete video information by video ID
