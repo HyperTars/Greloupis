@@ -5,6 +5,7 @@ from flask_restx import Resource, Api, fields, marshal_with, reqparse, Namespace
 
 from source.service.service_user import *
 from source.utils.util_serializer import *
+from source.utils.util_validator import *
 from source.settings import *
 
 user = Namespace('user', description='User APIs')
@@ -137,7 +138,7 @@ class UserUserId(Resource):
         user_id = request.url.split('/')[-1]
 
         # Invalid video ID
-        if not bson.objectid.ObjectId.is_valid(user_id):
+        if not is_valid_id(user_id):
             return util_serializer_api_response(400, msg=ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg())
 
         search_result = service_user_info(conf=config['default'], user_id=user_id)
