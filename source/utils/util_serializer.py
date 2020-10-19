@@ -24,6 +24,21 @@ def util_serializer_request(request, format="dict"):
         return request.to_dict()
 
 
+def extract_error_msg(message):
+    if message.find("'") != -1:
+        start = message.find("'")
+        end = message.rfind("'")
+        return message[start+1:end]
+    elif message.find('"') != -1:
+        start = message.find('"')
+        end = message.rfind('"')
+        return message[start+1:end]
+    else:
+        return message
+
+    # return message.replace("'", "").replace('"', "")
+
+
 def util_serializer_api_response(code, body=[{}], msg=""):
     if code == 200:
         response = {"code": code, "body": body, "detailed_msg": msg}
@@ -40,6 +55,7 @@ def util_serializer_api_response(code, body=[{}], msg=""):
 
     result = json.dumps(response, indent=4, sort_keys=True, separators=(',', ': ')) \
         .replace('\\"', "'").replace('"{', '{').replace('}"', '}').replace("'", '"')
+
     return Response(result, status=code, mimetype='application/json')
 
 

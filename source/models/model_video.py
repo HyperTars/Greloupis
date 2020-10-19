@@ -65,7 +65,7 @@ class Video(db.Document):
         video_dict['video_raw_content'] = self.video_raw_content or ""
         video_dict['video_raw_status'] = self.video_raw_status or ""
         video_dict['video_raw_size'] = self.video_raw_size or 0
-        video_dict['video_duration'] = self.video_duration or ""
+        video_dict['video_duration'] = self.video_duration or 0
         video_dict['video_channel'] = self.video_channel or ""
         video_dict['video_tag'] = video_tag_array or []
         video_dict['video_category'] = video_category_array or []
