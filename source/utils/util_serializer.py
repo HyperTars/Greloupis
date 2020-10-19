@@ -28,11 +28,11 @@ def extract_error_msg(message):
     if message.find("'") != -1:
         start = message.find("'")
         end = message.rfind("'")
-        return message[start+1:end]
+        return message[start + 1:end]
     elif message.find('"') != -1:
         start = message.find('"')
         end = message.rfind('"')
-        return message[start+1:end]
+        return message[start + 1:end]
     else:
         return message
 

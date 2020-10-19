@@ -3,10 +3,6 @@ from source.settings import *
 from source.db.query_user import *
 from source.utils.util_hash import *
 from source.db.mongo import get_db
-from source.db.query_user import *
-from source.db.mongo import get_db
-from source.settings import *
-from source.utils.util_hash import *
 
 
 def service_user_reg(conf, **kw):
