@@ -33,7 +33,6 @@ def service_video_op_add_view(conf, **kw):
         return util_serializer_api_response(400, msg=ErrorCode.SERVICE_MISSING_PARAM.get_msg())
 
 
-
 def service_video_op_get_view(conf, **kw):
     db = get_db(conf)
 
@@ -199,6 +198,10 @@ def service_video_op_cancel_comment(conf, **kw):
 
 
 def service_video_op_add_process():
+    return
+
+
+def service_video_op_get_process():
     return
 
 
