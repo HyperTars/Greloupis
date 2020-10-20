@@ -1,21 +1,64 @@
 import unittest
+from source.utils.util_hash import *
+from source.utils.util_request_filter import *
 
 
-class TestStringMethods(unittest.TestCase):
+class TestUtilErrorHandler(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        pass
 
-    def test_upper(self):
-        self.assertEqual('foo'.upper(), 'FOO')
 
-    def test_isupper(self):
-        self.assertTrue('FOO'.isupper())
-        self.assertFalse('Foo'.isupper())
+class TestUtilHash(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        pass
 
-    def test_split(self):
-        s = 'hello world'
-        self.assertEqual(s.split(), ['hello', 'world'])
-        # check that s.split fails when the separator is not a string
-        with self.assertRaises(TypeError):
-            s.split(2)
+    def test_util_hash_encode(self):
+        test_str = "kkk"
+        self.assertEqual(util_hash_encode(test_str), util_hash_sha512(test_str))
+
+    def test_util_md5_with_salt(self):
+        test_str = "kkk"
+        salt = util_hash_create_salt()
+        test_encode = util_hash_md5_with_salt(test_str, salt)
+        self.assertEqual(test_encode, util_hash_md5_with_salt(test_str, salt))
+
+
+class TestUtilPattern(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        pass
+
+
+class TestUtilRequestFilter(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        pass
+
+    def test_util_request_filter_xss(self):
+        util_request_filter_xss()
+
+    def test_util_request_filter_malicious_ip(self):
+        util_request_filter_malicious_ip()
+
+
+class TestUtilSerializer(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        pass
+
+
+class TestUtilTime(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        pass
+
+
+class TestValidator(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        pass
 
 
 if __name__ == '__main__':
