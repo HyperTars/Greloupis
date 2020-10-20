@@ -4,5 +4,6 @@ flask-restx
 flask-mongoengine
 dnspython
 blinker
+pytest
 coveralls
 pyyaml

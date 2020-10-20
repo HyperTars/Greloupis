@@ -9,13 +9,12 @@
 [![MongoDB](https://img.shields.io/badge/MongoDB-4.4-blue)](https://docs.mongodb.com/manual/release-notes/4.4/)
 <!-- [Video.js](https://img.shields.io/badge/Video.js-7.8.4-blue) -->
 
-<!-- [![coverage](https://img.shields.io/coveralls/github/HyperTars/Online-Video-Platform.svg)](https://github.com/HyperTars/Online-Video-Platform/blob/master/source/test.py) -->
 <!-- [![stars](https://img.shields.io/github/stars/HyperTars/Online-Video-Platform.svg?style=plasticr)](https://github.com/HyperTars/Online-Video-Platform/stargazers) -->
 <!-- [![commit activity](https://img.shields.io/github/commit-activity/y/HyperTars/Online-Video-Platform.svg?style=plasticr)](https://github.com/HyperTars/Online-Video-Platform/commits/master) -->
 <!-- [![last commit](https://img.shields.io/github/last-commit/HyperTars/Online-Video-Platform.svg?style=plasticr)](https://github.com/HyperTars/Online-Video-Platform/commits/master) -->
 
 ### Project Proposal
-- [Proposal](/documents/Proposal.md)
+- [Proposal](documents/Proposal.md)
   
 ### Guide
 
@@ -50,16 +49,16 @@ python -m source.app FLASK_APP=app flask run --host=127.0.0.1 --port=8000
 
 ### Designs
 #### Coding Style: Naming Convention
-- See full [Naming Convention](/documents/NamingConventions.md)
+- See full [Naming Convention](documents/NamingConventions.md)
 
 #### Models Design (Entity)
-- See full [Models Design](/documents/Models.md)
+- See full [Models Design](documents/Models.md)
 
 #### Database Design
-- See full [Database Design](/documents/Database.md)
+- See full [Database Design](documents/Database.md)
 
 #### APIs Design
-- See full [APIs Design](/documents/APIs.md)
+- See full [APIs Design](documents/APIs.md)
 
 #### Components Design
 1. Processing Queue: Each uploaded video will be pushed to a processing queue to be de-queued later for encoding, thumbnail generation, and storage.
@@ -69,9 +68,16 @@ python -m source.app FLASK_APP=app flask run --host=127.0.0.1 --port=8000
 5. User Database: To store user’s information, e.g., name, email, address, etc.
 6. Video metadata storage: A metadata database to store all the information about videos like title, file path in the system, uploading user, total views, likes, dislikes, etc. It will also be used to store all the video comments.
 
+- Architecture Design
+    
+    ![Architecture Design Diagram](documents/ArchitectureDesign_resize.png)
+    
+- Background Design
+
+    ![BackgroundDesign](documents/BackgroundDesign.png)
 
 ### Tests
-- See full [Test Cases](/documents/Test.md)
+- See full [Test Cases](documents/Test.md)
 - Connect to AWS EC2 server:
     ```bash
     make connect
