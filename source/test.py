@@ -1,3 +1,4 @@
+"""
 import unittest
 from source.settings import config
 from source.tests.unit.test_models import TestModels
@@ -24,7 +25,6 @@ if __name__ == '__main__':
     unittest.main()
 
 
-"""
 dev param
 
 from source.settings import config

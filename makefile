@@ -6,7 +6,7 @@ FORCE:
 
 prod:	test github
 
-run:
+run:    dev_env
 	python3 -m source.app FLASK_APP=app flask run --host=127.0.0.1 --port=8000
 	
 github:	FORCE
@@ -14,11 +14,12 @@ github:	FORCE
 	git commit -a
 	git push origin master
 
-test:	unit lint
+test:	dev_env unit lint
 	echo "unittest and lint check finished"
 
-unit:	FORCE
-	python3 -m source.test
+unit:   FORCE
+	coverage run --source=source -m pytest
+	# python3 -m source.test
 
 lint:	FORCE
 	$(LINTER) $(SRC_DIR)/*.py --exit-zero --ignore=E501,F401,F403,F405,F841

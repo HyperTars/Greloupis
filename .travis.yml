@@ -25,7 +25,7 @@ deploy:
 
 # after_failure:
 after_success:
-  - coverage run --source=source -m pytest
+  # - coverage run --source=source -m pytest
   - coveralls
   # - sh .travis/deploy_dockerhub.sh
   # - test "$TRAVIS_BRANCH"="master" && sh .travis_deploy_heroku.sh
