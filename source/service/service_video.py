@@ -170,14 +170,115 @@ def service_video_comments(conf, **kw):
 
                 return_result = []
                 for each in search_result:
-                    return_result.append({
-                        "user_id": each["user_id"],
-                        "comment": each["comment"]
-                    })
+                    if each["comment"] != "":
+                        return_result.append({
+                            "user_id": each["user_id"],
+                            "comment": each["comment"],
+                            "comment_date": str(each["comment_date"])
+                        })
 
                 return util_serializer_api_response(200, body=return_result, msg="Successfully got all comments")
             else:
                 return util_serializer_api_response(500, msg="Failed to get all comments")
+
+        except Exception as e:
+            return util_serializer_api_response(500, msg=extract_error_msg(str(e)))
+
+    else:
+        return util_serializer_api_response(400, msg=ErrorCode.SERVICE_MISSING_PARAM.get_msg())
+
+
+def service_video_likes(conf, **kw):
+    db = get_db(conf)
+
+    if "video_id" in kw:
+        try:
+            # Invalid video ID
+            if not is_valid_id(kw["video_id"]):
+                return util_serializer_api_response(400, msg=ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg())
+
+            result = query_video_op_get_by_video_id(kw["video_id"])
+
+            if len(result) == 1:
+                search_result = util_serializer_mongo_results_to_array(result)
+
+                return_result = []
+                for each in search_result:
+                    if each["like"]:
+                        return_result.append({
+                            "user_id": each["user_id"],
+                            "like_date": str(each["like_date"])
+                        })
+
+                return util_serializer_api_response(200, body=return_result, msg="Successfully got all like users")
+            else:
+                return util_serializer_api_response(500, msg="Failed to get all like users")
+
+        except Exception as e:
+            return util_serializer_api_response(500, msg=extract_error_msg(str(e)))
+
+    else:
+        return util_serializer_api_response(400, msg=ErrorCode.SERVICE_MISSING_PARAM.get_msg())
+
+
+def service_video_dislikes(conf, **kw):
+    db = get_db(conf)
+
+    if "video_id" in kw:
+        try:
+            # Invalid video ID
+            if not is_valid_id(kw["video_id"]):
+                return util_serializer_api_response(400, msg=ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg())
+
+            result = query_video_op_get_by_video_id(kw["video_id"])
+
+            if len(result) == 1:
+                search_result = util_serializer_mongo_results_to_array(result)
+
+                return_result = []
+                for each in search_result:
+                    if each["dislike"]:
+                        return_result.append({
+                            "user_id": each["user_id"],
+                            "dislike_date": str(each["dislike_date"])
+                        })
+
+                return util_serializer_api_response(200, body=return_result, msg="Successfully got all dislike users")
+            else:
+                return util_serializer_api_response(500, msg="Failed to get all dislike users")
+
+        except Exception as e:
+            return util_serializer_api_response(500, msg=extract_error_msg(str(e)))
+
+    else:
+        return util_serializer_api_response(400, msg=ErrorCode.SERVICE_MISSING_PARAM.get_msg())
+
+
+def service_video_stars(conf, **kw):
+    db = get_db(conf)
+
+    if "video_id" in kw:
+        try:
+            # Invalid video ID
+            if not is_valid_id(kw["video_id"]):
+                return util_serializer_api_response(400, msg=ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg())
+
+            result = query_video_op_get_by_video_id(kw["video_id"])
+
+            if len(result) == 1:
+                search_result = util_serializer_mongo_results_to_array(result)
+
+                return_result = []
+                for each in search_result:
+                    if each["star"]:
+                        return_result.append({
+                            "user_id": each["user_id"],
+                            "star_date": str(each["star_date"])
+                        })
+
+                return util_serializer_api_response(200, body=return_result, msg="Successfully got all star users")
+            else:
+                return util_serializer_api_response(500, msg="Failed to get all star users")
 
         except Exception as e:
             return util_serializer_api_response(500, msg=extract_error_msg(str(e)))
