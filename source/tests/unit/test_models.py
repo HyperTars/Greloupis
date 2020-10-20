@@ -40,7 +40,7 @@ class TestErrorModel(unittest.TestCase):
         with self.assertRaises(MongoError) as e:
             MongoError(4000)
         self.assertEqual(e.exception.error_code, ErrorCode.ERR_INCORRECT_CODE)
-
+        self.assertEqual(e.__str__(), e.__str__())
 
 
 if __name__ == '__main__':

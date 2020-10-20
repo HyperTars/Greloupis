@@ -21,7 +21,7 @@ def service_user_reg(conf, **kw):
     if 'user_name' not in kw or 'user_email' not in kw or 'user_password' not in kw:
         return ErrorCode.SERVICE_MISSING_PARAM
 
-    users = query_user_create(kw['user_name'], kw['user_email'], hash_encode(kw['user_password']))
+    users = query_user_create(kw['user_name'], kw['user_email'], util_hash_encode(kw['user_password']))
 
     # TODO: update to raise Exception
     if type(users) == ErrorCode:
@@ -45,7 +45,7 @@ def service_user_check_password(**kw):
     if len(users) == 0:
         return ErrorCode.SERVICE_USER_NOT_FOUND
 
-    return hash_encode(kw['user_password']) == users[0].user_password
+    return util_hash_encode(kw['user_password']) == users[0].user_password
 
 
 def service_user_get_user(conf, **kw):
