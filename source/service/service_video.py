@@ -1,6 +1,7 @@
 from source.db.mongo import get_db
 from source.db.query_user import *
 from source.db.query_video import *
+from source.db.query_video_op import *
 from source.utils.util_pattern import *
 from source.utils.util_serializer import *
 from source.utils.util_validator import *
@@ -21,17 +22,17 @@ def service_video_upload(conf, **kw):
             # get the video by title
             result = query_video_get_by_title(kw["body"]["video_title"])
 
+            if len(result) == 1:
+                post_result_json = util_serializer_mongo_results_to_array(result, format="json")
+                return util_serializer_api_response(200, body=post_result_json, msg="Successfully uploaded video")
+            else:
+                return util_serializer_api_response(500, msg="Failed to upload video")
+
         except Exception as e:
-            result = extract_error_msg(str(e))
+            return util_serializer_api_response(500, msg=extract_error_msg(str(e)))
 
     else:
-        result = [{}]
-
-    if not isinstance(result, str):
-        post_result_json = util_serializer_mongo_results_to_array(result, format="json")
-        return util_serializer_api_response(200, body=post_result_json, msg="Successfully uploaded video")
-    else:
-        return util_serializer_api_response(500, msg=result)
+        return util_serializer_api_response(400, msg=ErrorCode.SERVICE_MISSING_PARAM.get_msg())
 
 
 def service_video_info(conf, **kw):
@@ -43,17 +44,19 @@ def service_video_info(conf, **kw):
                 return util_serializer_api_response(400, msg=ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg())
 
             result = query_video_get_by_video_id(kw["video_id"])
-        except Exception as e:
-            result = extract_error_msg(str(e))
-    else:
-        result = [{}]
 
-    search_result_json = util_serializer_mongo_results_to_array(result, format="json")
-    # Check if find result in database
-    if len(search_result_json) > 0 and isinstance(search_result_json, list):
-        return util_serializer_api_response(200, body=search_result_json, msg="Successfully got video by ID")
+            # Check if find result in database
+            if len(result) == 1:
+                search_result_json = util_serializer_mongo_results_to_array(result, format="json")
+                return util_serializer_api_response(200, body=search_result_json, msg="Successfully got video by ID")
+            else:
+                return util_serializer_api_response(500, msg="Failed to get video by ID")
+
+        except Exception as e:
+            return util_serializer_api_response(500, msg=extract_error_msg(str(e)))
+
     else:
-        return util_serializer_api_response(404, msg=ErrorCode.MONGODB_VIDEO_NOT_FOUND.get_msg())
+        return util_serializer_api_response(400, msg=ErrorCode.SERVICE_MISSING_PARAM.get_msg())
 
 
 def service_video_update(conf, **kw):
@@ -66,7 +69,10 @@ def service_video_update(conf, **kw):
                 return util_serializer_api_response(400, msg=ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg())
 
             result = query_video_get_by_video_id(kw["video_id"])
-            original = json.loads(util_serializer_mongo_results_to_array(result, format="json")[0])
+            if len(result) == 0:
+                return util_serializer_api_response(400, msg=ErrorCode.MONGODB_VIDEO_NOT_FOUND.get_msg())
+
+            original = util_serializer_mongo_results_to_array(result)[0]
 
             video_title = kw["body"]["video_title"] if 'video_title' in kw["body"] \
                 else original["video_title"]
@@ -111,18 +117,18 @@ def service_video_update(conf, **kw):
             # get the video by ID
             result = query_video_get_by_video_id(kw["video_id"])
 
+            # Check if find result in database
+            if len(result) == 1:
+                update_result_json = util_serializer_mongo_results_to_array(result, format="json")
+                return util_serializer_api_response(200, body=update_result_json, msg="Successfully updated video")
+            else:
+                return util_serializer_api_response(500, msg=ErrorCode.MONGODB_VIDEO_UPDATE_FAILURE.get_msg())
+
         except Exception as e:
-            result = extract_error_msg(str(e))
+            return util_serializer_api_response(500, msg=extract_error_msg(str(e)))
 
     else:
-        result = [{}]
-
-    # Check if find result in database
-    if len(result) == 1:
-        update_result_json = util_serializer_mongo_results_to_array(result, format="json")
-        return util_serializer_api_response(200, body=update_result_json, msg="Successfully updated video")
-    else:
-        return util_serializer_api_response(500, msg=ErrorCode.MONGODB_VIDEO_UPDATE_FAILURE.get_msg())
+        return util_serializer_api_response(400, msg=ErrorCode.SERVICE_MISSING_PARAM.get_msg())
 
 
 def service_video_delete(conf, **kw):
@@ -135,13 +141,46 @@ def service_video_delete(conf, **kw):
                 return util_serializer_api_response(400, msg=ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg())
 
             result = query_video_delete(kw["video_id"])
+
+            if result == 1:
+                return util_serializer_api_response(200, msg="Successfully deleted video by ID")
+            else:
+                return util_serializer_api_response(500, msg=result)
+
         except Exception as e:
-            result = extract_error_msg(str(e))
+            return util_serializer_api_response(500, msg=extract_error_msg(str(e)))
 
     else:
-        result = -1
+        return util_serializer_api_response(400, msg=ErrorCode.SERVICE_MISSING_PARAM.get_msg())
 
-    if result == 1:
-        return util_serializer_api_response(200, msg="Successfully deleted video by ID")
+
+def service_video_comments(conf, **kw):
+    db = get_db(conf)
+
+    if "video_id" in kw:
+        try:
+            # Invalid video ID
+            if not is_valid_id(kw["video_id"]):
+                return util_serializer_api_response(400, msg=ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg())
+
+            result = query_video_op_get_by_video_id(kw["video_id"])
+
+            if len(result) == 1:
+                search_result = util_serializer_mongo_results_to_array(result)
+
+                return_result = []
+                for each in search_result:
+                    return_result.append({
+                        "user_id": each["user_id"],
+                        "comment": each["comment"]
+                    })
+
+                return util_serializer_api_response(200, body=return_result, msg="Successfully got all comments")
+            else:
+                return util_serializer_api_response(500, msg="Failed to get all comments")
+
+        except Exception as e:
+            return util_serializer_api_response(500, msg=extract_error_msg(str(e)))
+
     else:
-        return util_serializer_api_response(500, msg=result)
+        return util_serializer_api_response(400, msg=ErrorCode.SERVICE_MISSING_PARAM.get_msg())

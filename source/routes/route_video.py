@@ -90,7 +90,7 @@ class Video(Resource):
             "user_id": "5f88f883e6ac4f89900ac983",
             "video_title": "mock_video_2",
             "video_raw_content": "https://s3.amazon.com/mock_video.mp4",
-            "video_raw_size": 1.23
+            "video_raw_size": 13.23
         }
 
         # user_id = request.form.get("user_id")
@@ -176,7 +176,9 @@ class VideoVideoIdComment(Resource):
         """
             Get video view comments list by video ID
         """
-        return {}, 200, None
+        video_id = request.url.split('/')[-2]
+
+        return service_video_comments(conf=config['default'], video_id=video_id)
 
 
 @video.route('/<string:video_id>/comment/<string:user_id>', methods=['DELETE', 'GET', 'PUT', 'POST'])
@@ -192,28 +194,49 @@ class VideoVideoIdCommentUserId(Resource):
         """
             Get a comment by specified video id and user id
         """
-        return {}, 200, None
+        video_id = request.url.split('/')[-3]
+        user_id = request.url.split('/')[-1]
+
+        return service_video_op_get_comment(conf=config['default'], video_id=video_id, user_id=user_id)
 
     @video.response(405, 'Method not allowed')
     def post(self, video_id, user_id):
         """
             Post a comment by specified video id and user id
         """
-        return {}, 200, None
+        video_id = request.url.split('/')[-3]
+        user_id = request.url.split('/')[-1]
+
+        mock_body = {
+            "comment": "This video is so funny"
+        }
+
+        return service_video_op_add_comment(conf=config['default'], video_id=video_id, user_id=user_id, body=mock_body)
 
     @video.response(405, 'Method not allowed')
     def put(self, video_id, user_id):
         """
             Update a comment by specified video id and user id
         """
-        return {}, 200, None
+        video_id = request.url.split('/')[-3]
+        user_id = request.url.split('/')[-1]
+
+        mock_body = {
+            "comment": "This video is so funny updated"
+        }
+
+        return service_video_op_update_comment(conf=config['default'], video_id=video_id,
+                                               user_id=user_id, body=mock_body)
 
     @video.response(405, 'Method not allowed')
     def delete(self, video_id, user_id):
         """
             Delete a comment by specified video id and user id
         """
-        return {}, 200, None
+        video_id = request.url.split('/')[-3]
+        user_id = request.url.split('/')[-1]
+
+        return service_video_op_cancel_comment(conf=config['default'], video_id=video_id, user_id=user_id)
 
 
 @video.route('/<string:video_id>/dislike', methods=['GET'])
@@ -250,6 +273,41 @@ class VideoVideoIdDislikeUserId(Resource):
     def delete(self, video_id, user_id):
         """
             Undo a dislike by specified user and video
+        """
+        return {}, 200, None
+
+
+@video.route('/<string:video_id>/process/<string:user_id>', methods=['DELETE', 'POST', 'PUT', 'GET'])
+@video.param('video_id', 'Video ID')
+@video.param('user_id', 'User ID')
+@video.response(200, 'Successful operation', general_response)
+@video.response(400, 'Invalid video ID or user ID', general_response)
+@video.response(404, 'Video or user not found', general_response)
+@video.response(405, 'Method not allowed', general_response)
+@video.response(500, 'Internal server error', general_response)
+class VideoVideoIdProcessUserId(Resource):
+
+    def post(self, video_id, user_id):
+        """
+            Post a new video watching process
+        """
+        return {}, 200, None
+
+    def get(self, video_id, user_id):
+        """
+            Get a new video watching process
+        """
+        return {}, 200, None
+
+    def put(self, video_id, user_id):
+        """
+            Update a video watching process
+        """
+        return {}, 200, None
+
+    def delete(self, video_id, user_id):
+        """
+            Delete a video watching process
         """
         return {}, 200, None
 
