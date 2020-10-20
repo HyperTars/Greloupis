@@ -1,35 +1,60 @@
 import unittest
 from source.service.service_search import *
 from source.settings import *
-
-"""
-def test_search_user(conf):
-    print("\n===================== Test Search User =========================")
-    print(service_search_user(conf, name="t", ignore_case=False, format="json"))
-    print("\n===================== Test Search User (exact not found) =========================")
-    print(service_search_user(conf, name="test", ignore_case=True, format="dict", exact=True))
-    print("\n===================== Test Search User =========================")
-    print(service_search_user(conf, name="test_user", ignore_case=True, format="dict", exact=True))
+from source.tests.unit.test_load_data import util_load_test_data
 
 
-def test_search_video(conf):
-    print("\n===================== Test Search Video: Title =========================")
-    print(service_search_video(conf, title="Xi"))
-    print("\n===================== Test Search Video: Title (case not found) =========================")
-    print(service_search_video(conf, title="xi", ignore_case=False))
-    print("\n===================== Test Search Video: Title, json =========================")
-    print(service_search_video(conf, title="E", format="json"))
-    print("\n===================== Test Search Video: Category =========================")
-    print(service_search_video(conf, video_category="A"))
-    print("\n===================== Test Search Video: Tag =========================")
-    print(service_search_video(conf, video_tag="O"))
-    print("\n===================== Test Search Video: Title slice =========================")
-    print(service_search_video(conf, title="a h", slice=True))
-    print("\n===================== Test Search Video: Title slice =========================")
-    print(service_search_video(conf, title="i a", slice=True))
-    print("\n===================== Test Search Video: Title slice =========================")
-    print(service_search_video(conf, title="i%20a", slice=True))
-"""
+class TestServiceSearchUser(unittest.TestCase):
+    data = util_load_test_data()
+    const_user_0 = data['const_user'][0]
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.conf = config['test']
+
+    def test_search_user(self):
+        self.assertEqual(service_search_user(self.conf, name="t", ignore_case=False)[0]['user_name'],
+                         self.const_user_0['user_name'])
+        self.assertEqual(len(service_search_user(self.conf, name="test", ignore_case=True, exact=True)),
+                         0)
+        self.assertEqual(len(service_search_user(self.conf, name="test_user", ignore_case=True,
+                                                 format="dict", exact=True)),
+                         0)
+
+
+class TestServiceSearchVideo(unittest.TestCase):
+    data = util_load_test_data()
+    const_video_0 = data['const_video'][0]
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.conf = config['test']
+
+    def test_search_video(self):
+        self.assertEqual(service_search_video(self.conf, title="Xi")[0]['video_title'],
+                         self.const_video_0['video_title'], msg="Test Search Video: Title")
+
+        self.assertEqual(len(service_search_video(self.conf, title="xi", ignore_case=False)), 0,
+                         msg="Test Search Video: Title (not found)")
+
+        self.assertEqual(len(service_search_video(self.conf, title="E", format="json")), 0,
+                         msg="Test Search Video: Title, json")
+
+        self.assertEqual(service_search_video(self.conf, video_category="A")[0]['video_title'],
+                         self.const_video_0['video_title'], msg="Test Search Video: Category")
+
+        self.assertEqual(service_search_video(self.conf, video_tag="O")[0]['video_title'],
+                         self.const_video_0['video_title'], msg="Test Search Video: Tag")
+
+        self.assertEqual(service_search_video(self.conf, title="a h", slice=True)[0]['video_title'],
+                         self.const_video_0['video_title'], msg="Test Search Video: Tag")
+
+        self.assertEqual(service_search_video(self.conf, title="i a", slice=True)[0]['video_title'],
+                         self.const_video_0['video_title'], msg="Test Search Video: Tag")
+
+        self.assertEqual(service_search_video(self.conf, title="i%20a", slice=True)[0]['video_title'],
+                         self.const_video_0['video_title'], msg="Test Search Video: Tag")
+
 
 if __name__ == "__main__":
     unittest.main()

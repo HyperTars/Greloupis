@@ -6,7 +6,7 @@ from source.tests.unit.test_routes import TestRoutes
 from source.tests.unit.test_app import TestApp
 from source.tests.unit.test_apiv1 import TestApiV1
 from source.tests.unit.test_db import *
-
+from source.tests.unit.test_services import *
 
 if __name__ == '__main__':
     conf = config['test']
@@ -19,6 +19,8 @@ if __name__ == '__main__':
     TestQueryUser()
     TestQueryVideo()
     TestQueryVideoOp()
+    TestServiceSearchUser()
+    TestServiceSearchVideo()
     unittest.main()
 
 

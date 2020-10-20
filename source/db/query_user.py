@@ -426,7 +426,6 @@ def query_user_search_by_pattern(**kw):
         :key "user_country": (optional) single keyword of country to be searched
         :key "user_zip": (optional) single keyword of zip to be searched
         :key "user_status": (optional) single keyword of status to be searched
-        :key "user_reg_date": (optional) single keyword of reg date to be searched
     \nAt least one key must be provided
     :return: array of searching results (User Model)
     """
@@ -462,8 +461,6 @@ def query_user_search_by_pattern(**kw):
         return User.objects(user_detail__user_zip=kw['pattern_zip'])
     elif 'pattern_status' in kw:
         return User.objects(user_status=kw['pattern_status'])
-    elif 'pattern_reg_date' in kw:
-        return User.objects(user_reg_date=kw['pattern_reg_date'])
 
     raise MongoError(ErrorCode.MONGODB_INVALID_SEARCH_PARAM)
 

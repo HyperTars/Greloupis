@@ -101,6 +101,10 @@ def util_pattern_build(**kw):
 
 
 def util_pattern_compile(pattern_string, exact, ignore_case):
+    # Remove '+' in the beginning of phone number
+    if pattern_string[0] == '+':
+        pattern_string = pattern_string[1:]
+
     # Pattern flags
     if exact is True:
         pattern_string = '\\b' + pattern_string + '\\b'
