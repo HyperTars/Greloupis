@@ -251,7 +251,9 @@ class VideoVideoIdDislike(Resource):
         """
             Get a list of dislike by video id
         """
-        return {}, 200, None
+        video_id = request.url.split('/')[-2]
+
+        return service_video_dislikes(conf=config['default'], video_id=video_id)
 
 
 @video.route('/<string:video_id>/dislike/<string:user_id>', methods=['DELETE', 'POST'])
@@ -268,13 +270,19 @@ class VideoVideoIdDislikeUserId(Resource):
         """
             Post a dislike by specified user and video
         """
-        return {}, 200, None
+        video_id = request.url.split('/')[-3]
+        user_id = request.url.split('/')[-1]
+
+        return service_video_op_add_dislike(conf=config['default'], video_id=video_id, user_id=user_id)
 
     def delete(self, video_id, user_id):
         """
             Undo a dislike by specified user and video
         """
-        return {}, 200, None
+        video_id = request.url.split('/')[-3]
+        user_id = request.url.split('/')[-1]
+
+        return service_video_op_cancel_dislike(conf=config['default'], video_id=video_id, user_id=user_id)
 
 
 @video.route('/<string:video_id>/process/<string:user_id>', methods=['DELETE', 'POST', 'PUT', 'GET'])
@@ -291,25 +299,46 @@ class VideoVideoIdProcessUserId(Resource):
         """
             Post a new video watching process
         """
-        return {}, 200, None
+        video_id = request.url.split('/')[-3]
+        user_id = request.url.split('/')[-1]
+
+        mock_body = {
+            "process": 30
+        }
+
+        return service_video_op_add_process(conf=config['default'], video_id=video_id, user_id=user_id, body=mock_body)
 
     def get(self, video_id, user_id):
         """
             Get a new video watching process
         """
-        return {}, 200, None
+        video_id = request.url.split('/')[-3]
+        user_id = request.url.split('/')[-1]
+
+        return service_video_op_get_process(conf=config['default'], video_id=video_id, user_id=user_id)
 
     def put(self, video_id, user_id):
         """
             Update a video watching process
         """
-        return {}, 200, None
+        video_id = request.url.split('/')[-3]
+        user_id = request.url.split('/')[-1]
+
+        mock_body = {
+            "process": 60
+        }
+
+        return service_video_op_update_process(conf=config['default'], video_id=video_id,
+                                               user_id=user_id, body=mock_body)
 
     def delete(self, video_id, user_id):
         """
             Delete a video watching process
         """
-        return {}, 200, None
+        video_id = request.url.split('/')[-3]
+        user_id = request.url.split('/')[-1]
+
+        return service_video_op_cancel_process(conf=config['default'], video_id=video_id, user_id=user_id)
 
 
 @video.route('/<string:video_id>/like', methods=['GET'])
@@ -324,7 +353,9 @@ class VideoVideoIdLike(Resource):
         """
             Get a list of like by video id
         """
-        return {}, 200, None
+        video_id = request.url.split('/')[-2]
+
+        return service_video_likes(conf=config['default'], video_id=video_id)
 
 
 @video.route('/<string:video_id>/like/<string:user_id>', methods=['DELETE', 'POST'])
@@ -341,13 +372,19 @@ class VideoVideoIdLikeUserId(Resource):
         """
             Post a like by specified user and video
         """
-        return {}, 200, None
+        video_id = request.url.split('/')[-3]
+        user_id = request.url.split('/')[-1]
+
+        return service_video_op_add_like(conf=config['default'], video_id=video_id, user_id=user_id)
 
     def delete(self, video_id, user_id):
         """
             Undo a like by specified user and video
         """
-        return {}, 200, None
+        video_id = request.url.split('/')[-3]
+        user_id = request.url.split('/')[-1]
+
+        return service_video_op_cancel_like(conf=config['default'], video_id=video_id, user_id=user_id)
 
 
 @video.route('/<string:video_id>/star', methods=['GET'])
@@ -362,7 +399,9 @@ class VideoVideoIdStar(Resource):
         """
             Get a list of star by video id
         """
-        return {}, 200, None
+        video_id = request.url.split('/')[-2]
+
+        return service_video_stars(conf=config['default'], video_id=video_id)
 
 
 @video.route('/<string:video_id>/star/<string:user_id>', methods=['DELETE', 'POST'])
@@ -379,10 +418,16 @@ class VideoVideoIdStarUserId(Resource):
         """
             Post a star by specified user and video
         """
-        return {}, 200, None
+        video_id = request.url.split('/')[-3]
+        user_id = request.url.split('/')[-1]
+
+        return service_video_op_add_star(conf=config['default'], video_id=video_id, user_id=user_id)
 
     def delete(self, video_id, user_id):
         """
             Undo a star by specified user and video
         """
-        return {}, 200, None
+        video_id = request.url.split('/')[-3]
+        user_id = request.url.split('/')[-1]
+
+        return service_video_op_cancel_star(conf=config['default'], video_id=video_id, user_id=user_id)
