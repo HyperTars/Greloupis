@@ -138,7 +138,33 @@ class TestQueryUser(unittest.TestCase):
         self.assertEqual(query_user_get_by_id(temp_user_id)[0].user_password, old_thumbnail)
 
     def test_k_user_update_details(self):
-        pass
+        temp_model = query_user_get_by_name(self.temp_user_0['user_name'])[0].to_dict()
+        temp_user_id = temp_model['user_id']
+
+        new_user_first_name = "new first name"
+        new_user_last_name = "new last name"
+        new_user_phone = "+451313445665"
+        new_user_street1 = "str1"
+        new_user_street2 = "str2"
+        new_user_city = "new city"
+        new_user_state = "new state"
+        new_user_country = "new country"
+        new_user_zip = "46961"
+        query_user_update_details(temp_user_id, user_first_name=new_user_first_name, user_last_name=new_user_last_name,
+                                  user_phone=new_user_phone, user_street1=new_user_street1,
+                                  user_street2=new_user_street2, user_city=new_user_city, user_state=new_user_state,
+                                  user_country=new_user_country, user_zip=new_user_zip)
+
+        new_model = query_user_get_by_id(temp_user_id)[0].to_dict()
+        self.assertEqual(new_model['user_detail']['user_first_name'], new_user_first_name)
+        self.assertEqual(new_model['user_detail']['user_last_name'], new_user_last_name)
+        self.assertEqual(new_model['user_detail']['user_phone'], new_user_phone)
+        self.assertEqual(new_model['user_detail']['user_street1'], new_user_street1)
+        self.assertEqual(new_model['user_detail']['user_street2'], new_user_street2)
+        self.assertEqual(new_model['user_detail']['user_city'], new_user_city)
+        self.assertEqual(new_model['user_detail']['user_state'], new_user_state)
+        self.assertEqual(new_model['user_detail']['user_country'], new_user_country)
+        self.assertEqual(new_model['user_detail']['user_zip'], new_user_zip)
 
     def test_l_user_add_login(self):
         # Add successfully
@@ -162,12 +188,65 @@ class TestQueryUser(unittest.TestCase):
 
     def test_o_user_search_by_contains(self):
         # Search successfully
+        search_user_id = self.const_user_0['_id']['$oid']
+        self.assertEqual(str(query_user_search_by_contains(user_id=search_user_id)[0]._id), search_user_id)
+
         search_user_name = self.const_user_0['user_name']
-        self.assertEqual(query_user_search_by_contains(user_name=search_user_name[1:2])[0].user_name, search_user_name)
+        self.assertEqual(query_user_search_by_contains(user_name=search_user_name[1:4])[0].user_name, search_user_name)
+
+        search_user_email = self.const_user_0['user_email']
+        self.assertEqual(query_user_search_by_contains(user_email=search_user_email[2:8])[0].user_email,
+                         search_user_email)
+
+        search_user_first_name = self.const_user_0['user_detail']['user_first_name']
+        self.assertEqual(query_user_search_by_contains(user_first_name=
+                                                       search_user_first_name[0:2])[0].user_detail.user_first_name,
+                         search_user_first_name)
+
+        search_user_last_name = self.const_user_0['user_detail']['user_last_name']
+        self.assertEqual(query_user_search_by_contains(user_last_name=
+                                                       search_user_last_name[0:2])[0].user_detail.user_last_name,
+                         search_user_last_name)
+
+        search_user_phone = self.const_user_0['user_detail']['user_phone']
+        self.assertEqual(query_user_search_by_contains(user_phone=search_user_phone[1:5])[0].user_detail.user_phone,
+                         search_user_phone)
+
+        search_user_street1 = self.const_user_0['user_detail']['user_street1']
+        self.assertEqual(query_user_search_by_contains(user_street1=
+                                                       search_user_street1[1:2])[0].user_detail.user_street1,
+                         search_user_street1)
+
+        search_user_street2 = self.const_user_0['user_detail']['user_street2']
+        self.assertEqual(query_user_search_by_contains(user_street2=
+                                                       search_user_street2[0:2])[0].user_detail.user_street2,
+                         search_user_street2)
+
+        search_user_city = self.const_user_0['user_detail']['user_city']
+        self.assertEqual(query_user_search_by_contains(user_city=search_user_city)[0].user_detail.user_city,
+                         search_user_city)
+
+        search_user_state = self.const_user_0['user_detail']['user_state']
+        self.assertEqual(query_user_search_by_contains(user_state=search_user_state)[0].user_detail.user_state,
+                         search_user_state)
+
+        search_user_country = self.const_user_0['user_detail']['user_country']
+        self.assertEqual(query_user_search_by_contains(user_country=
+                                                       search_user_country[1:2])[0].user_detail.user_country,
+                         search_user_country)
+
+        search_user_zip = self.const_user_0['user_detail']['user_zip']
+        self.assertEqual(query_user_search_by_contains(user_zip=search_user_zip[1:2])[0].user_detail.user_zip,
+                         search_user_zip)
+
+        search_user_status = self.const_user_0['user_status']
+        self.assertEqual(query_user_search_by_contains(user_status=search_user_status[1:2])[0].user_status,
+                         search_user_status)
 
     def test_p_user_search_by_pattern(self):
         search_user_name = self.const_user_0['user_name']
 
+        # PATTERN NAME #
         # Search exact fail
         pattern_exact_fail = util_pattern_compile(search_user_name[1:2], exact=True, ignore_case=True)
         self.assertEqual(len(query_user_search_by_pattern(pattern_name=pattern_exact_fail)), 0)
@@ -185,6 +264,74 @@ class TestQueryUser(unittest.TestCase):
         pattern_case_success = util_pattern_compile(search_user_name[1:2].upper(), exact=False, ignore_case=True)
         self.assertEqual(query_user_search_by_pattern(pattern_name=pattern_case_success)[0].user_name,
                          search_user_name)
+
+        # PATTERN EMAIL #
+        search_user_email = self.const_user_0['user_email']
+        pattern_email = util_pattern_compile(search_user_email[1:5], exact=False, ignore_case=True)
+        self.assertEqual(query_user_search_by_pattern(pattern_email=pattern_email)[0].user_email,
+                         search_user_email)
+
+        # PATTERN FIRST NAME #
+        search_user_first_name = self.const_user_0['user_detail']['user_first_name']
+        pattern_first_name = util_pattern_compile(search_user_first_name[0:3], exact=False, ignore_case=True)
+        self.assertEqual(query_user_search_by_pattern(pattern_first_name=
+                                                      pattern_first_name)[0].user_detail.user_first_name,
+                         search_user_first_name)
+
+        # PATTERN LAST NAME #
+        search_user_last_name = self.const_user_0['user_detail']['user_last_name']
+        pattern_last_name = util_pattern_compile(search_user_last_name[0:3], exact=False, ignore_case=True)
+        self.assertEqual(query_user_search_by_pattern(pattern_last_name=
+                                                      pattern_last_name)[0].user_detail.user_last_name,
+                         search_user_last_name)
+
+        # PATTERN PHONE #
+        search_user_phone = self.const_user_0['user_detail']['user_phone']
+        pattern_phone = util_pattern_compile(search_user_phone[0:3], exact=False, ignore_case=True)
+        self.assertEqual(query_user_search_by_pattern(pattern_phone=pattern_phone)[0].user_detail.user_phone,
+                         search_user_phone)
+
+        # PATTERN STREET1 #
+        search_user_street1 = self.const_user_0['user_detail']['user_street1']
+        pattern_street1 = util_pattern_compile(search_user_street1[0:3], exact=False, ignore_case=True)
+        self.assertEqual(query_user_search_by_pattern(pattern_street1=pattern_street1)[0].user_detail.user_street1,
+                         search_user_street1)
+
+        # PATTERN STREET2 #
+        search_user_street2 = self.const_user_0['user_detail']['user_street2']
+        pattern_street2 = util_pattern_compile(search_user_street2[0:2], exact=False, ignore_case=True)
+        self.assertEqual(query_user_search_by_pattern(pattern_street2=pattern_street2)[0].user_detail.user_street2,
+                         search_user_street2)
+
+        # PATTERN CITY #
+        search_user_city = self.const_user_0['user_detail']['user_city']
+        pattern_city = util_pattern_compile(search_user_city[1:3], exact=False, ignore_case=True)
+        self.assertEqual(query_user_search_by_pattern(pattern_city=pattern_city)[0].user_detail.user_city,
+                         search_user_city)
+
+        # PATTERN STATE #
+        search_user_state = self.const_user_0['user_detail']['user_state']
+        pattern_state = util_pattern_compile(search_user_state[1:4], exact=False, ignore_case=True)
+        self.assertEqual(query_user_search_by_pattern(pattern_state=pattern_state)[0].user_detail.user_state,
+                         search_user_state)
+
+        # PATTERN COUNTRY #
+        search_user_country = self.const_user_0['user_detail']['user_country']
+        pattern_country = util_pattern_compile(search_user_country[1:3], exact=False, ignore_case=True)
+        self.assertEqual(query_user_search_by_pattern(pattern_country=pattern_country)[0].user_detail.user_country,
+                         search_user_country)
+
+        # PATTERN ZIP #
+        search_user_zip = self.const_user_0['user_detail']['user_zip']
+        pattern_zip = util_pattern_compile(search_user_zip[2:5], exact=False, ignore_case=True)
+        self.assertEqual(query_user_search_by_pattern(pattern_zip=pattern_zip)[0].user_detail.user_zip,
+                         search_user_zip)
+
+        # PATTERN STATUS #
+        search_user_status = self.const_user_0['user_status']
+        pattern_status = util_pattern_compile(search_user_status[0:3], exact=False, ignore_case=True)
+        self.assertEqual(query_user_search_by_pattern(pattern_status=pattern_status)[0].user_status,
+                         search_user_status)
 
     def test_q_user_search_by_aggregate(self):
         # Search successfully
