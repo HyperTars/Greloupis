@@ -14,7 +14,7 @@ github:	FORCE
 	git commit -a
 	git push origin master
 
-test:	dev_env unit lint
+test:	unit lint
 	echo "unittest and lint check finished"
 
 unit:   FORCE
@@ -30,6 +30,9 @@ dev_env:	FORCE
 
 docs:	#FORCE
 	cd $(SRC_DIR); make docs
+
+coveralls:
+	coveralls
 
 connect:
 	chmod 400 documents/DevOps.pem
