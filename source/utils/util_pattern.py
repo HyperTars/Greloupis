@@ -4,21 +4,21 @@ from source.models.model_errors import *
 
 def util_pattern_format_param(**kw):
     # ID
-    if kw['search'] == 'user':
+    if kw['search'] == 'user' or kw['service'] == 'user':
         if '_id' in kw:
             kw['user_id'] = kw['_id']
             kw.pop('_id')
         if 'id' in kw:
             kw['user_id'] = kw['id']
             kw.pop('id')
-    if kw['search'] == 'video':
+    if kw['search'] == 'video' or kw['service'] == 'video':
         if '_id' in kw:
             kw['video_id'] = kw['_id']
             kw.pop('_id')
         if 'id' in kw:
             kw['video_id'] = kw['id']
             kw.pop('id')
-    if kw['search'] == 'video_op':
+    if kw['search'] == 'video_op' or kw['service'] == 'video_op':
         if '_id' in kw:
             kw['video_op_id'] = kw['_id']
             kw.pop('_id')
@@ -53,6 +53,12 @@ def util_pattern_format_param(**kw):
     if 'description' in kw and 'video_description' not in kw:
         kw['video_description'] = kw['description']
         kw.pop('description')
+    if 'raw_content' in kw and 'video_raw_content' not in kw:
+        kw['video_raw_content'] = kw['raw_content']
+        kw.pop('raw_content')
+    if 'content' in kw and 'video_raw_content' not in kw:
+        kw['video_raw_content'] = kw['content']
+        kw.pop('content')
 
     # VideoOp
     if 'comment' in kw and 'video_op_comment' not in kw:
