@@ -184,7 +184,7 @@ def service_user_get_like(conf, **kw):
                 video_op_result_dict_array = util_serializer_mongo_results_to_array(video_op_result)
 
                 return_result = []
-                print(video_op_result_dict_array)
+
                 for each in video_op_result_dict_array:
                     if each["like"]:
                         return_result.append({
@@ -220,7 +220,7 @@ def service_user_get_dislike(conf, **kw):
                 video_op_result_dict_array = util_serializer_mongo_results_to_array(video_op_result)
 
                 return_result = []
-                print(video_op_result_dict_array)
+
                 for each in video_op_result_dict_array:
                     if each["dislike"]:
                         return_result.append({
@@ -256,7 +256,7 @@ def service_user_get_comment(conf, **kw):
                 video_op_result_dict_array = util_serializer_mongo_results_to_array(video_op_result)
 
                 return_result = []
-                print(video_op_result_dict_array)
+
                 for each in video_op_result_dict_array:
                     if each["comment"] != "":
                         return_result.append({
@@ -293,7 +293,7 @@ def service_user_get_star(conf, **kw):
                 video_op_result_dict_array = util_serializer_mongo_results_to_array(video_op_result)
 
                 return_result = []
-                print(video_op_result_dict_array)
+
                 for each in video_op_result_dict_array:
                     if each["star"]:
                         return_result.append({
