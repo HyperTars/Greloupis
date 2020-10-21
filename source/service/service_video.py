@@ -50,7 +50,7 @@ def service_video_info(conf, **kw):
                 search_result_json = util_serializer_mongo_results_to_array(result, format="json")
                 return util_serializer_api_response(200, body=search_result_json, msg="Successfully got video by ID")
             else:
-                return util_serializer_api_response(500, msg="Failed to get video by ID")
+                return util_serializer_api_response(404, msg="Video not found")
 
         except Exception as e:
             return util_serializer_api_response(500, msg=extract_error_msg(str(e)))
@@ -143,6 +143,12 @@ def service_video_delete(conf, **kw):
             result = query_video_delete(kw["video_id"])
 
             if result == 1:
+                # delete all video_op related to this video
+                video_op_objects = query_video_op_get_by_video_id(kw["video_id"])
+                video_op_results = util_serializer_mongo_results_to_array(video_op_objects)
+                for each in video_op_results:
+                    query_video_op_delete(each["video_op_id"])
+
                 return util_serializer_api_response(200, msg="Successfully deleted video by ID")
             else:
                 return util_serializer_api_response(500, msg=result)
@@ -165,13 +171,14 @@ def service_video_comments(conf, **kw):
 
             result = query_video_op_get_by_video_id(kw["video_id"])
 
-            if len(result) == 1:
+            if len(result) > 0:
                 search_result = util_serializer_mongo_results_to_array(result)
 
                 return_result = []
                 for each in search_result:
                     if each["comment"] != "":
                         return_result.append({
+                            "video_id": each["video_id"],
                             "user_id": each["user_id"],
                             "comment": each["comment"],
                             "comment_date": str(each["comment_date"])
@@ -199,13 +206,14 @@ def service_video_likes(conf, **kw):
 
             result = query_video_op_get_by_video_id(kw["video_id"])
 
-            if len(result) == 1:
+            if len(result) > 0:
                 search_result = util_serializer_mongo_results_to_array(result)
 
                 return_result = []
                 for each in search_result:
                     if each["like"]:
                         return_result.append({
+                            "video_id": each["video_id"],
                             "user_id": each["user_id"],
                             "like_date": str(each["like_date"])
                         })
@@ -232,13 +240,14 @@ def service_video_dislikes(conf, **kw):
 
             result = query_video_op_get_by_video_id(kw["video_id"])
 
-            if len(result) == 1:
+            if len(result) > 0:
                 search_result = util_serializer_mongo_results_to_array(result)
 
                 return_result = []
                 for each in search_result:
                     if each["dislike"]:
                         return_result.append({
+                            "video_id": each["video_id"],
                             "user_id": each["user_id"],
                             "dislike_date": str(each["dislike_date"])
                         })
@@ -265,13 +274,14 @@ def service_video_stars(conf, **kw):
 
             result = query_video_op_get_by_video_id(kw["video_id"])
 
-            if len(result) == 1:
+            if len(result) > 0:
                 search_result = util_serializer_mongo_results_to_array(result)
 
                 return_result = []
                 for each in search_result:
                     if each["star"]:
                         return_result.append({
+                            "video_id": each["video_id"],
                             "user_id": each["user_id"],
                             "star_date": str(each["star_date"])
                         })

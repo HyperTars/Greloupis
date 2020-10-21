@@ -137,18 +137,7 @@ class UserUserId(Resource):
         """
         user_id = request.url.split('/')[-1]
 
-        # Invalid video ID
-        if not is_valid_id(user_id):
-            return util_serializer_api_response(400, msg=ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg())
-
-        search_result = service_user_info(conf=config['default'], user_id=user_id)
-        search_result_json = util_serializer_mongo_results_to_array(search_result, format="json")
-
-        # Check if find result in database
-        if len(search_result_json) > 0:
-            return util_serializer_api_response(200, body=search_result_json, msg="Successfully got user by ID")
-        else:
-            return util_serializer_api_response(404, msg=ErrorCode.MONGODB_USER_NOT_FOUND.get_msg())
+        return service_user_info(conf=config['default'], user_id=user_id)
 
     @user.response(405, 'Method not allowed')
     def put(self, user_id):
@@ -202,7 +191,9 @@ class UserUserIdLike(Resource):
         """
             Get a list of like by user id
         """
-        return {}, 200, None
+        user_id = request.url.split('/')[-2]
+
+        return service_user_get_like(conf=config['default'], user_id=user_id)
 
 
 @user.route('/<string:user_id>/dislike', methods=['GET'])
@@ -217,7 +208,9 @@ class UserUserIdDislike(Resource):
         """
             Get a list of dislike by user id
         """
-        return {}, 200, None
+        user_id = request.url.split('/')[-2]
+
+        return service_user_get_dislike(conf=config['default'], user_id=user_id)
 
 
 @user.route('/<string:user_id>/star', methods=['GET'])
@@ -232,7 +225,9 @@ class UserUserIdStar(Resource):
         """
             Get a list of star by user id
         """
-        return {}, 200, None
+        user_id = request.url.split('/')[-2]
+
+        return service_user_get_star(conf=config['default'], user_id=user_id)
 
 
 @user.route('/<string:user_id>/comment', methods=['GET'])
@@ -247,4 +242,6 @@ class UserUserIdComment(Resource):
         """
             Get a list of comments by user id
         """
-        return {}, 200, None
+        user_id = request.url.split('/')[-2]
+
+        return service_user_get_comment(conf=config['default'], user_id=user_id)

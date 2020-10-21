@@ -1,7 +1,11 @@
 from source.models.model_errors import *
 from source.settings import *
 from source.db.query_user import *
+from source.db.query_video import *
+from source.db.query_video_op import *
 from source.utils.util_hash import *
+from source.utils.util_serializer import *
+from source.utils.util_validator import *
 from source.db.mongo import get_db
 
 
@@ -91,16 +95,220 @@ def service_user_cancel():
     return
 
 
+def service_user_update_info(conf, **kw):
+    db = get_db(conf)
+    return
+
+
 def service_user_info(conf, **kw):
     # table: user
     # table: video (belong to this user)
     # table: video_op (belong to this user)
 
     db = get_db(conf)
+    final_result = {}
 
     if "user_id" in kw:
-        result = query_user_get_by_id(kw["user_id"])
-    else:
-        result = [{}]
+        # Invalid video ID
+        if not is_valid_id(kw["user_id"]):
+            return util_serializer_api_response(400, msg=ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg())
 
-    return result
+        try:
+            # table: user
+            user_result = query_user_get_by_id(kw["user_id"])
+            if len(user_result) == 1:
+                user_result_dict_array = util_serializer_mongo_results_to_array(user_result)
+
+                # convert datetime format to str
+                for each_result in user_result_dict_array:
+                    for key, value in each_result.items():
+                        if isinstance(value, datetime.datetime):
+                            each_result[key] = str(value)
+
+                final_result["user"] = user_result_dict_array
+            else:
+                return util_serializer_api_response(404, msg=ErrorCode.MONGODB_USER_NOT_FOUND.get_msg())
+
+            # table: video
+            video_result = query_video_get_by_user_id(kw["user_id"])
+            if len(video_result) > 0:
+                video_result_dict_array = util_serializer_mongo_results_to_array(video_result)
+
+                # convert datetime format to str
+                for each_result in video_result_dict_array:
+                    for key, value in each_result.items():
+                        if isinstance(value, datetime.datetime):
+                            each_result[key] = str(value)
+
+                final_result["video"] = video_result_dict_array
+            else:
+                final_result["video"] = [{}]
+
+            # table: video op
+            video_op_result = query_video_op_get_by_user_id(kw["user_id"])
+            if len(video_op_result) > 0:
+                video_op_result_dict_array = util_serializer_mongo_results_to_array(video_op_result)
+
+                # convert datetime format to str
+                for each_result in video_op_result_dict_array:
+                    for key, value in each_result.items():
+                        if isinstance(value, datetime.datetime):
+                            each_result[key] = str(value)
+
+                final_result["video_op"] = video_op_result_dict_array
+            else:
+                final_result["video_op"] = [{}]
+
+            # pack result
+            return util_serializer_api_response(200, body=final_result, msg="Successfully get user information")
+
+        except Exception as e:
+            return util_serializer_api_response(500, msg=extract_error_msg(str(e)))
+
+    else:
+        return util_serializer_api_response(400, msg=ErrorCode.SERVICE_MISSING_PARAM.get_msg())
+
+
+def service_user_get_like(conf, **kw):
+    db = get_db(conf)
+
+    if "user_id" in kw:
+        # Invalid video ID
+        if not is_valid_id(kw["user_id"]):
+            return util_serializer_api_response(400, msg=ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg())
+
+        try:
+            video_op_result = query_video_op_get_by_user_id(kw["user_id"])
+
+            if len(video_op_result) > 0:
+                video_op_result_dict_array = util_serializer_mongo_results_to_array(video_op_result)
+
+                return_result = []
+                print(video_op_result_dict_array)
+                for each in video_op_result_dict_array:
+                    if each["like"]:
+                        return_result.append({
+                            "video_id": each["video_id"],
+                            "user_id": each["user_id"],
+                            "like_date": str(each["like_date"])
+                        })
+
+                return util_serializer_api_response(200, body=return_result,
+                                                    msg="Successfully got all likes of the user")
+            else:
+                return util_serializer_api_response(404, msg=ErrorCode.MONGODB_VIDEOOP_NOT_FOUND.get_msg())
+
+        except Exception as e:
+            return util_serializer_api_response(500, msg=extract_error_msg(str(e)))
+
+    else:
+        return util_serializer_api_response(400, msg=ErrorCode.SERVICE_MISSING_PARAM.get_msg())
+
+
+def service_user_get_dislike(conf, **kw):
+    db = get_db(conf)
+
+    if "user_id" in kw:
+        # Invalid video ID
+        if not is_valid_id(kw["user_id"]):
+            return util_serializer_api_response(400, msg=ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg())
+
+        try:
+            video_op_result = query_video_op_get_by_user_id(kw["user_id"])
+
+            if len(video_op_result) > 0:
+                video_op_result_dict_array = util_serializer_mongo_results_to_array(video_op_result)
+
+                return_result = []
+                print(video_op_result_dict_array)
+                for each in video_op_result_dict_array:
+                    if each["dislike"]:
+                        return_result.append({
+                            "video_id": each["video_id"],
+                            "user_id": each["user_id"],
+                            "dislike_date": str(each["dislike_date"])
+                        })
+
+                return util_serializer_api_response(200, body=return_result,
+                                                    msg="Successfully got all dislikes of the user")
+            else:
+                return util_serializer_api_response(404, msg=ErrorCode.MONGODB_VIDEOOP_NOT_FOUND.get_msg())
+
+        except Exception as e:
+            return util_serializer_api_response(500, msg=extract_error_msg(str(e)))
+
+    else:
+        return util_serializer_api_response(400, msg=ErrorCode.SERVICE_MISSING_PARAM.get_msg())
+
+
+def service_user_get_comment(conf, **kw):
+    db = get_db(conf)
+
+    if "user_id" in kw:
+        # Invalid video ID
+        if not is_valid_id(kw["user_id"]):
+            return util_serializer_api_response(400, msg=ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg())
+
+        try:
+            video_op_result = query_video_op_get_by_user_id(kw["user_id"])
+
+            if len(video_op_result) > 0:
+                video_op_result_dict_array = util_serializer_mongo_results_to_array(video_op_result)
+
+                return_result = []
+                print(video_op_result_dict_array)
+                for each in video_op_result_dict_array:
+                    if each["comment"] != "":
+                        return_result.append({
+                            "user_id": each["user_id"],
+                            "video_id": each["video_id"],
+                            "comment": each["comment"],
+                            "comment_date": str(each["comment_date"])
+                        })
+
+                return util_serializer_api_response(200, body=return_result,
+                                                    msg="Successfully got all dislikes of the user")
+            else:
+                return util_serializer_api_response(404, msg=ErrorCode.MONGODB_VIDEOOP_NOT_FOUND.get_msg())
+
+        except Exception as e:
+            return util_serializer_api_response(500, msg=extract_error_msg(str(e)))
+
+    else:
+        return util_serializer_api_response(400, msg=ErrorCode.SERVICE_MISSING_PARAM.get_msg())
+
+
+def service_user_get_star(conf, **kw):
+    db = get_db(conf)
+
+    if "user_id" in kw:
+        # Invalid video ID
+        if not is_valid_id(kw["user_id"]):
+            return util_serializer_api_response(400, msg=ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg())
+
+        try:
+            video_op_result = query_video_op_get_by_user_id(kw["user_id"])
+
+            if len(video_op_result) > 0:
+                video_op_result_dict_array = util_serializer_mongo_results_to_array(video_op_result)
+
+                return_result = []
+                print(video_op_result_dict_array)
+                for each in video_op_result_dict_array:
+                    if each["star"]:
+                        return_result.append({
+                            "user_id": each["user_id"],
+                            "video_id": each["video_id"],
+                            "star_date": str(each["star_date"])
+                        })
+
+                return util_serializer_api_response(200, body=return_result,
+                                                    msg="Successfully got all dislikes of the user")
+            else:
+                return util_serializer_api_response(404, msg=ErrorCode.MONGODB_VIDEOOP_NOT_FOUND.get_msg())
+
+        except Exception as e:
+            return util_serializer_api_response(500, msg=extract_error_msg(str(e)))
+
+    else:
+        return util_serializer_api_response(400, msg=ErrorCode.SERVICE_MISSING_PARAM.get_msg())
