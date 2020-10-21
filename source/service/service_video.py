@@ -11,6 +11,27 @@ from source.models.model_errors import *
 def service_video_upload(conf, **kw):
     db = get_db(conf)
 
+    # new
+    kw['service'] = 'video'
+    if 'user_id' not in kw and 'id' not in kw and '_id' not in kw or \
+            'video_title' not in kw and 'title' not in kw or \
+            'video_raw_content' and 'raw_content' not in kw and 'content' not in kw:
+        raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
+
+    kw = util_pattern_format_param(**kw)
+    try:
+        query_video_create(kw['user_id'], kw['video_title'], kw['video_raw_content'])
+        result_mongo = query_video_get_by_title(kw['video_title'])
+        result_array = util_serializer_mongo_results_to_array(result_mongo)
+    except MongoError as e:
+        print(e.get_code())
+        print(e.get_msg())
+        raise e
+    except Exception as e:
+        raise e
+    return result_array  # Convert to api response in route
+
+    # original version
     if "body" in kw:
         user_id = kw["body"]["user_id"]
         video_title = kw["body"]["video_title"]
