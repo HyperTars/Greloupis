@@ -4,21 +4,21 @@ from source.models.model_errors import *
 
 def util_pattern_format_param(**kw):
     # ID
-    if kw['search'] == 'user' or kw['service'] == 'user':
+    if kw['service'] == 'user':
         if '_id' in kw:
             kw['user_id'] = kw['_id']
             kw.pop('_id')
         if 'id' in kw:
             kw['user_id'] = kw['id']
             kw.pop('id')
-    if kw['search'] == 'video' or kw['service'] == 'video':
+    if kw['service'] == 'video':
         if '_id' in kw:
             kw['video_id'] = kw['_id']
             kw.pop('_id')
         if 'id' in kw:
             kw['video_id'] = kw['id']
             kw.pop('id')
-    if kw['search'] == 'video_op' or kw['service'] == 'video_op':
+    if kw['service'] == 'video_op':
         if '_id' in kw:
             kw['video_op_id'] = kw['_id']
             kw.pop('_id')
