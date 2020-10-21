@@ -18,7 +18,7 @@ from source.utils.util_serializer import *
 # Search User Caller
 def service_search_user(conf, **kw):
     db = get_db(conf)
-    kw['search'] = 'user'
+    kw['service'] = 'user'
     kw = util_pattern_format_param(**kw)
 
     # Search configs
@@ -56,7 +56,7 @@ def service_search_user(conf, **kw):
 # Search Video Caller
 def service_search_video(conf, **kw):
     db = get_db(conf)
-    kw['search'] = 'video'
+    kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
 
     # Search configs
