@@ -42,6 +42,21 @@ class TestErrorModel(unittest.TestCase):
         self.assertEqual(e.exception.error_code, ErrorCode.ERR_INCORRECT_CODE)
         self.assertEqual(e.__str__(), e.__str__())
 
+        # Get code & msg
+        with self.assertRaises(MongoError) as e:
+            raise MongoError(ErrorCode.MONGODB_CONNECTION_FAILURE)
+        self.assertEqual(e.exception.get_code(), ErrorCode.MONGODB_CONNECTION_FAILURE.get_code())
+        self.assertEqual(e.exception.get_msg(), ErrorCode.MONGODB_CONNECTION_FAILURE.get_msg())
+        # print(e.exception.get_code())
+        # print(e.exception.get_msg())
+
+        # usage:
+        try:
+            raise MongoError(ErrorCode.ERR_INCORRECT_CODE)
+        except MongoError as e:
+            print(e.get_code())
+            print(e.get_msg())
+
 
 if __name__ == '__main__':
     unittest.main()

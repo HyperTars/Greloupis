@@ -11,10 +11,14 @@ from source.db.mongo import get_db
 
 def service_user_reg(conf, **kw):
     """
+    Register user
+
     :param conf: config
-    :param user_name: (required) str
-    :param user_email: (required) str
-    :param user_ip: (optional) str
+    :param kw: keyword
+    :keyword:
+        :key user_name: (required) str
+        :key user_email: (required) str
+        :key user_ip: (optional) str
     :return:
     """
     # user_name: str, user_email: str, user_password: str, user_ip = "0.0.0.0"

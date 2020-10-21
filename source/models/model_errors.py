@@ -101,6 +101,12 @@ class MongoError(Exception):
 
         super().__init__(msg)
 
+    def get_code(self):
+        return self.error_code.get_code()
+
+    def get_msg(self):
+        return self.error_code.get_msg()
+
     def __str__(self):
         return repr(self.error_code)
 
