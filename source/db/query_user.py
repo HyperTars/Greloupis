@@ -124,10 +124,6 @@ def query_user_add_follow(follower_id: str, following_id: str):
     if following_id in follower[0].user_following and follower_id in following[0].user_follower:
         raise MongoError(ErrorCode.MONGODB_FOLLOW_REL_EXISTS)
 
-    if following_id in follower[0].user_following or follower_id in following[0].user_follower:
-        # print("following relationship broken, try to remove")
-        query_user_delete_follow(follower_id, following_id)
-
     try:
         User.objects(_id=bson.ObjectId(follower_id)).update(add_to_set__user_following=following_id)
         User.objects(_id=bson.ObjectId(following_id)).update(add_to_set__user_follower=follower_id)
@@ -219,9 +215,6 @@ def query_user_update_thumbnail(user_id: str, user_thumbnail: str):
     users = query_user_get_by_id(user_id)
     if len(users) == 0:
         raise MongoError(ErrorCode.MONGODB_USER_NOT_FOUND)
-
-    if type(user_thumbnail) != str:
-        raise MongoError(ErrorCode.MONGODB_STR_EXPECTED)
 
     User.objects(_id=bson.ObjectId(user_id)).update(user_thumbnail=user_thumbnail)
 
