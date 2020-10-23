@@ -42,7 +42,7 @@ class ErrorCode(Enum):
     MONGODB_VIDEO_CNT_ZERO = {4109: "MongoDB Error: Video Count Param Already Down To Zero"}
     MONGODB_INVALID_SEARCH_PARAM = {4110: "MongoDB Error: Invalid Searching Param"}
     MONGODB_EMPTY_PARAM = {4111: "MongoDB Error: Empty Input Param"}
-    MONGODB_VIDEO_OP_EXISTS = {4112: "MongoDB Error: Video Op Alrady Exists"}
+    MONGODB_VIDEO_OP_EXISTS = {4112: "MongoDB Error: Video Op Already Exists"}
     MONGODB_USER_EMAIL_TAKEN = {4113: "MongoDB Error: User Email Already Taken"}
     MONGODB_USER_INVALID_STATUS = {4114: "MongoDB Error: Invalid User Status"}
     MONGODB_UPDATE_SAME_NAME = {4115: "MongoDB Error: Update To Same Name"}
@@ -62,6 +62,14 @@ class ErrorCode(Enum):
     MONGODB_DICT_EXPECTED = {4129: "MongoDB Error: type <dict> Expected"}
     MONGODB_VIDEO_UPDATE_FAILURE = {4130: "MongoDB Error: Video Update Failure"}
     MONGODB_VIDEO_DELETE_FAILURE = {4131: "MongoDB Error: Video Delete Failure"}
+    MONGODB_VIDEO_COMMENT_UPDATE_FAILURE = {4132: "MongoDB Error: Video Comment Update Failure"}
+    MONGODB_VIDEO_COMMENT_DELETE_FAILURE = {4133: "MongoDB Error: Video Comment Delete Failure"}
+    MONGODB_VIDEO_PROCESS_UPDATE_FAILURE = {4134: "MongoDB Error: Video Process Update Failure"}
+    MONGODB_VIDEO_PROCESS_DELETE_FAILURE = {4135: "MongoDB Error: Video Process Delete Failure"}
+    MONGODB_VIDEO_LIKE_UPDATE_FAILURE = {4136: "MongoDB Error: Video Like Update Failure"}
+    MONGODB_VIDEO_DISLIKE_UPDATE_FAILURE = {4137: "MongoDB Error: Video Dislike Update Failure"}
+    MONGODB_VIDEO_STAR_UPDATE_FAILURE = {4138: "MongoDB Error: Video Star Update Failure"}
+
     # Model Error 5 Series
     MODEL_PASS_NOT_READABLE = {5001: "Password Is Not Readable"}
 

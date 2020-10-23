@@ -2,718 +2,680 @@ from source.db.mongo import get_db
 from source.db.query_video_op import *
 from source.utils.util_validator import *
 from source.utils.util_serializer import *
+from source.utils.util_pattern import *
 
 
 def service_video_op_add_view(conf, **kw):
     db = get_db(conf)
 
-    if "video_id" in kw:
-        try:
-            # Invalid video ID
-            if not is_valid_id(kw["video_id"]):
-                return util_serializer_api_response(400, msg=ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg())
+    # keyword check and formatting
+    if 'video_id' not in kw and 'id' not in kw and '_id' not in kw:
+        raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
 
-            query_video_cnt_incr_by_one(kw["video_id"], "video_view")
-            result = query_video_get_by_video_id(kw["video_id"])
+    kw['service'] = 'video_op'
+    kw = util_pattern_format_param(**kw)
 
-            if len(result) == 1:
-                video_result = util_serializer_mongo_results_to_array(result)
-                video_view = video_result[0]["video_view"]
-                return_body = {
-                    "video_id": kw["video_id"],
-                    "view_count": video_view
-                }
-                return util_serializer_api_response(200, body=return_body, msg="Successfully add video count by 1")
-            else:
-                return util_serializer_api_response(500, msg="Failed to add video view count by 1")
+    if not is_valid_id(kw["video_id"]):
+        raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
 
-        except Exception as e:
-            return util_serializer_api_response(500, msg=extract_error_msg(str(e)))
+    # perform db operations and get result
+    result_mongo = query_video_cnt_incr_by_one(kw["video_id"], "video_view")
+
+    if result_mongo == 1:
+        search_result = util_serializer_mongo_results_to_array(query_video_get_by_video_id(kw["video_id"]))
+        video_view = search_result[0]["video_view"]
+        return_body = {
+            "video_id": kw["video_id"],
+            "view_count": video_view
+        }
+        return return_body
     else:
-        return util_serializer_api_response(400, msg=ErrorCode.SERVICE_MISSING_PARAM.get_msg())
+        raise MongoError(ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND)
 
 
 def service_video_op_get_view(conf, **kw):
     db = get_db(conf)
 
-    if "video_id" in kw:
-        try:
-            # Invalid video ID
-            if not is_valid_id(kw["video_id"]):
-                return util_serializer_api_response(400, msg=ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg())
+    # keyword check and formatting
+    if 'video_id' not in kw and 'id' not in kw and '_id' not in kw:
+        raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
 
-            result = query_video_get_by_video_id(kw["video_id"])
+    kw['service'] = 'video_op'
+    kw = util_pattern_format_param(**kw)
 
-            if len(result) == 1:
-                video_result = util_serializer_mongo_results_to_array(result)
-                video_view = video_result[0]["video_view"]
-                return_body = {
-                    "video_id": kw["video_id"],
-                    "view_count": video_view
-                }
-                return util_serializer_api_response(200, body=return_body, msg="Successfully get video count")
-            else:
-                return util_serializer_api_response(500, msg="Failed to get video view count")
+    if not is_valid_id(kw["video_id"]):
+        raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
 
-        except Exception as e:
-            return util_serializer_api_response(500, msg=extract_error_msg(str(e)))
+    # perform db operations and get result
+    search_mongo = query_video_get_by_video_id(kw["video_id"])
 
+    if len(search_mongo) == 1:
+        search_result = util_serializer_mongo_results_to_array(search_mongo)
+        video_view = search_result[0]["video_view"]
+        return_body = {
+            "video_id": kw["video_id"],
+            "view_count": video_view
+        }
+        return return_body
     else:
-        return util_serializer_api_response(400, msg=ErrorCode.SERVICE_MISSING_PARAM.get_msg())
+        raise MongoError(ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND)
 
 
 def service_video_op_add_comment(conf, **kw):
     db = get_db(conf)
 
-    if "video_id" in kw and "user_id" in kw and "body" in kw:
-        try:
-            # Invalid video ID or user ID
-            if not is_valid_id(kw["video_id"]) or not is_valid_id(kw["user_id"]):
-                return util_serializer_api_response(400, msg=ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg())
+    # keyword check and formatting
+    if 'video_id' not in kw or 'user_id' not in kw or 'comment' not in kw:
+        raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
 
-            # check if the video_op object exists
-            query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
+    kw['service'] = 'video_op'
+    kw = util_pattern_format_param(**kw)
 
-            if len(query_video_op) == 0:
-                # create a new video_op object for current user and video
-                query_video_op_create(kw["user_id"], kw["video_id"])
-                query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
+    if not is_valid_id(kw["video_id"]) or not is_valid_id(kw["user_id"]):
+        raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
 
-            video_op_result = util_serializer_mongo_results_to_array(query_video_op)
-            video_op_id = video_op_result[0]["video_op_id"]
+    # check if the video_op object exists
+    query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
+    if len(query_video_op) == 0:
+        # create a new video_op object for current user and video
+        query_video_op_create(kw["user_id"], kw["video_id"])
+        query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
 
-            update_result = query_video_op_update_comment(video_op_id, kw["body"]["comment"], get_time_now_utc())
+    video_op_result = util_serializer_mongo_results_to_array(query_video_op)
+    video_op_id = video_op_result[0]["video_op_id"]
 
-            if update_result == 1:
-                query_video_cnt_incr_by_one(kw["video_id"], "video_comment")
+    # check if successfully update comment
+    update_result = query_video_op_update_comment(video_op_id, kw["video_op_comment"], get_time_now_utc())
 
-                query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
-                video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[0]
+    if update_result == 1:
+        query_video_cnt_incr_by_one(kw["video_id"], "video_comment")
 
-                return_body = {
-                    "user_id": video_op_obj["user_id"],
-                    "video_id": video_op_obj["video_id"],
-                    "comment": video_op_obj["comment"],
-                    "comment_date": str(video_op_obj["comment_date"])
-                }
+        query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
+        video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[0]
 
-                return util_serializer_api_response(200, body=return_body, msg="Successfully posted comment")
-            else:
-                return util_serializer_api_response(500, msg="Failed to post comment")
-
-        except Exception as e:
-            return util_serializer_api_response(500, msg=extract_error_msg(str(e)))
-
+        return_body = {
+            "user_id": video_op_obj["user_id"],
+            "video_id": video_op_obj["video_id"],
+            "comment": video_op_obj["comment"],
+            "comment_date": str(video_op_obj["comment_date"])
+        }
+        return return_body
     else:
-        return util_serializer_api_response(400, msg=ErrorCode.SERVICE_MISSING_PARAM.get_msg())
+        raise MongoError(ErrorCode.MONGODB_VIDEO_COMMENT_UPDATE_FAILURE)
 
 
 def service_video_op_get_comment(conf, **kw):
     db = get_db(conf)
 
-    if "video_id" in kw and "user_id" in kw:
-        try:
-            # Invalid video ID or user ID
-            if not is_valid_id(kw["video_id"]) or not is_valid_id(kw["user_id"]):
-                return util_serializer_api_response(400, msg=ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg())
+    # keyword check and formatting
+    if 'video_id' not in kw or 'user_id' not in kw:
+        raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
 
-            # check if the video_op object exists
-            query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
+    kw['service'] = 'video_op'
+    kw = util_pattern_format_param(**kw)
 
-            if len(query_video_op) == 0:
-                return util_serializer_api_response(400, msg=ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND.get_msg())
+    if not is_valid_id(kw["video_id"]) or not is_valid_id(kw["user_id"]):
+        raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
 
-            video_op_result = util_serializer_mongo_results_to_array(query_video_op)
-
-            if len(video_op_result) == 1:
-                video_op_obj = video_op_result[0]
-
-                return_body = {
-                    "user_id": video_op_obj["user_id"],
-                    "video_id": video_op_obj["video_id"],
-                    "comment": video_op_obj["comment"],
-                    "comment_date": str(video_op_obj["comment_date"])
-                }
-
-                return util_serializer_api_response(200, body=return_body, msg="Successfully got comment")
-            else:
-                return util_serializer_api_response(500, msg="Failed to get comment")
-
-        except Exception as e:
-            return util_serializer_api_response(500, msg=extract_error_msg(str(e)))
-
+    # check if the video_op object exists
+    query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
+    if len(query_video_op) == 1:
+        video_op_result = util_serializer_mongo_results_to_array(query_video_op)
+        return_body = {
+            "user_id": video_op_result[0]["user_id"],
+            "video_id": video_op_result[0]["video_id"],
+            "comment": video_op_result[0]["comment"],
+            "comment_date": str(video_op_result[0]["comment_date"])
+        }
+        return return_body
     else:
-        return util_serializer_api_response(400, msg=ErrorCode.SERVICE_MISSING_PARAM.get_msg())
+        raise MongoError(ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND)
 
 
 def service_video_op_update_comment(conf, **kw):
     db = get_db(conf)
 
-    if "video_id" in kw and "user_id" in kw and "body" in kw:
-        try:
-            # Invalid video ID or user ID
-            if not is_valid_id(kw["video_id"]) or not is_valid_id(kw["user_id"]):
-                return util_serializer_api_response(400, msg=ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg())
+    # keyword check and formatting
+    if 'video_id' not in kw or 'user_id' not in kw or 'comment' not in kw:
+        raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
 
-            # check if the video_op object exists
-            query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
+    kw['service'] = 'video_op'
+    kw = util_pattern_format_param(**kw)
 
-            if len(query_video_op) == 0:
-                return util_serializer_api_response(400, msg=ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND.get_msg())
+    if not is_valid_id(kw["video_id"]) or not is_valid_id(kw["user_id"]):
+        raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
 
-            video_op_result = util_serializer_mongo_results_to_array(query_video_op)
-            video_op_id = video_op_result[0]["video_op_id"]
+    # check if the video_op object exists
+    query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
+    if len(query_video_op) == 0:
+        # create a new video_op object for current user and video
+        query_video_op_create(kw["user_id"], kw["video_id"])
+        query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
 
-            update_result = query_video_op_update_comment(video_op_id, kw["body"]["comment"], get_time_now_utc())
+    video_op_result = util_serializer_mongo_results_to_array(query_video_op)
+    video_op_id = video_op_result[0]["video_op_id"]
 
-            if update_result == 1:
-                query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
-                video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[0]
+    # check if successfully update comment
+    update_result = query_video_op_update_comment(video_op_id, kw["video_op_comment"], get_time_now_utc())
 
-                return_body = {
-                    "user_id": video_op_obj["user_id"],
-                    "video_id": video_op_obj["video_id"],
-                    "comment": video_op_obj["comment"],
-                    "comment_date": str(video_op_obj["comment_date"])
-                }
+    if update_result == 1:
+        query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
+        video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[0]
 
-                return util_serializer_api_response(200, body=return_body, msg="Successfully updated comment")
-            else:
-                return util_serializer_api_response(500, msg="Failed to update comment")
-
-        except Exception as e:
-            return util_serializer_api_response(500, msg=extract_error_msg(str(e)))
-
+        return_body = {
+            "user_id": video_op_obj["user_id"],
+            "video_id": video_op_obj["video_id"],
+            "comment": video_op_obj["comment"],
+            "comment_date": str(video_op_obj["comment_date"])
+        }
+        return return_body
     else:
-        return util_serializer_api_response(400, msg=ErrorCode.SERVICE_MISSING_PARAM.get_msg())
+        raise MongoError(ErrorCode.MONGODB_VIDEO_COMMENT_UPDATE_FAILURE)
 
 
 def service_video_op_cancel_comment(conf, **kw):
     db = get_db(conf)
 
-    if "video_id" in kw and "user_id" in kw:
-        try:
-            # Invalid video ID or user ID
-            if not is_valid_id(kw["video_id"]) or not is_valid_id(kw["user_id"]):
-                return util_serializer_api_response(400, msg=ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg())
+    # keyword check and formatting
+    if 'video_id' not in kw or 'user_id' not in kw:
+        raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
 
-            # check if the video_op object exists
+    kw['service'] = 'video_op'
+    kw = util_pattern_format_param(**kw)
+
+    if not is_valid_id(kw["video_id"]) or not is_valid_id(kw["user_id"]):
+        raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+
+    # check if the video_op object exists
+    query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
+    if len(query_video_op) == 1:
+        video_op_result = util_serializer_mongo_results_to_array(query_video_op)
+        video_op_id = video_op_result[0]["video_op_id"]
+
+        update_result = query_video_op_update_comment(video_op_id, "", get_time_now_utc())
+
+        if update_result == 1:
+            query_video_cnt_decr_by_one(kw["video_id"], "video_comment")
+
             query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
+            video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[0]
 
-            if len(query_video_op) == 0:
-                return util_serializer_api_response(400, msg=ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND.get_msg())
-
-            video_op_result = util_serializer_mongo_results_to_array(query_video_op)
-            video_op_id = video_op_result[0]["video_op_id"]
-
-            update_result = query_video_op_update_comment(video_op_id, "", get_time_now_utc())
-
-            if update_result == 1:
-                query_video_cnt_decr_by_one(kw["video_id"], "video_comment")
-
-                query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
-                video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[0]
-
-                return_body = {
-                    "user_id": video_op_obj["user_id"],
-                    "video_id": video_op_obj["video_id"],
-                    "comment": video_op_obj["comment"],
-                    "comment_date": str(video_op_obj["comment_date"])
-                }
-
-                return util_serializer_api_response(200, body=return_body, msg="Successfully delete comment")
-            else:
-                return util_serializer_api_response(500, msg="Failed to delete comment")
-
-        except Exception as e:
-            return util_serializer_api_response(500, msg=extract_error_msg(str(e)))
-
+            return_body = {
+                "user_id": video_op_obj["user_id"],
+                "video_id": video_op_obj["video_id"],
+                "comment": video_op_obj["comment"],
+                "comment_date": str(video_op_obj["comment_date"])
+            }
+            return return_body
+        else:
+            raise MongoError(ErrorCode.MONGODB_VIDEO_COMMENT_DELETE_FAILURE)
     else:
-        return util_serializer_api_response(400, msg=ErrorCode.SERVICE_MISSING_PARAM.get_msg())
+        raise MongoError(ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND)
 
 
 def service_video_op_add_process(conf, **kw):
     db = get_db(conf)
 
-    if "video_id" in kw and "user_id" in kw and "body" in kw:
-        try:
-            # Invalid video ID or user ID
-            if not is_valid_id(kw["video_id"]) or not is_valid_id(kw["user_id"]):
-                return util_serializer_api_response(400, msg=ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg())
+    # keyword check and formatting
+    if 'video_id' not in kw or 'user_id' not in kw or 'process' not in kw:
+        raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
 
-            # check if the video_op object exists
-            query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
+    kw['service'] = 'video_op'
+    kw = util_pattern_format_param(**kw)
 
-            if len(query_video_op) == 0:
-                # create a new video_op object for current user and video
-                query_video_op_create(kw["user_id"], kw["video_id"])
-                query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
+    if not is_valid_id(kw["video_id"]) or not is_valid_id(kw["user_id"]):
+        raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
 
-            video_op_result = util_serializer_mongo_results_to_array(query_video_op)
-            video_op_id = video_op_result[0]["video_op_id"]
+    # check if the video_op object exists
+    query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
 
-            if video_op_result[0]["process"] != 0:
-                return util_serializer_api_response(400, msg="Process already existed")
+    if len(query_video_op) == 0:
+        # create a new video_op object for current user and video
+        query_video_op_create(kw["user_id"], kw["video_id"])
+        query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
 
-            update_result = query_video_op_update_process(video_op_id, kw["body"]["process"], get_time_now_utc())
+    video_op_result = util_serializer_mongo_results_to_array(query_video_op)
+    video_op_id = video_op_result[0]["video_op_id"]
 
-            if update_result == 1:
-                query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
-                video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[0]
+    if video_op_result[0]["process"] != 0:
+        raise MongoError(ErrorCode.MONGODB_VIDEO_OP_EXISTS)
 
-                return_body = {
-                    "user_id": video_op_obj["user_id"],
-                    "video_id": video_op_obj["video_id"],
-                    "process": video_op_obj["process"],
-                    "process_date": str(video_op_obj["process_date"])
-                }
-
-                return util_serializer_api_response(200, body=return_body, msg="Successfully add video process")
-            else:
-                return util_serializer_api_response(500, msg="Failed to add video process")
-
-        except Exception as e:
-            return util_serializer_api_response(500, msg=extract_error_msg(str(e)))
-
+    # check if successfully update process
+    if type(kw["process"]) == int and kw["process"] >= 0:
+        update_result = query_video_op_update_process(video_op_id, kw["process"], get_time_now_utc())
     else:
-        return util_serializer_api_response(400, msg=ErrorCode.SERVICE_MISSING_PARAM.get_msg())
+        raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+
+    if update_result == 1:
+        query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
+        video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[0]
+
+        return_body = {
+            "user_id": video_op_obj["user_id"],
+            "video_id": video_op_obj["video_id"],
+            "process": video_op_obj["process"],
+            "process_date": str(video_op_obj["process_date"])
+        }
+        return return_body
+    else:
+        raise MongoError(ErrorCode.MONGODB_VIDEO_PROCESS_UPDATE_FAILURE)
 
 
 def service_video_op_get_process(conf, **kw):
     db = get_db(conf)
 
-    if "video_id" in kw and "user_id" in kw:
-        try:
-            # Invalid video ID or user ID
-            if not is_valid_id(kw["video_id"]) or not is_valid_id(kw["user_id"]):
-                return util_serializer_api_response(400, msg=ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg())
+    # keyword check and formatting
+    if 'video_id' not in kw or 'user_id' not in kw:
+        raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
 
-            # check if the video_op object exists
-            query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
+    kw['service'] = 'video_op'
+    kw = util_pattern_format_param(**kw)
 
-            if len(query_video_op) == 1:
-                video_op_result = util_serializer_mongo_results_to_array(query_video_op)
-                video_op_obj = video_op_result[0]
+    if not is_valid_id(kw["video_id"]) or not is_valid_id(kw["user_id"]):
+        raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
 
-                return_body = {
-                    "user_id": video_op_obj["user_id"],
-                    "video_id": video_op_obj["video_id"],
-                    "process": video_op_obj["process"],
-                    "process_date": str(video_op_obj["process_date"])
-                }
+    # check if the video_op object exists
+    query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
+    if len(query_video_op) == 1:
+        video_op_result = util_serializer_mongo_results_to_array(query_video_op)
+        video_op_obj = video_op_result[0]
 
-                return util_serializer_api_response(200, body=return_body, msg="Successfully get video process")
-            else:
-                return util_serializer_api_response(500, msg="Failed to get video process")
-
-        except Exception as e:
-            return util_serializer_api_response(500, msg=extract_error_msg(str(e)))
-
+        return_body = {
+            "user_id": video_op_obj["user_id"],
+            "video_id": video_op_obj["video_id"],
+            "process": video_op_obj["process"],
+            "process_date": str(video_op_obj["process_date"])
+        }
+        return return_body
     else:
-        return util_serializer_api_response(400, msg=ErrorCode.SERVICE_MISSING_PARAM.get_msg())
+        raise MongoError(ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND)
 
 
 def service_video_op_update_process(conf, **kw):
     db = get_db(conf)
 
-    if "video_id" in kw and "user_id" in kw and "body" in kw:
-        try:
-            # Invalid video ID or user ID
-            if not is_valid_id(kw["video_id"]) or not is_valid_id(kw["user_id"]):
-                return util_serializer_api_response(400, msg=ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg())
+    # keyword check and formatting
+    if 'video_id' not in kw or 'user_id' not in kw or 'process' not in kw:
+        raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
 
-            # check if the video_op object exists
-            query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
+    kw['service'] = 'video_op'
+    kw = util_pattern_format_param(**kw)
 
-            if len(query_video_op) == 0:
-                # create a new video_op object for current user and video
-                query_video_op_create(kw["user_id"], kw["video_id"])
-                query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
+    if not is_valid_id(kw["video_id"]) or not is_valid_id(kw["user_id"]):
+        raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
 
-            video_op_result = util_serializer_mongo_results_to_array(query_video_op)
-            video_op_id = video_op_result[0]["video_op_id"]
+    # check if the video_op object exists
+    query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
 
-            update_result = query_video_op_update_process(video_op_id, kw["body"]["process"], get_time_now_utc())
+    if len(query_video_op) == 0:
+        # create a new video_op object for current user and video
+        query_video_op_create(kw["user_id"], kw["video_id"])
+        query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
 
-            if update_result == 1:
-                query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
-                video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[0]
+    video_op_result = util_serializer_mongo_results_to_array(query_video_op)
+    video_op_id = video_op_result[0]["video_op_id"]
 
-                return_body = {
-                    "user_id": video_op_obj["user_id"],
-                    "video_id": video_op_obj["video_id"],
-                    "process": video_op_obj["process"],
-                    "process_date": str(video_op_obj["process_date"])
-                }
-
-                return util_serializer_api_response(200, body=return_body, msg="Successfully update video process")
-            else:
-                return util_serializer_api_response(500, msg="Failed to update video process")
-
-        except Exception as e:
-            return util_serializer_api_response(500, msg=extract_error_msg(str(e)))
-
+    # check if successfully update process
+    if type(kw["process"]) == int and kw["process"] >= 0:
+        update_result = query_video_op_update_process(video_op_id, kw["process"], get_time_now_utc())
     else:
-        return util_serializer_api_response(400, msg=ErrorCode.SERVICE_MISSING_PARAM.get_msg())
+        raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+
+    if update_result == 1:
+        query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
+        video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[0]
+
+        return_body = {
+            "user_id": video_op_obj["user_id"],
+            "video_id": video_op_obj["video_id"],
+            "process": video_op_obj["process"],
+            "process_date": str(video_op_obj["process_date"])
+        }
+        return return_body
+    else:
+        raise MongoError(ErrorCode.MONGODB_VIDEO_PROCESS_UPDATE_FAILURE)
 
 
 def service_video_op_cancel_process(conf, **kw):
     db = get_db(conf)
 
-    if "video_id" in kw and "user_id" in kw:
-        try:
-            # Invalid video ID or user ID
-            if not is_valid_id(kw["video_id"]) or not is_valid_id(kw["user_id"]):
-                return util_serializer_api_response(400, msg=ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg())
+    # keyword check and formatting
+    if 'video_id' not in kw or 'user_id' not in kw:
+        raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
 
-            # check if the video_op object exists
-            query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
+    kw['service'] = 'video_op'
+    kw = util_pattern_format_param(**kw)
 
-            if len(query_video_op) == 0:
-                # create a new video_op object for current user and video
-                query_video_op_create(kw["user_id"], kw["video_id"])
-                query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
+    if not is_valid_id(kw["video_id"]) or not is_valid_id(kw["user_id"]):
+        raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
 
-            video_op_result = util_serializer_mongo_results_to_array(query_video_op)
-            video_op_id = video_op_result[0]["video_op_id"]
+    # check if the video_op object exists
+    query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
 
-            if video_op_result[0]["process"] == 0:
-                return util_serializer_api_response(400, msg="Process already set to zero")
+    if len(query_video_op) == 0:
+        # create a new video_op object for current user and video
+        query_video_op_create(kw["user_id"], kw["video_id"])
+        query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
 
-            update_result = query_video_op_update_process(video_op_id, 0, get_time_now_utc())
+    video_op_result = util_serializer_mongo_results_to_array(query_video_op)
+    video_op_id = video_op_result[0]["video_op_id"]
 
-            if update_result == 1:
-                query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
-                video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[0]
+    if video_op_result[0]["process"] == 0:
+        raise MongoError(ErrorCode.MONGODB_VIDEO_PROCESS_DELETE_FAILURE)
 
-                return_body = {
-                    "user_id": video_op_obj["user_id"],
-                    "video_id": video_op_obj["video_id"],
-                    "process": video_op_obj["process"],
-                    "process_date": str(video_op_obj["process_date"])
-                }
+    # check if successfully delete process
+    update_result = query_video_op_update_process(video_op_id, 0, get_time_now_utc())
 
-                return util_serializer_api_response(200, body=return_body, msg="Successfully delete video process")
-            else:
-                return util_serializer_api_response(500, msg="Failed to delete video process")
+    if update_result == 1:
+        query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
+        video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[0]
 
-        except Exception as e:
-            return util_serializer_api_response(500, msg=extract_error_msg(str(e)))
-
+        return_body = {
+            "user_id": video_op_obj["user_id"],
+            "video_id": video_op_obj["video_id"],
+            "process": video_op_obj["process"],
+            "process_date": str(video_op_obj["process_date"])
+        }
+        return return_body
     else:
-        return util_serializer_api_response(400, msg=ErrorCode.SERVICE_MISSING_PARAM.get_msg())
+        raise MongoError(ErrorCode.MONGODB_VIDEO_PROCESS_DELETE_FAILURE)
 
 
 def service_video_op_add_like(conf, **kw):
     db = get_db(conf)
 
-    if "video_id" in kw and "user_id" in kw:
-        try:
-            # Invalid video ID or user ID
-            if not is_valid_id(kw["video_id"]) or not is_valid_id(kw["user_id"]):
-                return util_serializer_api_response(400, msg=ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg())
+    # keyword check and formatting
+    if 'video_id' not in kw or 'user_id' not in kw:
+        raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
 
-            # check if the video_op object exists
-            query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
+    kw['service'] = 'video_op'
+    kw = util_pattern_format_param(**kw)
 
-            if len(query_video_op) == 0:
-                # create a new video_op object for current user and video
-                query_video_op_create(kw["user_id"], kw["video_id"])
-                query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
+    if not is_valid_id(kw["video_id"]) or not is_valid_id(kw["user_id"]):
+        raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
 
-            video_op_result = util_serializer_mongo_results_to_array(query_video_op)
-            video_op_id = video_op_result[0]["video_op_id"]
+    # check if the video_op object exists
+    query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
 
-            # If already liked, like operation cannot be duplicated
-            if video_op_result[0]["like"]:
-                return util_serializer_api_response(400, msg="Already liked the video")
+    if len(query_video_op) == 0:
+        # create a new video_op object for current user and video
+        query_video_op_create(kw["user_id"], kw["video_id"])
+        query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
 
-            # If already disliked, dislike operation should be set to False
-            if video_op_result[0]["dislike"]:
-                query_video_op_update_dislike(video_op_id, False)
-                query_video_cnt_decr_by_one(kw["video_id"], "video_dislike")
+    video_op_result = util_serializer_mongo_results_to_array(query_video_op)
+    video_op_id = video_op_result[0]["video_op_id"]
 
-            update_result = query_video_op_update_like(video_op_id, True, get_time_now_utc())
+    # If already liked, like operation cannot be duplicated
+    if video_op_result[0]["like"]:
+        raise MongoError(ErrorCode.MONGODB_VIDEO_LIKE_UPDATE_FAILURE)
 
-            if update_result == 1:
-                query_video_cnt_incr_by_one(kw["video_id"], "video_like")
+    # If already disliked, dislike operation should be set to False
+    if video_op_result[0]["dislike"]:
+        query_video_op_update_dislike(video_op_id, False)
+        query_video_cnt_decr_by_one(kw["video_id"], "video_dislike")
 
-                query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
-                video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[0]
+    # check if successfully add like
+    update_result = query_video_op_update_like(video_op_id, True, get_time_now_utc())
 
-                return_body = {
-                    "user_id": video_op_obj["user_id"],
-                    "video_id": video_op_obj["video_id"],
-                    "like": video_op_obj["like"],
-                    "like_date": str(video_op_obj["like_date"]),
-                    "dislike": video_op_obj["dislike"],
-                    "dislike_date": str(video_op_obj["dislike_date"])
-                }
+    if update_result == 1:
+        query_video_cnt_incr_by_one(kw["video_id"], "video_like")
 
-                return util_serializer_api_response(200, body=return_body, msg="Successfully liked the video")
-            else:
-                return util_serializer_api_response(500, msg="Failed to like the video")
+        query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
+        video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[0]
 
-        except Exception as e:
-            return util_serializer_api_response(500, msg=extract_error_msg(str(e)))
-
+        return_body = {
+            "user_id": video_op_obj["user_id"],
+            "video_id": video_op_obj["video_id"],
+            "like": video_op_obj["like"],
+            "like_date": str(video_op_obj["like_date"]),
+            "dislike": video_op_obj["dislike"],
+            "dislike_date": str(video_op_obj["dislike_date"])
+        }
+        return return_body
     else:
-        return util_serializer_api_response(400, msg=ErrorCode.SERVICE_MISSING_PARAM.get_msg())
+        raise MongoError(ErrorCode.MONGODB_VIDEO_LIKE_UPDATE_FAILURE)
 
 
 def service_video_op_cancel_like(conf, **kw):
     db = get_db(conf)
 
-    if "video_id" in kw and "user_id" in kw:
-        try:
-            # Invalid video ID or user ID
-            if not is_valid_id(kw["video_id"]) or not is_valid_id(kw["user_id"]):
-                return util_serializer_api_response(400, msg=ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg())
+    # keyword check and formatting
+    if 'video_id' not in kw or 'user_id' not in kw:
+        raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
 
-            # check if the video_op object exists
+    kw['service'] = 'video_op'
+    kw = util_pattern_format_param(**kw)
+
+    if not is_valid_id(kw["video_id"]) or not is_valid_id(kw["user_id"]):
+        raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+
+    # check if the video_op object exists
+    query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
+
+    if len(query_video_op) == 0:
+        # create a new video_op object for current user and video
+        query_video_op_create(kw["user_id"], kw["video_id"])
+        query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
+
+    video_op_result = util_serializer_mongo_results_to_array(query_video_op)
+    video_op_id = video_op_result[0]["video_op_id"]
+
+    # Only perform the operation when like is True and dislike is False
+    if video_op_result[0]["like"] and not video_op_result[0]["dislike"]:
+        update_result = query_video_op_update_like(video_op_id, False, get_time_now_utc())
+        if update_result == 1:
+            query_video_cnt_decr_by_one(kw["video_id"], "video_like")
+
             query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
+            video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[0]
 
-            if len(query_video_op) == 0:
-                # create a new video_op object for current user and video
-                query_video_op_create(kw["user_id"], kw["video_id"])
-                query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
-
-            video_op_result = util_serializer_mongo_results_to_array(query_video_op)
-            video_op_id = video_op_result[0]["video_op_id"]
-
-            # Only perform the operation when like is True and dislike is False
-            if video_op_result[0]["like"] and not video_op_result[0]["dislike"]:
-                update_result = query_video_op_update_like(video_op_id, False, get_time_now_utc())
-                if update_result == 1:
-                    query_video_cnt_decr_by_one(kw["video_id"], "video_like")
-
-                    query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
-                    video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[0]
-
-                    return_body = {
-                        "user_id": video_op_obj["user_id"],
-                        "video_id": video_op_obj["video_id"],
-                        "like": video_op_obj["like"],
-                        "like_date": str(video_op_obj["like_date"]),
-                        "dislike": video_op_obj["dislike"],
-                        "dislike_date": str(video_op_obj["dislike_date"])
-                    }
-
-                    return util_serializer_api_response(200, body=return_body, msg="Successfully undo video like")
-                else:
-                    return util_serializer_api_response(500, msg="Failed to undo video like")
-            else:
-                return util_serializer_api_response(400, msg="Video not liked yet")
-
-        except Exception as e:
-            return util_serializer_api_response(500, msg=extract_error_msg(str(e)))
-
+            return_body = {
+                "user_id": video_op_obj["user_id"],
+                "video_id": video_op_obj["video_id"],
+                "like": video_op_obj["like"],
+                "like_date": str(video_op_obj["like_date"]),
+                "dislike": video_op_obj["dislike"],
+                "dislike_date": str(video_op_obj["dislike_date"])
+            }
+            return return_body
+        else:
+            raise MongoError(ErrorCode.MONGODB_VIDEO_LIKE_UPDATE_FAILURE)
     else:
-        return util_serializer_api_response(400, msg=ErrorCode.SERVICE_MISSING_PARAM.get_msg())
+        raise MongoError(ErrorCode.MONGODB_VIDEO_LIKE_UPDATE_FAILURE)
 
 
 def service_video_op_add_dislike(conf, **kw):
     db = get_db(conf)
 
-    if "video_id" in kw and "user_id" in kw:
-        try:
-            # Invalid video ID or user ID
-            if not is_valid_id(kw["video_id"]) or not is_valid_id(kw["user_id"]):
-                return util_serializer_api_response(400, msg=ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg())
+    # keyword check and formatting
+    if 'video_id' not in kw or 'user_id' not in kw:
+        raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
 
-            # check if the video_op object exists
-            query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
+    kw['service'] = 'video_op'
+    kw = util_pattern_format_param(**kw)
 
-            if len(query_video_op) == 0:
-                # create a new video_op object for current user and video
-                query_video_op_create(kw["user_id"], kw["video_id"])
-                query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
+    if not is_valid_id(kw["video_id"]) or not is_valid_id(kw["user_id"]):
+        raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
 
-            video_op_result = util_serializer_mongo_results_to_array(query_video_op)
-            video_op_id = video_op_result[0]["video_op_id"]
+    # check if the video_op object exists
+    query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
 
-            # If already disliked, dislike operation cannot be duplicated
-            if video_op_result[0]["dislike"]:
-                return util_serializer_api_response(400, msg="Already disliked the video")
+    if len(query_video_op) == 0:
+        # create a new video_op object for current user and video
+        query_video_op_create(kw["user_id"], kw["video_id"])
+        query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
 
-            # If already liked, like operation should be set to False
-            if video_op_result[0]["like"]:
-                query_video_op_update_like(video_op_id, False, get_time_now_utc())
-                query_video_cnt_decr_by_one(kw["video_id"], "video_like")
+    video_op_result = util_serializer_mongo_results_to_array(query_video_op)
+    video_op_id = video_op_result[0]["video_op_id"]
 
-            update_result = query_video_op_update_dislike(video_op_id, True, get_time_now_utc())
+    # If already disliked, dislike operation cannot be duplicated
+    if video_op_result[0]["dislike"]:
+        return util_serializer_api_response(400, msg="Already disliked the video")
 
-            if update_result == 1:
-                query_video_cnt_incr_by_one(kw["video_id"], "video_dislike")
+    # If already liked, like operation should be set to False
+    if video_op_result[0]["like"]:
+        query_video_op_update_like(video_op_id, False, get_time_now_utc())
+        query_video_cnt_decr_by_one(kw["video_id"], "video_like")
 
-                query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
-                video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[0]
+    # check if successfully add dislike
+    update_result = query_video_op_update_dislike(video_op_id, True, get_time_now_utc())
 
-                return_body = {
-                    "user_id": video_op_obj["user_id"],
-                    "video_id": video_op_obj["video_id"],
-                    "like": video_op_obj["like"],
-                    "like_date": str(video_op_obj["like_date"]),
-                    "dislike": video_op_obj["dislike"],
-                    "dislike_date": str(video_op_obj["dislike_date"])
-                }
+    if update_result == 1:
+        query_video_cnt_incr_by_one(kw["video_id"], "video_dislike")
 
-                return util_serializer_api_response(200, body=return_body, msg="Successfully disliked the video")
-            else:
-                return util_serializer_api_response(500, msg="Failed to dislike the video")
+        query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
+        video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[0]
 
-        except Exception as e:
-            return util_serializer_api_response(500, msg=extract_error_msg(str(e)))
-
+        return_body = {
+            "user_id": video_op_obj["user_id"],
+            "video_id": video_op_obj["video_id"],
+            "like": video_op_obj["like"],
+            "like_date": str(video_op_obj["like_date"]),
+            "dislike": video_op_obj["dislike"],
+            "dislike_date": str(video_op_obj["dislike_date"])
+        }
+        return return_body
     else:
-        return util_serializer_api_response(400, msg=ErrorCode.SERVICE_MISSING_PARAM.get_msg())
+        raise MongoError(ErrorCode.MONGODB_VIDEO_DISLIKE_UPDATE_FAILURE)
 
 
 def service_video_op_cancel_dislike(conf, **kw):
     db = get_db(conf)
 
-    if "video_id" in kw and "user_id" in kw:
-        try:
-            # Invalid video ID or user ID
-            if not is_valid_id(kw["video_id"]) or not is_valid_id(kw["user_id"]):
-                return util_serializer_api_response(400, msg=ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg())
+    # keyword check and formatting
+    if 'video_id' not in kw or 'user_id' not in kw:
+        raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
 
-            # check if the video_op object exists
+    kw['service'] = 'video_op'
+    kw = util_pattern_format_param(**kw)
+
+    if not is_valid_id(kw["video_id"]) or not is_valid_id(kw["user_id"]):
+        raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+
+    # check if the video_op object exists
+    query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
+
+    if len(query_video_op) == 0:
+        # create a new video_op object for current user and video
+        query_video_op_create(kw["user_id"], kw["video_id"])
+        query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
+
+    video_op_result = util_serializer_mongo_results_to_array(query_video_op)
+    video_op_id = video_op_result[0]["video_op_id"]
+
+    # Only perform the operation when like is False and dislike is True
+    if not video_op_result[0]["like"] and video_op_result[0]["dislike"]:
+        update_result = query_video_op_update_dislike(video_op_id, False, get_time_now_utc())
+        if update_result == 1:
+            query_video_cnt_decr_by_one(kw["video_id"], "video_dislike")
+
             query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
+            video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[0]
 
-            if len(query_video_op) == 0:
-                # create a new video_op object for current user and video
-                query_video_op_create(kw["user_id"], kw["video_id"])
-                query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
-
-            video_op_result = util_serializer_mongo_results_to_array(query_video_op)
-            video_op_id = video_op_result[0]["video_op_id"]
-
-            # Only perform the operation when like is False and dislike is True
-            if not video_op_result[0]["like"] and video_op_result[0]["dislike"]:
-                update_result = query_video_op_update_dislike(video_op_id, False, get_time_now_utc())
-                if update_result == 1:
-                    query_video_cnt_decr_by_one(kw["video_id"], "video_dislike")
-
-                    query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
-                    video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[0]
-
-                    return_body = {
-                        "user_id": video_op_obj["user_id"],
-                        "video_id": video_op_obj["video_id"],
-                        "like": video_op_obj["like"],
-                        "like_date": str(video_op_obj["like_date"]),
-                        "dislike": video_op_obj["dislike"],
-                        "dislike_date": str(video_op_obj["dislike_date"])
-                    }
-
-                    return util_serializer_api_response(200, body=return_body, msg="Successfully undo video dislike")
-                else:
-                    return util_serializer_api_response(500, msg="Failed to undo video dislike")
-            else:
-                return util_serializer_api_response(400, msg="Video not disliked yet")
-
-        except Exception as e:
-            return util_serializer_api_response(500, msg=extract_error_msg(str(e)))
-
+            return_body = {
+                "user_id": video_op_obj["user_id"],
+                "video_id": video_op_obj["video_id"],
+                "like": video_op_obj["like"],
+                "like_date": str(video_op_obj["like_date"]),
+                "dislike": video_op_obj["dislike"],
+                "dislike_date": str(video_op_obj["dislike_date"])
+            }
+            return return_body
+        else:
+            raise MongoError(ErrorCode.MONGODB_VIDEO_DISLIKE_UPDATE_FAILURE)
     else:
-        return util_serializer_api_response(400, msg=ErrorCode.SERVICE_MISSING_PARAM.get_msg())
+        raise MongoError(ErrorCode.MONGODB_VIDEO_DISLIKE_UPDATE_FAILURE)
 
 
 def service_video_op_add_star(conf, **kw):
     db = get_db(conf)
 
-    if "video_id" in kw and "user_id" in kw:
-        try:
-            # Invalid video ID or user ID
-            if not is_valid_id(kw["video_id"]) or not is_valid_id(kw["user_id"]):
-                return util_serializer_api_response(400, msg=ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg())
+    # keyword check and formatting
+    if 'video_id' not in kw or 'user_id' not in kw:
+        raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
 
-            # check if the video_op object exists
-            query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
+    kw['service'] = 'video_op'
+    kw = util_pattern_format_param(**kw)
 
-            if len(query_video_op) == 0:
-                # create a new video_op object for current user and video
-                query_video_op_create(kw["user_id"], kw["video_id"])
-                query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
+    if not is_valid_id(kw["video_id"]) or not is_valid_id(kw["user_id"]):
+        raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
 
-            video_op_result = util_serializer_mongo_results_to_array(query_video_op)
-            video_op_id = video_op_result[0]["video_op_id"]
+    # check if the video_op object exists
+    query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
 
-            # If already starred, star operation cannot be duplicated
-            if video_op_result[0]["star"]:
-                return util_serializer_api_response(400, msg="Already starred the video")
+    if len(query_video_op) == 0:
+        # create a new video_op object for current user and video
+        query_video_op_create(kw["user_id"], kw["video_id"])
+        query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
 
-            update_result = query_video_op_update_star(video_op_id, True, get_time_now_utc())
+    video_op_result = util_serializer_mongo_results_to_array(query_video_op)
+    video_op_id = video_op_result[0]["video_op_id"]
 
-            if update_result == 1:
-                query_video_cnt_incr_by_one(kw["video_id"], "video_star")
+    # If already starred, star operation cannot be duplicated
+    if video_op_result[0]["star"]:
+        raise MongoError(ErrorCode.MONGODB_VIDEO_STAR_UPDATE_FAILURE)
 
-                query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
-                video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[0]
+    # check if successfully add star
+    update_result = query_video_op_update_star(video_op_id, True, get_time_now_utc())
 
-                return_body = {
-                    "user_id": video_op_obj["user_id"],
-                    "video_id": video_op_obj["video_id"],
-                    "star": video_op_obj["star"],
-                    "star_date": str(video_op_obj["star_date"])
-                }
+    if update_result == 1:
+        query_video_cnt_incr_by_one(kw["video_id"], "video_star")
 
-                return util_serializer_api_response(200, body=return_body, msg="Successfully starred the video")
-            else:
-                return util_serializer_api_response(500, msg="Failed to star the video")
+        query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
+        video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[0]
 
-        except Exception as e:
-            return util_serializer_api_response(500, msg=extract_error_msg(str(e)))
-
+        return_body = {
+            "user_id": video_op_obj["user_id"],
+            "video_id": video_op_obj["video_id"],
+            "star": video_op_obj["star"],
+            "star_date": str(video_op_obj["star_date"])
+        }
+        return return_body
     else:
-        return util_serializer_api_response(400, msg=ErrorCode.SERVICE_MISSING_PARAM.get_msg())
+        raise MongoError(ErrorCode.MONGODB_VIDEO_STAR_UPDATE_FAILURE)
 
 
 def service_video_op_cancel_star(conf, **kw):
     db = get_db(conf)
 
-    if "video_id" in kw and "user_id" in kw:
-        try:
-            # Invalid video ID or user ID
-            if not is_valid_id(kw["video_id"]) or not is_valid_id(kw["user_id"]):
-                return util_serializer_api_response(400, msg=ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg())
+    # keyword check and formatting
+    if 'video_id' not in kw or 'user_id' not in kw:
+        raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
 
-            # check if the video_op object exists
+    kw['service'] = 'video_op'
+    kw = util_pattern_format_param(**kw)
+
+    if not is_valid_id(kw["video_id"]) or not is_valid_id(kw["user_id"]):
+        raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+
+    # check if the video_op object exists
+    query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
+
+    if len(query_video_op) == 0:
+        # create a new video_op object for current user and video
+        query_video_op_create(kw["user_id"], kw["video_id"])
+        query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
+
+    video_op_result = util_serializer_mongo_results_to_array(query_video_op)
+    video_op_id = video_op_result[0]["video_op_id"]
+
+    # Only perform the operation when star is True
+    if video_op_result[0]["star"]:
+        update_result = query_video_op_update_star(video_op_id, False, get_time_now_utc())
+        if update_result == 1:
+            query_video_cnt_decr_by_one(kw["video_id"], "video_star")
+
             query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
+            video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[0]
 
-            if len(query_video_op) == 0:
-                # create a new video_op object for current user and video
-                query_video_op_create(kw["user_id"], kw["video_id"])
-                query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
-
-            video_op_result = util_serializer_mongo_results_to_array(query_video_op)
-            video_op_id = video_op_result[0]["video_op_id"]
-
-            # Only perform the operation when star is True
-            if video_op_result[0]["star"]:
-                update_result = query_video_op_update_star(video_op_id, False, get_time_now_utc())
-                if update_result == 1:
-                    query_video_cnt_decr_by_one(kw["video_id"], "video_star")
-
-                    query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
-                    video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[0]
-
-                    return_body = {
-                        "user_id": video_op_obj["user_id"],
-                        "video_id": video_op_obj["video_id"],
-                        "star": video_op_obj["star"],
-                        "star_date": str(video_op_obj["star_date"])
-                    }
-
-                    return util_serializer_api_response(200, body=return_body, msg="Successfully undo video star")
-                else:
-                    return util_serializer_api_response(500, msg="Failed to undo video star")
-            else:
-                return util_serializer_api_response(400, msg="Video not starred yet")
-
-        except Exception as e:
-            return util_serializer_api_response(500, msg=extract_error_msg(str(e)))
-
+            return_body = {
+                "user_id": video_op_obj["user_id"],
+                "video_id": video_op_obj["video_id"],
+                "star": video_op_obj["star"],
+                "star_date": str(video_op_obj["star_date"])
+            }
+            return return_body
+        else:
+            raise MongoError(ErrorCode.MONGODB_VIDEO_STAR_UPDATE_FAILURE)
     else:
-        return util_serializer_api_response(400, msg=ErrorCode.SERVICE_MISSING_PARAM.get_msg())
+        raise MongoError(ErrorCode.MONGODB_VIDEO_STAR_UPDATE_FAILURE)

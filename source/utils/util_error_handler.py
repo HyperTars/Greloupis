@@ -17,5 +17,7 @@ def util_error_handler(e):
             return util_serializer_api_response(404, error_code=e.get_code(), msg=e.get_msg())
         else:
             return util_serializer_api_response(500, error_code=e.get_code(), msg=e.get_msg())
-    else:
+    elif type(e) == Exception:
         return util_serializer_api_response(500, msg=extract_error_msg(str(e)))
+    else:
+        pass
