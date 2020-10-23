@@ -36,6 +36,11 @@ class TestQueryUser(unittest.TestCase):
                                            user_ip=self.temp_user_1['user_reg_ip']).user_name,
                          self.temp_user_1['user_name'])
 
+        # Raise Error: ErrorCode.MONGODB_STR_EXPECTED
+        with self.assertRaises(MongoError) as e:
+            query_user_create(123, 123, 123)
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_STR_EXPECTED)
+
         # Raise Error: ErrorCode.MONGODB_USER_NAME_TAKEN
         with self.assertRaises(MongoError) as e1:
             query_user_create(user_name=self.temp_user_0['user_name'], user_email="NotImportantEmail",
@@ -53,16 +58,31 @@ class TestQueryUser(unittest.TestCase):
         temp_model = query_user_get_by_name(self.const_user_0['user_name'])[0]
         self.assertEqual(temp_model.user_email, self.const_user_0['user_email'])
 
+        # Raise Error: ErrorCode.MONGODB_STR_EXPECTED
+        with self.assertRaises(MongoError) as e:
+            query_user_get_by_name(123)
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_STR_EXPECTED)
+
     def test_c_user_get_by_email(self):
         # Get successfully
         temp_model = query_user_get_by_email(self.const_user_0['user_email'])[0]
         self.assertEqual(temp_model.user_name, self.const_user_0['user_name'])
+
+        # Raise Error: ErrorCode.MONGODB_STR_EXPECTED
+        with self.assertRaises(MongoError) as e:
+            query_user_get_by_email(123)
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_STR_EXPECTED)
 
     def test_d_user_get_by_id(self):
         # Get successfully
         temp_model = query_user_get_by_name(self.const_user_0['user_name'])[0]
         temp_model_1 = query_user_get_by_id(temp_model.to_dict()['user_id'])[0]
         self.assertEqual(temp_model_1.user_name, self.const_user_0['user_name'])
+
+        # Raise Error: ErrorCode.MONGODB_STR_EXPECTED
+        with self.assertRaises(MongoError) as e:
+            query_user_get_by_id(bson.ObjectId("123412341234123412341234"))
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_STR_EXPECTED)
 
     def test_e_user_update_status(self):
         # Update successfully
@@ -72,6 +92,21 @@ class TestQueryUser(unittest.TestCase):
         self.assertEqual(query_user_get_by_id(temp_user_id)[0].user_status, "private")
         query_user_update_status(temp_user_id, "public")
         self.assertEqual(query_user_get_by_id(temp_user_id)[0].user_status, "public")
+
+        # Raise Error: ErrorCode.MONGODB_STR_EXPECTED
+        with self.assertRaises(MongoError) as e:
+            query_user_update_status(123, "private")
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_STR_EXPECTED)
+
+        # Raise Error: ErrorCode.MONGODB_USER_NOT_FOUND
+        with self.assertRaises(MongoError) as e:
+            query_user_update_status("123412341234123412341234", "private")
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_USER_NOT_FOUND)
+
+        # Raise Error: ErrorCode.MONGODB_USER_NOT_FOUND
+        with self.assertRaises(MongoError) as e:
+            query_user_update_status(temp_user_id, "open")
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_INVALID_USER_STATUS)
 
     def test_f_user_add_follow(self):
         # Update successfully
@@ -84,6 +119,26 @@ class TestQueryUser(unittest.TestCase):
         temp_model_2_updated = query_user_get_by_id(temp_user_id_2)[0]
         self.assertIn(temp_user_id_2, temp_model_1_updated.to_dict()['user_following'])
         self.assertIn(temp_user_id_1, temp_model_2_updated.to_dict()['user_follower'])
+
+        # Raise Error: ErrorCode.MONGODB_STR_EXPECTED
+        with self.assertRaises(MongoError) as e:
+            query_user_add_follow(123, 123)
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_STR_EXPECTED)
+
+        # Raise Error: ErrorCode.MONGODB_FOLLOWER_NOT_FOUND
+        with self.assertRaises(MongoError) as e:
+            query_user_add_follow("123456781234567812345678", temp_user_id_1)
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_FOLLOWER_NOT_FOUND)
+
+        # Raise Error: ErrorCode.MONGODB_FOLLOWED_NOT_FOUND
+        with self.assertRaises(MongoError) as e:
+            query_user_add_follow(temp_user_id_2, "123456781234567812345678")
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_FOLLOWED_NOT_FOUND)
+
+        # Raise Error: ErrorCode.MONGODB_FOLLOW_REL_EXISTS
+        with self.assertRaises(MongoError) as e:
+            query_user_add_follow(temp_user_id_1, temp_user_id_2)
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_FOLLOW_REL_EXISTS)
 
     def test_g_user_delete_follow(self):
         # Update successfully
@@ -99,6 +154,21 @@ class TestQueryUser(unittest.TestCase):
         self.assertNotIn(temp_user_id_2, temp_model_1_updated.to_dict()['user_following'])
         self.assertNotIn(temp_user_id_1, temp_model_2_updated.to_dict()['user_follower'])
 
+        # Raise Error: ErrorCode.MONGODB_STR_EXPECTED
+        with self.assertRaises(MongoError) as e:
+            query_user_delete_follow(123, 123)
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_STR_EXPECTED)
+
+        # Raise Error: ErrorCode.MONGODB_FOLLOWER_NOT_FOUND
+        with self.assertRaises(MongoError) as e:
+            query_user_delete_follow("123456781234567812345678", temp_user_id_1)
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_FOLLOWER_NOT_FOUND)
+
+        # Raise Error: ErrorCode.MONGODB_FOLLOWED_NOT_FOUND
+        with self.assertRaises(MongoError) as e:
+            query_user_delete_follow(temp_user_id_2, "123456781234567812345678")
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_FOLLOWED_NOT_FOUND)
+
     def test_h_user_update_name(self):
         # Update successfully
         old_name = self.temp_user_0['user_name']
@@ -112,6 +182,26 @@ class TestQueryUser(unittest.TestCase):
         query_user_update_name(temp_user_id, old_name)
         self.assertEqual(query_user_get_by_id(temp_user_id)[0].user_name, old_name)
 
+        # Raise Error: ErrorCode.MONGODB_STR_EXPECTED
+        with self.assertRaises(MongoError) as e:
+            query_user_update_name(123, 123)
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_STR_EXPECTED)
+
+        # Raise Error: ErrorCode.MONGODB_USER_NOT_FOUND
+        with self.assertRaises(MongoError) as e:
+            query_user_update_name("123456781234567812345678", "kkk")
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_USER_NOT_FOUND)
+
+        # Raise Error: ErrorCode.MONGODB_USER_UPDATE_SAME_NAME
+        with self.assertRaises(MongoError) as e:
+            query_user_update_name(temp_user_id, old_name)
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_UPDATE_SAME_NAME)
+
+        # Raise Error: ErrorCode.MONGODB_USER_UPDATE_NAME_TAKEN
+        with self.assertRaises(MongoError) as e:
+            query_user_update_name(temp_user_id, self.temp_user_1['user_name'])
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_USER_NAME_TAKEN)
+
     def test_i_user_update_password(self):
         # Update successfully
         old_pass = self.temp_user_0['user_password']
@@ -123,6 +213,21 @@ class TestQueryUser(unittest.TestCase):
 
         query_user_update_password(temp_user_id, old_pass)
         self.assertEqual(query_user_get_by_id(temp_user_id)[0].user_password, old_pass)
+
+        # Raise Error: ErrorCode.MONGODB_STR_EXPECTED
+        with self.assertRaises(MongoError) as e:
+            query_user_update_password(123, 123)
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_STR_EXPECTED)
+
+        # Raise Error: ErrorCode.MONGODB_USER_NOT_FOUND
+        with self.assertRaises(MongoError) as e:
+            query_user_update_password("123456781234567812345678", "kkk")
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_USER_NOT_FOUND)
+
+        # Raise Error: ErrorCode.MONGODB_USER_UPDATE_SAME_NAME
+        with self.assertRaises(MongoError) as e:
+            query_user_update_password(temp_user_id, old_pass)
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_UPDATE_SAME_PASS)
 
     def test_j_user_update_thumbnail(self):
         # Update successfully
@@ -136,6 +241,16 @@ class TestQueryUser(unittest.TestCase):
 
         query_user_update_password(temp_user_id, old_thumbnail)
         self.assertEqual(query_user_get_by_id(temp_user_id)[0].user_password, old_thumbnail)
+
+        # Raise Error: ErrorCode.MONGODB_STR_EXPECTED
+        with self.assertRaises(MongoError) as e:
+            query_user_update_thumbnail(123, 123)
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_STR_EXPECTED)
+
+        # Raise Error: ErrorCode.MONGODB_USER_NOT_FOUND
+        with self.assertRaises(MongoError) as e:
+            query_user_update_thumbnail("123456781234567812345678", "kkk")
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_USER_NOT_FOUND)
 
     def test_k_user_update_details(self):
         temp_model = query_user_get_by_name(self.temp_user_0['user_name'])[0].to_dict()
@@ -166,6 +281,21 @@ class TestQueryUser(unittest.TestCase):
         self.assertEqual(new_model['user_detail']['user_country'], new_user_country)
         self.assertEqual(new_model['user_detail']['user_zip'], new_user_zip)
 
+        # Raise Error: ErrorCode.MONGODB_STR_EXPECTED
+        with self.assertRaises(MongoError) as e:
+            query_user_update_details(123)
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_STR_EXPECTED)
+
+        # Raise Error: ErrorCode.MONGODB_STR_EXPECTED
+        with self.assertRaises(MongoError) as e:
+            query_user_update_details(temp_user_id, user_city=123)
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_STR_EXPECTED)
+
+        # Raise Error: ErrorCode.MONGODB_USER_NOT_FOUND
+        with self.assertRaises(MongoError) as e:
+            query_user_update_details("123456781234567812345678")
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_USER_NOT_FOUND)
+
     def test_l_user_add_login(self):
         # Add successfully
         temp_model = query_user_get_by_name(self.temp_user_0['user_name'])[0].to_dict()
@@ -177,14 +307,44 @@ class TestQueryUser(unittest.TestCase):
 
         self.assertIn(temp_login, query_user_get_by_id(temp_user_id)[0].to_dict()['user_login'])
 
+        # Raise Error: ErrorCode.MONGODB_STR_EXPECTED
+        with self.assertRaises(MongoError) as e:
+            query_user_add_login(123)
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_STR_EXPECTED)
+
+        # Raise Error: ErrorCode.MONGODB_USER_NOT_FOUND
+        with self.assertRaises(MongoError) as e:
+            query_user_add_login("123456781234567812345678")
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_USER_NOT_FOUND)
+
     def test_m_user_delete_by_id(self):
         # Delete successfully
         temp_model_0 = query_user_get_by_name(self.temp_user_0['user_name'])[0].to_dict()
         self.assertEqual(query_user_delete_by_id(temp_model_0['user_id']), 1)
 
+        # Raise Error: ErrorCode.MONGODB_STR_EXPECTED
+        with self.assertRaises(MongoError) as e:
+            query_user_delete_by_id(123)
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_STR_EXPECTED)
+
+        # Raise Error: ErrorCode.MONGODB_USER_NOT_FOUND
+        with self.assertRaises(MongoError) as e:
+            query_user_delete_by_id("123456781234567812345678")
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_USER_NOT_FOUND)
+
     def test_n_user_delete_by_name(self):
         # Delete successfully
         self.assertEqual(query_user_delete_by_name(self.temp_user_1['user_name']), 1)
+
+        # Raise Error: ErrorCode.MONGODB_STR_EXPECTED
+        with self.assertRaises(MongoError) as e:
+            query_user_delete_by_name(123)
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_STR_EXPECTED)
+
+        # Raise Error: ErrorCode.MONGODB_USER_NOT_FOUND
+        with self.assertRaises(MongoError) as e:
+            query_user_delete_by_name("123456781234567812345678")
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_USER_NOT_FOUND)
 
     def test_o_user_search_by_contains(self):
         # Search successfully
@@ -242,6 +402,21 @@ class TestQueryUser(unittest.TestCase):
         search_user_status = self.const_user_0['user_status']
         self.assertEqual(query_user_search_by_contains(user_status=search_user_status[1:2])[0].user_status,
                          search_user_status)
+
+        # Raise Error: ErrorCode.MONGODB_EMPTY_PARAM
+        with self.assertRaises(MongoError) as e:
+            query_user_search_by_contains()
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_EMPTY_PARAM)
+
+        # Raise Error: ErrorCode.MONGODB_STR_EXPECTED
+        with self.assertRaises(MongoError) as e:
+            query_user_search_by_contains(user_city=123)
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_STR_EXPECTED)
+
+        # Raise Error: ErrorCode.MONGODB_INVALID_SEARCH_PARAM
+        with self.assertRaises(MongoError) as e:
+            query_user_search_by_contains(user_lmao="lmao")
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_INVALID_SEARCH_PARAM)
 
     def test_p_user_search_by_pattern(self):
         search_user_name = self.const_user_0['user_name']
@@ -333,6 +508,21 @@ class TestQueryUser(unittest.TestCase):
         self.assertEqual(query_user_search_by_pattern(pattern_status=pattern_status)[0].user_status,
                          search_user_status)
 
+        # Raise Error: ErrorCode.MONGODB_EMPTY_PARAM
+        with self.assertRaises(MongoError) as e:
+            query_user_search_by_pattern()
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_EMPTY_PARAM)
+
+        # Raise Error: ErrorCode.MONGODB_RE_PATTERN_EXPECTED
+        with self.assertRaises(MongoError) as e:
+            query_user_search_by_pattern(user_city="1234")
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_RE_PATTERN_EXPECTED)
+
+        # Raise Error: ErrorCode.MONGODB_INVALID_SEARCH_PARAM
+        with self.assertRaises(MongoError) as e:
+            query_user_search_by_pattern(user_lmao=pattern_email)
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_INVALID_SEARCH_PARAM)
+
     def test_q_user_search_by_aggregate(self):
         # Search successfully
         pipeline1 = [
@@ -356,6 +546,11 @@ class TestQueryUser(unittest.TestCase):
         ]
         self.assertEqual(query_user_search_by_aggregate(pipeline1)[0]['user_name'], "milvus")
         self.assertEqual(query_user_search_by_aggregate(pipeline2)[0]['user_name'], "hypertars")
+
+        # Raise Error: ErrorCode.MONGODB_LIST_EXPECTED
+        with self.assertRaises(MongoError) as e:
+            query_user_search_by_aggregate("lol")
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_LIST_EXPECTED)
 
 
 class TestQueryVideo(unittest.TestCase):
