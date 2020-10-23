@@ -42,10 +42,7 @@ class TestRoutes(unittest.TestCase):
             self.assertEqual(response_json["body"][0]["user_name"], "hypertars",
                              msg="First matched user name")
 
-
-        '''
-            Test search video by keyword
-        '''
+        # Test search video by keyword
         with app.test_request_context(
                 '/search/video?keyword=xixihaha', data={}):
             keyword = request.args.get('keyword')

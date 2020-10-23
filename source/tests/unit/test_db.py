@@ -359,49 +359,44 @@ class TestQueryUser(unittest.TestCase):
                          search_user_email)
 
         search_user_first_name = self.const_user_0['user_detail']['user_first_name']
-        self.assertEqual(query_user_search_by_contains(user_first_name=
-                                                       search_user_first_name[0:2])[0].user_detail.user_first_name,
-                         search_user_first_name)
+        self.assertEqual(query_user_search_by_contains(user_first_name=search_user_first_name[0:2])
+                         [0].user_detail.user_first_name, search_user_first_name)
 
         search_user_last_name = self.const_user_0['user_detail']['user_last_name']
-        self.assertEqual(query_user_search_by_contains(user_last_name=
-                                                       search_user_last_name[0:2])[0].user_detail.user_last_name,
-                         search_user_last_name)
+        self.assertEqual(query_user_search_by_contains(user_last_name=search_user_last_name[0:2])
+                         [0].user_detail.user_last_name, search_user_last_name)
 
         search_user_phone = self.const_user_0['user_detail']['user_phone']
-        self.assertEqual(query_user_search_by_contains(user_phone=search_user_phone[1:5])[0].user_detail.user_phone,
-                         search_user_phone)
+        self.assertEqual(query_user_search_by_contains(user_phone=search_user_phone[1:5])
+                         [0].user_detail.user_phone, search_user_phone)
 
         search_user_street1 = self.const_user_0['user_detail']['user_street1']
-        self.assertEqual(query_user_search_by_contains(user_street1=
-                                                       search_user_street1[1:2])[0].user_detail.user_street1,
-                         search_user_street1)
+        self.assertEqual(query_user_search_by_contains(user_street1=search_user_street1[1:2])
+                         [0].user_detail.user_street1, search_user_street1)
 
         search_user_street2 = self.const_user_0['user_detail']['user_street2']
-        self.assertEqual(query_user_search_by_contains(user_street2=
-                                                       search_user_street2[0:2])[0].user_detail.user_street2,
-                         search_user_street2)
+        self.assertEqual(query_user_search_by_contains(user_street2=search_user_street2[0:2])
+                         [0].user_detail.user_street2, search_user_street2)
 
         search_user_city = self.const_user_0['user_detail']['user_city']
-        self.assertEqual(query_user_search_by_contains(user_city=search_user_city)[0].user_detail.user_city,
-                         search_user_city)
+        self.assertEqual(query_user_search_by_contains(user_city=search_user_city)
+                         [0].user_detail.user_city, search_user_city)
 
         search_user_state = self.const_user_0['user_detail']['user_state']
-        self.assertEqual(query_user_search_by_contains(user_state=search_user_state)[0].user_detail.user_state,
-                         search_user_state)
+        self.assertEqual(query_user_search_by_contains(user_state=search_user_state)
+                         [0].user_detail.user_state, search_user_state)
 
         search_user_country = self.const_user_0['user_detail']['user_country']
-        self.assertEqual(query_user_search_by_contains(user_country=
-                                                       search_user_country[1:2])[0].user_detail.user_country,
-                         search_user_country)
+        self.assertEqual(query_user_search_by_contains(user_country=search_user_country[1:2])
+                         [0].user_detail.user_country, search_user_country)
 
         search_user_zip = self.const_user_0['user_detail']['user_zip']
-        self.assertEqual(query_user_search_by_contains(user_zip=search_user_zip[1:2])[0].user_detail.user_zip,
-                         search_user_zip)
+        self.assertEqual(query_user_search_by_contains(user_zip=search_user_zip[1:2])
+                         [0].user_detail.user_zip, search_user_zip)
 
         search_user_status = self.const_user_0['user_status']
-        self.assertEqual(query_user_search_by_contains(user_status=search_user_status[1:2])[0].user_status,
-                         search_user_status)
+        self.assertEqual(query_user_search_by_contains(user_status=search_user_status[1:2])
+                         [0].user_status, search_user_status)
 
         # Raise Error: ErrorCode.MONGODB_EMPTY_PARAM
         with self.assertRaises(MongoError) as e:
@@ -449,16 +444,14 @@ class TestQueryUser(unittest.TestCase):
         # PATTERN FIRST NAME #
         search_user_first_name = self.const_user_0['user_detail']['user_first_name']
         pattern_first_name = util_pattern_compile(search_user_first_name[0:3], exact=False, ignore_case=True)
-        self.assertEqual(query_user_search_by_pattern(pattern_first_name=
-                                                      pattern_first_name)[0].user_detail.user_first_name,
-                         search_user_first_name)
+        self.assertEqual(query_user_search_by_pattern(pattern_first_name=pattern_first_name)
+                         [0].user_detail.user_first_name, search_user_first_name)
 
         # PATTERN LAST NAME #
         search_user_last_name = self.const_user_0['user_detail']['user_last_name']
         pattern_last_name = util_pattern_compile(search_user_last_name[0:3], exact=False, ignore_case=True)
-        self.assertEqual(query_user_search_by_pattern(pattern_last_name=
-                                                      pattern_last_name)[0].user_detail.user_last_name,
-                         search_user_last_name)
+        self.assertEqual(query_user_search_by_pattern(pattern_last_name=pattern_last_name)
+                         [0].user_detail.user_last_name, search_user_last_name)
 
         # PATTERN PHONE #
         search_user_phone = self.const_user_0['user_detail']['user_phone']
