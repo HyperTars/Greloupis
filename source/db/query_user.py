@@ -95,7 +95,7 @@ def query_user_update_status(user_id: str, user_status: str):
         raise MongoError(ErrorCode.MONGODB_USER_NOT_FOUND)
 
     if user_status not in VALID_USER_STATUS:
-        raise MongoError(ErrorCode.MONGODB_INVALID_USER_STATUS)
+        raise MongoError(ErrorCode.MONGODB_USER_INVALID_STATUS)
 
     return User.objects(_id=bson.ObjectId(user_id)).update(user_status=user_status)
 

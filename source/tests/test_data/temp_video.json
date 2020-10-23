@@ -3,5 +3,19 @@
     "user_id": "5f88f883e6ac4f89900ac983",
     "video_title": "test_video_title",
     "video_raw_content": "https://s3.amazon.com/ovp/temp-storage/139123810.mp4"
+  },
+  {
+    "user_id": "5f88f883e6ac4f89900ac983",
+    "video_title": "full info",
+    "video_raw_content": "lol",
+    "video_raw_size": 1024,
+    "video_duration": 1024,
+    "video_channel": "self-made",
+    "video_tag": ["politics", "president"],
+    "video_category": ["entertainment"],
+    "video_description": "XiXi and HaHa AMV",
+    "video_language": "Mandarin",
+    "video_status": "public",
+    "video_thumbnail": "thumbnail url"
   }
 ]
