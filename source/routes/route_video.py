@@ -86,16 +86,25 @@ class Video(Resource):
         """
             User upload a video
         """
-        mock_body = {
+        kw = {
             "user_id": "5f88f883e6ac4f89900ac983",
             "video_title": "mock_video_2",
-            "video_raw_content": "https://s3.amazon.com/mock_video.mp4",
-            "video_raw_size": 13.23
+            "video_raw_content": "https://s3.amazon.com/mock_video.mp4"
         }
 
-        # user_id = request.form.get("user_id")
-
-        return service_video_upload(conf=config['default'], body=mock_body)
+        try:
+            upload_result = service_video_upload(conf=config['default'], **kw)
+            if len(upload_result) == 1:
+                return_body = util_serializer_mongo_results_to_array(upload_result, format="json")
+                return util_serializer_api_response(200, body=return_body, msg="Successfully uploaded video")
+            else:
+                return util_serializer_api_response(500, msg="Failed to upload video")
+        except ServiceError as e:
+            return util_serializer_api_response(400, mongo_code=e.get_code(), msg=e.get_msg())
+        except MongoError as e:
+            return util_serializer_api_response(500, mongo_code=e.get_code(), msg=e.get_msg())
+        except Exception as e:
+            return util_serializer_api_response(500, msg=extract_error_msg(str(e)))
 
 
 @video.route('/<string:video_id>', methods=['DELETE', 'GET', 'PUT'])
