@@ -10,6 +10,7 @@ from .route_user import thumbnail, general_response, star, comment, like, dislik
 from source.service.service_video import *
 from source.service.service_video_op import *
 from source.utils.util_serializer import *
+from source.utils.util_error_handler import *
 from source.settings import *
 
 video = Namespace('video', description='Video APIs')
@@ -99,12 +100,8 @@ class Video(Resource):
                 return util_serializer_api_response(200, body=return_body, msg="Successfully uploaded video")
             else:
                 return util_serializer_api_response(500, msg="Failed to upload video")
-        except ServiceError as e:
-            return util_serializer_api_response(400, mongo_code=e.get_code(), msg=e.get_msg())
-        except MongoError as e:
-            return util_serializer_api_response(500, mongo_code=e.get_code(), msg=e.get_msg())
-        except Exception as e:
-            return util_serializer_api_response(500, msg=extract_error_msg(str(e)))
+        except (ServiceError, MongoError, RouteError, Exception) as e:
+            return util_error_handler(e)
 
 
 @video.route('/<string:video_id>', methods=['DELETE', 'GET', 'PUT'])
@@ -120,8 +117,19 @@ class VideoVideoId(Resource):
             Get video information by video ID
         """
         video_id = request.url.split('/')[-1]
+        kw = {
+            "video_id": video_id
+        }
 
-        return service_video_info(conf=config['default'], video_id=video_id)
+        try:
+            get_result = service_video_info(conf=config['default'], **kw)
+            if len(get_result) == 1:
+                return_body = util_serializer_mongo_results_to_array(get_result, format="json")
+                return util_serializer_api_response(200, body=return_body, msg="Successfully got video by ID")
+            else:
+                return util_serializer_api_response(500, msg="Failed to get video by ID")
+        except (ServiceError, MongoError, RouteError, Exception) as e:
+            return util_error_handler(e)
 
     @video.response(405, 'Method not allowed')
     def put(self, video_id):
@@ -130,21 +138,39 @@ class VideoVideoId(Resource):
         """
         video_id = request.url.split('/')[-1]
 
-        mock_body = {
-            "video_title": "mock_video_updated",
+        kw = {
+            "video_title": "mock_video_2_updated",
             "video_status": "public",
             "video_raw_size": 51.23
         }
 
-        return service_video_update(conf=config['default'], video_id=video_id, body=mock_body)
+        try:
+            update_result = service_video_update(conf=config['default'], video_id=video_id, **kw)
+            if len(update_result) == 1:
+                return_body = util_serializer_mongo_results_to_array(update_result, format="json")
+                return util_serializer_api_response(200, body=return_body, msg="Successfully updated video")
+            else:
+                return util_serializer_api_response(500, msg="Failed to update video")
+        except (ServiceError, MongoError, RouteError, Exception) as e:
+            return util_error_handler(e)
 
     def delete(self, video_id):
         """
             Delete video information by video ID
         """
         video_id = request.url.split('/')[-1]
+        kw = {
+            "video_id": video_id
+        }
 
-        return service_video_delete(conf=config['default'], video_id=video_id)
+        try:
+            delete_result = service_video_delete(conf=config['default'], **kw)
+            if delete_result == 1:
+                return util_serializer_api_response(200, msg="Successfully deleted video")
+            else:
+                return util_serializer_api_response(500, msg="Failed to delete video")
+        except (ServiceError, MongoError, RouteError, Exception) as e:
+            return util_error_handler(e)
 
 
 @video.route('/<string:video_id>/view', methods=['GET', 'PUT'])
