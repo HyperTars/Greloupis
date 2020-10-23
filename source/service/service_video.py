@@ -11,49 +11,16 @@ from source.models.model_errors import *
 def service_video_upload(conf, **kw):
     db = get_db(conf)
 
-    # new
-    kw['service'] = 'video'
-    if 'user_id' not in kw and 'id' not in kw and '_id' not in kw or \
-            'video_title' not in kw and 'title' not in kw or \
-            'video_raw_content' and 'raw_content' not in kw and 'content' not in kw:
+    if ('user_id' not in kw and 'id' not in kw and '_id' not in kw) or \
+            ('video_title' not in kw and 'title' not in kw) or \
+            ('video_raw_content' not in kw and 'raw_content' not in kw and 'content' not in kw):
         raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
 
+    kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
-    try:
-        query_video_create(kw['user_id'], kw['video_title'], kw['video_raw_content'])
-        result_mongo = query_video_get_by_title(kw['video_title'])
-        result_array = util_serializer_mongo_results_to_array(result_mongo)
-    except MongoError as e:
-        print(e.get_code())
-        print(e.get_msg())
-        raise e
-    except Exception as e:
-        raise e
-    return result_array  # Convert to api response in route
-
-    # original version
-    if "body" in kw:
-        user_id = kw["body"]["user_id"]
-        video_title = kw["body"]["video_title"]
-        video_raw_content = kw["body"]["video_raw_content"]
-
-        try:
-            query_video_create(user_id=user_id, video_title=video_title, video_raw_content=video_raw_content)
-
-            # get the video by title
-            result = query_video_get_by_title(kw["body"]["video_title"])
-
-            if len(result) == 1:
-                post_result_json = util_serializer_mongo_results_to_array(result, format="json")
-                return util_serializer_api_response(200, body=post_result_json, msg="Successfully uploaded video")
-            else:
-                return util_serializer_api_response(500, msg="Failed to upload video")
-
-        except Exception as e:
-            return util_serializer_api_response(500, msg=extract_error_msg(str(e)))
-
-    else:
-        return util_serializer_api_response(400, msg=ErrorCode.SERVICE_MISSING_PARAM.get_msg())
+    query_video_create(kw['user_id'], kw['video_title'], kw['video_raw_content'])
+    result_mongo = query_video_get_by_title(kw['video_title'])
+    return result_mongo
 
 
 def service_video_info(conf, **kw):

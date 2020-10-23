@@ -9,7 +9,7 @@ def handler(file_name):
     return RotatingFileHandler(file_name, mode='D', delay=False, encoding='UTF-8', backupCount=15)
 
 
-#def log_config(file_name, level=logging.DEBUG):
+# def log_config(file_name, level=logging.DEBUG):
 #    current_app.logging.basicConfig(filename=file_name, level=level,
 #                                    format='% (asctime)s % (levelname)s % (name)s % (threadName)s: % (message)s')
 
@@ -22,4 +22,3 @@ def log(data, level='info'):
         logger.debug(data)
     elif level == 'warning':
         logger.warning(data)
-

@@ -25,33 +25,30 @@ def util_serializer_request(request, format="dict"):
 
 
 def extract_error_msg(message):
-    if message.find("'") != -1:
-        start = message.find("'")
-        end = message.rfind("'")
-        return message[start + 1:end]
-    elif message.find('"') != -1:
-        start = message.find('"')
-        end = message.rfind('"')
-        return message[start + 1:end]
-    else:
-        return message
+    # if message.find("'") != -1:
+    #     start = message.find("'")
+    #     end = message.rfind("'")
+    #     return message[start + 1:end]
+    # elif message.find('"') != -1:
+    #     start = message.find('"')
+    #     end = message.rfind('"')
+    #     return message[start + 1:end]
+    # else:
+    #     return message
+    return message.replace("'", "").replace('"', "")
 
-    # return message.replace("'", "").replace('"', "")
 
-
-def util_serializer_api_response(code, body=[{}], msg=""):
+def util_serializer_api_response(code, body=[{}], mongo_code=None, msg=""):
     if code == 200:
-        response = {"code": code, "body": body, "detailed_msg": str(msg)}
-
+        response = {"code": code, "body": body, "message": str(msg)}
     else:
         code = str(code)
-        general_message = {
-            "400": "Bad Request",
-            "404": "Resource Not Found",
-            "405": "Method Not Allowed",
-            "500": "Internal Server Error"
-        }
-        response = {"code": code, "general_msg": general_message[code], "detailed_msg": str(msg)}
+
+        if mongo_code is None:
+            response = {"code": code, "message": str(msg)}
+        else:
+            mongo_code = str(mongo_code)
+            response = {"code": code, "mongo_code": mongo_code, "message": str(msg)}
 
     result = json.dumps(response, indent=4, sort_keys=True, separators=(',', ': ')) \
         .replace("'", "/^").replace('\\"', "'").replace('"{', '{')\
