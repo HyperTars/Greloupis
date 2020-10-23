@@ -80,25 +80,25 @@ def util_pattern_build(**kw):
     # Construct pattern string
     # User
     if 'user_name' in kw:
-        kw['user_name'] = util_pattern_compile(kw['user_name'], kw['exact'], kw['ignore_case'])
+        kw['user_name'] = util_pattern_compile(kw['user_name'], **kw)
     elif 'user_email' in kw:
-        kw['user_email'] = util_pattern_compile(kw['user_email'], kw['exact'], kw['ignore_case'])
+        kw['user_email'] = util_pattern_compile(kw['user_email'], **kw)
 
     # Video
     elif 'video_title' in kw:
-        kw['video_title'] = util_pattern_compile(kw['video_title'], kw['exact'], kw['ignore_case'])
+        kw['video_title'] = util_pattern_compile(kw['video_title'], **kw)
     elif 'video_channel' in kw:
-        kw['video_channel'] = util_pattern_compile(kw['video_channel'], kw['exact'], kw['ignore_case'])
+        kw['video_channel'] = util_pattern_compile(kw['video_channel'], **kw)
     elif 'video_tag' in kw:
-        kw['video_tag'] = util_pattern_compile(kw['video_tag'], kw['exact'], kw['ignore_case'])
+        kw['video_tag'] = util_pattern_compile(kw['video_tag'], **kw)
     elif 'video_category' in kw:
-        kw['video_category'] = util_pattern_compile(kw['video_category'], kw['exact'], kw['ignore_case'])
+        kw['video_category'] = util_pattern_compile(kw['video_category'], **kw)
     elif 'video_description' in kw:
-        kw['video_description'] = util_pattern_compile(kw['video_description'], kw['exact'], kw['ignore_case'])
+        kw['video_description'] = util_pattern_compile(kw['video_description'], **kw)
 
     # VideoOp
     elif 'video_op_comment' in kw:
-        kw['video_op_comment'] = util_pattern_compile(kw['video_op_comment'], kw['exact'], kw['ignore_case'])
+        kw['video_op_comment'] = util_pattern_compile(kw['video_op_comment'], **kw)
     # TODO: add more attr search support
     else:
         return ErrorCode.UTIL_INVALID_PATTERN_PARAM
@@ -106,22 +106,22 @@ def util_pattern_build(**kw):
     return kw
 
 
-def util_pattern_compile(pattern_string, exact, ignore_case):
+def util_pattern_compile(pattern_string, **kw):
     # Remove '+' in the beginning of phone number
-    if pattern_string[0] == '+':
-        pattern_string = pattern_string[1:]
+    if '+' in pattern_string:
+        pattern_string = pattern_string.replace('+', '')
 
     # Pattern flags
-    if exact is True:
+    if 'exact' in kw and kw['exact'] is True:
         pattern_string = '\\b' + pattern_string + '\\b'
-    else:
+    elif 'exact' in kw and kw['exact'] is False:
         pattern_string = '.*' + pattern_string + '.*'
 
     # TODO: allow typo, allow slice
 
     # Compile pattern string
     pattern = re.compile(pattern_string)
-    if ignore_case is True:
+    if 'ignore_case' in kw and kw['ignore_case'] is True:
         pattern = re.compile(pattern_string, re.IGNORECASE)
 
     return pattern

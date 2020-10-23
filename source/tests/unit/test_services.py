@@ -1,4 +1,5 @@
 import unittest
+from source.models.model_errors import *
 from source.service.service_search import *
 from source.settings import *
 from source.tests.unit.test_load_data import util_load_test_data
@@ -7,19 +8,65 @@ from source.tests.unit.test_load_data import util_load_test_data
 class TestServiceSearchUser(unittest.TestCase):
     data = util_load_test_data()
     const_user_0 = data['const_user'][0]
+    const_user_1 = data['const_user'][1]
+    const_user_2 = data['const_user'][2]
 
     @classmethod
     def setUpClass(cls) -> None:
         cls.conf = config['test']
 
     def test_search_user(self):
+        # Search successfully with ignore_case
         self.assertEqual(service_search_user(self.conf, name="t", ignore_case=False)[0]['user_name'],
                          self.const_user_0['user_name'])
-        self.assertEqual(len(service_search_user(self.conf, name="test", ignore_case=True, exact=True)),
-                         0)
-        self.assertEqual(len(service_search_user(self.conf, name="test_user", ignore_case=True,
-                                                 format="dict", exact=True)),
-                         0)
+
+        # Search successfully with exact (result = 0)
+        self.assertEqual(len(service_search_user(self.conf, name="milvu", exact=True)), 0)
+
+        # Search successfully with ignore_case and exact
+        self.assertEqual(service_search_user(self.conf, name="milvUS", ignore_case=True, exact=True)[0]['user_name'],
+                         self.const_user_1['user_name'])
+
+        # Search successfully with custom pattern (pattern=True)
+        self.assertEqual(service_search_user(self.conf, name=".*t.*", pattern=True)[0]['user_name'],
+                         self.const_user_0['user_name'])
+
+        # Raise Error: ErrorCode.SERVICE_PARAM_SLICE_NOT_SUPPORT
+        with self.assertRaises(ServiceError) as e:
+            service_search_user(self.conf, slice=True)
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_PARAM_SLICE_NOT_SUPPORT)
+
+    def test_search_user_by_contains(self):
+        user = self.const_user_0
+        self.assertEqual(service_search_user_by_contains(user_id=user['_id']['$oid'])[0]['user_name'],
+                         user['user_name'])
+        self.assertEqual(service_search_user_by_contains(user_email=user['user_email'])[0]['user_name'],
+                         user['user_name'])
+        self.assertEqual(service_search_user_by_contains(user_first_name=user['user_detail']['user_first_name'])
+                         [0]['user_name'], user['user_name'])
+        self.assertEqual(service_search_user_by_contains(user_last_name=user['user_detail']['user_last_name'])
+                         [0]['user_name'], user['user_name'])
+        self.assertEqual(service_search_user_by_contains(user_phone=user['user_detail']['user_phone'])
+                         [0]['user_name'], user['user_name'])
+        self.assertEqual(service_search_user_by_contains(user_street1=user['user_detail']['user_street1'])
+                         [0]['user_name'], user['user_name'])
+        self.assertEqual(service_search_user_by_contains(user_street2=user['user_detail']['user_street2'])
+                         [0]['user_name'], user['user_name'])
+        self.assertEqual(service_search_user_by_contains(user_city=user['user_detail']['user_city'])
+                         [0]['user_name'], user['user_name'])
+        self.assertEqual(service_search_user_by_contains(user_state=user['user_detail']['user_state'])
+                         [0]['user_name'], user['user_name'])
+        self.assertEqual(service_search_user_by_contains(user_country=user['user_detail']['user_country'])
+                         [0]['user_name'], user['user_name'])
+        self.assertEqual(service_search_user_by_contains(user_zip=user['user_detail']['user_zip'])
+                         [0]['user_name'], user['user_name'])
+        self.assertEqual(service_search_user_by_contains(user_status=user['user_status'])
+                         [0]['user_name'], user['user_name'])
+
+        # Raise Error: ErrorCode.SERVICE_PARAM_SLICE_NOT_SUPPORT
+        with self.assertRaises(ServiceError) as e:
+            service_search_user_by_contains(user_lol="lol")
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_INVALID_SEARCH_PARAM)
 
 
 class TestServiceSearchVideo(unittest.TestCase):
@@ -54,6 +101,21 @@ class TestServiceSearchVideo(unittest.TestCase):
 
         self.assertEqual(service_search_video(self.conf, title="i%20a", slice=True)[0]['video_title'],
                          self.const_video_0['video_title'], msg="Test Search Video: Tag")
+
+    def test_search_video_by_contains(self):
+        video = self.const_video_0
+        self.assertEqual(service_search_video_by_contains(video_id=video['_id']['$oid'])[0]
+                         ['video_title'], video['video_title'])
+        self.assertEqual(service_search_video_by_contains(video_title=video['video_title'])[0]
+                         ['video_title'], video['video_title'])
+        self.assertEqual(service_search_video_by_contains(video_channel=video['video_channel'][0:2])[0]
+                         ['video_title'], video['video_title'])
+        self.assertEqual(service_search_video_by_contains(video_category=video['video_category'][0])[0]
+                         ['video_title'], video['video_title'])
+        self.assertEqual(service_search_video_by_contains(video_tag=video['video_tag'][0])[0]
+                         ['video_title'], video['video_title'])
+        self.assertEqual(service_search_video_by_contains(video_description=video['video_description'][1:4])[0]
+                         ['video_title'], video['video_title'])
 
 
 if __name__ == "__main__":

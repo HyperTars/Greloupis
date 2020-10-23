@@ -112,7 +112,28 @@ class MongoError(Exception):
 
 
 class ServiceError(Exception):
-    pass
+    def __init__(self, error_code, message='', *args, **kwargs):
+        if not isinstance(error_code, ErrorCode):
+            msg = "Error code passed in the error_code param must be of type ErrorCode"
+            raise MongoError(ErrorCode.ERR_INCORRECT_CODE)
+
+        self.error_code = error_code
+        self.traceback = sys.exc_info()
+        try:
+            msg = '[{0}], {1}'.format(error_code.name, message.format(*args, **kwargs))
+        except (IndexError, KeyError):
+            msg = '[{0}] {1}'.format(error_code.name, message)
+
+        super().__init__(msg)
+
+    def get_code(self):
+        return self.error_code.get_code()
+
+    def get_msg(self):
+        return self.error_code.get_msg()
+
+    def __str__(self):
+        return repr(self.error_code)
 
 
 class RouteError(Exception):
