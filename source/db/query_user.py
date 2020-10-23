@@ -35,13 +35,10 @@ def query_user_create(user_name: str, user_email: str, user_password: str, user_
 
     # EmbeddedDocument must be included when creating
     # user_detail, user_reg_date
-    try:
-        user = User(user_name=user_name, user_email=user_email, user_password=user_password,
-                    user_detail=UserDetail(), user_status="private", user_thumbnail="",
-                    user_reg_date=get_time_now_utc(), user_login=login,
-                    user_following=[], user_follower=[])
-    except Exception:
-        raise MongoError(ErrorCode.MONGODB_USER_CREATE_FAILURE)
+    user = User(user_name=user_name, user_email=user_email, user_password=user_password,
+                user_detail=UserDetail(), user_status="private", user_thumbnail="",
+                user_reg_date=get_time_now_utc(), user_login=login,
+                user_following=[], user_follower=[])
 
     return user.save()
 
@@ -124,11 +121,8 @@ def query_user_add_follow(follower_id: str, following_id: str):
     if following_id in follower[0].user_following and follower_id in following[0].user_follower:
         raise MongoError(ErrorCode.MONGODB_FOLLOW_REL_EXISTS)
 
-    try:
-        User.objects(_id=bson.ObjectId(follower_id)).update(add_to_set__user_following=following_id)
-        User.objects(_id=bson.ObjectId(following_id)).update(add_to_set__user_follower=follower_id)
-    except Exception:
-        raise MongoError(ErrorCode.MONGODB_USER_DELETE_FOLLOW_FAILURE)
+    User.objects(_id=bson.ObjectId(follower_id)).update(add_to_set__user_following=following_id)
+    User.objects(_id=bson.ObjectId(following_id)).update(add_to_set__user_follower=follower_id)
 
     return 1
 
@@ -151,11 +145,8 @@ def query_user_delete_follow(follower_id: str, following_id: str):
     if len(following) == 0:
         raise MongoError(ErrorCode.MONGODB_FOLLOWED_NOT_FOUND)
 
-    try:
-        User.objects(_id=bson.ObjectId(follower_id)).update(pull__user_following=following_id)
-        User.objects(_id=bson.ObjectId(following_id)).update(pull__user_follower=follower_id)
-    except Exception:
-        raise MongoError(ErrorCode.MONGODB_USER_DELETE_FOLLOW_FAILURE)
+    User.objects(_id=bson.ObjectId(follower_id)).update(pull__user_following=following_id)
+    User.objects(_id=bson.ObjectId(following_id)).update(pull__user_follower=follower_id)
 
     return 1
 
