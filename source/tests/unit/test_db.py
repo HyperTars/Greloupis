@@ -655,27 +655,31 @@ class TestQueryVideo(unittest.TestCase):
         # Down to Zero Without Overflow
         while query_video_cnt_decr_by_one(temp_video_id, "video_view") != 0:
             query_video_cnt_decr_by_one(temp_video_id, "video_view")
-        while query_video_cnt_decr_by_one(temp_video_id, "video_comment") != 0:
-            query_video_cnt_decr_by_one(temp_video_id, "video_comment")
-        while query_video_cnt_decr_by_one(temp_video_id, "video_like") != 0:
-            query_video_cnt_decr_by_one(temp_video_id, "video_like")
-        while query_video_cnt_decr_by_one(temp_video_id, "video_dislike") != 0:
-            query_video_cnt_decr_by_one(temp_video_id, "video_dislike")
-        while query_video_cnt_decr_by_one(temp_video_id, "video_star") != 0:
-            query_video_cnt_decr_by_one(temp_video_id, "video_star")
-        while query_video_cnt_decr_by_one(temp_video_id, "video_share") != 0:
-            query_video_cnt_decr_by_one(temp_video_id, "video_share")
-
         query_video_cnt_decr_by_one(temp_video_id, "video_view")
         self.assertEqual(query_video_get_by_video_id(temp_video_id)[0].video_view, 0)
+
+        while query_video_cnt_decr_by_one(temp_video_id, "video_comment") != 0:
+            query_video_cnt_decr_by_one(temp_video_id, "video_comment")
         query_video_cnt_decr_by_one(temp_video_id, "video_comment")
         self.assertEqual(query_video_get_by_video_id(temp_video_id)[0].video_view, 0)
+
+        while query_video_cnt_decr_by_one(temp_video_id, "video_like") != 0:
+            query_video_cnt_decr_by_one(temp_video_id, "video_like")
         query_video_cnt_decr_by_one(temp_video_id, "video_like")
         self.assertEqual(query_video_get_by_video_id(temp_video_id)[0].video_view, 0)
+
+        while query_video_cnt_decr_by_one(temp_video_id, "video_dislike") != 0:
+            query_video_cnt_decr_by_one(temp_video_id, "video_dislike")
         query_video_cnt_decr_by_one(temp_video_id, "video_dislike")
         self.assertEqual(query_video_get_by_video_id(temp_video_id)[0].video_view, 0)
+
+        while query_video_cnt_decr_by_one(temp_video_id, "video_star") != 0:
+            query_video_cnt_decr_by_one(temp_video_id, "video_star")
         query_video_cnt_decr_by_one(temp_video_id, "video_star")
         self.assertEqual(query_video_get_by_video_id(temp_video_id)[0].video_view, 0)
+
+        while query_video_cnt_decr_by_one(temp_video_id, "video_share") != 0:
+            query_video_cnt_decr_by_one(temp_video_id, "video_share")
         query_video_cnt_decr_by_one(temp_video_id, "video_share")
         self.assertEqual(query_video_get_by_video_id(temp_video_id)[0].video_view, 0)
 
@@ -922,6 +926,24 @@ class TestQueryVideoOp(unittest.TestCase):
                                                video_id=self.temp_video_op_0['video_id']).video_id,
                          self.temp_video_op_0['video_id'])
 
+        # Raise Error: ErrorCode.MONGODB_USER_NOT_FOUND
+        with self.assertRaises(MongoError) as e:
+            query_video_op_create(user_id="123456781234567812345678",
+                                  video_id=self.temp_video_op_0['video_id'])
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_USER_NOT_FOUND)
+
+        # Raise Error: ErrorCode.MONGODB_VIDEO_NOT_FOUND
+        with self.assertRaises(MongoError) as e:
+            query_video_op_create(user_id=self.temp_video_op_0['user_id'],
+                                  video_id="123456781234567812345678")
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_VIDEO_NOT_FOUND)
+
+        # Raise Error: ErrorCode.MONGODB_OP_EXISTS
+        with self.assertRaises(MongoError) as e:
+            query_video_op_create(user_id=self.temp_video_op_0['user_id'],
+                                  video_id=self.temp_video_op_0['video_id'])
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_VIDEO_OP_EXISTS)
+
     def test_b_query_video_op_get_by_user_id(self):
         self.assertEqual(query_video_op_get_by_user_id(self.temp_video_op_0['user_id'])[0].video_id,
                          self.temp_video_op_0['video_id'])
@@ -952,6 +974,11 @@ class TestQueryVideoOp(unittest.TestCase):
         self.assertEqual(temp_video_op_new.process, new_process)
         self.assertEqual(temp_video_op_new.process_date, new_process_date)
 
+        # Raise Error: ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND
+        with self.assertRaises(MongoError) as e:
+            query_video_op_update_process("123456781234567812345678", new_process, new_process_date)
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND)
+
     def test_g_query_video_op_update_comment(self):
         new_comment = "this is just a new comment"
         new_comment_date = get_time_now_utc()
@@ -961,6 +988,11 @@ class TestQueryVideoOp(unittest.TestCase):
         temp_video_op_new = query_video_op_get_by_op_id(temp_video_op['video_op_id'])[0]
         self.assertEqual(temp_video_op_new.comment, new_comment)
         self.assertEqual(temp_video_op_new.comment_date, new_comment_date)
+
+        # Raise Error: ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND
+        with self.assertRaises(MongoError) as e:
+            query_video_op_update_comment("123456781234567812345678", new_comment, new_comment_date)
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND)
 
     def test_h_query_video_op_update_like(self):
         new_like_date = get_time_now_utc()
@@ -977,6 +1009,11 @@ class TestQueryVideoOp(unittest.TestCase):
         self.assertEqual(temp_video_op_new_2.like, False)
         self.assertEqual(temp_video_op_new_2.like_date, new_like_date_2)
 
+        # Raise Error: ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND
+        with self.assertRaises(MongoError) as e:
+            query_video_op_update_like("123456781234567812345678", True, new_like_date)
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND)
+
     def test_i_query_video_op_update_dislike(self):
         new_dislike_date = get_time_now_utc()
         temp_video_op = query_video_op_get_by_user_video(user_id=self.temp_video_op_0['user_id'],
@@ -991,6 +1028,11 @@ class TestQueryVideoOp(unittest.TestCase):
         temp_video_op_new_2 = query_video_op_get_by_op_id(temp_video_op['video_op_id'])[0]
         self.assertEqual(temp_video_op_new_2.dislike, False)
         self.assertEqual(temp_video_op_new_2.dislike_date, new_dislike_date_2)
+
+        # Raise Error: ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND
+        with self.assertRaises(MongoError) as e:
+            query_video_op_update_dislike("123456781234567812345678", True, new_dislike_date)
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND)
 
     def test_j_query_video_op_update_star(self):
         new_star_date = get_time_now_utc()
@@ -1007,10 +1049,20 @@ class TestQueryVideoOp(unittest.TestCase):
         self.assertEqual(temp_video_op_new_2.star, False)
         self.assertEqual(temp_video_op_new_2.star_date, new_star_date_2)
 
+        # Raise Error: ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND
+        with self.assertRaises(MongoError) as e:
+            query_video_op_update_star("123456781234567812345678", False)
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND)
+
     def test_k_query_video_op_delete(self):
         temp_video_op = query_video_op_get_by_user_video(user_id=self.temp_video_op_0['user_id'],
                                                          video_id=self.temp_video_op_0['video_id'])[0]
         self.assertEqual(query_video_op_delete(temp_video_op.to_dict()['video_op_id']), 1)
+
+        # Raise Error: ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND
+        with self.assertRaises(MongoError) as e:
+            query_video_op_delete(temp_video_op.to_dict()['video_op_id'])
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND)
 
     def test_l_query_video_op_search_comment_by_contains(self):
         video_op = query_video_op_search_comment_by_contains(self.const_video_op_0['comment'][1:10])[0].to_dict()
@@ -1036,6 +1088,11 @@ class TestQueryVideoOp(unittest.TestCase):
         pattern_case_success = util_pattern_compile(search_comment[1:10].upper(), exact=False, ignore_case=True)
         self.assertEqual(query_video_op_search_comment_by_pattern(pattern_case_success)[0].comment,
                          search_comment)
+
+        # Raise Error: ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND
+        with self.assertRaises(MongoError) as e:
+            query_video_op_search_comment_by_pattern("abc")
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_RE_PATTERN_EXPECTED)
 
 
 if __name__ == "__main__":

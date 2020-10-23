@@ -33,7 +33,7 @@ class ErrorCode(Enum):
     MONGODB_CONNECTION_FAILURE = {4000: "MongoDB Connection Failure"}
     MONGODB_USER_NOT_FOUND = {4101: "MongoDB Error: User Not Found"}
     MONGODB_VIDEO_NOT_FOUND = {4102: "MongoDB Error: Video Not Found"}
-    MONGODB_VIDEOOP_NOT_FOUND = {4103: "MongoDB Error: VideoOp Not Found"}
+    MONGODB_VIDEO_OP_NOT_FOUND = {4103: "MongoDB Error: VideoOp Not Found"}
     MONGODB_USER_NAME_TAKEN = {4104: "MongoDB Error: User Name Already Taken"}
     MONGODB_VIDEO_TITLE_TAKEN = {4105: "MongoDB Error: Video Title Already Taken"}
     MONGODB_THUMBNAIL_MISS_ONE = {4106: "MongoDB Error: Thumbnail missing one argument, must provide both"}
@@ -42,7 +42,7 @@ class ErrorCode(Enum):
     MONGODB_VIDEO_CNT_ZERO = {4109: "MongoDB Error: Video Count Param Already Down To Zero"}
     MONGODB_INVALID_SEARCH_PARAM = {4110: "MongoDB Error: Invalid Searching Param"}
     MONGODB_EMPTY_PARAM = {4111: "MongoDB Error: Empty Input Param"}
-    MONGODB_VIDEOOP_EXISTS = {4112: "MongoDB Error: Video Op Alrady Exists"}
+    MONGODB_VIDEO_OP_EXISTS = {4112: "MongoDB Error: Video Op Alrady Exists"}
     MONGODB_USER_EMAIL_TAKEN = {4113: "MongoDB Error: User Email Already Taken"}
     MONGODB_USER_INVALID_STATUS = {4114: "MongoDB Error: Invalid User Status"}
     MONGODB_UPDATE_SAME_NAME = {4115: "MongoDB Error: Update To Same Name"}
