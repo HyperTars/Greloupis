@@ -19,30 +19,14 @@ VALID_VIDEO_CNT = ['view', 'views', 'video_view',
 ##########
 # CREATE #
 ##########
-def query_video_create(user_id: str, video_title: str, video_raw_content: str, **kw):
+def query_video_create(user_id: str, video_title: str, video_raw_content: str):
     """
     Create Video
 
     :param user_id: (required) user's unique id
     :param video_title: (required) video's title
     :param video_raw_content: (required) URI of raw video data (in temp space, to be transcode)
-    :param kw:
-        :key "video_channel": (optional) channel of video (default self-made)
-        :key "video_duration": (optional) duration of video in second
-        :key "video_raw_status": (optional) status of raw video data, default: pending
-        :key "video_raw_size": (optional) size of raw video data
-        :key "video_tag": (optional) array of video's tags
-        :key "video_category": (optional) array of video's categories
-        :key "video_description": (optional) video's description
-        :key "video_language": (optional) video's language
-        :key "video_status": (optional) video's status, default: public
-        :key "video_thumbnail": (optional) video's thumbnail uri
-        :key "video_upload_date": (optional) video's upload date
     :return: video created (Video Model)
-
-    \nvideo_raw_content: user will get a raw video URI after uploading raw video to cache
-    (temp storage space where videos waiting for trans-coding)
-    user is allowed to create video info before trans-coding completed
     """
 
     if len(query_user_get_by_id(user_id)) == 0:
@@ -64,40 +48,13 @@ def query_video_create(user_id: str, video_title: str, video_raw_content: str, *
     video_thumbnail = ""
     video_upload_date = get_time_now_utc()
 
-    # Fill if exist
-    if 'video_raw_status' in kw:
-        video_raw_status = kw['video_raw_status']
-    if 'video_raw_size' in kw:
-        video_raw_size = kw['video_raw_size']
-    if 'video_channel' in kw:
-        video_channel = kw['video_channel']
-    if 'video_duration' in kw:
-        video_duration = kw['video_duration']
-    if 'video_tag' in kw:
-        video_tag = kw['video_tag']
-    if 'video_category' in kw:
-        video_category = kw['video_category']
-    if 'video_description' in kw:
-        video_description = kw['video_description']
-    if 'video_language' in kw:
-        video_language = kw['video_language']
-    if 'video_status' in kw:
-        video_status = kw['video_status']
-    if 'video_thumbnail' in kw:
-        video_thumbnail = kw['video_thumbnail']
-    if 'video_upload_date' in kw:
-        video_upload_date = kw['upload_date']
-
     # Construct Video Model
-    try:
-        video = Video(user_id=user_id, video_title=video_title, video_raw_content=video_raw_content,
-                      video_raw_status=video_raw_status, video_raw_size=video_raw_size, video_duration=video_duration,
-                      video_channel=video_channel, video_tag=video_tag, video_category=video_category,
-                      video_description=video_description, video_language=video_language, video_status=video_status,
-                      video_view=0, video_comment=0, video_like=0, video_dislike=0, video_star=0, video_share=0,
-                      video_thumbnail=video_thumbnail, video_upload_date=video_upload_date, video_uri=VideoURI())
-    except Exception:
-        raise MongoError(ErrorCode.MONGODB_VIDEO_CREATE_FAILURE)
+    video = Video(user_id=user_id, video_title=video_title, video_raw_content=video_raw_content,
+                  video_raw_status=video_raw_status, video_raw_size=video_raw_size, video_duration=video_duration,
+                  video_channel=video_channel, video_tag=video_tag, video_category=video_category,
+                  video_description=video_description, video_language=video_language, video_status=video_status,
+                  video_view=0, video_comment=0, video_like=0, video_dislike=0, video_star=0, video_share=0,
+                  video_thumbnail=video_thumbnail, video_upload_date=video_upload_date, video_uri=VideoURI())
 
     return video.save()
 
@@ -169,7 +126,7 @@ def query_video_cnt_decr_by_one(video_id: str, video_cnt: str):
 
     :param video_id: video's unique id
     :param video_cnt: can choose from (view/comment/like/dislike/star/share)
-    :return: 1 if succeeded
+    :return: 1 if succeeded, 0 if cnt < 0
     """
 
     videos = query_video_get_by_video_id(video_id)
@@ -184,27 +141,33 @@ def query_video_cnt_decr_by_one(video_id: str, video_cnt: str):
 
     if video_cnt == 'view' or video_cnt == 'views' or video_cnt == 'video_view':
         if video['video_view'] <= 0:
-            raise MongoError(ErrorCode.MONGODB_VIDEO_CNT_ZERO)
+            return 0
+            # raise MongoError(ErrorCode.MONGODB_VIDEO_CNT_ZERO)
         Video.objects(_id=_id).update(dec__video_view=1)
     if video_cnt == 'comment' or video_cnt == 'comments' or video_cnt == 'video_comment':
         if video['video_comment'] <= 0:
-            raise MongoError(ErrorCode.MONGODB_VIDEO_CNT_ZERO)
+            return 0
+            # raise MongoError(ErrorCode.MONGODB_VIDEO_CNT_ZERO)
         Video.objects(_id=_id).update(dec__video_comment=1)
     if video_cnt == 'like' or video_cnt == 'likes' or video_cnt == 'video_like':
         if video['video_like'] <= 0:
-            raise MongoError(ErrorCode.MONGODB_VIDEO_CNT_ZERO)
+            return 0
+            # raise MongoError(ErrorCode.MONGODB_VIDEO_CNT_ZERO)
         Video.objects(_id=_id).update(dec__video_like=1)
     if video_cnt == 'dislike' or video_cnt == 'dislikes' or video_cnt == 'video_dislike':
         if video['video_dislike'] <= 0:
-            raise MongoError(ErrorCode.MONGODB_VIDEO_CNT_ZERO)
+            return 0
+            # raise MongoError(ErrorCode.MONGODB_VIDEO_CNT_ZERO)
         Video.objects(_id=_id).update(dec__video_dislike=1)
     if video_cnt == 'star' or video_cnt == 'stars' or video_cnt == 'video_star':
         if video['video_star'] <= 0:
-            raise MongoError(ErrorCode.MONGODB_VIDEO_CNT_ZERO)
+            return 0
+            # raise MongoError(ErrorCode.MONGODB_VIDEO_CNT_ZERO)
         Video.objects(_id=_id).update(dec__video_star=1)
     if video_cnt == 'share' or video_cnt == 'shares' or video_cnt == 'video_share':
         if video['video_share'] <= 0:
-            raise MongoError(ErrorCode.MONGODB_VIDEO_CNT_ZERO)
+            return 0
+            # raise MongoError(ErrorCode.MONGODB_VIDEO_CNT_ZERO)
         Video.objects(_id=_id).update(dec__video_share=1)
 
     return 1
@@ -268,7 +231,7 @@ def query_video_update(video_id: str, **kw):
         Video.objects(_id=_id).update(video_language=kw['video_language'])
     if 'video_status' in kw:
         if kw['video_status'] not in VALID_VIDEO_STATUS:
-            raise MongoError(ErrorCode.MONGODB_INVALID_USER_STATUS)
+            raise MongoError(ErrorCode.MONGODB_VIDEO_INVALID_STATUS)
         Video.objects(_id=_id).update(video_status=kw['video_status'])
     if 'video_thumbnail' in kw:
         Video.objects(_id=_id).update(video_thumbnail=kw['video_thumbnail'])
@@ -314,6 +277,14 @@ def query_video_search_by_contains(**kw):
     \nAt least one key must be provided
     :return: array of searching results (Video Model)
     """
+    # Check input param
+    if len(kw) == 0:
+        raise MongoError(ErrorCode.MONGODB_EMPTY_PARAM)
+
+    for arg in kw:
+        if type(kw[arg]) != str:
+            raise MongoError(ErrorCode.MONGODB_STR_EXPECTED)
+
     if 'video_id' in kw:
         return query_video_get_by_video_id(kw['video_id'])
     elif 'user_id' in kw:

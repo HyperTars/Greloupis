@@ -44,7 +44,7 @@ class ErrorCode(Enum):
     MONGODB_EMPTY_PARAM = {4111: "MongoDB Error: Empty Input Param"}
     MONGODB_VIDEOOP_EXISTS = {4112: "MongoDB Error: Video Op Alrady Exists"}
     MONGODB_USER_EMAIL_TAKEN = {4113: "MongoDB Error: User Email Already Taken"}
-    MONGODB_INVALID_USER_STATUS = {4114: "MongoDB Error: Invalid User Status"}
+    MONGODB_USER_INVALID_STATUS = {4114: "MongoDB Error: Invalid User Status"}
     MONGODB_UPDATE_SAME_NAME = {4115: "MongoDB Error: Update To Same Name"}
     MONGODB_UPDATE_SAME_PASS = {4116: "MongoDB Error: Update To Same Password"}
     MONGODB_INVALID_THUMBNAIL = {4117: "MongoDB Error: Invalid Thumbnail Type"}

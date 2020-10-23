@@ -106,7 +106,7 @@ class TestQueryUser(unittest.TestCase):
         # Raise Error: ErrorCode.MONGODB_USER_NOT_FOUND
         with self.assertRaises(MongoError) as e:
             query_user_update_status(temp_user_id, "open")
-        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_INVALID_USER_STATUS)
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_USER_INVALID_STATUS)
 
     def test_f_user_add_follow(self):
         # Update successfully
@@ -559,6 +559,7 @@ class TestQueryVideo(unittest.TestCase):
     const_video_0 = data['const_video'][0]
 
     temp_video_0 = data['temp_video'][0]
+    temp_video_1 = data['temp_video'][1]
 
     @classmethod
     def setUpClass(cls) -> None:
@@ -569,6 +570,20 @@ class TestQueryVideo(unittest.TestCase):
                                             video_title=self.temp_video_0['video_title'],
                                             video_raw_content=self.temp_video_0['video_raw_content']).video_title,
                          self.temp_video_0['video_title'])
+
+        # Raise Error: ErrorCode.MONGODB_USER_NOT_FOUND
+        with self.assertRaises(MongoError) as e:
+            query_video_create(user_id="123412341234123412341234",
+                               video_title=self.temp_video_0['video_title'],
+                               video_raw_content=self.temp_video_0['video_raw_content'])
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_USER_NOT_FOUND)
+
+        # Raise Error: ErrorCode.MONGODB_VIDEO_TITLE_TAKEN
+        with self.assertRaises(MongoError) as e:
+            query_video_create(user_id=self.temp_video_0['user_id'],
+                               video_title=self.temp_video_0['video_title'],
+                               video_raw_content=self.temp_video_0['video_raw_content'])
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_VIDEO_TITLE_TAKEN)
 
     def test_b_query_video_get_by_video_id(self):
         self.assertEqual(query_video_get_by_video_id(str(self.const_video_0['_id']['$oid']))[0].video_title,
@@ -604,6 +619,16 @@ class TestQueryVideo(unittest.TestCase):
         query_video_cnt_incr_by_one(temp_video_id, "video_share")
         self.assertEqual(query_video_get_by_video_id(temp_video_id)[0].video_view, temp_video_share + 1)
 
+        # Raise Error: ErrorCode.MONGODB_VIDEO_NOT_FOUND
+        with self.assertRaises(MongoError) as e:
+            query_video_cnt_incr_by_one("123456781234567812345678", "video_view")
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_VIDEO_NOT_FOUND)
+
+        # Raise Error: ErrorCode.MONGODB_VIDEO_NOT_FOUND
+        with self.assertRaises(MongoError) as e:
+            query_video_cnt_incr_by_one(temp_video_id, "video_lol")
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_INVALID_VIDEO_CNT_PARAM)
+
     def test_f_query_video_cnt_decr_by_one(self):
         temp_model = query_video_get_by_title(self.temp_video_0['video_title'])[0].to_dict()
         temp_video_id = temp_model['video_id']
@@ -626,6 +651,43 @@ class TestQueryVideo(unittest.TestCase):
         self.assertEqual(query_video_get_by_video_id(temp_video_id)[0].video_view, temp_video_star - 1)
         query_video_cnt_decr_by_one(temp_video_id, "video_share")
         self.assertEqual(query_video_get_by_video_id(temp_video_id)[0].video_view, temp_video_share - 1)
+
+        # Down to Zero Without Overflow
+        while query_video_cnt_decr_by_one(temp_video_id, "video_view") != 0:
+            query_video_cnt_decr_by_one(temp_video_id, "video_view")
+        while query_video_cnt_decr_by_one(temp_video_id, "video_comment") != 0:
+            query_video_cnt_decr_by_one(temp_video_id, "video_comment")
+        while query_video_cnt_decr_by_one(temp_video_id, "video_like") != 0:
+            query_video_cnt_decr_by_one(temp_video_id, "video_like")
+        while query_video_cnt_decr_by_one(temp_video_id, "video_dislike") != 0:
+            query_video_cnt_decr_by_one(temp_video_id, "video_dislike")
+        while query_video_cnt_decr_by_one(temp_video_id, "video_star") != 0:
+            query_video_cnt_decr_by_one(temp_video_id, "video_star")
+        while query_video_cnt_decr_by_one(temp_video_id, "video_share") != 0:
+            query_video_cnt_decr_by_one(temp_video_id, "video_share")
+
+        query_video_cnt_decr_by_one(temp_video_id, "video_view")
+        self.assertEqual(query_video_get_by_video_id(temp_video_id)[0].video_view, 0)
+        query_video_cnt_decr_by_one(temp_video_id, "video_comment")
+        self.assertEqual(query_video_get_by_video_id(temp_video_id)[0].video_view, 0)
+        query_video_cnt_decr_by_one(temp_video_id, "video_like")
+        self.assertEqual(query_video_get_by_video_id(temp_video_id)[0].video_view, 0)
+        query_video_cnt_decr_by_one(temp_video_id, "video_dislike")
+        self.assertEqual(query_video_get_by_video_id(temp_video_id)[0].video_view, 0)
+        query_video_cnt_decr_by_one(temp_video_id, "video_star")
+        self.assertEqual(query_video_get_by_video_id(temp_video_id)[0].video_view, 0)
+        query_video_cnt_decr_by_one(temp_video_id, "video_share")
+        self.assertEqual(query_video_get_by_video_id(temp_video_id)[0].video_view, 0)
+
+        # Raise Error: ErrorCode.MONGODB_VIDEO_NOT_FOUND
+        with self.assertRaises(MongoError) as e:
+            query_video_cnt_decr_by_one("123456781234567812345678", "video_view")
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_VIDEO_NOT_FOUND)
+
+        # Raise Error: ErrorCode.MONGODB_VIDEO_NOT_FOUND
+        with self.assertRaises(MongoError) as e:
+            query_video_cnt_decr_by_one(temp_video_id, "video_lol")
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_INVALID_VIDEO_CNT_PARAM)
 
     def test_g_query_video_update(self):
         temp_video_id = query_video_get_by_title(self.temp_video_0['video_title'])[0].to_dict()['video_id']
@@ -674,9 +736,39 @@ class TestQueryVideo(unittest.TestCase):
         query_video_update(temp_video_id, video_title=old_title)
         self.assertEqual(query_video_get_by_video_id(temp_video_id)[0].video_title, old_title)
 
+        # Raise Error: ErrorCode.MONGODB_VIDEO_NOT_FOUND
+        with self.assertRaises(MongoError) as e:
+            query_video_update("123456781234567812345678")
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_VIDEO_NOT_FOUND)
+
+        # Raise Error: ErrorCode.MONGODB_VIDEO_TITLE_TAKEN
+        with self.assertRaises(MongoError) as e:
+            query_video_update(temp_video_id, video_title=old_title)
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_VIDEO_TITLE_TAKEN)
+
+        # Raise Error: ErrorCode.MONGODB_LIST_EXPECTED
+        with self.assertRaises(MongoError) as e:
+            query_video_update(temp_video_id, video_tag="test")
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_LIST_EXPECTED)
+
+        # Raise Error: ErrorCode.MONGODB_LIST_EXPECTED
+        with self.assertRaises(MongoError) as e:
+            query_video_update(temp_video_id, video_category="test")
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_LIST_EXPECTED)
+
+        # Raise Error: ErrorCode.MONGODB_LIST_EXPECTED
+        with self.assertRaises(MongoError) as e:
+            query_video_update(temp_video_id, video_status="test")
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_VIDEO_INVALID_STATUS)
+
     def test_h_query_video_delete(self):
         temp_video_id_0 = query_video_get_by_title(self.temp_video_0['video_title'])[0].to_dict()['video_id']
         self.assertEqual(query_video_delete(temp_video_id_0), 1)
+
+        # Raise Error: ErrorCode.MONGODB_VIDEO_NOT_FOUND
+        with self.assertRaises(MongoError) as e:
+            query_video_update("123456781234567812345678")
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_VIDEO_NOT_FOUND)
 
     def test_i_query_video_search_by_contains(self):
         video = query_video_search_by_contains(video_id=self.const_video_0['_id']['$oid'])[0]  # exact video_id
@@ -699,6 +791,21 @@ class TestQueryVideo(unittest.TestCase):
 
         video = query_video_search_by_contains(video_description=self.const_video_0['video_description'][2:3])[0]
         self.assertEqual(video.video_title, self.const_video_0['video_title'])
+
+        # Raise Error: ErrorCode.MONGODB_EMPTY_PARAM
+        with self.assertRaises(MongoError) as e:
+            query_video_search_by_contains()
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_EMPTY_PARAM)
+
+        # Raise Error: ErrorCode.MONGODB_STR_EXPECTED
+        with self.assertRaises(MongoError) as e:
+            query_video_search_by_contains(video_title=123)
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_STR_EXPECTED)
+
+        # Raise Error: ErrorCode.MONGODB_VIDEO_INVALID_SEARCH_PARAM
+        with self.assertRaises(MongoError) as e:
+            query_video_search_by_contains(video_test="lol")
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_INVALID_SEARCH_PARAM)
 
     def test_j_query_video_search_by_pattern(self):
         search_video_title = self.const_video_0['video_title']
@@ -763,6 +870,21 @@ class TestQueryVideo(unittest.TestCase):
         self.assertEqual(query_video_search_by_pattern(pattern_description=pattern_case_success)[0].video_description,
                          search_video_description)
 
+        # Raise Error: ErrorCode.MONGODB_EMPTY_PARAM
+        with self.assertRaises(MongoError) as e:
+            query_video_search_by_pattern()
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_EMPTY_PARAM)
+
+        # Raise Error: ErrorCode.MONGODB_RE_PATTERN_EXPECTED
+        with self.assertRaises(MongoError) as e:
+            query_video_search_by_pattern(video_title="1234")
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_RE_PATTERN_EXPECTED)
+
+        # Raise Error: ErrorCode.MONGODB_INVALID_SEARCH_PARAM
+        with self.assertRaises(MongoError) as e:
+            query_video_search_by_pattern(video_lmao=pattern_case_success)
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_INVALID_SEARCH_PARAM)
+
     def test_k_query_video_search_by_aggregate(self):
         pipeline = [
             {"$unwind": "$video_tag"},
@@ -779,6 +901,11 @@ class TestQueryVideo(unittest.TestCase):
         ]
         videos = query_video_search_by_aggregate(pipeline)
         self.assertEqual(videos[0]['video_title'], self.const_video_0['video_title'])
+
+        # Raise Error: ErrorCode.MONGODB_LIST_EXPECTED
+        with self.assertRaises(MongoError) as e:
+            query_video_search_by_aggregate("lol")
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_LIST_EXPECTED)
 
 
 class TestQueryVideoOp(unittest.TestCase):
