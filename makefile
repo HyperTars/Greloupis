@@ -14,7 +14,7 @@ github:	FORCE
 	git commit -a
 	git push origin master
 
-test:	unit lint report
+test:	unit report lint
 	echo "unittest and lint check finished"
 
 unit:   FORCE
@@ -22,8 +22,7 @@ unit:   FORCE
 	# python3 -m source.test
 
 lint:	FORCE
-	$(LINTER) $(SRC_DIR)/*.py --exit-zero --ignore=E501,F401,F403,F405,F841
-	$(LINTER) $(SRC_DIR)/*/*.py --exit-zero --ignore=E501,F401,F403,F405,F841
+	$(LINTER) $(SRC_DIR)/. --exit-zero --ignore=E501,F401,F403,F405,F841
 
 dev_env:	FORCE
 	pip3 install -r $(REQ_DIR)/requirements-dev.txt
