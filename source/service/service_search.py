@@ -23,7 +23,7 @@ def service_search_user(conf, **kw):
 
     # Search configs
     if 'slice' in kw and kw['slice'] is True:
-        return ErrorCode.SERVICE_PARAM_SLICE_NOT_SUPPORT
+        raise ServiceError(ErrorCode.SERVICE_PARAM_SLICE_NOT_SUPPORT)
     if 'ignore_case' not in kw:
         kw['ignore_case'] = conf.SEARCH_IGNORE_CASE
     if 'exact' not in kw:
@@ -33,10 +33,9 @@ def service_search_user(conf, **kw):
 
     # Search
     # TODO: Support aggregation pipeline, etc.
-    if kw['ignore_case'] is False or kw['exact'] is True:
+    if kw['ignore_case'] is False or kw['exact'] is True \
+            or 'pattern' in kw and kw['pattern'] is True:
         kw = util_pattern_build(**kw)
-        res_search = service_search_user_by_pattern(**kw)
-    elif 'pattern' in kw and kw['pattern'] is True:
         res_search = service_search_user_by_pattern(**kw)
     elif 'aggregate' in kw and kw['aggregate'] is True:
         res_search = service_search_user_by_aggregation(**kw)
@@ -75,6 +74,7 @@ def service_search_video(conf, **kw):
         kw = util_pattern_build(**kw)
         res_search = service_search_video_by_pattern(**kw)
     elif 'pattern' in kw and kw['pattern'] is True:
+        kw = util_pattern_build(**kw)
         res_search = service_search_video_by_pattern(**kw)  # Pattern search
     elif 'aggregate' in kw and kw['aggregate'] is True:
         res_search = service_search_video_by_aggregation(**kw)  # Aggregate search
@@ -129,7 +129,7 @@ def service_search_user_by_contains(**kw):
     elif 'user_status' in kw:
         return query_user_search_by_contains(user_status=kw['user_status'])
 
-    return ErrorCode.MONGODB_INVALID_SEARCH_PARAM
+    raise ServiceError(ErrorCode.MONGODB_INVALID_SEARCH_PARAM)
 
 
 def service_search_video_by_contains(**kw):
@@ -151,7 +151,7 @@ def service_search_video_by_contains(**kw):
     elif 'video_description' in kw:
         return query_video_search_by_contains(video_description=kw['video_description'])
 
-    return ErrorCode.SERVICE_PATTERN_SEARCH_NOT_SUPPORT
+    raise ServiceError(ErrorCode.SERVICE_PATTERN_SEARCH_NOT_SUPPORT)
 
 
 # Search by pattern
@@ -212,7 +212,7 @@ def service_search_user_by_pattern(**kw):
         elif 'user_reg_date' in kw:
             return query_user_search_by_pattern(pattern_reg_date=re.compile(kw['user_reg_date']))
 
-    return ErrorCode.MONGODB_INVALID_SEARCH_PARAM
+    raise ServiceError(ErrorCode.MONGODB_INVALID_SEARCH_PARAM)
 
 
 def service_search_video_by_pattern(**kw):
@@ -232,7 +232,7 @@ def service_search_video_by_pattern(**kw):
         elif 'video_description' in kw:
             return query_video_search_by_pattern(pattern_description=re.compile(kw['video_description']))
 
-    return ErrorCode.SERVICE_PATTERN_SEARCH_NOT_SUPPORT
+    raise ServiceError(ErrorCode.SERVICE_PATTERN_SEARCH_NOT_SUPPORT)
 
 
 # Search by aggregate
