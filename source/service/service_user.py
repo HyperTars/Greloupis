@@ -200,7 +200,7 @@ def service_user_get_like(conf, **kw):
                 return util_serializer_api_response(200, body=return_result,
                                                     msg="Successfully got all likes of the user")
             else:
-                return util_serializer_api_response(404, msg=ErrorCode.MONGODB_VIDEOOP_NOT_FOUND.get_msg())
+                return util_serializer_api_response(404, msg=ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND.get_msg())
 
         except Exception as e:
             return util_serializer_api_response(500, msg=extract_error_msg(str(e)))
@@ -236,7 +236,7 @@ def service_user_get_dislike(conf, **kw):
                 return util_serializer_api_response(200, body=return_result,
                                                     msg="Successfully got all dislikes of the user")
             else:
-                return util_serializer_api_response(404, msg=ErrorCode.MONGODB_VIDEOOP_NOT_FOUND.get_msg())
+                return util_serializer_api_response(404, msg=ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND.get_msg())
 
         except Exception as e:
             return util_serializer_api_response(500, msg=extract_error_msg(str(e)))
@@ -273,7 +273,7 @@ def service_user_get_comment(conf, **kw):
                 return util_serializer_api_response(200, body=return_result,
                                                     msg="Successfully got all dislikes of the user")
             else:
-                return util_serializer_api_response(404, msg=ErrorCode.MONGODB_VIDEOOP_NOT_FOUND.get_msg())
+                return util_serializer_api_response(404, msg=ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND.get_msg())
 
         except Exception as e:
             return util_serializer_api_response(500, msg=extract_error_msg(str(e)))
@@ -309,7 +309,7 @@ def service_user_get_star(conf, **kw):
                 return util_serializer_api_response(200, body=return_result,
                                                     msg="Successfully got all dislikes of the user")
             else:
-                return util_serializer_api_response(404, msg=ErrorCode.MONGODB_VIDEOOP_NOT_FOUND.get_msg())
+                return util_serializer_api_response(404, msg=ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND.get_msg())
 
         except Exception as e:
             return util_serializer_api_response(500, msg=extract_error_msg(str(e)))

@@ -121,7 +121,7 @@ def service_video_op_get_comment(conf, **kw):
             query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
 
             if len(query_video_op) == 0:
-                return util_serializer_api_response(400, msg=ErrorCode.MONGODB_VIDEOOP_NOT_FOUND.get_msg())
+                return util_serializer_api_response(400, msg=ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND.get_msg())
 
             video_op_result = util_serializer_mongo_results_to_array(query_video_op)
 
@@ -159,7 +159,7 @@ def service_video_op_update_comment(conf, **kw):
             query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
 
             if len(query_video_op) == 0:
-                return util_serializer_api_response(400, msg=ErrorCode.MONGODB_VIDEOOP_NOT_FOUND.get_msg())
+                return util_serializer_api_response(400, msg=ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND.get_msg())
 
             video_op_result = util_serializer_mongo_results_to_array(query_video_op)
             video_op_id = video_op_result[0]["video_op_id"]
@@ -201,7 +201,7 @@ def service_video_op_cancel_comment(conf, **kw):
             query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
 
             if len(query_video_op) == 0:
-                return util_serializer_api_response(400, msg=ErrorCode.MONGODB_VIDEOOP_NOT_FOUND.get_msg())
+                return util_serializer_api_response(400, msg=ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND.get_msg())
 
             video_op_result = util_serializer_mongo_results_to_array(query_video_op)
             video_op_id = video_op_result[0]["video_op_id"]
