@@ -116,7 +116,7 @@ class ServiceError(Exception):
     def __init__(self, error_code, message='', *args, **kwargs):
         if not isinstance(error_code, ErrorCode):
             msg = "Error code passed in the error_code param must be of type ErrorCode"
-            raise MongoError(ErrorCode.ERR_INCORRECT_CODE)
+            raise ServiceError(ErrorCode.ERR_INCORRECT_CODE)
 
         self.error_code = error_code
         self.traceback = sys.exc_info()
@@ -141,7 +141,7 @@ class RouteError(Exception):
     def __init__(self, error_code, message='', *args, **kwargs):
         if not isinstance(error_code, ErrorCode):
             msg = "Error code passed in the error_code param must be of type ErrorCode"
-            raise MongoError(ErrorCode.ERR_INCORRECT_CODE)
+            raise RouteError(ErrorCode.ERR_INCORRECT_CODE)
 
         self.error_code = error_code
         self.traceback = sys.exc_info()
@@ -166,7 +166,7 @@ class UtilError(Exception):
     def __init__(self, error_code, message='', *args, **kwargs):
         if not isinstance(error_code, ErrorCode):
             msg = "Error code passed in the error_code param must be of type ErrorCode"
-            raise MongoError(ErrorCode.ERR_INCORRECT_CODE)
+            raise UtilError(ErrorCode.ERR_INCORRECT_CODE)
 
         self.error_code = error_code
         self.traceback = sys.exc_info()
@@ -187,16 +187,12 @@ class UtilError(Exception):
         return repr(self.error_code)
 
 
-if __name__ == '__main__':
-    # print error code
-    code = ErrorCode.MONGODB_CONNECTION_FAILURE.get_code()
-    print("code:", code)
-    # print error message
-    msg = ErrorCode.MONGODB_CONNECTION_FAILURE.get_msg()
-    print("msg:", msg)
-
-    print()
-
-    # Traverse enum
-    for status in ErrorCode:
-        print(status.name, ":", status.value)
+# print error code
+# code = ErrorCode.MONGODB_CONNECTION_FAILURE.get_code()
+# print("code:", code)
+# print error message
+# msg = ErrorCode.MONGODB_CONNECTION_FAILURE.get_msg()
+# print("msg:", msg)
+# Traverse enum
+# for status in ErrorCode:
+#    print(status.name, ":", status.value)

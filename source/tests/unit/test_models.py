@@ -47,15 +47,60 @@ class TestErrorModel(unittest.TestCase):
             raise MongoError(ErrorCode.MONGODB_CONNECTION_FAILURE)
         self.assertEqual(e.exception.get_code(), ErrorCode.MONGODB_CONNECTION_FAILURE.get_code())
         self.assertEqual(e.exception.get_msg(), ErrorCode.MONGODB_CONNECTION_FAILURE.get_msg())
-        # print(e.exception.get_code())
-        # print(e.exception.get_msg())
 
-        # usage:
-        try:
-            raise MongoError(ErrorCode.ERR_INCORRECT_CODE)
-        except MongoError as e:
-            print(e.get_code())
-            print(e.get_msg())
+    def test_service_error(self):
+        # Raise normal ServiceError successfully
+        with self.assertRaises(ServiceError) as e:
+            raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_MISSING_PARAM)
+
+        # Wrong ServiceError Param
+        with self.assertRaises(ServiceError) as e:
+            ServiceError(4000)
+        self.assertEqual(e.exception.error_code, ErrorCode.ERR_INCORRECT_CODE)
+        self.assertEqual(e.__str__(), e.__str__())
+
+        # Get code & msg
+        with self.assertRaises(ServiceError) as e:
+            raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
+        self.assertEqual(e.exception.get_code(), ErrorCode.SERVICE_MISSING_PARAM.get_code())
+        self.assertEqual(e.exception.get_msg(), ErrorCode.SERVICE_MISSING_PARAM.get_msg())
+
+    def test_route_error(self):
+        # Raise normal ServiceError successfully
+        with self.assertRaises(RouteError) as e:
+            raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+        self.assertEqual(e.exception.error_code, ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+
+        # Wrong ServiceError Param
+        with self.assertRaises(RouteError) as e:
+            RouteError(4000)
+        self.assertEqual(e.exception.error_code, ErrorCode.ERR_INCORRECT_CODE)
+        self.assertEqual(e.__str__(), e.__str__())
+
+        # Get code & msg
+        with self.assertRaises(RouteError) as e:
+            raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+        self.assertEqual(e.exception.get_code(), ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_code())
+        self.assertEqual(e.exception.get_msg(), ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg())
+
+    def test_util_error(self):
+        # Raise normal ServiceError successfully
+        with self.assertRaises(UtilError) as e:
+            raise UtilError(ErrorCode.UTIL_INVALID_PATTERN_PARAM)
+        self.assertEqual(e.exception.error_code, ErrorCode.UTIL_INVALID_PATTERN_PARAM)
+
+        # Wrong ServiceError Param
+        with self.assertRaises(UtilError) as e:
+            UtilError(4000)
+        self.assertEqual(e.exception.error_code, ErrorCode.ERR_INCORRECT_CODE)
+        self.assertEqual(e.__str__(), e.__str__())
+
+        # Get code & msg
+        with self.assertRaises(UtilError) as e:
+            raise UtilError(ErrorCode.UTIL_INVALID_PATTERN_PARAM)
+        self.assertEqual(e.exception.get_code(), ErrorCode.UTIL_INVALID_PATTERN_PARAM.get_code())
+        self.assertEqual(e.exception.get_msg(), ErrorCode.UTIL_INVALID_PATTERN_PARAM.get_msg())
 
 
 if __name__ == '__main__':
