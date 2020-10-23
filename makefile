@@ -18,7 +18,7 @@ test:	unit lint report
 	echo "unittest and lint check finished"
 
 unit:   FORCE
-	coverage run --source=source -m pytest
+	coverage run --source=source -m pytest --disable-pytest-warnings
 	# python3 -m source.test
 
 lint:	FORCE
