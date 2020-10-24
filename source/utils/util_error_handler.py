@@ -13,7 +13,7 @@ def util_error_handler(e):
     elif type(e) == ServiceError:
         return util_serializer_api_response(400, error_code=e.get_code(), msg=e.get_msg())
     elif type(e) == MongoError:
-        if e.get_code() == 4102:
+        if 4101 <= e.get_code() <= 4103:
             return util_serializer_api_response(404, error_code=e.get_code(), msg=e.get_msg())
         else:
             return util_serializer_api_response(500, error_code=e.get_code(), msg=e.get_msg())
