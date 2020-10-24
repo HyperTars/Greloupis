@@ -6,7 +6,7 @@ from werkzeug.local import LocalProxy
 
 
 def handler(file_name):
-    return RotatingFileHandler(file_name, mode='D', delay=False, encoding='UTF-8', backupCount=15)
+    return RotatingFileHandler(file_name, maxBytes=102400, delay=False, encoding='UTF-8', backupCount=15)
 
 
 # def log_config(file_name, level=logging.DEBUG):
@@ -14,11 +14,11 @@ def handler(file_name):
 #                                    format='% (asctime)s % (levelname)s % (name)s % (threadName)s: % (message)s')
 
 
-def log(data, level='info'):
-    logger = LocalProxy(lambda: current_app.logger)
-    if level == 'info':
-        logger.info(data)
-    elif level == 'debug':
-        logger.debug(data)
-    elif level == 'warning':
-        logger.warning(data)
+# def log(data, level='info'):
+#     logger = LocalProxy(lambda: current_app.logger)
+#     if level == 'info':
+#         logger.info(data)
+#     elif level == 'debug':
+#         logger.debug(data)
+#     elif level == 'warning':
+#         logger.warning(data)

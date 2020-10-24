@@ -20,4 +20,4 @@ def util_error_handler(e):
     elif type(e) == Exception:
         return util_serializer_api_response(500, msg=extract_error_msg(str(e)))
     else:
-        pass
+        return util_serializer_api_response(503, msg=extract_error_msg(str(e)))
