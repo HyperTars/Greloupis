@@ -33,11 +33,9 @@ docs:	#FORCE
 report:
 	coverage report
 
-coveralls:
-	coveralls
-
-codecov:
-	codecov -t a767bea5-9464-4229-b6f4-e420874311b3
+coverage:
+	- coveralls
+	- codecov -t a767bea5-9464-4229-b6f4-e420874311b3
 
 connect:
 	chmod 400 documents/DevOps.pem
