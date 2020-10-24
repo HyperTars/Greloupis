@@ -31,6 +31,19 @@ class TestServiceSearchUser(unittest.TestCase):
         self.assertEqual(service_search_user(self.conf, name=".*t.*", pattern=True)[0]['user_name'],
                          self.const_user_0['user_name'])
 
+        # Search successfully with aggregate
+        pipeline = [
+            {
+                "$match":
+                    {
+                        "user_name": {"$regex": "yp"},
+                        "user_status": "public"
+                    }
+            }
+        ]
+        self.assertEqual(service_search_user(self.conf, aggregate=True, search_dict=pipeline)[0]['user_name'],
+                         self.const_user_0['user_name'])
+
         # Raise Error: ErrorCode.SERVICE_PARAM_SLICE_NOT_SUPPORT
         with self.assertRaises(ServiceError) as e:
             service_search_user(self.conf, slice=True)
@@ -69,6 +82,49 @@ class TestServiceSearchUser(unittest.TestCase):
         self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_INVALID_SEARCH_PARAM)
 
     def test_search_user_by_pattern(self):
+        self.assertEqual(service_search_user(self.conf, email=self.const_user_1['user_email'][2:5],
+                                             ignore_case=False)[0]['user_name'], self.const_user_1['user_name'])
+
+        self.assertEqual(service_search_user(self.conf,
+                                             first_name=self.const_user_1['user_detail']['user_first_name'][1:3],
+                                             ignore_case=False)[0]['user_name'], self.const_user_1['user_name'])
+
+        self.assertEqual(service_search_user(self.conf,
+                                             last_name=self.const_user_1['user_detail']['user_last_name'][1:3],
+                                             ignore_case=False)[0]['user_name'], self.const_user_1['user_name'])
+
+        self.assertEqual(service_search_user(self.conf,
+                                             phone=self.const_user_1['user_detail']['user_phone'][2:5],
+                                             ignore_case=False)[0]['user_name'], self.const_user_1['user_name'])
+
+        self.assertEqual(service_search_user(self.conf,
+                                             street1=self.const_user_1['user_detail']['user_street1'],
+                                             exact=True)[0]['user_name'], self.const_user_1['user_name'])
+
+        self.assertEqual(service_search_user(self.conf,
+                                             street2=self.const_user_0['user_detail']['user_street2'],
+                                             exact=True)[0]['user_name'], self.const_user_0['user_name'])
+
+        self.assertEqual(service_search_user(self.conf,
+                                             city=self.const_user_1['user_detail']['user_city'],
+                                             exact=True)[0]['user_name'], self.const_user_1['user_name'])
+
+        self.assertEqual(service_search_user(self.conf,
+                                             state=self.const_user_1['user_detail']['user_state'],
+                                             exact=True)[0]['user_name'], self.const_user_1['user_name'])
+
+        self.assertEqual(service_search_user(self.conf,
+                                             country=self.const_user_1['user_detail']['user_country'],
+                                             exact=True)[0]['user_name'], self.const_user_1['user_name'])
+
+        self.assertEqual(service_search_user(self.conf,
+                                             zip=self.const_user_1['user_detail']['user_zip'],
+                                             exact=True)[0]['user_name'], self.const_user_1['user_name'])
+
+        self.assertEqual(service_search_user(self.conf,
+                                             status=self.const_user_0['user_status'],
+                                             exact=True)[0]['user_name'], self.const_user_0['user_name'])
+
         # Raise Error: ErrorCode.SERVICE_INVALID_SEARCH_PARAM
         with self.assertRaises(ServiceError) as e:
             service_search_user_by_pattern(pattern_lol="lol")
@@ -133,6 +189,23 @@ class TestServiceSearchVideo(unittest.TestCase):
         self.assertEqual(service_search_video(self.conf, title="i%20a", slice=True)[0]['video_title'],
                          self.const_video_0['video_title'], msg="Test Search Video: Tag")
 
+        # Search successfully with custom pattern (pattern=True)
+        self.assertEqual(service_search_video(self.conf, title=".*i.*", pattern=True)[0]['video_title'],
+                         self.const_video_0['video_title'])
+
+        # Search successfully with aggregate
+        pipeline = [
+            {
+                "$match":
+                    {
+                        "video_title": {"$regex": "Ha"},
+                        "video_status": "public"
+                    }
+            }
+        ]
+        self.assertEqual(service_search_video(self.conf, aggregate=True, search_dict=pipeline)[0]['video_title'],
+                         self.const_video_0['video_title'])
+
     def test_search_video_by_contains(self):
         video = self.const_video_0
         self.assertEqual(service_search_video_by_contains(video_id=video['_id']['$oid'])[0]
@@ -154,6 +227,13 @@ class TestServiceSearchVideo(unittest.TestCase):
         self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_INVALID_SEARCH_PARAM)
 
     def test_search_video_by_pattern(self):
+        self.assertEqual(service_search_video(self.conf, channel=self.const_video_0['video_channel'],
+                                              exact=True)[0]['video_title'], self.const_video_0['video_title'])
+
+        self.assertEqual(service_search_video(self.conf, description=self.const_video_0['video_description'][1:5],
+                                              ignore_case=False)[0]['video_description'],
+                         self.const_video_0['video_description'])
+
         # Raise Error: ErrorCode.SERVICE_INVALID_SEARCH_PARAM
         with self.assertRaises(ServiceError) as e:
             service_search_video_by_pattern(pattern_lol="lol")

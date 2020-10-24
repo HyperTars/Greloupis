@@ -39,6 +39,7 @@ def service_search_user(conf, **kw):
         res_search = service_search_user_by_pattern(**kw)
     elif 'aggregate' in kw and kw['aggregate'] is True:
         res_search = service_search_user_by_aggregation(**kw)
+        return res_search
     else:
         res_search = service_search_user_by_contains(**kw)
 
@@ -78,6 +79,7 @@ def service_search_video(conf, **kw):
         res_search = service_search_video_by_pattern(**kw)  # Pattern search
     elif 'aggregate' in kw and kw['aggregate'] is True:
         res_search = service_search_video_by_aggregation(**kw)  # Aggregate search
+        return res_search
     else:
         res_search = service_search_video_by_contains(**kw)  # Contains keyword (single) search
 
@@ -180,8 +182,6 @@ def service_search_user_by_pattern(**kw):
         return query_user_search_by_pattern(pattern_zip=kw['user_zip'])
     elif 'user_status' in kw:
         return query_user_search_by_pattern(pattern_status=kw['user_status'])
-    elif 'user_reg_date' in kw:
-        return query_user_search_by_pattern(pattern_reg_date=kw['user_reg_date'])
 
     raise ServiceError(ErrorCode.SERVICE_PATTERN_SEARCH_NOT_SUPPORT)
 
