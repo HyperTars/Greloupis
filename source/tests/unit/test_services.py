@@ -134,20 +134,20 @@ class TestServiceSearchUser(unittest.TestCase):
         pipeline1 = [
             {
                 "$match":
-                {
-                    "user_name": {"$regex": "yp"},
-                    "user_status": "public"
-                }
+                    {
+                        "user_name": {"$regex": "yp"},
+                        "user_status": "public"
+                    }
             }
         ]
         pipeline2 = [
             {"$unwind": "$user_detail"},
             {
                 "$match":
-                {
-                    "user_detail.user_street1": {"$regex": "343"},
-                    "user_status": "public"
-                }
+                    {
+                        "user_detail.user_street1": {"$regex": "343"},
+                        "user_status": "public"
+                    }
             }
         ]
         self.assertEqual(service_search_user_by_aggregation(pipeline1)[0]['user_name'],
@@ -241,7 +241,8 @@ class TestServiceSearchVideo(unittest.TestCase):
 
     def test_search_video_by_aggregate(self):
         pipeline = [
-            {"$match":
+            {
+                "$match":
                 {
                     "video_title": {"$regex": "Xi"},
                     "video_status": "public"
