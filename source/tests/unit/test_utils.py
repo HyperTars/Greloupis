@@ -10,6 +10,10 @@ from source.utils.util_pattern import *
 class TestUtilErrorHandler(unittest.TestCase):
     def test_util_error_handler_mongo_error(self):
         with self.assertRaises(MongoError) as e:
+            raise MongoError(ErrorCode.MONGODB_USER_NOT_FOUND)
+        self.assertEqual(util_error_handler(e.exception).status_code, 404)
+
+        with self.assertRaises(MongoError) as e:
             raise MongoError(ErrorCode.MONGODB_STR_EXPECTED)
         self.assertEqual(util_error_handler(e.exception).status_code, 500)
 
@@ -54,7 +58,7 @@ class TestUtilLogger(unittest.TestCase):
 
     def test_util_logger_handler(self):
         file_name = "logs.txt"
-        self.assertEqual(type(handler(file_name)), logging.handlers.RotatingFileHandler)
+        self.assertEqual(type(handler(file_name)), RotatingFileHandler)
 
 
 class TestUtilPattern(unittest.TestCase):
@@ -127,10 +131,6 @@ class TestUtilPattern(unittest.TestCase):
 
 
 class TestUtilRequestFilter(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls):
-        pass
-
     def test_util_request_filter_xss(self):
         util_request_filter_xss()
 
@@ -139,9 +139,20 @@ class TestUtilRequestFilter(unittest.TestCase):
 
 
 class TestUtilSerializer(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls):
-        pass
+    def test_util_serializer_dict_to_json_ymd_hms(self):
+        data = {"time": "2020-09-26 17:56:42"}
+        js = util_serializer_dict_to_json(data)
+        self.assertEqual(js, '{"time": "2020-09-26 17:56:42"}')
+
+    def test_util_serializer_dict_to_json_ymd(self):
+        data = {"time": "2020-09-26"}
+        js = util_serializer_dict_to_json(data)
+        self.assertEqual(js, '{"time": "2020-09-26"}')
+
+    def test_util_serializer_dict_to_json(self):
+        data = {"time": "1-2-3"}
+        js = util_serializer_dict_to_json(data)
+        self.assertEqual(js, '{"time": "1-2-3"}')
 
 
 class TestUtilTime(unittest.TestCase):
