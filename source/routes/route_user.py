@@ -6,6 +6,7 @@ from flask_restx import Resource, Api, fields, marshal_with, reqparse, Namespace
 from source.service.service_user import *
 from source.utils.util_serializer import *
 from source.utils.util_validator import *
+from source.utils.util_error_handler import *
 from source.settings import *
 
 user = Namespace('user', description='User APIs')
@@ -137,7 +138,15 @@ class UserUserId(Resource):
         """
         user_id = request.url.split('/')[-1]
 
-        return service_user_info(conf=config['default'], user_id=user_id)
+        kw = {
+            "user_id": user_id
+        }
+
+        try:
+            result = service_user_info(conf=config['default'], **kw)
+            return util_serializer_api_response(200, body=result, msg="Successfully get user information")
+        except (ServiceError, MongoError, RouteError, Exception) as e:
+            return util_error_handler(e)
 
     @user.response(405, 'Method not allowed')
     def put(self, user_id):
@@ -193,7 +202,15 @@ class UserUserIdLike(Resource):
         """
         user_id = request.url.split('/')[-2]
 
-        return service_user_get_like(conf=config['default'], user_id=user_id)
+        kw = {
+            "user_id": user_id
+        }
+
+        try:
+            like_result = service_user_get_like(conf=config['default'], **kw)
+            return util_serializer_api_response(200, body=like_result, msg="Successfully get user likes")
+        except (ServiceError, MongoError, RouteError, Exception) as e:
+            return util_error_handler(e)
 
 
 @user.route('/<string:user_id>/dislike', methods=['GET'])
@@ -210,7 +227,15 @@ class UserUserIdDislike(Resource):
         """
         user_id = request.url.split('/')[-2]
 
-        return service_user_get_dislike(conf=config['default'], user_id=user_id)
+        kw = {
+            "user_id": user_id
+        }
+
+        try:
+            dislike_result = service_user_get_dislike(conf=config['default'], **kw)
+            return util_serializer_api_response(200, body=dislike_result, msg="Successfully get user dislikes")
+        except (ServiceError, MongoError, RouteError, Exception) as e:
+            return util_error_handler(e)
 
 
 @user.route('/<string:user_id>/star', methods=['GET'])
@@ -226,6 +251,16 @@ class UserUserIdStar(Resource):
             Get a list of star by user id
         """
         user_id = request.url.split('/')[-2]
+
+        kw = {
+            "user_id": user_id
+        }
+
+        try:
+            star_result = service_user_get_star(conf=config['default'], **kw)
+            return util_serializer_api_response(200, body=star_result, msg="Successfully get user comments")
+        except (ServiceError, MongoError, RouteError, Exception) as e:
+            return util_error_handler(e)
 
         return service_user_get_star(conf=config['default'], user_id=user_id)
 
@@ -244,4 +279,12 @@ class UserUserIdComment(Resource):
         """
         user_id = request.url.split('/')[-2]
 
-        return service_user_get_comment(conf=config['default'], user_id=user_id)
+        kw = {
+            "user_id": user_id
+        }
+
+        try:
+            comment_result = service_user_get_comment(conf=config['default'], **kw)
+            return util_serializer_api_response(200, body=comment_result, msg="Successfully get user comments")
+        except (ServiceError, MongoError, RouteError, Exception) as e:
+            return util_error_handler(e)
