@@ -68,6 +68,37 @@ class TestServiceSearchUser(unittest.TestCase):
             service_search_user_by_contains(user_lol="lol")
         self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_INVALID_SEARCH_PARAM)
 
+    def test_search_user_by_pattern(self):
+        # Raise Error: ErrorCode.SERVICE_INVALID_SEARCH_PARAM
+        with self.assertRaises(ServiceError) as e:
+            service_search_user_by_pattern(pattern_lol="lol")
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_PATTERN_SEARCH_NOT_SUPPORT)
+
+    def test_search_user_by_aggregate(self):
+        pipeline1 = [
+            {
+                "$match":
+                {
+                    "user_name": {"$regex": "yp"},
+                    "user_status": "public"
+                }
+            }
+        ]
+        pipeline2 = [
+            {"$unwind": "$user_detail"},
+            {
+                "$match":
+                {
+                    "user_detail.user_street1": {"$regex": "343"},
+                    "user_status": "public"
+                }
+            }
+        ]
+        self.assertEqual(service_search_user_by_aggregation(pipeline1)[0]['user_name'],
+                         self.const_user_0['user_name'])
+        self.assertEqual(service_search_user_by_aggregation(pipeline2)[0]['user_name'],
+                         self.const_user_0['user_name'])
+
 
 class TestServiceSearchVideo(unittest.TestCase):
     data = util_load_test_data()
@@ -121,6 +152,24 @@ class TestServiceSearchVideo(unittest.TestCase):
         with self.assertRaises(ServiceError) as e:
             service_search_video_by_contains(video_lol="lol")
         self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_INVALID_SEARCH_PARAM)
+
+    def test_search_video_by_pattern(self):
+        # Raise Error: ErrorCode.SERVICE_INVALID_SEARCH_PARAM
+        with self.assertRaises(ServiceError) as e:
+            service_search_video_by_pattern(pattern_lol="lol")
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_PATTERN_SEARCH_NOT_SUPPORT)
+
+    def test_search_video_by_aggregate(self):
+        pipeline = [
+            {"$match":
+                {
+                    "video_title": {"$regex": "Xi"},
+                    "video_status": "public"
+                }
+            }
+        ]
+        self.assertEqual(service_search_video_by_aggregation(pipeline)[0]['video_title'],
+                         self.const_video_0['video_title'])
 
 
 if __name__ == "__main__":
