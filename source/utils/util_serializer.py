@@ -17,11 +17,8 @@ def util_serializer_dict_to_json(d):
     return json.dumps(d, cls=JSONDateEncoder)
 
 
-def util_serializer_request(request, format="dict"):
-    if format == "json":
-        return util_serializer_dict_to_json(request.to_dict())
-    else:
-        return request.to_dict()
+def util_serializer_request(request):
+    return request.to_dict()
 
 
 def extract_error_msg(message):
@@ -32,8 +29,6 @@ def util_serializer_api_response(code, body=[{}], error_code=None, msg=""):
     if code == 200:
         response = {"code": code, "body": body, "message": str(msg)}
     else:
-        code = str(code)
-
         if error_code is None:
             response = {"code": code, "message": str(msg)}
         else:

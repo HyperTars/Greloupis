@@ -36,9 +36,6 @@ def util_pattern_format_param(**kw):
     if 'password' in kw and 'user_password' not in kw:
         kw['user_password'] = kw['password']
         kw.pop('password')
-    if 'email' in kw and 'user_email' not in kw:
-        kw['user_email'] = kw['email']
-        kw.pop('email')
     if 'first_name' in kw and 'user_first_name' not in kw:
         kw['user_first_name'] = kw['first_name']
         kw.pop('first_name')
