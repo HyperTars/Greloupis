@@ -2,7 +2,6 @@
 
 - Database: MongoDB 4.4.0
 - Database name: online_video_platform
-- Database Endpoint: "mongodb+srv://devops:DevOps@mongodbcluster.v4vtj.mongodb.net/online_video_platform?retryWrites=true&w=majority"
 
 ## Table / Collection (MongoDB)
 
