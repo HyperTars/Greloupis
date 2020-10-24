@@ -1,5 +1,6 @@
 import unittest
 from source.utils.util_hash import *
+from source.utils.util_validator import *
 from source.utils.util_request_filter import *
 
 
@@ -59,6 +60,12 @@ class TestValidator(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         pass
+
+    def test_util_validator(self):
+        test_id_1 = "5f88f883e6ac4f89900ac983"
+        test_id_2 = "5f88f883e6ac4f89900ac98"
+        self.assertEqual(is_valid_id(test_id_1), True)
+        self.assertEqual(is_valid_id(test_id_2), False)
 
 
 if __name__ == '__main__':
