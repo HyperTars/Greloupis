@@ -5,7 +5,7 @@
 [![Python](https://img.shields.io/badge/python-3.8-blue)](https://www.python.org/downloads/release/python-385/)
 [![npm](https://img.shields.io/badge/npm-6.14.8-blue)](https://blog.npmjs.org/post/626732790304686080/release-6148)
 [![Flask](https://img.shields.io/badge/Flask-1.1.2-blue)](https://pypi.org/project/Flask/)
-[![React](https://img.shields.io/badge/React-16.14.0-blue)](https://reactjs.org/versions)
+[![React](https://img.shields.io/badge/React-17.0.0-blue)](https://reactjs.org/versions)
 [![MongoDB](https://img.shields.io/badge/MongoDB-4.4-blue)](https://docs.mongodb.com/manual/release-notes/4.4/)
 <!-- [Video.js](https://img.shields.io/badge/Video.js-7.8.4-blue) -->
 
