@@ -2,12 +2,36 @@ import unittest
 from source.utils.util_hash import *
 from source.utils.util_validator import *
 from source.utils.util_request_filter import *
+from source.utils.util_logger import *
+from source.utils.util_error_handler import *
+from source.utils.util_pattern import *
 
 
 class TestUtilErrorHandler(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls):
-        pass
+    def test_util_error_handler_mongo_error(self):
+        with self.assertRaises(MongoError) as e:
+            raise MongoError(ErrorCode.MONGODB_STR_EXPECTED)
+        self.assertEqual(util_error_handler(e.exception).status_code, 500)
+
+    def test_util_error_handler_service_error(self):
+        with self.assertRaises(ServiceError) as e:
+            raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
+        self.assertEqual(util_error_handler(e.exception).status_code, 400)
+
+    def test_util_error_handler_route_error(self):
+        with self.assertRaises(RouteError) as e:
+            raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+        self.assertEqual(util_error_handler(e.exception).status_code, 404)
+
+    def test_util_error_handler_exception(self):
+        with self.assertRaises(Exception) as e:
+            raise Exception
+        self.assertEqual(util_error_handler(e.exception).status_code, 500)
+
+    def test_util_error_handler_else(self):
+        with self.assertRaises(KeyError) as e:
+            raise KeyError
+        self.assertEqual(util_error_handler(e.exception).status_code, 503)
 
 
 class TestUtilHash(unittest.TestCase):
@@ -26,10 +50,80 @@ class TestUtilHash(unittest.TestCase):
         self.assertEqual(test_encode, util_hash_md5_with_salt(test_str, salt))
 
 
+class TestUtilLogger(unittest.TestCase):
+
+    def test_util_logger_handler(self):
+        file_name = "logs.txt"
+        self.assertEqual(type(handler(file_name)), logging.handlers.RotatingFileHandler)
+
+
 class TestUtilPattern(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         pass
+
+    def test_util_pattern_format_param(self):
+        temp_str = "111"
+
+        kw = util_pattern_format_param(service="user", _id=temp_str)
+        self.assertEqual(kw['user_id'], temp_str)
+
+        kw = util_pattern_format_param(service="user", id=temp_str)
+        self.assertEqual(kw['user_id'], temp_str)
+
+        kw = util_pattern_format_param(service="user", password=temp_str)
+        self.assertEqual(kw['user_password'], temp_str)
+
+        kw = util_pattern_format_param(service="user", email=temp_str)
+        self.assertEqual(kw['user_email'], temp_str)
+
+        kw = util_pattern_format_param(service="user", reg_date=temp_str)
+        self.assertEqual(kw['user_reg_date'], temp_str)
+
+        kw = util_pattern_format_param(service="video", _id=temp_str)
+        self.assertEqual(kw['video_id'], temp_str)
+
+        kw = util_pattern_format_param(service="video", id=temp_str)
+        self.assertEqual(kw['video_id'], temp_str)
+
+        kw = util_pattern_format_param(service="video", tag=temp_str)
+        self.assertEqual(kw['video_tag'], temp_str)
+
+        kw = util_pattern_format_param(service="video", category=temp_str)
+        self.assertEqual(kw['video_category'], temp_str)
+
+        kw = util_pattern_format_param(service="video", content=temp_str)
+        self.assertEqual(kw['video_raw_content'], temp_str)
+
+        kw = util_pattern_format_param(service="video", raw_content=temp_str)
+        self.assertEqual(kw['video_raw_content'], temp_str)
+
+        kw = util_pattern_format_param(service="video_op", id=temp_str)
+        self.assertEqual(kw['video_op_id'], temp_str)
+
+        kw = util_pattern_format_param(service="video_op", _id=temp_str)
+        self.assertEqual(kw['video_op_id'], temp_str)
+
+        kw = util_pattern_format_param(service="video_op", comment=temp_str)
+        self.assertEqual(kw['video_op_comment'], temp_str)
+
+    def test_util_test_pattern_build(self):
+        test_str = "111"
+        kw = util_pattern_build(user_reg_date=test_str, exact=False)
+        self.assertEqual(kw['user_reg_date'], re.compile('.*' + test_str + '.*'))
+
+        kw = util_pattern_build(video_tag=test_str, exact=False)
+        self.assertEqual(kw['video_tag'], re.compile('.*' + test_str + '.*'))
+
+        kw = util_pattern_build(video_category=test_str, exact=False)
+        self.assertEqual(kw['video_category'], re.compile('.*' + test_str + '.*'))
+
+        kw = util_pattern_build(video_op_comment=test_str, exact=False)
+        self.assertEqual(kw['video_op_comment'], re.compile('.*' + test_str + '.*'))
+
+        with self.assertRaises(UtilError) as e:
+            util_pattern_build(nonsense=test_str)
+        self.assertEqual(e.exception.error_code, ErrorCode.UTIL_INVALID_PATTERN_PARAM)
 
 
 class TestUtilRequestFilter(unittest.TestCase):
