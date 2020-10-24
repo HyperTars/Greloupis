@@ -28,6 +28,7 @@ class ErrorCode(Enum):
     SERVICE_USER_NOT_FOUND = {3004: "Service Error: User Not Found"}
     SERVICE_USER_CREATION_FAILURE = {3005: "Service Error: User Creation Failure"}
     SERVICE_USER_AUTH_FAILURE = {3006: "Service Error: User Auth Failure"}
+    SERVICE_INVALID_SEARCH_PARAM = {3007: "Service Error: Invalid Search Param"}
 
     # Database 4 Series
     MONGODB_CONNECTION_FAILURE = {4000: "MongoDB Connection Failure"}

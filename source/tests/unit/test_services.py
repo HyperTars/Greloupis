@@ -66,7 +66,7 @@ class TestServiceSearchUser(unittest.TestCase):
         # Raise Error: ErrorCode.SERVICE_PARAM_SLICE_NOT_SUPPORT
         with self.assertRaises(ServiceError) as e:
             service_search_user_by_contains(user_lol="lol")
-        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_INVALID_SEARCH_PARAM)
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_INVALID_SEARCH_PARAM)
 
 
 class TestServiceSearchVideo(unittest.TestCase):
@@ -116,6 +116,11 @@ class TestServiceSearchVideo(unittest.TestCase):
                          ['video_title'], video['video_title'])
         self.assertEqual(service_search_video_by_contains(video_description=video['video_description'][1:4])[0]
                          ['video_title'], video['video_title'])
+
+        # Raise Error: ErrorCode.SERVICE_PARAM_SLICE_NOT_SUPPORT
+        with self.assertRaises(ServiceError) as e:
+            service_search_video_by_contains(video_lol="lol")
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_INVALID_SEARCH_PARAM)
 
 
 if __name__ == "__main__":

@@ -129,7 +129,7 @@ def service_search_user_by_contains(**kw):
     elif 'user_status' in kw:
         return query_user_search_by_contains(user_status=kw['user_status'])
 
-    raise ServiceError(ErrorCode.MONGODB_INVALID_SEARCH_PARAM)
+    raise ServiceError(ErrorCode.SERVICE_INVALID_SEARCH_PARAM)
 
 
 def service_search_video_by_contains(**kw):
@@ -151,7 +151,7 @@ def service_search_video_by_contains(**kw):
     elif 'video_description' in kw:
         return query_video_search_by_contains(video_description=kw['video_description'])
 
-    raise ServiceError(ErrorCode.SERVICE_PATTERN_SEARCH_NOT_SUPPORT)
+    raise ServiceError(ErrorCode.SERVICE_INVALID_SEARCH_PARAM)
 
 
 # Search by pattern
