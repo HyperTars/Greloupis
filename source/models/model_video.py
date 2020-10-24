@@ -61,6 +61,7 @@ class Video(db.Document):
         video_uri_dict['video_uri_low'] = self.video_uri.video_uri_low or ""
 
         video_dict['video_id'] = str(self._id)
+        video_dict['user_id'] = str(self.user_id)
         video_dict['video_title'] = self.video_title or ""
         video_dict['video_raw_content'] = self.video_raw_content or ""
         video_dict['video_raw_status'] = self.video_raw_status or ""
