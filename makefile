@@ -36,6 +36,9 @@ report:
 coveralls:
 	coveralls
 
+codecov:
+    codecov -t a767bea5-9464-4229-b6f4-e420874311b3
+
 connect:
 	chmod 400 documents/DevOps.pem
 	ssh -i "documents/DevOps.pem" ubuntu@ec2-54-205-45-145.compute-1.amazonaws.com
