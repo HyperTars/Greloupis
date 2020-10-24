@@ -156,134 +156,53 @@ def service_search_video_by_contains(**kw):
 
 # Search by pattern
 def service_search_user_by_pattern(**kw):
-    if kw['ignore_case'] is False or kw['exact'] is True:
-        if 'user_name' in kw:
-            return query_user_search_by_pattern(pattern_name=kw['user_name'])
-        elif 'user_email' in kw:
-            return query_user_search_by_pattern(pattern_email=kw['user_email'])
-        elif 'user_first_name' in kw:
-            return query_user_search_by_pattern(pattern_first_name=kw['user_first_name'])
-        elif 'user_last_name' in kw:
-            return query_user_search_by_pattern(pattern_last_name=kw['user_last_name'])
-        elif 'user_phone' in kw:
-            return query_user_search_by_pattern(pattern_phone=kw['user_phone'])
-        elif 'user_street1' in kw:
-            return query_user_search_by_pattern(pattern_street1=kw['user_street1'])
-        elif 'user_street2' in kw:
-            return query_user_search_by_pattern(pattern_street2=kw['user_street2'])
-        elif 'user_city' in kw:
-            return query_user_search_by_pattern(pattern_city=kw['user_city'])
-        elif 'user_state' in kw:
-            return query_user_search_by_pattern(pattern_state=kw['user_state'])
-        elif 'user_country' in kw:
-            return query_user_search_by_pattern(pattern_country=kw['user_country'])
-        elif 'user_zip' in kw:
-            return query_user_search_by_pattern(pattern_zip=kw['user_zip'])
-        elif 'user_status' in kw:
-            return query_user_search_by_pattern(pattern_status=kw['user_status'])
-        elif 'user_reg_date' in kw:
-            return query_user_search_by_pattern(pattern_reg_date=kw['user_reg_date'])
+    if 'user_name' in kw:
+        return query_user_search_by_pattern(pattern_name=kw['user_name'])
+    elif 'user_email' in kw:
+        return query_user_search_by_pattern(pattern_email=kw['user_email'])
+    elif 'user_first_name' in kw:
+        return query_user_search_by_pattern(pattern_first_name=kw['user_first_name'])
+    elif 'user_last_name' in kw:
+        return query_user_search_by_pattern(pattern_last_name=kw['user_last_name'])
+    elif 'user_phone' in kw:
+        return query_user_search_by_pattern(pattern_phone=kw['user_phone'])
+    elif 'user_street1' in kw:
+        return query_user_search_by_pattern(pattern_street1=kw['user_street1'])
+    elif 'user_street2' in kw:
+        return query_user_search_by_pattern(pattern_street2=kw['user_street2'])
+    elif 'user_city' in kw:
+        return query_user_search_by_pattern(pattern_city=kw['user_city'])
+    elif 'user_state' in kw:
+        return query_user_search_by_pattern(pattern_state=kw['user_state'])
+    elif 'user_country' in kw:
+        return query_user_search_by_pattern(pattern_country=kw['user_country'])
+    elif 'user_zip' in kw:
+        return query_user_search_by_pattern(pattern_zip=kw['user_zip'])
+    elif 'user_status' in kw:
+        return query_user_search_by_pattern(pattern_status=kw['user_status'])
+    elif 'user_reg_date' in kw:
+        return query_user_search_by_pattern(pattern_reg_date=kw['user_reg_date'])
 
-    elif 'pattern' in kw and kw['pattern'] is True:
-        if 'user_name' in kw:
-            return query_user_search_by_pattern(pattern_name=re.compile(kw['user_name']))
-        elif 'user_email' in kw:
-            return query_user_search_by_pattern(pattern_email=re.compile(kw['user_email']))
-        elif 'user_first_name' in kw:
-            return query_user_search_by_pattern(pattern_first_name=re.compile(kw['user_first_name']))
-        elif 'user_last_name' in kw:
-            return query_user_search_by_pattern(pattern_last_name=re.compile(kw['user_last_name']))
-        elif 'user_phone' in kw:
-            return query_user_search_by_pattern(pattern_phone=re.compile(kw['user_phone']))
-        elif 'user_street1' in kw:
-            return query_user_search_by_pattern(pattern_street1=re.compile(kw['user_street1']))
-        elif 'user_street2' in kw:
-            return query_user_search_by_pattern(pattern_street2=re.compile(kw['user_street2']))
-        elif 'user_city' in kw:
-            return query_user_search_by_pattern(pattern_city=re.compile(kw['user_city']))
-        elif 'user_state' in kw:
-            return query_user_search_by_pattern(pattern_state=re.compile(kw['user_state']))
-        elif 'user_country' in kw:
-            return query_user_search_by_pattern(pattern_country=re.compile(kw['user_country']))
-        elif 'user_zip' in kw:
-            return query_user_search_by_pattern(pattern_zip=re.compile(kw['user_zip']))
-        elif 'user_status' in kw:
-            return query_user_search_by_pattern(pattern_status=re.compile(kw['user_status']))
-        elif 'user_reg_date' in kw:
-            return query_user_search_by_pattern(pattern_reg_date=re.compile(kw['user_reg_date']))
-
-    raise ServiceError(ErrorCode.MONGODB_INVALID_SEARCH_PARAM)
+    raise ServiceError(ErrorCode.SERVICE_PATTERN_SEARCH_NOT_SUPPORT)
 
 
 def service_search_video_by_pattern(**kw):
-    if kw['ignore_case'] is False or kw['exact'] is True or kw['slice'] is True:
-        if 'video_title' in kw:
-            return query_video_search_by_pattern(pattern_title=kw['video_title'])
-        elif 'video_channel' in kw:
-            return query_video_search_by_pattern(pattern_channel=kw['video_channel'])
-        elif 'video_description' in kw:
-            return query_video_search_by_pattern(pattern_description=kw['video_description'])
-
-    elif 'pattern' in kw and kw['pattern'] is True:
-        if 'video_title' in kw:
-            return query_video_search_by_pattern(pattern_title=re.compile(kw['video_title']))
-        elif 'video_channel' in kw:
-            return query_video_search_by_pattern(pattern_channel=re.compile(kw['video_channel']))
-        elif 'video_description' in kw:
-            return query_video_search_by_pattern(pattern_description=re.compile(kw['video_description']))
+    if 'video_title' in kw:
+        return query_video_search_by_pattern(pattern_title=kw['video_title'])
+    elif 'video_channel' in kw:
+        return query_video_search_by_pattern(pattern_channel=kw['video_channel'])
+    elif 'video_description' in kw:
+        return query_video_search_by_pattern(pattern_description=kw['video_description'])
 
     raise ServiceError(ErrorCode.SERVICE_PATTERN_SEARCH_NOT_SUPPORT)
 
 
 # Search by aggregate
-def service_search_user_by_aggregation(**kw):
+def service_search_user_by_aggregation(search_dict=None, **kw):
     # Search by aggregate (can search multi attributes)
-    """
-    example:
-    pipeline1 = [
-        { "$match":
-            {
-                "user_name": {"$regex": "es"},
-                "user_status": "active"
-            }
-        }
-    ]
-    pipeline2 = [
-        { "$unwind": "$user_detail" },
-        { "$match":
-            {
-                "user_detail.street1": {"$regex": "343"},
-                "user_status": "public"
-            }
-        }
-    ]
-    """
-    search_dict = {}
-
     return query_user_search_by_aggregate(search_dict)
 
 
-def service_search_video_by_aggregation(**kw):
+def service_search_video_by_aggregation(search_dict=None, **kw):
     # Search by aggregate (can search multi attributes)
-    """
-    example:
-    pipeline1 = [
-        { "$match":
-            {
-                "user_name": {"$regex": "es"},
-                "user_status": "active"
-            }
-        }
-    ]
-    pipeline2 = [
-        { "$unwind": "$user_detail" },
-        { "$match":
-            {
-                "user_detail.street1": {"$regex": "343"},
-                "user_status": "public"
-            }
-        }
-    ]
-    """
-    search_dict = {}
     return query_video_search_by_aggregate(search_dict)
