@@ -1,6 +1,7 @@
 import unittest
 from source.models.model_errors import *
 from source.service.service_search import *
+from source.service.service_user import *
 from source.settings import *
 from source.tests.unit.test_load_data import util_load_test_data
 
@@ -251,6 +252,134 @@ class TestServiceSearchVideo(unittest.TestCase):
         ]
         self.assertEqual(service_search_video_by_aggregation(pipeline)[0]['video_title'],
                          self.const_video_0['video_title'])
+
+
+class TestServiceUser(unittest.TestCase):
+    data = util_load_test_data()
+
+    const_user_0 = data['const_user'][0]
+    const_user_1 = data['const_user'][1]
+    const_user_2 = data['const_user'][2]
+
+    temp_user_0 = data['temp_user'][0]
+    temp_user_1 = data['temp_user'][1]
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.conf = config['test']
+
+    def test_a_service_user_reg(self):
+        # Register successfully
+        self.assertEqual(service_user_reg(self.conf, user_name=self.temp_user_0['user_name'],
+                                          user_password=self.temp_user_0['user_password'],
+                                          user_email=self.temp_user_0['user_email'])['user_name'],
+                         self.temp_user_0['user_name'])
+
+        # Raise Error: ErrorCode.SERVICE_MISSING_PARAM
+        with self.assertRaises(ServiceError) as e:
+            service_user_reg(self.conf)
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_MISSING_PARAM)
+
+    def test_b_service_user_check_password(self):
+        # Check successfully with user name
+        self.assertTrue(service_user_check_password(self.conf, user_name=self.temp_user_0['user_name'],
+                                                    user_password=self.temp_user_0['user_password']))
+
+        # Check successfully with user email
+        self.assertTrue(service_user_check_password(self.conf, user_email=self.temp_user_0['user_email'],
+                                                    user_password=self.temp_user_0['user_password']))
+
+        # Password Wrong
+        self.assertFalse(service_user_check_password(self.conf, user_name=self.temp_user_0['user_name'],
+                                                     user_password="xxx"))
+
+        # Raise Error: ErrorCode.SERVICE_MISSING_PARAM
+        with self.assertRaises(ServiceError) as e:
+            service_user_check_password(self.conf)
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_MISSING_PARAM)
+
+        # Raise Error: ErrorCode.SERVICE_USER_NOT_FOUND
+        with self.assertRaises(ServiceError) as e:
+            service_user_check_password(self.conf, user_name=self.temp_user_1['user_name'],
+                                        user_password=self.temp_user_1['user_password'])
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_USER_NOT_FOUND)
+
+    def test_c_service_user_get_info(self):
+        # Get successfully
+        self.assertEqual(service_user_get_info(self.conf, self.const_user_0['_id']['$oid'])['user'][0]['user_name'],
+                         self.const_user_0['user_name'])
+
+        # Raise Error: ErrorCode.SERVICE_INVALID_ID_OBJ
+        with self.assertRaises(ServiceError) as e:
+            service_user_get_info(self.conf, 'some random user')
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_INVALID_ID_OBJ)
+
+        # Raise Error: ErrorCode.SERVICE_USER_NOT_FOUND
+        with self.assertRaises(ServiceError) as e:
+            service_user_get_info(self.conf, '123456781234567812345678')
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_USER_NOT_FOUND)
+
+    def test_d_service_user_get_like(self):
+        # Get successfully
+        self.assertEqual(len(service_user_get_like(self.conf, self.const_user_0['_id']['$oid'])), 0)
+
+        # Raise Error: ErrorCode.SERVICE_INVALID_ID_OBJ
+        with self.assertRaises(ServiceError) as e:
+            service_user_get_like(self.conf, 'some random user')
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_INVALID_ID_OBJ)
+
+        # Raise Error: ErrorCode.SERVICE_USER_NOT_FOUND
+        with self.assertRaises(ServiceError) as e:
+            service_user_get_like(self.conf, '123456781234567812345678')
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_USER_NOT_FOUND)
+
+    def test_e_service_user_get_dislike(self):
+        # Get successfully
+        self.assertEqual(service_user_get_dislike(self.conf, self.const_user_0['_id']['$oid'])[0]['user_id'],
+                         self.const_user_0['_id']['$oid'])
+
+        # Raise Error: ErrorCode.SERVICE_INVALID_ID_OBJ
+        with self.assertRaises(ServiceError) as e:
+            service_user_get_dislike(self.conf, 'some random user')
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_INVALID_ID_OBJ)
+
+        # Raise Error: ErrorCode.SERVICE_USER_NOT_FOUND
+        with self.assertRaises(ServiceError) as e:
+            service_user_get_dislike(self.conf, '123456781234567812345678')
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_USER_NOT_FOUND)
+
+    def test_f_service_user_get_comment(self):
+        # Get successfully
+        self.assertEqual(service_user_get_comment(self.conf, self.const_user_0['_id']['$oid'])[0]['user_id'],
+                         self.const_user_0['_id']['$oid'])
+
+        # Raise Error: ErrorCode.SERVICE_INVALID_ID_OBJ
+        with self.assertRaises(ServiceError) as e:
+            service_user_get_comment(self.conf, 'some random user')
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_INVALID_ID_OBJ)
+
+        # Raise Error: ErrorCode.SERVICE_USER_NOT_FOUND
+        with self.assertRaises(ServiceError) as e:
+            service_user_get_comment(self.conf, '123456781234567812345678')
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_USER_NOT_FOUND)
+
+    def test_g_service_user_get_star(self):
+        # Get successfully
+        self.assertEqual(len(service_user_get_star(self.conf, self.const_user_0['_id']['$oid'])), 0)
+
+        # Raise Error: ErrorCode.SERVICE_INVALID_ID_OBJ
+        with self.assertRaises(ServiceError) as e:
+            service_user_get_star(self.conf, 'some random user')
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_INVALID_ID_OBJ)
+
+        # Raise Error: ErrorCode.SERVICE_USER_NOT_FOUND
+        with self.assertRaises(ServiceError) as e:
+            service_user_get_star(self.conf, '123456781234567812345678')
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_USER_NOT_FOUND)
+
+    def test_z_service_user_cancel(self):
+        user_id = query_user_get_by_name(user_name=self.temp_user_0['user_name'])[0].to_dict()['user_id']
+        self.assertEqual(service_user_cancel(self.conf, user_id), 1)
 
 
 if __name__ == "__main__":

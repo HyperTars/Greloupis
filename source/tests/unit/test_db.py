@@ -942,7 +942,7 @@ class TestQueryVideoOp(unittest.TestCase):
                          self.temp_video_op_0['video_id'])
 
     def test_c_query_video_op_get_by_video_id(self):
-        self.assertEqual(query_video_op_get_by_video_id(self.temp_video_op_0['video_id'])[0].user_id,
+        self.assertEqual(query_video_op_get_by_video_id(self.temp_video_op_0['video_id'])[1].user_id,
                          self.temp_video_op_0['user_id'])
 
     def test_d_query_video_op_get_by_user_video(self):
