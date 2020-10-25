@@ -8,9 +8,6 @@ from source.models.model_errors import *
 class TestUserModel(unittest.TestCase):
     data = util_load_test_data()
 
-    def setUp(self):
-        pass
-
     def test_user_model_load(self):
         temp_user = self.data['temp_user'][2]
         user = User(**temp_user)
@@ -21,7 +18,6 @@ class TestUserModel(unittest.TestCase):
 
 
 class TestErrorModel(unittest.TestCase):
-
     def test_error_class(self):
         imp.load_source('__main__', 'source/models/model_errors.py')
 
