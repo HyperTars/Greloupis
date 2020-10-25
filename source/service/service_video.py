@@ -12,60 +12,59 @@ VALID_VIDEO_STATUS = ['public', 'private', 'processing', 'deleted']
 
 def service_video_upload(conf, **kw):
     db = get_db(conf)
-
-    # keyword check and formatting
-    if ('user_id' not in kw and 'id' not in kw and '_id' not in kw) or \
-            ('video_title' not in kw and 'title' not in kw) or \
-            ('video_raw_content' not in kw and 'raw_content' not in kw and 'content' not in kw):
-        raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
-
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
+
+    # keyword check and formatting
+    if 'user_id' not in kw or 'video_title' not in kw or 'video_raw_content' not in kw:
+        raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
 
     # perform db operations and get result
     query_video_create(kw['user_id'], kw['video_title'], kw['video_raw_content'])
     uploaded_result = query_video_get_by_title(kw['video_title'])
-    return uploaded_result
+    if len(uploaded_result) == 0:
+        raise ServiceError(ErrorCode.SERVICE_VIDEO_NOT_FOUND)
+    return uploaded_result[0].to_dict()
 
 
 def service_video_info(conf, **kw):
     db = get_db(conf)
-
-    # keyword check and formatting
-    if 'video_id' not in kw and 'id' not in kw and '_id' not in kw:
-        raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
-
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
 
+    # keyword check and formatting
+    if 'video_id' not in kw:
+        raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
+
     if not is_valid_id(kw["video_id"]):
-        raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+        raise ServiceError(ErrorCode.SERVICE_INVALID_ID_OBJ)
 
     # perform db operations and get result
     get_result = query_video_get_by_video_id(kw["video_id"])
-    return get_result
+    if len(get_result) == 0:
+        raise ServiceError(ErrorCode.SERVICE_VIDEO_NOT_FOUND)
+    return get_result[0].to_dict()
 
 
 def service_video_update(conf, **kw):
     db = get_db(conf)
-
-    # keyword check and formatting
-    if 'video_id' not in kw and 'id' not in kw and '_id' not in kw:
-        raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
-
-    if 'video_status' in kw and kw['video_status'] not in VALID_VIDEO_STATUS:
-        raise MongoError(ErrorCode.MONGODB_VIDEO_INVALID_STATUS)
-
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
 
+    # keyword check and formatting
+    if 'video_id' not in kw:
+        raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
+
+    if 'video_status' in kw and kw['video_status'] not in VALID_VIDEO_STATUS:
+        raise ServiceError(ErrorCode.SERVICE_VIDEO_INVALID_STATUS)
+
     if not is_valid_id(kw["video_id"]):
-        raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+        raise ServiceError(ErrorCode.SERVICE_INVALID_ID_OBJ)
 
     # perform db operations and get result
     video_get_result = query_video_get_by_video_id(kw["video_id"])
     if len(video_get_result) == 0:
-        raise MongoError(ErrorCode.MONGODB_VIDEO_NOT_FOUND)
+        raise ServiceError(ErrorCode.SERVICE_VIDEO_NOT_FOUND)
     original = util_serializer_mongo_results_to_array(video_get_result)[0]
 
     # override original data or not
@@ -97,50 +96,22 @@ def service_video_update(conf, **kw):
     return query_video_get_by_video_id(kw["video_id"])
 
 
-def service_video_delete(conf, **kw):
-    db = get_db(conf)
-
-    # keyword check and formatting
-    if 'video_id' not in kw and 'id' not in kw and '_id' not in kw:
-        raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
-
-    kw['service'] = 'video'
-    kw = util_pattern_format_param(**kw)
-
-    if not is_valid_id(kw["video_id"]):
-        raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
-
-    # perform db operations and get result
-    delete_result = query_video_delete(kw["video_id"])
-    if delete_result == 1:
-        # delete all video_op related to this video
-        video_op_objects = query_video_op_get_by_video_id(kw["video_id"])
-        video_op_results = util_serializer_mongo_results_to_array(video_op_objects)
-        for each in video_op_results:
-            query_video_op_delete(each["video_op_id"])
-
-        return delete_result
-    else:
-        raise MongoError(ErrorCode.MONGODB_VIDEO_DELETE_FAILURE)
-
-
 def service_video_comments(conf, **kw):
     db = get_db(conf)
-
-    # keyword check and formatting
-    if 'video_id' not in kw and 'id' not in kw and '_id' not in kw:
-        raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
-
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
 
+    # keyword check and formatting
+    if 'video_id' not in kw:
+        raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
+
     if not is_valid_id(kw["video_id"]):
-        raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+        raise ServiceError(ErrorCode.SERVICE_INVALID_ID_OBJ)
 
     # perform db operations and get result
     search_mongo = query_video_op_get_by_video_id(kw["video_id"])
     if len(search_mongo) == 0:
-        raise MongoError(ErrorCode.MONGODB_VIDEO_NOT_FOUND)
+        raise ServiceError(ErrorCode.SERVICE_VIDEO_NOT_FOUND)
 
     search_result = util_serializer_mongo_results_to_array(search_mongo)
 
@@ -159,21 +130,20 @@ def service_video_comments(conf, **kw):
 
 def service_video_likes(conf, **kw):
     db = get_db(conf)
-
-    # keyword check and formatting
-    if 'video_id' not in kw and 'id' not in kw and '_id' not in kw:
-        raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
-
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
 
+    # keyword check and formatting
+    if 'video_id' not in kw:
+        raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
+
     if not is_valid_id(kw["video_id"]):
-        raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+        raise ServiceError(ErrorCode.SERVICE_INVALID_ID_OBJ)
 
     # perform db operations and get result
     search_mongo = query_video_op_get_by_video_id(kw["video_id"])
     if len(search_mongo) == 0:
-        raise MongoError(ErrorCode.MONGODB_VIDEO_NOT_FOUND)
+        raise ServiceError(ErrorCode.SERVICE_VIDEO_NOT_FOUND)
 
     search_result = util_serializer_mongo_results_to_array(search_mongo)
 
@@ -191,21 +161,20 @@ def service_video_likes(conf, **kw):
 
 def service_video_dislikes(conf, **kw):
     db = get_db(conf)
-
-    # keyword check and formatting
-    if 'video_id' not in kw and 'id' not in kw and '_id' not in kw:
-        raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
-
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
 
+    # keyword check and formatting
+    if 'video_id' not in kw:
+        raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
+
     if not is_valid_id(kw["video_id"]):
-        raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+        raise ServiceError(ErrorCode.SERVICE_INVALID_ID_OBJ)
 
     # perform db operations and get result
     search_mongo = query_video_op_get_by_video_id(kw["video_id"])
     if len(search_mongo) == 0:
-        raise MongoError(ErrorCode.MONGODB_VIDEO_NOT_FOUND)
+        raise ServiceError(ErrorCode.SERVICE_VIDEO_NOT_FOUND)
 
     search_result = util_serializer_mongo_results_to_array(search_mongo)
 
@@ -223,21 +192,20 @@ def service_video_dislikes(conf, **kw):
 
 def service_video_stars(conf, **kw):
     db = get_db(conf)
-
-    # keyword check and formatting
-    if 'video_id' not in kw and 'id' not in kw and '_id' not in kw:
-        raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
-
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
 
+    # keyword check and formatting
+    if 'video_id' not in kw:
+        raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
+
     if not is_valid_id(kw["video_id"]):
-        raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+        raise ServiceError(ErrorCode.SERVICE_INVALID_ID_OBJ)
 
     # perform db operations and get result
     search_mongo = query_video_op_get_by_video_id(kw["video_id"])
     if len(search_mongo) == 0:
-        raise MongoError(ErrorCode.MONGODB_VIDEO_NOT_FOUND)
+        raise ServiceError(ErrorCode.SERVICE_VIDEO_NOT_FOUND)
 
     search_result = util_serializer_mongo_results_to_array(search_mongo)
 
@@ -251,3 +219,29 @@ def service_video_stars(conf, **kw):
             })
 
     return star_result
+
+
+def service_video_delete(conf, **kw):
+    db = get_db(conf)
+    kw['service'] = 'video'
+    kw = util_pattern_format_param(**kw)
+
+    # keyword check and formatting
+    if 'video_id' not in kw:
+        raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
+
+    if not is_valid_id(kw["video_id"]):
+        raise ServiceError(ErrorCode.SERVICE_INVALID_ID_OBJ)
+
+    # perform db operations and get result
+    delete_result = query_video_delete(kw["video_id"])
+    if delete_result == 1:
+        # delete all video_op related to this video
+        video_op_objects = query_video_op_get_by_video_id(kw["video_id"])
+        video_op_results = util_serializer_mongo_results_to_array(video_op_objects)
+        for each in video_op_results:
+            query_video_op_delete(each["video_op_id"])
+
+        return delete_result
+    else:
+        raise MongoError(ErrorCode.MONGODB_VIDEO_DELETE_FAILURE)

@@ -2,6 +2,8 @@ import unittest
 from source.models.model_errors import *
 from source.service.service_search import *
 from source.service.service_user import *
+from source.service.service_video import *
+from source.service.service_video_op import *
 from source.settings import *
 from source.tests.unit.test_load_data import util_load_test_data
 
@@ -403,6 +405,75 @@ class TestServiceUser(unittest.TestCase):
     def test_z_service_user_cancel(self):
         user_id = query_user_get_by_name(user_name=self.temp_user_0['user_name'])[0].to_dict()['user_id']
         self.assertEqual(service_user_cancel(self.conf, user_id), 1)
+
+
+class TestServiceVideo(unittest.TestCase):
+    data = util_load_test_data()
+
+    const_user_0 = data['const_user'][0]
+    const_user_1 = data['const_user'][1]
+    const_user_2 = data['const_user'][2]
+
+    temp_user_0 = data['temp_user'][0]
+    temp_user_1 = data['temp_user'][1]
+
+    const_video_0 = data['const_video'][0]
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.conf = config['test']
+        cls.temp_video_title = "test video title"
+        cls.temp_video_raw_content = "https://s3.amazon.com/test_video_content.avi"
+
+    def test_a_service_video_upload(self):
+        self.assertEqual(service_video_upload(self.conf, user_id=self.const_user_1['_id']['$oid'],
+                                              video_title=self.temp_video_title,
+                                              video_raw_content=self.temp_video_raw_content)['video_title'],
+                         self.temp_video_title)
+
+    def test_b_service_video_info(self):
+        temp_video_id = query_video_get_by_title(self.temp_video_title)[0].to_dict()['video_id']
+        self.assertEqual(service_video_info(self.conf, video_id=temp_video_id)['video_title'],
+                         self.temp_video_title)
+
+        # Raise Error: ErrorCode.SERVICE_VIDEO_NOT_FOUND
+        with self.assertRaises(ServiceError) as e:
+            service_video_info(self.conf)
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_MISSING_PARAM)
+
+        # Raise Error: ErrorCode.SERVICE_VIDEO_NOT_FOUND
+        with self.assertRaises(ServiceError) as e:
+            service_video_info(self.conf, video_id="123456781234567812345678")
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_VIDEO_NOT_FOUND)
+
+    def test_c_service_video_update(self):
+        pass
+
+    def test_d_service_video_comments(self):
+        pass
+
+    def test_e_service_video_likes(self):
+        pass
+
+    def test_f_service_video_dislikes(self):
+        pass
+
+    def test_g_service_video_stars(self):
+        pass
+
+    def test_h_service_video_delete(self):
+        temp_video_id = query_video_get_by_title(self.temp_video_title)[0].to_dict()['video_id']
+        self.assertEqual(service_video_delete(self.conf, video_id=temp_video_id), 1)
+
+        # Raise Error: ErrorCode.SERVICE_VIDEO_NOT_FOUND
+        with self.assertRaises(ServiceError) as e:
+            service_video_info(self.conf)
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_MISSING_PARAM)
+
+        # Raise Error: ErrorCode.SERVICE_VIDEO_NOT_FOUND
+        with self.assertRaises(ServiceError) as e:
+            service_video_info(self.conf, video_id="123456781234567812345678")
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_VIDEO_NOT_FOUND)
 
 
 if __name__ == "__main__":
