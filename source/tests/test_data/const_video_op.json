@@ -11,7 +11,7 @@
     "comment": "This is comment for const video op test",
     "like": false,
     "dislike": true,
-    "star": false,
+    "star": true,
     "process_date": {
       "$date": {
         "$numberLong": "1603594915000"
