@@ -166,10 +166,13 @@ def service_user_get_like(conf, user_id):
     if not is_valid_id(user_id):
         raise ServiceError(ErrorCode.SERVICE_INVALID_ID_OBJ)
 
+    if len(query_user_get_by_id(user_id)) <= 0:
+        raise ServiceError(ErrorCode.SERVICE_USER_NOT_FOUND)
+
     # perform db operations and get result
     search_mongo = query_video_op_get_by_user_id(user_id)
     if len(search_mongo) == 0:
-        raise ServiceError(ErrorCode.SERVICE_USER_NOT_FOUND)
+        raise ServiceError(ErrorCode.SERVICE_USER_NO_VIDEO_OP)
 
     search_result = util_serializer_mongo_results_to_array(search_mongo)
 
@@ -192,10 +195,13 @@ def service_user_get_dislike(conf, user_id):
     if not is_valid_id(user_id):
         raise ServiceError(ErrorCode.SERVICE_INVALID_ID_OBJ)
 
+    if len(query_user_get_by_id(user_id)) <= 0:
+        raise ServiceError(ErrorCode.SERVICE_USER_NOT_FOUND)
+
     # perform db operations and get result
     search_mongo = query_video_op_get_by_user_id(user_id)
     if len(search_mongo) == 0:
-        raise ServiceError(ErrorCode.SERVICE_USER_NOT_FOUND)
+        raise ServiceError(ErrorCode.SERVICE_USER_NO_VIDEO_OP)
 
     search_result = util_serializer_mongo_results_to_array(search_mongo)
 
@@ -218,10 +224,13 @@ def service_user_get_comment(conf, user_id):
     if not is_valid_id(user_id):
         raise ServiceError(ErrorCode.SERVICE_INVALID_ID_OBJ)
 
+    if len(query_user_get_by_id(user_id)) <= 0:
+        raise ServiceError(ErrorCode.SERVICE_USER_NOT_FOUND)
+
     # perform db operations and get result
     search_mongo = query_video_op_get_by_user_id(user_id)
     if len(search_mongo) == 0:
-        raise ServiceError(ErrorCode.SERVICE_USER_NOT_FOUND)
+        raise ServiceError(ErrorCode.SERVICE_USER_NO_VIDEO_OP)
 
     search_result = util_serializer_mongo_results_to_array(search_mongo)
 
@@ -245,10 +254,13 @@ def service_user_get_star(conf, user_id):
     if not is_valid_id(user_id):
         raise ServiceError(ErrorCode.SERVICE_INVALID_ID_OBJ)
 
+    if len(query_user_get_by_id(user_id)) <= 0:
+        raise ServiceError(ErrorCode.SERVICE_USER_NOT_FOUND)
+
     # perform db operations and get result
     search_mongo = query_video_op_get_by_user_id(user_id)
     if len(search_mongo) == 0:
-        raise ServiceError(ErrorCode.SERVICE_USER_NOT_FOUND)
+        raise ServiceError(ErrorCode.SERVICE_USER_NO_VIDEO_OP)
 
     search_result = util_serializer_mongo_results_to_array(search_mongo)
 
