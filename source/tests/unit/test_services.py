@@ -309,6 +309,9 @@ class TestServiceUser(unittest.TestCase):
         self.assertEqual(service_user_get_info(self.conf, self.const_user_0['_id']['$oid'])['user'][0]['user_name'],
                          self.const_user_0['user_name'])
 
+        self.assertEqual(service_user_get_info(self.conf, self.const_user_1['_id']['$oid'])['user'][0]['user_name'],
+                         self.const_user_1['user_name'])
+
         # Raise Error: ErrorCode.SERVICE_INVALID_ID_OBJ
         with self.assertRaises(ServiceError) as e:
             service_user_get_info(self.conf, 'some random user')
@@ -322,6 +325,11 @@ class TestServiceUser(unittest.TestCase):
     def test_d_service_user_get_like(self):
         # Get successfully
         self.assertEqual(len(service_user_get_like(self.conf, self.const_user_0['_id']['$oid'])), 0)
+
+        # Raise Error: ErrorCode.SERVICE_INVALID_ID_OBJ
+        with self.assertRaises(ServiceError) as e:
+            service_user_get_like(self.conf, self.const_user_1['_id']['$oid'])
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_USER_NO_VIDEO_OP)
 
         # Raise Error: ErrorCode.SERVICE_INVALID_ID_OBJ
         with self.assertRaises(ServiceError) as e:
@@ -340,6 +348,11 @@ class TestServiceUser(unittest.TestCase):
 
         # Raise Error: ErrorCode.SERVICE_INVALID_ID_OBJ
         with self.assertRaises(ServiceError) as e:
+            service_user_get_dislike(self.conf, self.const_user_1['_id']['$oid'])
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_USER_NO_VIDEO_OP)
+
+        # Raise Error: ErrorCode.SERVICE_INVALID_ID_OBJ
+        with self.assertRaises(ServiceError) as e:
             service_user_get_dislike(self.conf, 'some random user')
         self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_INVALID_ID_OBJ)
 
@@ -355,6 +368,11 @@ class TestServiceUser(unittest.TestCase):
 
         # Raise Error: ErrorCode.SERVICE_INVALID_ID_OBJ
         with self.assertRaises(ServiceError) as e:
+            service_user_get_comment(self.conf, self.const_user_1['_id']['$oid'])
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_USER_NO_VIDEO_OP)
+
+        # Raise Error: ErrorCode.SERVICE_INVALID_ID_OBJ
+        with self.assertRaises(ServiceError) as e:
             service_user_get_comment(self.conf, 'some random user')
         self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_INVALID_ID_OBJ)
 
@@ -366,6 +384,11 @@ class TestServiceUser(unittest.TestCase):
     def test_g_service_user_get_star(self):
         # Get successfully
         self.assertEqual(len(service_user_get_star(self.conf, self.const_user_0['_id']['$oid'])), 0)
+
+        # Raise Error: ErrorCode.SERVICE_INVALID_ID_OBJ
+        with self.assertRaises(ServiceError) as e:
+            service_user_get_star(self.conf, self.const_user_1['_id']['$oid'])
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_USER_NO_VIDEO_OP)
 
         # Raise Error: ErrorCode.SERVICE_INVALID_ID_OBJ
         with self.assertRaises(ServiceError) as e:

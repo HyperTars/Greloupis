@@ -30,6 +30,7 @@ class ErrorCode(Enum):
     SERVICE_USER_AUTH_FAILURE = {3006: "Service Error: User Auth Failure"}
     SERVICE_INVALID_SEARCH_PARAM = {3007: "Service Error: Invalid Search Param"}
     SERVICE_INVALID_ID_OBJ = {3008: "Service Error: Invalid ID Object"}
+    SERVICE_USER_NO_VIDEO_OP = {3009: "Service Error: Current User Has No Video Op"}
 
     # Database 4 Series
     MONGODB_CONNECTION_FAILURE = {4000: "MongoDB Connection Failure"}
