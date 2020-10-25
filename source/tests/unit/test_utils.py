@@ -22,6 +22,10 @@ class TestUtilErrorHandler(unittest.TestCase):
             raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
         self.assertEqual(util_error_handler(e.exception).status_code, 400)
 
+        with self.assertRaises(ServiceError) as e:
+            raise ServiceError(ErrorCode.SERVICE_USER_NOT_FOUND)
+        self.assertEqual(util_error_handler(e.exception).status_code, 404)
+
     def test_util_error_handler_route_error(self):
         with self.assertRaises(RouteError) as e:
             raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)

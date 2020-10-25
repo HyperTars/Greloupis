@@ -11,7 +11,10 @@ def util_error_handler(e):
     if type(e) == RouteError:
         return util_serializer_api_response(404, error_code=e.get_code(), msg=e.get_msg())
     elif type(e) == ServiceError:
-        return util_serializer_api_response(400, error_code=e.get_code(), msg=e.get_msg())
+        if e.get_code() == 3004:
+            return util_serializer_api_response(404, error_code=e.get_code(), msg=e.get_msg())
+        else:
+            return util_serializer_api_response(400, error_code=e.get_code(), msg=e.get_msg())
     elif type(e) == MongoError:
         if 4101 <= e.get_code() <= 4103:
             return util_serializer_api_response(404, error_code=e.get_code(), msg=e.get_msg())

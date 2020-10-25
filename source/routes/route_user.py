@@ -74,6 +74,14 @@ star = user.model(name='Star', model={
     'star_date': fields.String
 })
 
+process = user.model(name='Process', model={
+    'process_id': fields.String,
+    'user_id': fields.String,
+    'video_id': fields.String,
+    'process_date': fields.String,
+    'process': fields.String,
+})
+
 general_response = user.model(name='ApiResponse', model={
     'code': fields.String,
     'body': fields.String
@@ -107,6 +115,11 @@ star_response_list = user.model(name='ApiResponseWithStarList', model={
 comment_response_list = user.model(name='ApiResponseWithCommentList', model={
     'code': fields.String,
     'body': fields.List(fields.Nested(comment))
+})
+
+process_response_list = user.model(name='ApiResponseWithProcessList', model={
+    'code': fields.String,
+    'body': fields.List(fields.Nested(process))
 })
 
 
@@ -266,5 +279,26 @@ class UserUserIdComment(Resource):
         try:
             comment_result = service_user_get_comment(conf=config['default'], user_id=user_id)
             return util_serializer_api_response(200, body=comment_result, msg="Successfully get user comments")
+        except (ServiceError, MongoError, RouteError, Exception) as e:
+            return util_error_handler(e)
+
+
+@user.route('/<string:user_id>/process', methods=['GET'])
+@user.param('user_id', 'User ID')
+@user.response(200, 'Successful operation', process_response_list)
+@user.response(400, 'Invalid user id', general_response)
+@user.response(404, 'User not found', general_response)
+@user.response(500, 'Internal server error', general_response)
+class UserUserIdProcess(Resource):
+
+    def get(self, user_id):
+        """
+            Get a list of comments by user id
+        """
+        user_id = request.url.split('/')[-2]
+
+        try:
+            process_result = service_user_get_comment(conf=config['default'], user_id=user_id)
+            return util_serializer_api_response(200, body=process_result, msg="Successfully get user processes")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)

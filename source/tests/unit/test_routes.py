@@ -30,17 +30,6 @@ class TestRouteSearch(unittest.TestCase):
             self.assertIsNotNone(response_json["body"], msg="Response json should contains body")
 
             # route calls service layer function, so two layers should retrieve same result
-            # service_search_json = util_serializer_api_response(service_search_video(conf=conf, name=keyword,
-            #                                                                         ignore_case=True, format="json",
-            #                                                                         slice=True), 200).get_json()
-
-            # self.assertEqual(response_json["body"][0]["user_id"], service_search_json["body"][0]["user_id"],
-            #                  msg="First matched user id")
-            # self.assertEqual(response_json["body"][0]["user_email"], service_search_json["body"][0]["user_email"],
-            #                  msg="First matched user email")
-            # self.assertEqual(response_json["body"][0]["user_name"], service_search_json["body"][0]["user_name"],
-            #                  msg="First matched user name")
-
             self.assertEqual(response_json["body"][0]["user_id"], self.const_user_0['_id']['$oid'],
                              msg="First matched user id")
             self.assertEqual(response_json["body"][0]["user_email"], self.const_user_0['user_email'],
@@ -68,6 +57,43 @@ class TestRouteUser(unittest.TestCase):
     const_user_0 = data['const_user'][0]
     const_user_1 = data['const_user'][1]
     const_user_2 = data['const_user'][2]
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.conf = config['test']
+
+    def test_a_route_user_post(self):
+        pass
+
+    def test_b_route_user_get(self):
+        pass
+
+    def test_c_route_user_put(self):
+        pass
+
+    def test_d_route_user_delete(self):
+        pass
+
+    def test_e_route_user_login(self):
+        pass
+
+    def test_f_route_user_logout(self):
+        pass
+
+    def test_g_route_user_like(self):
+        pass
+
+    def test_h_route_user_dislike(self):
+        pass
+
+    def test_i_route_user_star(self):
+        pass
+
+    def test_j_route_user_comment(self):
+        pass
+
+    def test_k_route_user_process(self):
+        pass
 
 
 if __name__ == '__main__':
