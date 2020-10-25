@@ -138,12 +138,8 @@ class UserUserId(Resource):
         """
         user_id = request.url.split('/')[-1]
 
-        kw = {
-            "user_id": user_id
-        }
-
         try:
-            result = service_user_info(conf=config['default'], **kw)
+            result = service_user_get_info(conf=config['default'], user_id=user_id)
             return util_serializer_api_response(200, body=result, msg="Successfully get user information")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
@@ -202,12 +198,8 @@ class UserUserIdLike(Resource):
         """
         user_id = request.url.split('/')[-2]
 
-        kw = {
-            "user_id": user_id
-        }
-
         try:
-            like_result = service_user_get_like(conf=config['default'], **kw)
+            like_result = service_user_get_like(conf=config['default'], user_id=user_id)
             return util_serializer_api_response(200, body=like_result, msg="Successfully get user likes")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
@@ -227,12 +219,8 @@ class UserUserIdDislike(Resource):
         """
         user_id = request.url.split('/')[-2]
 
-        kw = {
-            "user_id": user_id
-        }
-
         try:
-            dislike_result = service_user_get_dislike(conf=config['default'], **kw)
+            dislike_result = service_user_get_dislike(conf=config['default'], user_id=user_id)
             return util_serializer_api_response(200, body=dislike_result, msg="Successfully get user dislikes")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
@@ -252,12 +240,8 @@ class UserUserIdStar(Resource):
         """
         user_id = request.url.split('/')[-2]
 
-        kw = {
-            "user_id": user_id
-        }
-
         try:
-            star_result = service_user_get_star(conf=config['default'], **kw)
+            star_result = service_user_get_star(conf=config['default'], user_id=user_id)
             return util_serializer_api_response(200, body=star_result, msg="Successfully get user comments")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
@@ -279,12 +263,8 @@ class UserUserIdComment(Resource):
         """
         user_id = request.url.split('/')[-2]
 
-        kw = {
-            "user_id": user_id
-        }
-
         try:
-            comment_result = service_user_get_comment(conf=config['default'], **kw)
+            comment_result = service_user_get_comment(conf=config['default'], user_id=user_id)
             return util_serializer_api_response(200, body=comment_result, msg="Successfully get user comments")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
