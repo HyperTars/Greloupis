@@ -583,5 +583,70 @@ class TestServiceVideo(unittest.TestCase):
         self.assertEqual(service_video_delete(self.conf, video_id=temp_video_id), 1)
         self.assertEqual(len(query_video_op_get_by_video_id(temp_video_id)), 0)
 
+
+class TestServiceVideoOp(unittest.TestCase):
+    data = util_load_test_data()
+
+    const_user_0 = data['const_user'][0]
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        # create a video
+        cls.conf = config['test']
+        cls.temp_video_title = "video op test"
+        cls.temp_video_raw_content = "https://s3.amazon.com/test_video_content.avi"
+
+        service_video_upload(conf=cls.conf, user_id=cls.const_user_0['_id']['$oid'],
+                             video_title=cls.temp_video_title,
+                             video_raw_content=cls.temp_video_raw_content)
+
+        temp_video_id = query_video_get_by_title(cls.temp_video_title)[0].to_dict()['video_id']
+
+        # create a video op for the video
+        query_video_op_create(user_id=cls.const_user_0['_id']['$oid'], video_id=temp_video_id,
+                              init_time=get_time_now_utc())
+
+    def test_a_service_video_op_add_view(self):
+        temp_video_id = query_video_get_by_title(self.temp_video_title)[0].to_dict()['video_id']
+
+        # Raise Error: ErrorCode.SERVICE_MISSING_PARAM
+        with self.assertRaises(ServiceError) as e:
+            service_video_op_add_view(self.conf)
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_MISSING_PARAM)
+
+        # Raise Error: ErrorCode.ROUTE_INVALID_REQUEST_PARAM
+        with self.assertRaises(RouteError) as e:
+            service_video_op_add_view(self.conf, video_id="123123")
+        self.assertEqual(e.exception.error_code, ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+
+        # Successful test
+        original_view = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_view"]
+        current_view = service_video_op_add_view(self.conf, video_id=temp_video_id)["view_count"]
+        self.assertEqual(original_view + 1, current_view)
+
+    def test_b_service_video_op_get_view(self):
+        temp_video_id = query_video_get_by_title(self.temp_video_title)[0].to_dict()['video_id']
+
+        # Raise Error: ErrorCode.SERVICE_MISSING_PARAM
+        with self.assertRaises(ServiceError) as e:
+            service_video_op_add_view(self.conf)
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_MISSING_PARAM)
+
+        # Raise Error: ErrorCode.ROUTE_INVALID_REQUEST_PARAM
+        with self.assertRaises(RouteError) as e:
+            service_video_op_add_view(self.conf, video_id="123123")
+        self.assertEqual(e.exception.error_code, ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+
+        # Successful test
+        original_view = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_view"]
+        current_view = service_video_op_get_view(self.conf, video_id=temp_video_id)["view_count"]
+        self.assertEqual(original_view, current_view)
+
+
+    def test_z_delete_testing_data(self):
+        temp_video_id = query_video_get_by_title(self.temp_video_title)[0].to_dict()['video_id']
+        service_video_delete(self.conf, video_id=temp_video_id)
+
+
 if __name__ == "__main__":
     unittest.main()
