@@ -629,12 +629,12 @@ class TestServiceVideoOp(unittest.TestCase):
 
         # Raise Error: ErrorCode.SERVICE_MISSING_PARAM
         with self.assertRaises(ServiceError) as e:
-            service_video_op_add_view(self.conf)
+            service_video_op_get_view(self.conf)
         self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_MISSING_PARAM)
 
         # Raise Error: ErrorCode.ROUTE_INVALID_REQUEST_PARAM
         with self.assertRaises(RouteError) as e:
-            service_video_op_add_view(self.conf, video_id="123123")
+            service_video_op_get_view(self.conf, video_id="123123")
         self.assertEqual(e.exception.error_code, ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
 
         # Successful test
@@ -642,6 +642,369 @@ class TestServiceVideoOp(unittest.TestCase):
         current_view = service_video_op_get_view(self.conf, video_id=temp_video_id)["view_count"]
         self.assertEqual(original_view, current_view)
 
+    def test_c_service_video_op_add_comment(self):
+        temp_video_id = query_video_get_by_title(self.temp_video_title)[0].to_dict()['video_id']
+        temp_comment = "test comment"
+
+        # Raise Error: ErrorCode.SERVICE_MISSING_PARAM
+        with self.assertRaises(ServiceError) as e:
+            service_video_op_add_comment(self.conf)
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_MISSING_PARAM)
+
+        # Raise Error: ErrorCode.ROUTE_INVALID_REQUEST_PARAM
+        with self.assertRaises(RouteError) as e:
+            service_video_op_add_comment(self.conf, video_id="123123", user_id="aaa", comment="")
+        self.assertEqual(e.exception.error_code, ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+
+        # Successful test
+        original_comment = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_comment"]
+
+        response = service_video_op_add_comment(self.conf, video_id=temp_video_id,
+                                                user_id=self.const_user_0['_id']['$oid'],
+                                                comment=temp_comment)
+        current_comment = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_comment"]
+
+        self.assertEqual(current_comment, original_comment + 1)
+        self.assertEqual(temp_comment, response["comment"])
+
+    def test_d_service_video_op_get_comment(self):
+        temp_video_id = query_video_get_by_title(self.temp_video_title)[0].to_dict()['video_id']
+
+        # Raise Error: ErrorCode.SERVICE_MISSING_PARAM
+        with self.assertRaises(ServiceError) as e:
+            service_video_op_get_comment(self.conf)
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_MISSING_PARAM)
+
+        # Raise Error: ErrorCode.ROUTE_INVALID_REQUEST_PARAM
+        with self.assertRaises(RouteError) as e:
+            service_video_op_cancel_comment(self.conf, video_id="123123", user_id="aaa")
+        self.assertEqual(e.exception.error_code, ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+
+        # Successful test
+        original_comment = query_video_op_get_by_user_video(self.const_user_0['_id']['$oid'],
+                                                            temp_video_id)[0].to_dict()["comment"]
+
+        response = service_video_op_get_comment(self.conf, video_id=temp_video_id,
+                                                user_id=self.const_user_0['_id']['$oid'])
+
+        self.assertEqual(original_comment, response["comment"])
+
+    def test_e_service_video_op_update_comment(self):
+        temp_video_id = query_video_get_by_title(self.temp_video_title)[0].to_dict()['video_id']
+        temp_comment = "test comment"
+
+        # Raise Error: ErrorCode.SERVICE_MISSING_PARAM
+        with self.assertRaises(ServiceError) as e:
+            service_video_op_update_comment(self.conf)
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_MISSING_PARAM)
+
+        # Raise Error: ErrorCode.ROUTE_INVALID_REQUEST_PARAM
+        with self.assertRaises(RouteError) as e:
+            service_video_op_update_comment(self.conf, video_id="123123", user_id="aaa", comment="")
+        self.assertEqual(e.exception.error_code, ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+
+        # Successful test
+        response = service_video_op_update_comment(self.conf, video_id=temp_video_id,
+                                                   user_id=self.const_user_0['_id']['$oid'],
+                                                   comment=temp_comment)
+        self.assertEqual(temp_comment, response["comment"])
+
+    def test_f_service_video_op_cancel_comment(self):
+        temp_video_id = query_video_get_by_title(self.temp_video_title)[0].to_dict()['video_id']
+
+        # Raise Error: ErrorCode.SERVICE_MISSING_PARAM
+        with self.assertRaises(ServiceError) as e:
+            service_video_op_cancel_comment(self.conf)
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_MISSING_PARAM)
+
+        # Raise Error: ErrorCode.ROUTE_INVALID_REQUEST_PARAM
+        with self.assertRaises(RouteError) as e:
+            service_video_op_cancel_comment(self.conf, video_id="123123", user_id="aaa")
+        self.assertEqual(e.exception.error_code, ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+
+        # Successful test
+        original_comment = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_comment"]
+
+        response = service_video_op_cancel_comment(self.conf, video_id=temp_video_id,
+                                                   user_id=self.const_user_0['_id']['$oid'])
+        current_comment = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_comment"]
+
+        self.assertEqual(current_comment, original_comment - 1)
+        self.assertEqual(response["comment"], "")
+
+    def test_g_service_video_op_add_process(self):
+        temp_video_id = query_video_get_by_title(self.temp_video_title)[0].to_dict()['video_id']
+        temp_process = 30
+
+        # Raise Error: ErrorCode.SERVICE_MISSING_PARAM
+        with self.assertRaises(ServiceError) as e:
+            service_video_op_add_process(self.conf)
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_MISSING_PARAM)
+
+        # Raise Error: ErrorCode.ROUTE_INVALID_REQUEST_PARAM
+        with self.assertRaises(RouteError) as e:
+            service_video_op_add_process(self.conf, video_id="123123", user_id="aaa", process=30)
+        self.assertEqual(e.exception.error_code, ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+        with self.assertRaises(RouteError) as e:
+            service_video_op_add_process(self.conf, video_id=temp_video_id,
+                                         user_id=self.const_user_0['_id']['$oid'], process=-100)
+        self.assertEqual(e.exception.error_code, ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+
+        # Successful test
+        response = service_video_op_add_process(self.conf, video_id=temp_video_id,
+                                                user_id=self.const_user_0['_id']['$oid'],
+                                                process=temp_process)
+        self.assertEqual(temp_process, response["process"])
+
+    def test_h_service_video_op_get_process(self):
+        temp_video_id = query_video_get_by_title(self.temp_video_title)[0].to_dict()['video_id']
+
+        # Raise Error: ErrorCode.SERVICE_MISSING_PARAM
+        with self.assertRaises(ServiceError) as e:
+            service_video_op_get_process(self.conf)
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_MISSING_PARAM)
+
+        # Raise Error: ErrorCode.ROUTE_INVALID_REQUEST_PARAM
+        with self.assertRaises(RouteError) as e:
+            service_video_op_get_process(self.conf, video_id="123123", user_id="aaa")
+        self.assertEqual(e.exception.error_code, ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+
+        # Successful test
+        original_process = query_video_op_get_by_user_video(self.const_user_0['_id']['$oid'],
+                                                            temp_video_id)[0].to_dict()["process"]
+        response = service_video_op_get_process(self.conf, video_id=temp_video_id,
+                                                user_id=self.const_user_0['_id']['$oid'])
+        self.assertEqual(original_process, response["process"])
+
+    def test_i_service_video_op_update_process(self):
+        temp_video_id = query_video_get_by_title(self.temp_video_title)[0].to_dict()['video_id']
+        temp_process = 60
+
+        # Raise Error: ErrorCode.SERVICE_MISSING_PARAM
+        with self.assertRaises(ServiceError) as e:
+            service_video_op_update_process(self.conf)
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_MISSING_PARAM)
+
+        # Raise Error: ErrorCode.ROUTE_INVALID_REQUEST_PARAM
+        with self.assertRaises(RouteError) as e:
+            service_video_op_update_process(self.conf, video_id="123123", user_id="aaa", process=30)
+        self.assertEqual(e.exception.error_code, ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+        with self.assertRaises(RouteError) as e:
+            service_video_op_update_process(self.conf, video_id=temp_video_id,
+                                            user_id=self.const_user_0['_id']['$oid'], process=-100)
+        self.assertEqual(e.exception.error_code, ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+
+        # Successful test
+        response = service_video_op_update_process(self.conf, video_id=temp_video_id,
+                                                   user_id=self.const_user_0['_id']['$oid'],
+                                                   process=temp_process)
+        self.assertEqual(temp_process, response["process"])
+
+    def test_j_service_video_op_cancel_process(self):
+        temp_video_id = query_video_get_by_title(self.temp_video_title)[0].to_dict()['video_id']
+
+        # Raise Error: ErrorCode.SERVICE_MISSING_PARAM
+        with self.assertRaises(ServiceError) as e:
+            service_video_op_cancel_process(self.conf)
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_MISSING_PARAM)
+
+        # Raise Error: ErrorCode.ROUTE_INVALID_REQUEST_PARAM
+        with self.assertRaises(RouteError) as e:
+            service_video_op_cancel_process(self.conf, video_id="123123", user_id="aaa")
+        self.assertEqual(e.exception.error_code, ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+
+        # Successful test
+        response = service_video_op_cancel_process(self.conf, video_id=temp_video_id,
+                                                   user_id=self.const_user_0['_id']['$oid'])
+        self.assertEqual(response["process"], 0)
+
+    def test_k_service_video_op_add_like(self):
+        temp_video_id = query_video_get_by_title(self.temp_video_title)[0].to_dict()['video_id']
+
+        # Raise Error: ErrorCode.SERVICE_MISSING_PARAM
+        with self.assertRaises(ServiceError) as e:
+            service_video_op_add_like(self.conf)
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_MISSING_PARAM)
+
+        # Raise Error: ErrorCode.ROUTE_INVALID_REQUEST_PARAM
+        with self.assertRaises(RouteError) as e:
+            service_video_op_add_like(self.conf, video_id="123123", user_id="aaa")
+        self.assertEqual(e.exception.error_code, ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+
+        # Successful test
+        original_like = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_like"]
+        response = service_video_op_add_like(self.conf, video_id=temp_video_id,
+                                             user_id=self.const_user_0['_id']['$oid'])
+        current_like = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_like"]
+        self.assertEqual(response["like"], True)
+        self.assertEqual(response["dislike"], False)
+        self.assertEqual(original_like + 1, current_like)
+
+        # Raise Error: ErrorCode.MONGODB_VIDEO_LIKE_UPDATE_FAILURE
+        with self.assertRaises(MongoError) as e:
+            service_video_op_add_like(self.conf, video_id=temp_video_id, user_id=self.const_user_0['_id']['$oid'])
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_VIDEO_LIKE_UPDATE_FAILURE)
+
+        # If already dislike, can switch to like
+        original_like = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_like"]
+        original_dislike = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_dislike"]
+        response = service_video_op_add_dislike(self.conf, video_id=temp_video_id,
+                                                user_id=self.const_user_0['_id']['$oid'])
+        response = service_video_op_add_like(self.conf, video_id=temp_video_id,
+                                             user_id=self.const_user_0['_id']['$oid'])
+        current_like = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_like"]
+        current_dislike = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_dislike"]
+        self.assertEqual(response["like"], True)
+        self.assertEqual(response["dislike"], False)
+        self.assertEqual(original_like, current_like)
+        self.assertEqual(original_dislike, current_dislike)
+
+    def test_l_service_video_op_cancel_like(self):
+        temp_video_id = query_video_get_by_title(self.temp_video_title)[0].to_dict()['video_id']
+
+        # Raise Error: ErrorCode.SERVICE_MISSING_PARAM
+        with self.assertRaises(ServiceError) as e:
+            service_video_op_cancel_like(self.conf)
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_MISSING_PARAM)
+
+        # Raise Error: ErrorCode.ROUTE_INVALID_REQUEST_PARAM
+        with self.assertRaises(RouteError) as e:
+            service_video_op_cancel_like(self.conf, video_id="123123", user_id="aaa")
+        self.assertEqual(e.exception.error_code, ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+
+        # Successful test
+        original_like = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_like"]
+        response = service_video_op_cancel_like(self.conf, video_id=temp_video_id,
+                                                user_id=self.const_user_0['_id']['$oid'])
+        current_like = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_like"]
+        self.assertEqual(response["like"], False)
+        self.assertEqual(response["dislike"], False)
+        self.assertEqual(original_like - 1, current_like)
+
+        # Raise Error: ErrorCode.MONGODB_VIDEO_LIKE_UPDATE_FAILURE
+        with self.assertRaises(MongoError) as e:
+            service_video_op_cancel_like(self.conf, video_id=temp_video_id, user_id=self.const_user_0['_id']['$oid'])
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_VIDEO_LIKE_UPDATE_FAILURE)
+
+    def test_m_service_video_op_add_dislike(self):
+        temp_video_id = query_video_get_by_title(self.temp_video_title)[0].to_dict()['video_id']
+
+        # Raise Error: ErrorCode.SERVICE_MISSING_PARAM
+        with self.assertRaises(ServiceError) as e:
+            service_video_op_add_dislike(self.conf)
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_MISSING_PARAM)
+
+        # Raise Error: ErrorCode.ROUTE_INVALID_REQUEST_PARAM
+        with self.assertRaises(RouteError) as e:
+            service_video_op_add_dislike(self.conf, video_id="123123", user_id="aaa")
+        self.assertEqual(e.exception.error_code, ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+
+        # Successful test
+        original_dislike = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_dislike"]
+        response = service_video_op_add_dislike(self.conf, video_id=temp_video_id,
+                                                user_id=self.const_user_0['_id']['$oid'])
+        current_dislike = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_dislike"]
+        self.assertEqual(response["like"], False)
+        self.assertEqual(response["dislike"], True)
+        self.assertEqual(original_dislike + 1, current_dislike)
+
+        # Raise Error: ErrorCode.MONGODB_VIDEO_DISLIKE_UPDATE_FAILURE
+        with self.assertRaises(MongoError) as e:
+            service_video_op_add_dislike(self.conf, video_id=temp_video_id, user_id=self.const_user_0['_id']['$oid'])
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_VIDEO_DISLIKE_UPDATE_FAILURE)
+
+        # If already like, can switch to dislike
+        original_like = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_like"]
+        original_dislike = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_dislike"]
+        response = service_video_op_add_like(self.conf, video_id=temp_video_id,
+                                             user_id=self.const_user_0['_id']['$oid'])
+        response = service_video_op_add_dislike(self.conf, video_id=temp_video_id,
+                                                user_id=self.const_user_0['_id']['$oid'])
+        current_like = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_like"]
+        current_dislike = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_dislike"]
+        self.assertEqual(response["like"], False)
+        self.assertEqual(response["dislike"], True)
+        self.assertEqual(original_like, current_like)
+        self.assertEqual(original_dislike, current_dislike)
+
+    def test_n_service_video_op_cancel_dislike(self):
+        temp_video_id = query_video_get_by_title(self.temp_video_title)[0].to_dict()['video_id']
+
+        # Raise Error: ErrorCode.SERVICE_MISSING_PARAM
+        with self.assertRaises(ServiceError) as e:
+            service_video_op_cancel_dislike(self.conf)
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_MISSING_PARAM)
+
+        # Raise Error: ErrorCode.ROUTE_INVALID_REQUEST_PARAM
+        with self.assertRaises(RouteError) as e:
+            service_video_op_cancel_dislike(self.conf, video_id="123123", user_id="aaa")
+        self.assertEqual(e.exception.error_code, ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+
+        # Successful test
+        original_dislike = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_dislike"]
+        response = service_video_op_cancel_dislike(self.conf, video_id=temp_video_id,
+                                                   user_id=self.const_user_0['_id']['$oid'])
+        current_dislike = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_dislike"]
+        self.assertEqual(response["like"], False)
+        self.assertEqual(response["dislike"], False)
+        self.assertEqual(original_dislike - 1, current_dislike)
+
+        # Raise Error: ErrorCode.MONGODB_VIDEO_DISLIKE_UPDATE_FAILURE
+        with self.assertRaises(MongoError) as e:
+            service_video_op_cancel_dislike(self.conf, video_id=temp_video_id, user_id=self.const_user_0['_id']['$oid'])
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_VIDEO_DISLIKE_UPDATE_FAILURE)
+
+    def test_o_service_video_op_add_star(self):
+        temp_video_id = query_video_get_by_title(self.temp_video_title)[0].to_dict()['video_id']
+
+        # Raise Error: ErrorCode.SERVICE_MISSING_PARAM
+        with self.assertRaises(ServiceError) as e:
+            service_video_op_add_star(self.conf)
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_MISSING_PARAM)
+
+        # Raise Error: ErrorCode.ROUTE_INVALID_REQUEST_PARAM
+        with self.assertRaises(RouteError) as e:
+            service_video_op_add_star(self.conf, video_id="123123", user_id="aaa")
+        self.assertEqual(e.exception.error_code, ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+
+        # Successful test
+        original_star = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_star"]
+        response = service_video_op_add_star(self.conf, video_id=temp_video_id,
+                                                user_id=self.const_user_0['_id']['$oid'])
+        current_star = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_star"]
+        self.assertEqual(response["star"], True)
+        self.assertEqual(original_star + 1, current_star)
+
+        # Raise Error: ErrorCode.MONGODB_VIDEO_DISLIKE_UPDATE_FAILURE
+        with self.assertRaises(MongoError) as e:
+            service_video_op_add_star(self.conf, video_id=temp_video_id, user_id=self.const_user_0['_id']['$oid'])
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_VIDEO_STAR_UPDATE_FAILURE)
+
+    def test_p_service_video_op_cancel_star(self):
+        temp_video_id = query_video_get_by_title(self.temp_video_title)[0].to_dict()['video_id']
+
+        # Raise Error: ErrorCode.SERVICE_MISSING_PARAM
+        with self.assertRaises(ServiceError) as e:
+            service_video_op_cancel_star(self.conf)
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_MISSING_PARAM)
+
+        # Raise Error: ErrorCode.ROUTE_INVALID_REQUEST_PARAM
+        with self.assertRaises(RouteError) as e:
+            service_video_op_cancel_star(self.conf, video_id="123123", user_id="aaa")
+        self.assertEqual(e.exception.error_code, ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+
+        # Successful test
+        original_star = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_star"]
+        response = service_video_op_cancel_star(self.conf, video_id=temp_video_id,
+                                                user_id=self.const_user_0['_id']['$oid'])
+        current_star = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_star"]
+        self.assertEqual(response["star"], False)
+        self.assertEqual(original_star - 1, current_star)
+
+        # Raise Error: ErrorCode.MONGODB_VIDEO_DISLIKE_UPDATE_FAILURE
+        with self.assertRaises(MongoError) as e:
+            service_video_op_cancel_star(self.conf, video_id=temp_video_id, user_id=self.const_user_0['_id']['$oid'])
+        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_VIDEO_STAR_UPDATE_FAILURE)
 
     def test_z_delete_testing_data(self):
         temp_video_id = query_video_get_by_title(self.temp_video_title)[0].to_dict()['video_id']

@@ -510,7 +510,7 @@ def service_video_op_add_dislike(conf, **kw):
 
     # If already disliked, dislike operation cannot be duplicated
     if video_op_result[0]["dislike"]:
-        return util_serializer_api_response(400, msg="Already disliked the video")
+        raise MongoError(ErrorCode.MONGODB_VIDEO_DISLIKE_UPDATE_FAILURE)
 
     # If already liked, like operation should be set to False
     if video_op_result[0]["like"]:
