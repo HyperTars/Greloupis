@@ -385,7 +385,7 @@ class TestServiceUser(unittest.TestCase):
 
     def test_g_service_user_get_star(self):
         # Get successfully
-        self.assertEqual(len(service_user_get_star(self.conf, self.const_user_0['_id']['$oid'])), 0)
+        self.assertEqual(len(service_user_get_star(self.conf, self.const_user_0['_id']['$oid'])), 1)
 
         # Raise Error: ErrorCode.SERVICE_INVALID_ID_OBJ
         with self.assertRaises(ServiceError) as e:
