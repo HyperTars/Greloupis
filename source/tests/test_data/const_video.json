@@ -20,22 +20,22 @@
     "video_language": "Mandarin",
     "video_status": "public",
     "video_view": {
-        "$numberInt": "18"
-    },
-    "video_comment": {
-        "$numberInt": "22"
-    },
-    "video_like": {
-        "$numberInt": "22"
-    },
-    "video_dislike": {
-        "$numberInt": "23"
-    },
-    "video_star": {
         "$numberInt": "0"
     },
+    "video_comment": {
+        "$numberInt": "1"
+    },
+    "video_like": {
+        "$numberInt": "0"
+    },
+    "video_dislike": {
+        "$numberInt": "1"
+    },
+    "video_star": {
+        "$numberInt": "1"
+    },
     "video_share": {
-        "$numberInt": "23"
+        "$numberInt": "0"
     },
     "video_thumbnail": "https://s3.amazon.asdasdasda.png",
     "video_upload_date": "1949-10-01 13:00:00",
