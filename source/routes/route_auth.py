@@ -13,15 +13,16 @@ users = []
 
 @auth.route("/login", methods=["GET", "POST"])
 def login():
-    if request.method == 'POST':
-        session.pop('user_id', None)
-        user_name = request.form['username']
-        user_password = request.form['password']
-        try:
-            user = service_user_login(conf=config['default'], user_name=user_name, user_password=user_password)
-        except ServiceError:
-            return redirect(url_for('login'))
-        session['user_id'] = user['user_id']
-        return redirect(url_for('profile'))
-
-    return render_template_string('login.html')
+    pass
+    # if request.method == 'POST':
+    #     session.pop('user_id', None)
+    #     user_name = request.form['username']
+    #     user_password = request.form['password']
+    #     try:
+    #         user = service_user_login(conf=config['default'], user_name=user_name, user_password=user_password)
+    #     except ServiceError:
+    #         return redirect(url_for('login'))
+    #     session['user_id'] = user['user_id']
+    #     return redirect(url_for('profile'))
+    #
+    # return render_template_string('login.html')

@@ -970,7 +970,7 @@ class TestServiceVideoOp(unittest.TestCase):
         # Successful test
         original_star = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_star"]
         response = service_video_op_add_star(self.conf, video_id=temp_video_id,
-                                                user_id=self.const_user_0['_id']['$oid'])
+                                             user_id=self.const_user_0['_id']['$oid'])
         current_star = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_star"]
         self.assertEqual(response["star"], True)
         self.assertEqual(original_star + 1, current_star)

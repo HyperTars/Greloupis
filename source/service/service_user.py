@@ -274,3 +274,33 @@ def service_user_get_star(conf, user_id):
             })
 
     return star_result
+
+
+def service_user_get_process(conf, user_id):
+    db = get_db(conf)
+
+    # user_id check
+    if not is_valid_id(user_id):
+        raise ServiceError(ErrorCode.SERVICE_INVALID_ID_OBJ)
+
+    if len(query_user_get_by_id(user_id)) <= 0:
+        raise ServiceError(ErrorCode.SERVICE_USER_NOT_FOUND)
+
+    # perform db operations and get result
+    search_mongo = query_video_op_get_by_user_id(user_id)
+    if len(search_mongo) == 0:
+        raise ServiceError(ErrorCode.SERVICE_USER_NO_VIDEO_OP)
+
+    search_result = util_serializer_mongo_results_to_array(search_mongo)
+
+    process_result = []
+    for each in search_result:
+        if each["process"] != 0:
+            process_result.append({
+                "video_id": each["video_id"],
+                "user_id": each["user_id"],
+                "process": str(each["process"]),
+                "process_date": str(each["process_date"])
+            })
+
+    return process_result
