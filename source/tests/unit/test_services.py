@@ -14,8 +14,8 @@ class TestServiceSearchUser(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.data = util_load_test_data()
-        if float(pf.python_version()[:3]) < 3.7:
-            print("Your python ver." + pf.python_version() + " is not supported. Please update to python 3.8")
+        if pf.python_version()[:3] != '3.7' and pf.python_version()[:3] != '3.8':
+            print("Your python ver." + pf.python_version() + " is not supported. Please use python 3.7 or 3.8")
             exit()
         cls.conf = config['test']
         get_db(config['test'])
@@ -166,8 +166,8 @@ class TestServiceSearchVideo(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.data = util_load_test_data()
-        if float(pf.python_version()[:3]) < 3.7:
-            print("Your python ver." + pf.python_version() + " is not supported. Please update to python 3.8")
+        if pf.python_version()[:3] != '3.7' and pf.python_version()[:3] != '3.8':
+            print("Your python ver." + pf.python_version() + " is not supported. Please use python 3.7 or 3.8")
             exit()
         cls.conf = config['test']
         get_db(config['test'])
@@ -266,8 +266,8 @@ class TestServiceUser(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.data = util_load_test_data()
-        if float(pf.python_version()[:3]) < 3.7:
-            print("Your python ver." + pf.python_version() + " is not supported. Please update to python 3.8")
+        if pf.python_version()[:3] != '3.7' and pf.python_version()[:3] != '3.8':
+            print("Your python ver." + pf.python_version() + " is not supported. Please use python 3.7 or 3.8")
             exit()
         cls.conf = config['test']
         get_db(config['test'])
@@ -433,8 +433,8 @@ class TestServiceVideo(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.data = util_load_test_data()
-        if float(pf.python_version()[:3]) < 3.7:
-            print("Your python ver." + pf.python_version() + " is not supported. Please update to python 3.8")
+        if pf.python_version()[:3] != '3.7' and pf.python_version()[:3] != '3.8':
+            print("Your python ver." + pf.python_version() + " is not supported. Please use python 3.7 or 3.8")
             exit()
         get_db(config['test'])
         cls.conf = config['test']
@@ -605,8 +605,8 @@ class TestServiceVideoOp(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.data = util_load_test_data()
-        if float(pf.python_version()[:3]) < 3.7:
-            print("Your python ver." + pf.python_version() + " is not supported. Please update to python 3.8")
+        if pf.python_version()[:3] != '3.7' and pf.python_version()[:3] != '3.8':
+            print("Your python ver." + pf.python_version() + " is not supported. Please use python 3.7 or 3.8")
             exit()
         get_db(config['test'])
         # create a video
