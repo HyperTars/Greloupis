@@ -7,40 +7,31 @@ from source.db.query_video import *
 from source.db.query_video_op import *
 from source.models.model_errors import *
 from source.utils.util_pattern import *
-import platform
+import platform as pf
 
 
 class TestQueryUser(unittest.TestCase):
-    data = util_load_test_data()
-
-    const_user_0 = data['const_user'][0]
-    const_user_1 = data['const_user'][1]
-    const_user_2 = data['const_user'][2]
-
-    temp_user_0 = data['temp_user'][0]
-    temp_user_1 = data['temp_user'][1]
 
     @classmethod
     def setUpClass(cls) -> None:
-        get_db(config['test'])
-        py_ver = platform.python_version()[:3]
-        if py_ver != '3.7' and py_ver != '3.8' and py_ver != '3.9':
-            print("Your current python version " + py_ver + " is not supported. Please update to python 3.8")
-            print("========== Python Version Not Supported, Exit Testing ==========")
+        cls.data = util_load_test_data()
+        if float(pf.python_version()[:3]) < 3.7:
+            print("Your python ver." + pf.python_version() + " is not supported. Please update to python 3.8")
             exit()
+        get_db(config['test'])
 
     def test_a_user_create(self):
         # Create successfully
-        self.assertEqual(query_user_create(user_name=self.temp_user_0['user_name'],
-                                           user_email=self.temp_user_0['user_email'],
-                                           user_password=self.temp_user_0['user_password']).user_name,
-                         self.temp_user_0['user_name'])
+        self.assertEqual(query_user_create(user_name=self.data['temp_user'][0]['user_name'],
+                                           user_email=self.data['temp_user'][0]['user_email'],
+                                           user_password=self.data['temp_user'][0]['user_password']).user_name,
+                         self.data['temp_user'][0]['user_name'])
 
-        self.assertEqual(query_user_create(user_name=self.temp_user_1['user_name'],
-                                           user_email=self.temp_user_1['user_email'],
-                                           user_password=self.temp_user_1['user_password'],
-                                           user_ip=self.temp_user_1['user_reg_ip']).user_name,
-                         self.temp_user_1['user_name'])
+        self.assertEqual(query_user_create(user_name=self.data['temp_user'][1]['user_name'],
+                                           user_email=self.data['temp_user'][1]['user_email'],
+                                           user_password=self.data['temp_user'][1]['user_password'],
+                                           user_ip=self.data['temp_user'][1]['user_reg_ip']).user_name,
+                         self.data['temp_user'][1]['user_name'])
 
         # Raise Error: ErrorCode.MONGODB_STR_EXPECTED
         with self.assertRaises(MongoError) as e:
@@ -49,20 +40,20 @@ class TestQueryUser(unittest.TestCase):
 
         # Raise Error: ErrorCode.MONGODB_USER_NAME_TAKEN
         with self.assertRaises(MongoError) as e1:
-            query_user_create(user_name=self.temp_user_0['user_name'], user_email="NotImportantEmail",
+            query_user_create(user_name=self.data['temp_user'][0]['user_name'], user_email="NotImportantEmail",
                               user_password="NotImportantPassword")
         self.assertEqual(e1.exception.error_code, ErrorCode.MONGODB_USER_NAME_TAKEN)
 
         # Raise Error: ErrorCode.MONGODB_USER_EMAIL_TAKEN
         with self.assertRaises(MongoError) as e2:
-            query_user_create(user_name="NotImportantName", user_email=self.temp_user_0['user_email'],
+            query_user_create(user_name="NotImportantName", user_email=self.data['temp_user'][0]['user_email'],
                               user_password="NotImportantPassword")
         self.assertEqual(e2.exception.error_code, ErrorCode.MONGODB_USER_EMAIL_TAKEN)
 
     def test_b_user_get_by_name(self):
         # Get successfully
-        temp_model = query_user_get_by_name(self.const_user_0['user_name'])[0]
-        self.assertEqual(temp_model.user_email, self.const_user_0['user_email'])
+        temp_model = query_user_get_by_name(self.data['const_user'][0]['user_name'])[0]
+        self.assertEqual(temp_model.user_email, self.data['const_user'][0]['user_email'])
 
         # Raise Error: ErrorCode.MONGODB_STR_EXPECTED
         with self.assertRaises(MongoError) as e:
@@ -71,8 +62,8 @@ class TestQueryUser(unittest.TestCase):
 
     def test_c_user_get_by_email(self):
         # Get successfully
-        temp_model = query_user_get_by_email(self.const_user_0['user_email'])[0]
-        self.assertEqual(temp_model.user_name, self.const_user_0['user_name'])
+        temp_model = query_user_get_by_email(self.data['const_user'][0]['user_email'])[0]
+        self.assertEqual(temp_model.user_name, self.data['const_user'][0]['user_name'])
 
         # Raise Error: ErrorCode.MONGODB_STR_EXPECTED
         with self.assertRaises(MongoError) as e:
@@ -81,9 +72,9 @@ class TestQueryUser(unittest.TestCase):
 
     def test_d_user_get_by_id(self):
         # Get successfully
-        temp_model = query_user_get_by_name(self.const_user_0['user_name'])[0]
+        temp_model = query_user_get_by_name(self.data['const_user'][0]['user_name'])[0]
         temp_model_1 = query_user_get_by_id(temp_model.to_dict()['user_id'])[0]
-        self.assertEqual(temp_model_1.user_name, self.const_user_0['user_name'])
+        self.assertEqual(temp_model_1.user_name, self.data['const_user'][0]['user_name'])
 
         # Raise Error: ErrorCode.MONGODB_STR_EXPECTED
         with self.assertRaises(MongoError) as e:
@@ -92,7 +83,7 @@ class TestQueryUser(unittest.TestCase):
 
     def test_e_user_update_status(self):
         # Update successfully
-        temp_model = query_user_get_by_name(self.const_user_0['user_name'])[0]
+        temp_model = query_user_get_by_name(self.data['const_user'][0]['user_name'])[0]
         temp_user_id = temp_model.to_dict()['user_id']
         query_user_update_status(temp_user_id, "private")
         self.assertEqual(query_user_get_by_id(temp_user_id)[0].user_status, "private")
@@ -116,8 +107,8 @@ class TestQueryUser(unittest.TestCase):
 
     def test_f_user_add_follow(self):
         # Update successfully
-        temp_model_1 = query_user_get_by_name(self.temp_user_0['user_name'])[0]
-        temp_model_2 = query_user_get_by_name(self.temp_user_1['user_name'])[0]
+        temp_model_1 = query_user_get_by_name(self.data['temp_user'][0]['user_name'])[0]
+        temp_model_2 = query_user_get_by_name(self.data['temp_user'][1]['user_name'])[0]
         temp_user_id_1 = temp_model_1.to_dict()['user_id']
         temp_user_id_2 = temp_model_2.to_dict()['user_id']
         query_user_add_follow(temp_user_id_1, temp_user_id_2)
@@ -148,8 +139,8 @@ class TestQueryUser(unittest.TestCase):
 
     def test_g_user_delete_follow(self):
         # Update successfully
-        temp_model_1 = query_user_get_by_name(self.temp_user_0['user_name'])[0]
-        temp_model_2 = query_user_get_by_name(self.temp_user_1['user_name'])[0]
+        temp_model_1 = query_user_get_by_name(self.data['temp_user'][0]['user_name'])[0]
+        temp_model_2 = query_user_get_by_name(self.data['temp_user'][1]['user_name'])[0]
         temp_user_id_1 = temp_model_1.to_dict()['user_id']
         temp_user_id_2 = temp_model_2.to_dict()['user_id']
         self.assertIn(temp_user_id_2, temp_model_1.to_dict()['user_following'])
@@ -177,7 +168,7 @@ class TestQueryUser(unittest.TestCase):
 
     def test_h_user_update_name(self):
         # Update successfully
-        old_name = self.temp_user_0['user_name']
+        old_name = self.data['temp_user'][0]['user_name']
         new_name = "JustANewName"
         temp_model = query_user_get_by_name(old_name)[0]
         temp_user_id = temp_model.to_dict()['user_id']
@@ -205,14 +196,14 @@ class TestQueryUser(unittest.TestCase):
 
         # Raise Error: ErrorCode.MONGODB_USER_UPDATE_NAME_TAKEN
         with self.assertRaises(MongoError) as e:
-            query_user_update_name(temp_user_id, self.temp_user_1['user_name'])
+            query_user_update_name(temp_user_id, self.data['temp_user'][1]['user_name'])
         self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_USER_NAME_TAKEN)
 
     def test_i_user_update_password(self):
         # Update successfully
-        old_pass = self.temp_user_0['user_password']
+        old_pass = self.data['temp_user'][0]['user_password']
         new_pass = "JustANewPass"
-        temp_user_id = query_user_get_by_name(self.temp_user_0['user_name'])[0].to_dict()['user_id']
+        temp_user_id = query_user_get_by_name(self.data['temp_user'][0]['user_name'])[0].to_dict()['user_id']
 
         query_user_update_password(temp_user_id, new_pass)
         self.assertEqual(query_user_get_by_id(temp_user_id)[0].user_password, new_pass)
@@ -237,7 +228,7 @@ class TestQueryUser(unittest.TestCase):
 
     def test_j_user_update_thumbnail(self):
         # Update successfully
-        temp_model = query_user_get_by_name(self.temp_user_0['user_name'])[0].to_dict()
+        temp_model = query_user_get_by_name(self.data['temp_user'][0]['user_name'])[0].to_dict()
         temp_user_id = temp_model['user_id']
         old_thumbnail = temp_model['user_thumbnail']
         new_thumbnail = "https://s3.amazon.com/just_a_new_thumbnail.png"
@@ -259,7 +250,7 @@ class TestQueryUser(unittest.TestCase):
         self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_USER_NOT_FOUND)
 
     def test_k_user_update_details(self):
-        temp_model = query_user_get_by_name(self.temp_user_0['user_name'])[0].to_dict()
+        temp_model = query_user_get_by_name(self.data['temp_user'][0]['user_name'])[0].to_dict()
         temp_user_id = temp_model['user_id']
 
         new_user_first_name = "new first name"
@@ -304,7 +295,7 @@ class TestQueryUser(unittest.TestCase):
 
     def test_l_user_add_login(self):
         # Add successfully
-        temp_model = query_user_get_by_name(self.temp_user_0['user_name'])[0].to_dict()
+        temp_model = query_user_get_by_name(self.data['temp_user'][0]['user_name'])[0].to_dict()
         temp_user_id = temp_model['user_id']
         temp_ip = "777.777.777.777"
         temp_time = get_time_now_utc()
@@ -325,7 +316,7 @@ class TestQueryUser(unittest.TestCase):
 
     def test_m_user_delete_by_id(self):
         # Delete successfully
-        temp_model_0 = query_user_get_by_name(self.temp_user_0['user_name'])[0].to_dict()
+        temp_model_0 = query_user_get_by_name(self.data['temp_user'][0]['user_name'])[0].to_dict()
         self.assertEqual(query_user_delete_by_id(temp_model_0['user_id']), 1)
 
         # Raise Error: ErrorCode.MONGODB_STR_EXPECTED
@@ -340,7 +331,7 @@ class TestQueryUser(unittest.TestCase):
 
     def test_n_user_delete_by_name(self):
         # Delete successfully
-        self.assertEqual(query_user_delete_by_name(self.temp_user_1['user_name']), 1)
+        self.assertEqual(query_user_delete_by_name(self.data['temp_user'][1]['user_name']), 1)
 
         # Raise Error: ErrorCode.MONGODB_STR_EXPECTED
         with self.assertRaises(MongoError) as e:
@@ -354,53 +345,53 @@ class TestQueryUser(unittest.TestCase):
 
     def test_o_user_search_by_contains(self):
         # Search successfully
-        search_user_id = self.const_user_0['_id']['$oid']
+        search_user_id = self.data['const_user'][0]['_id']['$oid']
         self.assertEqual(str(query_user_search_by_contains(user_id=search_user_id)[0]._id), search_user_id)
 
-        search_user_name = self.const_user_0['user_name']
+        search_user_name = self.data['const_user'][0]['user_name']
         self.assertEqual(query_user_search_by_contains(user_name=search_user_name[1:4])[0].user_name, search_user_name)
 
-        search_user_email = self.const_user_0['user_email']
+        search_user_email = self.data['const_user'][0]['user_email']
         self.assertEqual(query_user_search_by_contains(user_email=search_user_email[2:8])[0].user_email,
                          search_user_email)
 
-        search_user_first_name = self.const_user_0['user_detail']['user_first_name']
+        search_user_first_name = self.data['const_user'][0]['user_detail']['user_first_name']
         self.assertEqual(query_user_search_by_contains(user_first_name=search_user_first_name[0:2])
                          [0].user_detail.user_first_name, search_user_first_name)
 
-        search_user_last_name = self.const_user_0['user_detail']['user_last_name']
+        search_user_last_name = self.data['const_user'][0]['user_detail']['user_last_name']
         self.assertEqual(query_user_search_by_contains(user_last_name=search_user_last_name[0:2])
                          [0].user_detail.user_last_name, search_user_last_name)
 
-        search_user_phone = self.const_user_0['user_detail']['user_phone']
+        search_user_phone = self.data['const_user'][0]['user_detail']['user_phone']
         self.assertEqual(query_user_search_by_contains(user_phone=search_user_phone[1:5])
                          [0].user_detail.user_phone, search_user_phone)
 
-        search_user_street1 = self.const_user_0['user_detail']['user_street1']
+        search_user_street1 = self.data['const_user'][0]['user_detail']['user_street1']
         self.assertEqual(query_user_search_by_contains(user_street1=search_user_street1[1:2])
                          [0].user_detail.user_street1, search_user_street1)
 
-        search_user_street2 = self.const_user_0['user_detail']['user_street2']
+        search_user_street2 = self.data['const_user'][0]['user_detail']['user_street2']
         self.assertEqual(query_user_search_by_contains(user_street2=search_user_street2[0:2])
                          [0].user_detail.user_street2, search_user_street2)
 
-        search_user_city = self.const_user_0['user_detail']['user_city']
+        search_user_city = self.data['const_user'][0]['user_detail']['user_city']
         self.assertEqual(query_user_search_by_contains(user_city=search_user_city)
                          [0].user_detail.user_city, search_user_city)
 
-        search_user_state = self.const_user_0['user_detail']['user_state']
+        search_user_state = self.data['const_user'][0]['user_detail']['user_state']
         self.assertEqual(query_user_search_by_contains(user_state=search_user_state)
                          [0].user_detail.user_state, search_user_state)
 
-        search_user_country = self.const_user_0['user_detail']['user_country']
+        search_user_country = self.data['const_user'][0]['user_detail']['user_country']
         self.assertEqual(query_user_search_by_contains(user_country=search_user_country[1:2])
                          [0].user_detail.user_country, search_user_country)
 
-        search_user_zip = self.const_user_0['user_detail']['user_zip']
+        search_user_zip = self.data['const_user'][0]['user_detail']['user_zip']
         self.assertEqual(query_user_search_by_contains(user_zip=search_user_zip[1:2])
                          [0].user_detail.user_zip, search_user_zip)
 
-        search_user_status = self.const_user_0['user_status']
+        search_user_status = self.data['const_user'][0]['user_status']
         self.assertEqual(query_user_search_by_contains(user_status=search_user_status[1:2])
                          [0].user_status, search_user_status)
 
@@ -420,7 +411,7 @@ class TestQueryUser(unittest.TestCase):
         self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_INVALID_SEARCH_PARAM)
 
     def test_p_user_search_by_pattern(self):
-        search_user_name = self.const_user_0['user_name']
+        search_user_name = self.data['const_user'][0]['user_name']
 
         # PATTERN NAME #
         # Search exact fail
@@ -442,67 +433,67 @@ class TestQueryUser(unittest.TestCase):
                          search_user_name)
 
         # PATTERN EMAIL #
-        search_user_email = self.const_user_0['user_email']
+        search_user_email = self.data['const_user'][0]['user_email']
         pattern_email = util_pattern_compile(search_user_email[1:5], exact=False, ignore_case=True)
         self.assertEqual(query_user_search_by_pattern(pattern_email=pattern_email)[0].user_email,
                          search_user_email)
 
         # PATTERN FIRST NAME #
-        search_user_first_name = self.const_user_0['user_detail']['user_first_name']
+        search_user_first_name = self.data['const_user'][0]['user_detail']['user_first_name']
         pattern_first_name = util_pattern_compile(search_user_first_name[0:3], exact=False, ignore_case=True)
         self.assertEqual(query_user_search_by_pattern(pattern_first_name=pattern_first_name)
                          [0].user_detail.user_first_name, search_user_first_name)
 
         # PATTERN LAST NAME #
-        search_user_last_name = self.const_user_0['user_detail']['user_last_name']
+        search_user_last_name = self.data['const_user'][0]['user_detail']['user_last_name']
         pattern_last_name = util_pattern_compile(search_user_last_name[0:3], exact=False, ignore_case=True)
         self.assertEqual(query_user_search_by_pattern(pattern_last_name=pattern_last_name)
                          [0].user_detail.user_last_name, search_user_last_name)
 
         # PATTERN PHONE #
-        search_user_phone = self.const_user_0['user_detail']['user_phone']
+        search_user_phone = self.data['const_user'][0]['user_detail']['user_phone']
         pattern_phone = util_pattern_compile(search_user_phone[0:3], exact=False, ignore_case=True)
         self.assertEqual(query_user_search_by_pattern(pattern_phone=pattern_phone)[0].user_detail.user_phone,
                          search_user_phone)
 
         # PATTERN STREET1 #
-        search_user_street1 = self.const_user_0['user_detail']['user_street1']
+        search_user_street1 = self.data['const_user'][0]['user_detail']['user_street1']
         pattern_street1 = util_pattern_compile(search_user_street1[0:3], exact=False, ignore_case=True)
         self.assertEqual(query_user_search_by_pattern(pattern_street1=pattern_street1)[0].user_detail.user_street1,
                          search_user_street1)
 
         # PATTERN STREET2 #
-        search_user_street2 = self.const_user_0['user_detail']['user_street2']
+        search_user_street2 = self.data['const_user'][0]['user_detail']['user_street2']
         pattern_street2 = util_pattern_compile(search_user_street2[0:2], exact=False, ignore_case=True)
         self.assertEqual(query_user_search_by_pattern(pattern_street2=pattern_street2)[0].user_detail.user_street2,
                          search_user_street2)
 
         # PATTERN CITY #
-        search_user_city = self.const_user_0['user_detail']['user_city']
+        search_user_city = self.data['const_user'][0]['user_detail']['user_city']
         pattern_city = util_pattern_compile(search_user_city[1:3], exact=False, ignore_case=True)
         self.assertEqual(query_user_search_by_pattern(pattern_city=pattern_city)[0].user_detail.user_city,
                          search_user_city)
 
         # PATTERN STATE #
-        search_user_state = self.const_user_0['user_detail']['user_state']
+        search_user_state = self.data['const_user'][0]['user_detail']['user_state']
         pattern_state = util_pattern_compile(search_user_state[1:4], exact=False, ignore_case=True)
         self.assertEqual(query_user_search_by_pattern(pattern_state=pattern_state)[0].user_detail.user_state,
                          search_user_state)
 
         # PATTERN COUNTRY #
-        search_user_country = self.const_user_0['user_detail']['user_country']
+        search_user_country = self.data['const_user'][0]['user_detail']['user_country']
         pattern_country = util_pattern_compile(search_user_country[1:3], exact=False, ignore_case=True)
         self.assertEqual(query_user_search_by_pattern(pattern_country=pattern_country)[0].user_detail.user_country,
                          search_user_country)
 
         # PATTERN ZIP #
-        search_user_zip = self.const_user_0['user_detail']['user_zip']
+        search_user_zip = self.data['const_user'][0]['user_detail']['user_zip']
         pattern_zip = util_pattern_compile(search_user_zip[2:5], exact=False, ignore_case=True)
         self.assertEqual(query_user_search_by_pattern(pattern_zip=pattern_zip)[0].user_detail.user_zip,
                          search_user_zip)
 
         # PATTERN STATUS #
-        search_user_status = self.const_user_0['user_status']
+        search_user_status = self.data['const_user'][0]['user_status']
         pattern_status = util_pattern_compile(search_user_status[0:3], exact=False, ignore_case=True)
         self.assertEqual(query_user_search_by_pattern(pattern_status=pattern_status)[0].user_status,
                          search_user_status)
@@ -553,55 +544,48 @@ class TestQueryUser(unittest.TestCase):
 
 
 class TestQueryVideo(unittest.TestCase):
-    data = util_load_test_data()
-
-    const_video_0 = data['const_video'][0]
-
-    temp_video_0 = data['temp_video'][0]
-    temp_video_1 = data['temp_video'][1]
 
     @classmethod
     def setUpClass(cls) -> None:
-        get_db(config['test'])
-        py_ver = platform.python_version()[:3]
-        if py_ver != '3.7' and py_ver != '3.8' and py_ver != '3.9':
-            print("Your current python version " + py_ver + " is not supported. Please update to python 3.8")
-            print("========== Python Version Not Supported, Exit Testing ==========")
+        cls.data = util_load_test_data()
+        if float(pf.python_version()[:3]) < 3.7:
+            print("Your python ver." + pf.python_version() + " is not supported. Please update to python 3.8")
             exit()
+        get_db(config['test'])
 
     def test_a_query_video_create(self):
-        self.assertEqual(query_video_create(user_id=self.temp_video_0['user_id'],
-                                            video_title=self.temp_video_0['video_title'],
-                                            video_raw_content=self.temp_video_0['video_raw_content']).video_title,
-                         self.temp_video_0['video_title'])
+        self.assertEqual(query_video_create(user_id=self.data['temp_video'][0]['user_id'],
+                                            video_title=self.data['temp_video'][0]['video_title'],
+                                            video_raw_content=self.data['temp_video'][0]['video_raw_content']).video_title,
+                         self.data['temp_video'][0]['video_title'])
 
         # Raise Error: ErrorCode.MONGODB_USER_NOT_FOUND
         with self.assertRaises(MongoError) as e:
             query_video_create(user_id="123412341234123412341234",
-                               video_title=self.temp_video_0['video_title'],
-                               video_raw_content=self.temp_video_0['video_raw_content'])
+                               video_title=self.data['temp_video'][0]['video_title'],
+                               video_raw_content=self.data['temp_video'][0]['video_raw_content'])
         self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_USER_NOT_FOUND)
 
         # Raise Error: ErrorCode.MONGODB_VIDEO_TITLE_TAKEN
         with self.assertRaises(MongoError) as e:
-            query_video_create(user_id=self.temp_video_0['user_id'],
-                               video_title=self.temp_video_0['video_title'],
-                               video_raw_content=self.temp_video_0['video_raw_content'])
+            query_video_create(user_id=self.data['temp_video'][0]['user_id'],
+                               video_title=self.data['temp_video'][0]['video_title'],
+                               video_raw_content=self.data['temp_video'][0]['video_raw_content'])
         self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_VIDEO_TITLE_TAKEN)
 
     def test_b_query_video_get_by_video_id(self):
-        self.assertEqual(query_video_get_by_video_id(str(self.const_video_0['_id']['$oid']))[0].video_title,
-                         self.const_video_0['video_title'])
+        self.assertEqual(query_video_get_by_video_id(str(self.data['const_video'][0]['_id']['$oid']))[0].video_title,
+                         self.data['const_video'][0]['video_title'])
 
     def test_c_query_video_get_by_user_id(self):
-        self.assertEqual(len(query_video_get_by_user_id(self.temp_video_0['user_id'])), 2)
+        self.assertEqual(len(query_video_get_by_user_id(self.data['temp_video'][0]['user_id'])), 2)
 
     def test_d_query_video_get_by_title(self):
-        self.assertEqual(query_video_get_by_title(self.temp_video_0['video_title'])[0].user_id,
-                         self.temp_video_0['user_id'])
+        self.assertEqual(query_video_get_by_title(self.data['temp_video'][0]['video_title'])[0].user_id,
+                         self.data['temp_video'][0]['user_id'])
 
     def test_e_query_video_cnt_incr_by_one(self):
-        temp_model = query_video_get_by_title(self.temp_video_0['video_title'])[0].to_dict()
+        temp_model = query_video_get_by_title(self.data['temp_video'][0]['video_title'])[0].to_dict()
         temp_video_id = temp_model['video_id']
         temp_video_view = temp_model['video_view']
         temp_video_comment = temp_model['video_comment']
@@ -634,7 +618,7 @@ class TestQueryVideo(unittest.TestCase):
         self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_INVALID_VIDEO_CNT_PARAM)
 
     def test_f_query_video_cnt_decr_by_one(self):
-        temp_model = query_video_get_by_title(self.temp_video_0['video_title'])[0].to_dict()
+        temp_model = query_video_get_by_title(self.data['temp_video'][0]['video_title'])[0].to_dict()
         temp_video_id = temp_model['video_id']
         temp_video_view = temp_model['video_view']
         temp_video_comment = temp_model['video_comment']
@@ -698,9 +682,9 @@ class TestQueryVideo(unittest.TestCase):
         self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_INVALID_VIDEO_CNT_PARAM)
 
     def test_g_query_video_update(self):
-        temp_video_id = query_video_get_by_title(self.temp_video_0['video_title'])[0].to_dict()['video_id']
+        temp_video_id = query_video_get_by_title(self.data['temp_video'][0]['video_title'])[0].to_dict()['video_id']
 
-        old_title = self.temp_video_0['video_title']
+        old_title = self.data['temp_video'][0]['video_title']
         new_title = "new_title"
         new_raw_content = "some new content uri"
         new_raw_status = "finished"
@@ -770,7 +754,7 @@ class TestQueryVideo(unittest.TestCase):
         self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_VIDEO_INVALID_STATUS)
 
     def test_h_query_video_delete(self):
-        temp_video_id_0 = query_video_get_by_title(self.temp_video_0['video_title'])[0].to_dict()['video_id']
+        temp_video_id_0 = query_video_get_by_title(self.data['temp_video'][0]['video_title'])[0].to_dict()['video_id']
         self.assertEqual(query_video_delete(temp_video_id_0), 1)
 
         # Raise Error: ErrorCode.MONGODB_VIDEO_NOT_FOUND
@@ -779,26 +763,26 @@ class TestQueryVideo(unittest.TestCase):
         self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_VIDEO_NOT_FOUND)
 
     def test_i_query_video_search_by_contains(self):
-        video = query_video_search_by_contains(video_id=self.const_video_0['_id']['$oid'])[0]  # exact video_id
-        self.assertEqual(video.video_title, self.const_video_0['video_title'])
+        video = query_video_search_by_contains(video_id=self.data['const_video'][0]['_id']['$oid'])[0]  # exact video_id
+        self.assertEqual(video.video_title, self.data['const_video'][0]['video_title'])
 
-        video = query_video_search_by_contains(user_id=self.const_video_0['user_id'])[0]  # exact user_id
-        self.assertEqual(video.video_title, self.const_video_0['video_title'])
+        video = query_video_search_by_contains(user_id=self.data['const_video'][0]['user_id'])[0]  # exact user_id
+        self.assertEqual(video.video_title, self.data['const_video'][0]['video_title'])
 
-        video = query_video_search_by_contains(video_title=self.const_video_0['video_title'][1:2])[0]
-        self.assertEqual(video.video_title, self.const_video_0['video_title'])
+        video = query_video_search_by_contains(video_title=self.data['const_video'][0]['video_title'][1:2])[0]
+        self.assertEqual(video.video_title, self.data['const_video'][0]['video_title'])
 
-        video = query_video_search_by_contains(video_channel=self.const_video_0['video_channel'])[0]
-        self.assertEqual(video.video_title, self.const_video_0['video_title'])
+        video = query_video_search_by_contains(video_channel=self.data['const_video'][0]['video_channel'])[0]
+        self.assertEqual(video.video_title, self.data['const_video'][0]['video_title'])
 
-        video = query_video_search_by_contains(video_category=self.const_video_0['video_category'][0])[0]
-        self.assertEqual(video.video_title, self.const_video_0['video_title'])
+        video = query_video_search_by_contains(video_category=self.data['const_video'][0]['video_category'][0])[0]
+        self.assertEqual(video.video_title, self.data['const_video'][0]['video_title'])
 
-        video = query_video_search_by_contains(video_tag=self.const_video_0['video_tag'][0])[0]
-        self.assertEqual(video.video_title, self.const_video_0['video_title'])
+        video = query_video_search_by_contains(video_tag=self.data['const_video'][0]['video_tag'][0])[0]
+        self.assertEqual(video.video_title, self.data['const_video'][0]['video_title'])
 
-        video = query_video_search_by_contains(video_description=self.const_video_0['video_description'][2:3])[0]
-        self.assertEqual(video.video_title, self.const_video_0['video_title'])
+        video = query_video_search_by_contains(video_description=self.data['const_video'][0]['video_description'][2:3])[0]
+        self.assertEqual(video.video_title, self.data['const_video'][0]['video_title'])
 
         # Raise Error: ErrorCode.MONGODB_EMPTY_PARAM
         with self.assertRaises(MongoError) as e:
@@ -816,9 +800,9 @@ class TestQueryVideo(unittest.TestCase):
         self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_INVALID_SEARCH_PARAM)
 
     def test_j_query_video_search_by_pattern(self):
-        search_video_title = self.const_video_0['video_title']
-        search_video_channel = self.const_video_0['video_channel']
-        search_video_description = self.const_video_0['video_description']
+        search_video_title = self.data['const_video'][0]['video_title']
+        search_video_channel = self.data['const_video'][0]['video_channel']
+        search_video_description = self.data['const_video'][0]['video_description']
 
         # SEARCH BY TITLE PATTERN #
         # Search exact fail
@@ -908,7 +892,7 @@ class TestQueryVideo(unittest.TestCase):
             }
         ]
         videos = query_video_search_by_aggregate(pipeline)
-        self.assertEqual(videos[0]['video_title'], self.const_video_0['video_title'])
+        self.assertEqual(videos[0]['video_title'], self.data['const_video'][0]['video_title'])
 
         # Raise Error: ErrorCode.MONGODB_LIST_EXPECTED
         with self.assertRaises(MongoError) as e:
@@ -917,67 +901,63 @@ class TestQueryVideo(unittest.TestCase):
 
 
 class TestQueryVideoOp(unittest.TestCase):
-    data = util_load_test_data()
-    const_video_op_0 = data['const_video_op'][0]
-    temp_video_op_0 = data['temp_video_op'][0]
 
     @classmethod
     def setUpClass(cls) -> None:
-        get_db(config['test'])
-        py_ver = platform.python_version()[:3]
-        if py_ver != '3.7' and py_ver != '3.8' and py_ver != '3.9':
-            print("Your current python version " + py_ver + " is not supported. Please update to python 3.8")
-            print("========== Python Version Not Supported, Exit Testing ==========")
+        cls.data = util_load_test_data()
+        if float(pf.python_version()[:3]) < 3.7:
+            print("Your python ver." + pf.python_version() + " is not supported. Please update to python 3.8")
             exit()
+        get_db(config['test'])
 
     def test_a_query_video_op_create(self):
-        self.assertEqual(query_video_op_create(user_id=self.temp_video_op_0['user_id'],
-                                               video_id=self.temp_video_op_0['video_id']).video_id,
-                         self.temp_video_op_0['video_id'])
+        self.assertEqual(query_video_op_create(user_id=self.data['temp_video_op'][0]['user_id'],
+                                               video_id=self.data['temp_video_op'][0]['video_id']).video_id,
+                         self.data['temp_video_op'][0]['video_id'])
 
         # Raise Error: ErrorCode.MONGODB_USER_NOT_FOUND
         with self.assertRaises(MongoError) as e:
             query_video_op_create(user_id="123456781234567812345678",
-                                  video_id=self.temp_video_op_0['video_id'])
+                                  video_id=self.data['temp_video_op'][0]['video_id'])
         self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_USER_NOT_FOUND)
 
         # Raise Error: ErrorCode.MONGODB_VIDEO_NOT_FOUND
         with self.assertRaises(MongoError) as e:
-            query_video_op_create(user_id=self.temp_video_op_0['user_id'],
+            query_video_op_create(user_id=self.data['temp_video_op'][0]['user_id'],
                                   video_id="123456781234567812345678")
         self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_VIDEO_NOT_FOUND)
 
         # Raise Error: ErrorCode.MONGODB_OP_EXISTS
         with self.assertRaises(MongoError) as e:
-            query_video_op_create(user_id=self.temp_video_op_0['user_id'],
-                                  video_id=self.temp_video_op_0['video_id'])
+            query_video_op_create(user_id=self.data['temp_video_op'][0]['user_id'],
+                                  video_id=self.data['temp_video_op'][0]['video_id'])
         self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_VIDEO_OP_EXISTS)
 
     def test_b_query_video_op_get_by_user_id(self):
-        self.assertEqual(query_video_op_get_by_user_id(self.temp_video_op_0['user_id'])[0].video_id,
-                         self.temp_video_op_0['video_id'])
+        self.assertEqual(query_video_op_get_by_user_id(self.data['temp_video_op'][0]['user_id'])[0].video_id,
+                         self.data['temp_video_op'][0]['video_id'])
 
     def test_c_query_video_op_get_by_video_id(self):
-        self.assertEqual(query_video_op_get_by_video_id(self.temp_video_op_0['video_id'])[1].user_id,
-                         self.temp_video_op_0['user_id'])
+        self.assertEqual(query_video_op_get_by_video_id(self.data['temp_video_op'][0]['video_id'])[1].user_id,
+                         self.data['temp_video_op'][0]['user_id'])
 
     def test_d_query_video_op_get_by_user_video(self):
-        temp_video_op = query_video_op_get_by_user_video(user_id=self.temp_video_op_0['user_id'],
-                                                         video_id=self.temp_video_op_0['video_id'])[0].to_dict()
-        self.assertEqual(temp_video_op['video_id'], self.temp_video_op_0['video_id'])
-        self.assertEqual(temp_video_op['user_id'], self.temp_video_op_0['user_id'])
+        temp_video_op = query_video_op_get_by_user_video(user_id=self.data['temp_video_op'][0]['user_id'],
+                                                         video_id=self.data['temp_video_op'][0]['video_id'])[0].to_dict()
+        self.assertEqual(temp_video_op['video_id'], self.data['temp_video_op'][0]['video_id'])
+        self.assertEqual(temp_video_op['user_id'], self.data['temp_video_op'][0]['user_id'])
 
     def test_e_query_video_op_get_by_op_id(self):
-        temp_video_op = query_video_op_get_by_user_video(user_id=self.temp_video_op_0['user_id'],
-                                                         video_id=self.temp_video_op_0['video_id'])[0].to_dict()
+        temp_video_op = query_video_op_get_by_user_video(user_id=self.data['temp_video_op'][0]['user_id'],
+                                                         video_id=self.data['temp_video_op'][0]['video_id'])[0].to_dict()
         temp_video_op_alter = query_video_op_get_by_op_id(temp_video_op['video_op_id'])
         self.assertEqual(temp_video_op_alter[0].to_dict()['video_op_id'], temp_video_op['video_op_id'])
 
     def test_f_query_video_op_update_process(self):
         new_process = 777
         new_process_date = get_time_now_utc()
-        temp_video_op = query_video_op_get_by_user_video(user_id=self.temp_video_op_0['user_id'],
-                                                         video_id=self.temp_video_op_0['video_id'])[0].to_dict()
+        temp_video_op = query_video_op_get_by_user_video(user_id=self.data['temp_video_op'][0]['user_id'],
+                                                         video_id=self.data['temp_video_op'][0]['video_id'])[0].to_dict()
         query_video_op_update_process(temp_video_op['video_op_id'], new_process, new_process_date)
         temp_video_op_new = query_video_op_get_by_op_id(temp_video_op['video_op_id'])[0]
         self.assertEqual(temp_video_op_new.process, new_process)
@@ -991,8 +971,8 @@ class TestQueryVideoOp(unittest.TestCase):
     def test_g_query_video_op_update_comment(self):
         new_comment = "this is just a new comment"
         new_comment_date = get_time_now_utc()
-        temp_video_op = query_video_op_get_by_user_video(user_id=self.temp_video_op_0['user_id'],
-                                                         video_id=self.temp_video_op_0['video_id'])[0].to_dict()
+        temp_video_op = query_video_op_get_by_user_video(user_id=self.data['temp_video_op'][0]['user_id'],
+                                                         video_id=self.data['temp_video_op'][0]['video_id'])[0].to_dict()
         query_video_op_update_comment(temp_video_op['video_op_id'], new_comment, new_comment_date)
         temp_video_op_new = query_video_op_get_by_op_id(temp_video_op['video_op_id'])[0]
         self.assertEqual(temp_video_op_new.comment, new_comment)
@@ -1005,8 +985,8 @@ class TestQueryVideoOp(unittest.TestCase):
 
     def test_h_query_video_op_update_like(self):
         new_like_date = get_time_now_utc()
-        temp_video_op = query_video_op_get_by_user_video(user_id=self.temp_video_op_0['user_id'],
-                                                         video_id=self.temp_video_op_0['video_id'])[0].to_dict()
+        temp_video_op = query_video_op_get_by_user_video(user_id=self.data['temp_video_op'][0]['user_id'],
+                                                         video_id=self.data['temp_video_op'][0]['video_id'])[0].to_dict()
         query_video_op_update_like(temp_video_op['video_op_id'], True, new_like_date)
         temp_video_op_new = query_video_op_get_by_op_id(temp_video_op['video_op_id'])[0]
         self.assertEqual(temp_video_op_new.like, True)
@@ -1025,8 +1005,8 @@ class TestQueryVideoOp(unittest.TestCase):
 
     def test_i_query_video_op_update_dislike(self):
         new_dislike_date = get_time_now_utc()
-        temp_video_op = query_video_op_get_by_user_video(user_id=self.temp_video_op_0['user_id'],
-                                                         video_id=self.temp_video_op_0['video_id'])[0].to_dict()
+        temp_video_op = query_video_op_get_by_user_video(user_id=self.data['temp_video_op'][0]['user_id'],
+                                                         video_id=self.data['temp_video_op'][0]['video_id'])[0].to_dict()
         query_video_op_update_dislike(temp_video_op['video_op_id'], True, new_dislike_date)
         temp_video_op_new = query_video_op_get_by_op_id(temp_video_op['video_op_id'])[0]
         self.assertEqual(temp_video_op_new.dislike, True)
@@ -1045,8 +1025,8 @@ class TestQueryVideoOp(unittest.TestCase):
 
     def test_j_query_video_op_update_star(self):
         new_star_date = get_time_now_utc()
-        temp_video_op = query_video_op_get_by_user_video(user_id=self.temp_video_op_0['user_id'],
-                                                         video_id=self.temp_video_op_0['video_id'])[0].to_dict()
+        temp_video_op = query_video_op_get_by_user_video(user_id=self.data['temp_video_op'][0]['user_id'],
+                                                         video_id=self.data['temp_video_op'][0]['video_id'])[0].to_dict()
         query_video_op_update_star(temp_video_op['video_op_id'], True, new_star_date)
         temp_video_op_new = query_video_op_get_by_op_id(temp_video_op['video_op_id'])[0]
         self.assertEqual(temp_video_op_new.star, True)
@@ -1064,8 +1044,8 @@ class TestQueryVideoOp(unittest.TestCase):
         self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND)
 
     def test_k_query_video_op_delete(self):
-        temp_video_op = query_video_op_get_by_user_video(user_id=self.temp_video_op_0['user_id'],
-                                                         video_id=self.temp_video_op_0['video_id'])[0]
+        temp_video_op = query_video_op_get_by_user_video(user_id=self.data['temp_video_op'][0]['user_id'],
+                                                         video_id=self.data['temp_video_op'][0]['video_id'])[0]
         self.assertEqual(query_video_op_delete(temp_video_op.to_dict()['video_op_id']), 1)
 
         # Raise Error: ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND
@@ -1074,11 +1054,11 @@ class TestQueryVideoOp(unittest.TestCase):
         self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND)
 
     def test_l_query_video_op_search_comment_by_contains(self):
-        video_op = query_video_op_search_comment_by_contains(self.const_video_op_0['comment'][1:10])[0].to_dict()
-        self.assertEqual(video_op['video_id'], self.const_video_op_0['video_id'])
+        video_op = query_video_op_search_comment_by_contains(self.data['const_video_op'][0]['comment'][1:10])[0].to_dict()
+        self.assertEqual(video_op['video_id'], self.data['const_video_op'][0]['video_id'])
 
     def test_m_query_video_op_search_comment_by_pattern(self):
-        search_comment = self.const_video_op_0['comment']
+        search_comment = self.data['const_video_op'][0]['comment']
 
         # Search exact fail
         pattern_exact_fail = util_pattern_compile(search_comment[1:10], exact=True, ignore_case=True)
