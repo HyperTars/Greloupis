@@ -6,6 +6,7 @@ from source.service.service_video import *
 from source.service.service_video_op import *
 from source.settings import *
 from source.tests.unit.test_load_data import util_load_test_data
+import platform
 
 
 class TestServiceSearchUser(unittest.TestCase):
@@ -17,6 +18,11 @@ class TestServiceSearchUser(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.conf = config['test']
+        py_ver = platform.python_version()[:3]
+        if py_ver != '3.7' and py_ver != '3.8' and py_ver != '3.9':
+            print("Your current python version " + py_ver + " is not supported. Please update to python 3.8")
+            print("========== Python Version Not Supported, Exit Testing ==========")
+            exit()
 
     def test_search_user(self):
         # Search successfully with ignore_case
@@ -166,6 +172,11 @@ class TestServiceSearchVideo(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.conf = config['test']
+        py_ver = platform.python_version()[:3]
+        if py_ver != '3.7' and py_ver != '3.8' and py_ver != '3.9':
+            print("Your current python version " + py_ver + " is not supported. Please update to python 3.8")
+            print("========== Python Version Not Supported, Exit Testing ==========")
+            exit()
 
     def test_search_video(self):
         self.assertEqual(service_search_video(self.conf, title="Xi")[0]['video_title'],
@@ -269,6 +280,11 @@ class TestServiceUser(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.conf = config['test']
+        py_ver = platform.python_version()[:3]
+        if py_ver != '3.7' and py_ver != '3.8' and py_ver != '3.9':
+            print("Your current python version " + py_ver + " is not supported. Please update to python 3.8")
+            print("========== Python Version Not Supported, Exit Testing ==========")
+            exit()
 
     def test_a_service_user_reg(self):
         # Register successfully
@@ -441,6 +457,12 @@ class TestServiceVideo(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.conf = config['test']
+        py_ver = platform.python_version()[:3]
+        if py_ver != '3.7' and py_ver != '3.8' and py_ver != '3.9':
+            print("Your current python version " + py_ver + " is not supported. Please update to python 3.8")
+            print("========== Python Version Not Supported, Exit Testing ==========")
+            exit()
+        cls.conf = config['test']
         cls.temp_video_title = "test video title"
         cls.temp_video_raw_content = "https://s3.amazon.com/test_video_content.avi"
 
@@ -610,8 +632,13 @@ class TestServiceVideoOp(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        # create a video
         cls.conf = config['test']
+        py_ver = platform.python_version()[:3]
+        if py_ver != '3.7' and py_ver != '3.8' and py_ver != '3.9':
+            print("Your current python version " + py_ver + " is not supported. Please update to python 3.8")
+            print("========== Python Version Not Supported, Exit Testing ==========")
+            exit()
+        # create a video
         cls.temp_video_title = "video op test"
         cls.temp_video_raw_content = "https://s3.amazon.com/test_video_content.avi"
 

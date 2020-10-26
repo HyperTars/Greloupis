@@ -3,10 +3,19 @@ import imp
 from source.tests.unit.test_load_data import *
 from source.models.model_user import *
 from source.models.model_errors import *
+import platform
 
 
 class TestUserModel(unittest.TestCase):
     data = util_load_test_data()
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        py_ver = platform.python_version()[:3]
+        if py_ver != '3.7' and py_ver != '3.8' and py_ver != '3.9':
+            print("Your current python version " + py_ver + " is not supported. Please update to python 3.8")
+            print("========== Python Version Not Supported, Exit Testing ==========")
+            exit()
 
     def test_user_model_load(self):
         temp_user = self.data['temp_user'][2]
@@ -18,6 +27,14 @@ class TestUserModel(unittest.TestCase):
 
 
 class TestErrorModel(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        py_ver = platform.python_version()[:3]
+        if py_ver != '3.7' and py_ver != '3.8' and py_ver != '3.9':
+            print("Your current python version " + py_ver + " is not supported. Please update to python 3.8")
+            print("========== Python Version Not Supported, Exit Testing ==========")
+            exit()
+
     def test_error_class(self):
         imp.load_source('__main__', 'source/models/model_errors.py')
 

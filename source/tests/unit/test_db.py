@@ -7,6 +7,7 @@ from source.db.query_video import *
 from source.db.query_video_op import *
 from source.models.model_errors import *
 from source.utils.util_pattern import *
+import platform
 
 
 class TestQueryUser(unittest.TestCase):
@@ -22,6 +23,11 @@ class TestQueryUser(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         get_db(config['test'])
+        py_ver = platform.python_version()[:3]
+        if py_ver != '3.7' and py_ver != '3.8' and py_ver != '3.9':
+            print("Your current python version " + py_ver + " is not supported. Please update to python 3.8")
+            print("========== Python Version Not Supported, Exit Testing ==========")
+            exit()
 
     def test_a_user_create(self):
         # Create successfully
@@ -557,6 +563,11 @@ class TestQueryVideo(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         get_db(config['test'])
+        py_ver = platform.python_version()[:3]
+        if py_ver != '3.7' and py_ver != '3.8' and py_ver != '3.9':
+            print("Your current python version " + py_ver + " is not supported. Please update to python 3.8")
+            print("========== Python Version Not Supported, Exit Testing ==========")
+            exit()
 
     def test_a_query_video_create(self):
         self.assertEqual(query_video_create(user_id=self.temp_video_0['user_id'],
@@ -913,6 +924,11 @@ class TestQueryVideoOp(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         get_db(config['test'])
+        py_ver = platform.python_version()[:3]
+        if py_ver != '3.7' and py_ver != '3.8' and py_ver != '3.9':
+            print("Your current python version " + py_ver + " is not supported. Please update to python 3.8")
+            print("========== Python Version Not Supported, Exit Testing ==========")
+            exit()
 
     def test_a_query_video_op_create(self):
         self.assertEqual(query_video_op_create(user_id=self.temp_video_op_0['user_id'],
