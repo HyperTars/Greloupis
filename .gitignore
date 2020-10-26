@@ -1,6 +1,7 @@
 pytvenv/
 *venv*
 log.txt
+logs.txt
 
 ### VS Code ###
 vs_code/
