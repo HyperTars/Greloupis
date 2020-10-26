@@ -402,6 +402,25 @@ class TestServiceUser(unittest.TestCase):
             service_user_get_star(self.conf, '123456781234567812345678')
         self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_USER_NOT_FOUND)
 
+    def test_h_service_user_get_process(self):
+        # Get successfully
+        self.assertEqual(len(service_user_get_process(self.conf, self.const_user_0['_id']['$oid'])), 0)
+
+        # Raise Error: ErrorCode.SERVICE_INVALID_ID_OBJ
+        with self.assertRaises(ServiceError) as e:
+            service_user_get_process(self.conf, self.const_user_1['_id']['$oid'])
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_USER_NO_VIDEO_OP)
+
+        # Raise Error: ErrorCode.SERVICE_INVALID_ID_OBJ
+        with self.assertRaises(ServiceError) as e:
+            service_user_get_process(self.conf, 'some random user')
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_INVALID_ID_OBJ)
+
+        # Raise Error: ErrorCode.SERVICE_USER_NOT_FOUND
+        with self.assertRaises(ServiceError) as e:
+            service_user_get_process(self.conf, '123456781234567812345678')
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_USER_NOT_FOUND)
+
     def test_z_service_user_cancel(self):
         user_id = query_user_get_by_name(user_name=self.temp_user_0['user_name'])[0].to_dict()['user_id']
         self.assertEqual(service_user_cancel(self.conf, user_id), 1)
