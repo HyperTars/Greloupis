@@ -134,7 +134,8 @@ class User(Resource):
         """
             User sign up
         """
-        return {}, 200, None
+        pass
+        # return {}, 200, None
 
 
 @user.route('/<string:user_id>', methods=['DELETE', 'GET', 'PUT'])
@@ -162,14 +163,16 @@ class UserUserId(Resource):
         """
             Update user information by id
         """
-        return {}, 200, None
+        pass
+        # return {}, 200, None
 
     @user.response(405, 'Method not allowed')
     def delete(self, user_id):
         """
             Delete user by id
         """
-        return {}, 200, None
+        pass
+        # return {}, 200, None
 
 
 @user.route('/login', methods=['POST'])
@@ -181,7 +184,8 @@ class UserLogin(Resource):
         """
             User sign in
         """
-        return None, 200
+        pass
+        # return {}, 200, None
 
 
 @user.route('/logout', methods=['POST'])
@@ -194,7 +198,8 @@ class UserLogout(Resource):
         """
             User log out
         """
-        return None, 200
+        pass
+        # return {}, 200, None
 
 
 @user.route('/<string:user_id>/like', methods=['GET'])
