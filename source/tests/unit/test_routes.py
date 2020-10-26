@@ -80,8 +80,8 @@ class TestRouteUser(unittest.TestCase):
 
         # Raise Error: ErrorCode.SERVICE_USER_NOT_FOUND
         with self.assertRaises(ServiceError) as e:
-            service_user_get_info(self.conf, '123456781234567812345678')
-        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_USER_NOT_FOUND)
+            service_user_get_info(self.conf, '12345678123456781234567')
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_INVALID_ID_OBJ)
 
     def test_c_route_user_put(self):
         pass
@@ -116,8 +116,8 @@ class TestRouteUser(unittest.TestCase):
 
         # Raise Error: ErrorCode.SERVICE_USER_NOT_FOUND
         with self.assertRaises(ServiceError) as e:
-            service_user_get_info(self.conf, '123456781234567812345678')
-        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_USER_NOT_FOUND)
+            service_user_get_info(self.conf, '12345678123456781234567')
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_INVALID_ID_OBJ)
 
     def test_h_route_user_dislike(self):
         temp_user_id = self.const_user_0['_id']['$oid']
@@ -140,8 +140,8 @@ class TestRouteUser(unittest.TestCase):
 
         # Raise Error: ErrorCode.SERVICE_USER_NOT_FOUND
         with self.assertRaises(ServiceError) as e:
-            service_user_get_info(self.conf, '123456781234567812345678')
-        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_USER_NOT_FOUND)
+            service_user_get_info(self.conf, '12345678123456781234567')
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_INVALID_ID_OBJ)
 
     def test_i_route_user_star(self):
         temp_user_id = self.const_user_0['_id']['$oid']
@@ -164,8 +164,8 @@ class TestRouteUser(unittest.TestCase):
 
         # Raise Error: ErrorCode.SERVICE_USER_NOT_FOUND
         with self.assertRaises(ServiceError) as e:
-            service_user_get_info(self.conf, '123456781234567812345678')
-        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_USER_NOT_FOUND)
+            service_user_get_info(self.conf, '12345678123456781234567')
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_INVALID_ID_OBJ)
 
     def test_j_route_user_comment(self):
         temp_user_id = self.const_user_0['_id']['$oid']
@@ -189,8 +189,8 @@ class TestRouteUser(unittest.TestCase):
 
         # Raise Error: ErrorCode.SERVICE_USER_NOT_FOUND
         with self.assertRaises(ServiceError) as e:
-            service_user_get_info(self.conf, '123456781234567812345678')
-        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_USER_NOT_FOUND)
+            service_user_get_info(self.conf, '12345678123456781234567')
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_INVALID_ID_OBJ)
 
     def test_k_route_user_process(self):
         temp_user_id = self.const_user_0['_id']['$oid']
@@ -214,8 +214,8 @@ class TestRouteUser(unittest.TestCase):
 
         # Raise Error: ErrorCode.SERVICE_USER_NOT_FOUND
         with self.assertRaises(ServiceError) as e:
-            service_user_get_info(self.conf, '123456781234567812345678')
-        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_USER_NOT_FOUND)
+            service_user_get_info(self.conf, '12345678123456781234567')
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_INVALID_ID_OBJ)
 
 
 if __name__ == '__main__':
