@@ -5,17 +5,15 @@ from source.utils.util_request_filter import *
 from source.utils.util_logger import *
 from source.utils.util_error_handler import *
 from source.utils.util_pattern import *
-import platform
+import platform as pf
 
 
 class TestUtilErrorHandler(unittest.TestCase):
+
     @classmethod
     def setUpClass(cls) -> None:
-        cls.conf = config['test']
-        py_ver = platform.python_version()[:3]
-        if py_ver != '3.7' and py_ver != '3.8' and py_ver != '3.9':
-            print("Your current python version " + py_ver + " is not supported. Please update to python 3.8")
-            print("========== Python Version Not Supported, Exit Testing ==========")
+        if float(pf.python_version()[:3]) < 3.7:
+            print("Your python ver." + pf.python_version() + " is not supported. Please update to python 3.8")
             exit()
 
     def test_util_error_handler_mongo_error(self):
@@ -53,13 +51,11 @@ class TestUtilErrorHandler(unittest.TestCase):
 
 
 class TestUtilHash(unittest.TestCase):
+
     @classmethod
     def setUpClass(cls) -> None:
-        cls.conf = config['test']
-        py_ver = platform.python_version()[:3]
-        if py_ver != '3.7' and py_ver != '3.8' and py_ver != '3.9':
-            print("Your current python version " + py_ver + " is not supported. Please update to python 3.8")
-            print("========== Python Version Not Supported, Exit Testing ==========")
+        if float(pf.python_version()[:3]) < 3.7:
+            print("Your python ver." + pf.python_version() + " is not supported. Please update to python 3.8")
             exit()
 
     def test_util_hash_encode(self):
@@ -74,13 +70,11 @@ class TestUtilHash(unittest.TestCase):
 
 
 class TestUtilLogger(unittest.TestCase):
+
     @classmethod
     def setUpClass(cls) -> None:
-        cls.conf = config['test']
-        py_ver = platform.python_version()[:3]
-        if py_ver != '3.7' and py_ver != '3.8' and py_ver != '3.9':
-            print("Your current python version " + py_ver + " is not supported. Please update to python 3.8")
-            print("========== Python Version Not Supported, Exit Testing ==========")
+        if float(pf.python_version()[:3]) < 3.7:
+            print("Your python ver." + pf.python_version() + " is not supported. Please update to python 3.8")
             exit()
 
     def test_util_logger_handler(self):
@@ -89,13 +83,11 @@ class TestUtilLogger(unittest.TestCase):
 
 
 class TestUtilPattern(unittest.TestCase):
+
     @classmethod
     def setUpClass(cls) -> None:
-        cls.conf = config['test']
-        py_ver = platform.python_version()[:3]
-        if py_ver != '3.7' and py_ver != '3.8' and py_ver != '3.9':
-            print("Your current python version " + py_ver + " is not supported. Please update to python 3.8")
-            print("========== Python Version Not Supported, Exit Testing ==========")
+        if float(pf.python_version()[:3]) < 3.7:
+            print("Your python ver." + pf.python_version() + " is not supported. Please update to python 3.8")
             exit()
 
     def test_util_pattern_format_param(self):
@@ -163,13 +155,11 @@ class TestUtilPattern(unittest.TestCase):
 
 
 class TestUtilRequestFilter(unittest.TestCase):
+
     @classmethod
     def setUpClass(cls) -> None:
-        cls.conf = config['test']
-        py_ver = platform.python_version()[:3]
-        if py_ver != '3.7' and py_ver != '3.8' and py_ver != '3.9':
-            print("Your current python version " + py_ver + " is not supported. Please update to python 3.8")
-            print("========== Python Version Not Supported, Exit Testing ==========")
+        if float(pf.python_version()[:3]) < 3.7:
+            print("Your python ver." + pf.python_version() + " is not supported. Please update to python 3.8")
             exit()
 
     def test_util_request_filter_xss(self):
@@ -180,13 +170,11 @@ class TestUtilRequestFilter(unittest.TestCase):
 
 
 class TestUtilSerializer(unittest.TestCase):
+
     @classmethod
     def setUpClass(cls) -> None:
-        cls.conf = config['test']
-        py_ver = platform.python_version()[:3]
-        if py_ver != '3.7' and py_ver != '3.8' and py_ver != '3.9':
-            print("Your current python version " + py_ver + " is not supported. Please update to python 3.8")
-            print("========== Python Version Not Supported, Exit Testing ==========")
+        if float(pf.python_version()[:3]) < 3.7:
+            print("Your python ver." + pf.python_version() + " is not supported. Please update to python 3.8")
             exit()
 
     def test_util_serializer_dict_to_json_ymd_hms(self):
@@ -206,24 +194,20 @@ class TestUtilSerializer(unittest.TestCase):
 
 
 class TestUtilTime(unittest.TestCase):
+
     @classmethod
     def setUpClass(cls) -> None:
-        cls.conf = config['test']
-        py_ver = platform.python_version()[:3]
-        if py_ver != '3.7' and py_ver != '3.8' and py_ver != '3.9':
-            print("Your current python version " + py_ver + " is not supported. Please update to python 3.8")
-            print("========== Python Version Not Supported, Exit Testing ==========")
+        if float(pf.python_version()[:3]) < 3.7:
+            print("Your python ver." + pf.python_version() + " is not supported. Please update to python 3.8")
             exit()
 
 
 class TestValidator(unittest.TestCase):
+
     @classmethod
     def setUpClass(cls) -> None:
-        cls.conf = config['test']
-        py_ver = platform.python_version()[:3]
-        if py_ver != '3.7' and py_ver != '3.8' and py_ver != '3.9':
-            print("Your current python version " + py_ver + " is not supported. Please update to python 3.8")
-            print("========== Python Version Not Supported, Exit Testing ==========")
+        if float(pf.python_version()[:3]) < 3.7:
+            print("Your python ver." + pf.python_version() + " is not supported. Please update to python 3.8")
             exit()
 
     def test_util_validator(self):
