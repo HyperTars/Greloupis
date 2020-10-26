@@ -6,7 +6,6 @@ import bson
 import datetime
 import re
 
-
 VALID_VIDEO_STATUS = ['public', 'private', 'processing', 'deleted']
 VALID_VIDEO_CNT = ['view', 'views', 'video_view',
                    'comment', 'comments', 'video_comment',
