@@ -11,6 +11,7 @@ run:    dev_env
 	
 github:	FORCE
 	git pull origin master
+	git add .
 	git commit -a
 	git push origin master
 
