@@ -7,32 +7,33 @@ from source.routes.route_video import *
 from source.settings import config
 from source.utils.util_serializer import *
 from source.tests.unit.test_load_data import *
+import platform as pf
 
 app = Flask(__name__)
 
 
 class TestRouteSearch(unittest.TestCase):
-    data = util_load_test_data()
-    const_user_0 = data['const_user'][0]
-    const_user_1 = data['const_user'][1]
-    const_user_2 = data['const_user'][2]
-    const_video_0 = data['const_video'][0]
 
     @classmethod
     def setUpClass(cls) -> None:
+        cls.data = util_load_test_data()
+        if float(pf.python_version()[:3]) < 3.7:
+            print("Your python ver." + pf.python_version() + " is not supported. Please update to python 3.8")
+            exit()
+        get_db(config['test'])
         cls.conf = config['test']
 
     def test_route_search_user(self):
         # Test search user by keyword
-        with app.test_request_context('/search/user?keyword=' + self.const_user_0['user_name'], data={}):
+        with app.test_request_context('/search/user?keyword=' + self.data['const_user'][0]['user_name'], data={}):
             keyword = request.args.get('keyword')
 
             response_json = RouteSearchUser().get(self.conf).get_json()
-            self.assertEqual(response_json["body"][0]["user_id"], self.const_user_0['_id']['$oid'],
+            self.assertEqual(response_json["body"][0]["user_id"], self.data['const_user'][0]['_id']['$oid'],
                              msg="First matched user id")
-            self.assertEqual(response_json["body"][0]["user_email"], self.const_user_0['user_email'],
+            self.assertEqual(response_json["body"][0]["user_email"], self.data['const_user'][0]['user_email'],
                              msg="First matched user email")
-            self.assertEqual(response_json["body"][0]["user_name"], self.const_user_0['user_name'],
+            self.assertEqual(response_json["body"][0]["user_name"], self.data['const_user'][0]['user_name'],
                              msg="First matched user name")
 
     def test_route_search_video(self):
@@ -50,20 +51,21 @@ class TestRouteSearch(unittest.TestCase):
 
 
 class TestRouteUser(unittest.TestCase):
-    data = util_load_test_data()
-    const_user_0 = data['const_user'][0]
-    const_video_0 = data['const_video'][0]
-    const_video_op_0 = data['const_video_op'][0]
 
     @classmethod
     def setUpClass(cls) -> None:
+        cls.data = util_load_test_data()
+        if float(pf.python_version()[:3]) < 3.7:
+            print("Your python ver." + pf.python_version() + " is not supported. Please update to python 3.8")
+            exit()
+        get_db(config['test'])
         cls.conf = config['test']
 
     def test_a_route_user_post(self):
         pass
 
     def test_b_route_user_get(self):
-        temp_user_id = self.const_user_0['_id']['$oid']
+        temp_user_id = self.data['const_user'][0]['_id']['$oid']
 
         disconnect(alias='default')
         with app.test_request_context(
@@ -98,7 +100,7 @@ class TestRouteUser(unittest.TestCase):
         pass
 
     def test_g_route_user_like(self):
-        temp_user_id = self.const_user_0['_id']['$oid']
+        temp_user_id = self.data['const_user'][0]['_id']['$oid']
 
         disconnect(alias='default')
         with app.test_request_context(
@@ -124,7 +126,7 @@ class TestRouteUser(unittest.TestCase):
                              util_error_handler(ServiceError(ErrorCode.SERVICE_INVALID_ID_OBJ)).status_code)
 
     def test_h_route_user_dislike(self):
-        temp_user_id = self.const_user_0['_id']['$oid']
+        temp_user_id = self.data['const_user'][0]['_id']['$oid']
 
         disconnect(alias='default')
         with app.test_request_context(
@@ -150,7 +152,7 @@ class TestRouteUser(unittest.TestCase):
                              util_error_handler(ServiceError(ErrorCode.SERVICE_INVALID_ID_OBJ)).status_code)
 
     def test_i_route_user_star(self):
-        temp_user_id = self.const_user_0['_id']['$oid']
+        temp_user_id = self.data['const_user'][0]['_id']['$oid']
 
         disconnect(alias='default')
         with app.test_request_context(
@@ -176,7 +178,7 @@ class TestRouteUser(unittest.TestCase):
                              util_error_handler(ServiceError(ErrorCode.SERVICE_INVALID_ID_OBJ)).status_code)
 
     def test_j_route_user_comment(self):
-        temp_user_id = self.const_user_0['_id']['$oid']
+        temp_user_id = self.data['const_user'][0]['_id']['$oid']
 
         disconnect(alias='default')
         with app.test_request_context(
@@ -203,7 +205,7 @@ class TestRouteUser(unittest.TestCase):
                              util_error_handler(ServiceError(ErrorCode.SERVICE_INVALID_ID_OBJ)).status_code)
 
     def test_k_route_user_process(self):
-        temp_user_id = self.const_user_0['_id']['$oid']
+        temp_user_id = self.data['const_user'][0]['_id']['$oid']
 
         disconnect(alias='default')
         with app.test_request_context(
@@ -232,9 +234,9 @@ class TestRouteUser(unittest.TestCase):
 
 # class TestRouteUser(unittest.TestCase):
 #     data = util_load_test_data()
-#     const_user_0 = data['const_user'][0]
-#     const_video_0 = data['const_video'][0]
-#     const_video_op_0 = data['const_video_op'][0]
+#     data['const_user'][0] = data['const_user'][0]
+#     data['const_video'][0] = data['const_video'][0]
+#     data['const_video_op'][0] = data['const_video_op'][0]
 #
 #     @classmethod
 #     def setUpClass(cls) -> None:

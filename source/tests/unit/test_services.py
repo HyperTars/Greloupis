@@ -6,33 +6,35 @@ from source.service.service_video import *
 from source.service.service_video_op import *
 from source.settings import *
 from source.tests.unit.test_load_data import util_load_test_data
+import platform as pf
 
 
 class TestServiceSearchUser(unittest.TestCase):
-    data = util_load_test_data()
-    const_user_0 = data['const_user'][0]
-    const_user_1 = data['const_user'][1]
-    const_user_2 = data['const_user'][2]
 
     @classmethod
     def setUpClass(cls) -> None:
+        cls.data = util_load_test_data()
+        if float(pf.python_version()[:3]) < 3.7:
+            print("Your python ver." + pf.python_version() + " is not supported. Please update to python 3.8")
+            exit()
         cls.conf = config['test']
+        get_db(config['test'])
 
     def test_search_user(self):
         # Search successfully with ignore_case
         self.assertEqual(service_search_user(self.conf, name="t", ignore_case=False)[0]['user_name'],
-                         self.const_user_0['user_name'])
+                         self.data['const_user'][0]['user_name'])
 
         # Search successfully with exact (result = 0)
         self.assertEqual(len(service_search_user(self.conf, name="milvu", exact=True)), 0)
 
         # Search successfully with ignore_case and exact
         self.assertEqual(service_search_user(self.conf, name="milvUS", ignore_case=True, exact=True)[0]['user_name'],
-                         self.const_user_1['user_name'])
+                         self.data['const_user'][1]['user_name'])
 
         # Search successfully with custom pattern (pattern=True)
         self.assertEqual(service_search_user(self.conf, name=".*t.*", pattern=True)[0]['user_name'],
-                         self.const_user_0['user_name'])
+                         self.data['const_user'][0]['user_name'])
 
         # Search successfully with aggregate
         pipeline = [
@@ -45,7 +47,7 @@ class TestServiceSearchUser(unittest.TestCase):
             }
         ]
         self.assertEqual(service_search_user(self.conf, aggregate=True, search_dict=pipeline)[0]['user_name'],
-                         self.const_user_0['user_name'])
+                         self.data['const_user'][0]['user_name'])
 
         # Raise Error: ErrorCode.SERVICE_PARAM_SLICE_NOT_SUPPORT
         with self.assertRaises(ServiceError) as e:
@@ -53,7 +55,7 @@ class TestServiceSearchUser(unittest.TestCase):
         self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_PARAM_SLICE_NOT_SUPPORT)
 
     def test_search_user_by_contains(self):
-        user = self.const_user_0
+        user = self.data['const_user'][0]
         self.assertEqual(service_search_user_by_contains(user_id=user['_id']['$oid'])[0]['user_name'],
                          user['user_name'])
         self.assertEqual(service_search_user_by_contains(user_email=user['user_email'])[0]['user_name'],
@@ -85,48 +87,48 @@ class TestServiceSearchUser(unittest.TestCase):
         self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_INVALID_SEARCH_PARAM)
 
     def test_search_user_by_pattern(self):
-        self.assertEqual(service_search_user(self.conf, email=self.const_user_1['user_email'][2:5],
-                                             ignore_case=False)[0]['user_name'], self.const_user_1['user_name'])
+        self.assertEqual(service_search_user(self.conf, email=self.data['const_user'][1]['user_email'][2:5],
+                                             ignore_case=False)[0]['user_name'], self.data['const_user'][1]['user_name'])
 
         self.assertEqual(service_search_user(self.conf,
-                                             first_name=self.const_user_1['user_detail']['user_first_name'][1:3],
-                                             ignore_case=False)[0]['user_name'], self.const_user_1['user_name'])
+                                             first_name=self.data['const_user'][1]['user_detail']['user_first_name'][1:3],
+                                             ignore_case=False)[0]['user_name'], self.data['const_user'][1]['user_name'])
 
         self.assertEqual(service_search_user(self.conf,
-                                             last_name=self.const_user_1['user_detail']['user_last_name'][1:3],
-                                             ignore_case=False)[0]['user_name'], self.const_user_1['user_name'])
+                                             last_name=self.data['const_user'][1]['user_detail']['user_last_name'][1:3],
+                                             ignore_case=False)[0]['user_name'], self.data['const_user'][1]['user_name'])
 
         self.assertEqual(service_search_user(self.conf,
-                                             phone=self.const_user_1['user_detail']['user_phone'][2:5],
-                                             ignore_case=False)[0]['user_name'], self.const_user_1['user_name'])
+                                             phone=self.data['const_user'][1]['user_detail']['user_phone'][2:5],
+                                             ignore_case=False)[0]['user_name'], self.data['const_user'][1]['user_name'])
 
         self.assertEqual(service_search_user(self.conf,
-                                             street1=self.const_user_1['user_detail']['user_street1'],
-                                             exact=True)[0]['user_name'], self.const_user_1['user_name'])
+                                             street1=self.data['const_user'][1]['user_detail']['user_street1'],
+                                             exact=True)[0]['user_name'], self.data['const_user'][1]['user_name'])
 
         self.assertEqual(service_search_user(self.conf,
-                                             street2=self.const_user_0['user_detail']['user_street2'],
-                                             exact=True)[0]['user_name'], self.const_user_0['user_name'])
+                                             street2=self.data['const_user'][0]['user_detail']['user_street2'],
+                                             exact=True)[0]['user_name'], self.data['const_user'][0]['user_name'])
 
         self.assertEqual(service_search_user(self.conf,
-                                             city=self.const_user_1['user_detail']['user_city'],
-                                             exact=True)[0]['user_name'], self.const_user_1['user_name'])
+                                             city=self.data['const_user'][1]['user_detail']['user_city'],
+                                             exact=True)[0]['user_name'], self.data['const_user'][1]['user_name'])
 
         self.assertEqual(service_search_user(self.conf,
-                                             state=self.const_user_1['user_detail']['user_state'],
-                                             exact=True)[0]['user_name'], self.const_user_1['user_name'])
+                                             state=self.data['const_user'][1]['user_detail']['user_state'],
+                                             exact=True)[0]['user_name'], self.data['const_user'][1]['user_name'])
 
         self.assertEqual(service_search_user(self.conf,
-                                             country=self.const_user_1['user_detail']['user_country'],
-                                             exact=True)[0]['user_name'], self.const_user_1['user_name'])
+                                             country=self.data['const_user'][1]['user_detail']['user_country'],
+                                             exact=True)[0]['user_name'], self.data['const_user'][1]['user_name'])
 
         self.assertEqual(service_search_user(self.conf,
-                                             zip=self.const_user_1['user_detail']['user_zip'],
-                                             exact=True)[0]['user_name'], self.const_user_1['user_name'])
+                                             zip=self.data['const_user'][1]['user_detail']['user_zip'],
+                                             exact=True)[0]['user_name'], self.data['const_user'][1]['user_name'])
 
         self.assertEqual(service_search_user(self.conf,
-                                             status=self.const_user_0['user_status'],
-                                             exact=True)[0]['user_name'], self.const_user_0['user_name'])
+                                             status=self.data['const_user'][0]['user_status'],
+                                             exact=True)[0]['user_name'], self.data['const_user'][0]['user_name'])
 
         # Raise Error: ErrorCode.SERVICE_INVALID_SEARCH_PARAM
         with self.assertRaises(ServiceError) as e:
@@ -154,22 +156,25 @@ class TestServiceSearchUser(unittest.TestCase):
             }
         ]
         self.assertEqual(service_search_user_by_aggregation(pipeline1)[0]['user_name'],
-                         self.const_user_0['user_name'])
+                         self.data['const_user'][0]['user_name'])
         self.assertEqual(service_search_user_by_aggregation(pipeline2)[0]['user_name'],
-                         self.const_user_0['user_name'])
+                         self.data['const_user'][0]['user_name'])
 
 
 class TestServiceSearchVideo(unittest.TestCase):
-    data = util_load_test_data()
-    const_video_0 = data['const_video'][0]
 
     @classmethod
     def setUpClass(cls) -> None:
+        cls.data = util_load_test_data()
+        if float(pf.python_version()[:3]) < 3.7:
+            print("Your python ver." + pf.python_version() + " is not supported. Please update to python 3.8")
+            exit()
         cls.conf = config['test']
+        get_db(config['test'])
 
     def test_search_video(self):
         self.assertEqual(service_search_video(self.conf, title="Xi")[0]['video_title'],
-                         self.const_video_0['video_title'], msg="Test Search Video: Title")
+                         self.data['const_video'][0]['video_title'], msg="Test Search Video: Title")
 
         self.assertEqual(len(service_search_video(self.conf, title="xi", ignore_case=False)), 0,
                          msg="Test Search Video: Title (not found)")
@@ -178,23 +183,23 @@ class TestServiceSearchVideo(unittest.TestCase):
                          msg="Test Search Video: Title, json")
 
         self.assertEqual(service_search_video(self.conf, video_category="A")[0]['video_title'],
-                         self.const_video_0['video_title'], msg="Test Search Video: Category")
+                         self.data['const_video'][0]['video_title'], msg="Test Search Video: Category")
 
         self.assertEqual(service_search_video(self.conf, video_tag="O")[0]['video_title'],
-                         self.const_video_0['video_title'], msg="Test Search Video: Tag")
+                         self.data['const_video'][0]['video_title'], msg="Test Search Video: Tag")
 
         self.assertEqual(service_search_video(self.conf, title="a h", slice=True)[0]['video_title'],
-                         self.const_video_0['video_title'], msg="Test Search Video: Tag")
+                         self.data['const_video'][0]['video_title'], msg="Test Search Video: Tag")
 
         self.assertEqual(service_search_video(self.conf, title="i a", slice=True)[0]['video_title'],
-                         self.const_video_0['video_title'], msg="Test Search Video: Tag")
+                         self.data['const_video'][0]['video_title'], msg="Test Search Video: Tag")
 
         self.assertEqual(service_search_video(self.conf, title="i%20a", slice=True)[0]['video_title'],
-                         self.const_video_0['video_title'], msg="Test Search Video: Tag")
+                         self.data['const_video'][0]['video_title'], msg="Test Search Video: Tag")
 
         # Search successfully with custom pattern (pattern=True)
         self.assertEqual(service_search_video(self.conf, title=".*i.*", pattern=True)[0]['video_title'],
-                         self.const_video_0['video_title'])
+                         self.data['const_video'][0]['video_title'])
 
         # Search successfully with aggregate
         pipeline = [
@@ -207,10 +212,10 @@ class TestServiceSearchVideo(unittest.TestCase):
             }
         ]
         self.assertEqual(service_search_video(self.conf, aggregate=True, search_dict=pipeline)[0]['video_title'],
-                         self.const_video_0['video_title'])
+                         self.data['const_video'][0]['video_title'])
 
     def test_search_video_by_contains(self):
-        video = self.const_video_0
+        video = self.data['const_video'][0]
         self.assertEqual(service_search_video_by_contains(video_id=video['_id']['$oid'])[0]
                          ['video_title'], video['video_title'])
         self.assertEqual(service_search_video_by_contains(video_title=video['video_title'])[0]
@@ -230,12 +235,12 @@ class TestServiceSearchVideo(unittest.TestCase):
         self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_INVALID_SEARCH_PARAM)
 
     def test_search_video_by_pattern(self):
-        self.assertEqual(service_search_video(self.conf, channel=self.const_video_0['video_channel'],
-                                              exact=True)[0]['video_title'], self.const_video_0['video_title'])
+        self.assertEqual(service_search_video(self.conf, channel=self.data['const_video'][0]['video_channel'],
+                                              exact=True)[0]['video_title'], self.data['const_video'][0]['video_title'])
 
-        self.assertEqual(service_search_video(self.conf, description=self.const_video_0['video_description'][1:5],
+        self.assertEqual(service_search_video(self.conf, description=self.data['const_video'][0]['video_description'][1:5],
                                               ignore_case=False)[0]['video_description'],
-                         self.const_video_0['video_description'])
+                         self.data['const_video'][0]['video_description'])
 
         # Raise Error: ErrorCode.SERVICE_INVALID_SEARCH_PARAM
         with self.assertRaises(ServiceError) as e:
@@ -253,29 +258,26 @@ class TestServiceSearchVideo(unittest.TestCase):
             }
         ]
         self.assertEqual(service_search_video_by_aggregation(pipeline)[0]['video_title'],
-                         self.const_video_0['video_title'])
+                         self.data['const_video'][0]['video_title'])
 
 
 class TestServiceUser(unittest.TestCase):
-    data = util_load_test_data()
-
-    const_user_0 = data['const_user'][0]
-    const_user_1 = data['const_user'][1]
-    const_user_2 = data['const_user'][2]
-
-    temp_user_0 = data['temp_user'][0]
-    temp_user_1 = data['temp_user'][1]
 
     @classmethod
     def setUpClass(cls) -> None:
+        cls.data = util_load_test_data()
+        if float(pf.python_version()[:3]) < 3.7:
+            print("Your python ver." + pf.python_version() + " is not supported. Please update to python 3.8")
+            exit()
         cls.conf = config['test']
+        get_db(config['test'])
 
     def test_a_service_user_reg(self):
         # Register successfully
-        self.assertEqual(service_user_reg(self.conf, user_name=self.temp_user_0['user_name'],
-                                          user_password=self.temp_user_0['user_password'],
-                                          user_email=self.temp_user_0['user_email'])['user_name'],
-                         self.temp_user_0['user_name'])
+        self.assertEqual(service_user_reg(self.conf, user_name=self.data['temp_user'][0]['user_name'],
+                                          user_password=self.data['temp_user'][0]['user_password'],
+                                          user_email=self.data['temp_user'][0]['user_email'])['user_name'],
+                         self.data['temp_user'][0]['user_name'])
 
         # Raise Error: ErrorCode.SERVICE_MISSING_PARAM
         with self.assertRaises(ServiceError) as e:
@@ -284,15 +286,15 @@ class TestServiceUser(unittest.TestCase):
 
     def test_b_service_user_check_password(self):
         # Check successfully with user name
-        self.assertTrue(service_user_check_password(self.conf, user_name=self.temp_user_0['user_name'],
-                                                    user_password=self.temp_user_0['user_password']))
+        self.assertTrue(service_user_check_password(self.conf, user_name=self.data['temp_user'][0]['user_name'],
+                                                    user_password=self.data['temp_user'][0]['user_password']))
 
         # Check successfully with user email
-        self.assertTrue(service_user_check_password(self.conf, user_email=self.temp_user_0['user_email'],
-                                                    user_password=self.temp_user_0['user_password']))
+        self.assertTrue(service_user_check_password(self.conf, user_email=self.data['temp_user'][0]['user_email'],
+                                                    user_password=self.data['temp_user'][0]['user_password']))
 
         # Password Wrong
-        self.assertFalse(service_user_check_password(self.conf, user_name=self.temp_user_0['user_name'],
+        self.assertFalse(service_user_check_password(self.conf, user_name=self.data['temp_user'][0]['user_name'],
                                                      user_password="xxx"))
 
         # Raise Error: ErrorCode.SERVICE_MISSING_PARAM
@@ -302,17 +304,17 @@ class TestServiceUser(unittest.TestCase):
 
         # Raise Error: ErrorCode.SERVICE_USER_NOT_FOUND
         with self.assertRaises(ServiceError) as e:
-            service_user_check_password(self.conf, user_name=self.temp_user_1['user_name'],
-                                        user_password=self.temp_user_1['user_password'])
+            service_user_check_password(self.conf, user_name=self.data['temp_user'][1]['user_name'],
+                                        user_password=self.data['temp_user'][1]['user_password'])
         self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_USER_NOT_FOUND)
 
     def test_c_service_user_get_info(self):
         # Get successfully
-        self.assertEqual(service_user_get_info(self.conf, self.const_user_0['_id']['$oid'])['user'][0]['user_name'],
-                         self.const_user_0['user_name'])
+        self.assertEqual(service_user_get_info(self.conf, self.data['const_user'][0]['_id']['$oid'])['user'][0]['user_name'],
+                         self.data['const_user'][0]['user_name'])
 
-        self.assertEqual(service_user_get_info(self.conf, self.const_user_1['_id']['$oid'])['user'][0]['user_name'],
-                         self.const_user_1['user_name'])
+        self.assertEqual(service_user_get_info(self.conf, self.data['const_user'][1]['_id']['$oid'])['user'][0]['user_name'],
+                         self.data['const_user'][1]['user_name'])
 
         # Raise Error: ErrorCode.SERVICE_INVALID_ID_OBJ
         with self.assertRaises(ServiceError) as e:
@@ -326,11 +328,11 @@ class TestServiceUser(unittest.TestCase):
 
     def test_d_service_user_get_like(self):
         # Get successfully
-        self.assertEqual(len(service_user_get_like(self.conf, self.const_user_0['_id']['$oid'])), 0)
+        self.assertEqual(len(service_user_get_like(self.conf, self.data['const_user'][0]['_id']['$oid'])), 0)
 
         # Raise Error: ErrorCode.SERVICE_INVALID_ID_OBJ
         with self.assertRaises(ServiceError) as e:
-            service_user_get_like(self.conf, self.const_user_1['_id']['$oid'])
+            service_user_get_like(self.conf, self.data['const_user'][1]['_id']['$oid'])
         self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_USER_NO_VIDEO_OP)
 
         # Raise Error: ErrorCode.SERVICE_INVALID_ID_OBJ
@@ -345,12 +347,12 @@ class TestServiceUser(unittest.TestCase):
 
     def test_e_service_user_get_dislike(self):
         # Get successfully
-        self.assertEqual(service_user_get_dislike(self.conf, self.const_user_0['_id']['$oid'])[0]['user_id'],
-                         self.const_user_0['_id']['$oid'])
+        self.assertEqual(service_user_get_dislike(self.conf, self.data['const_user'][0]['_id']['$oid'])[0]['user_id'],
+                         self.data['const_user'][0]['_id']['$oid'])
 
         # Raise Error: ErrorCode.SERVICE_INVALID_ID_OBJ
         with self.assertRaises(ServiceError) as e:
-            service_user_get_dislike(self.conf, self.const_user_1['_id']['$oid'])
+            service_user_get_dislike(self.conf, self.data['const_user'][1]['_id']['$oid'])
         self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_USER_NO_VIDEO_OP)
 
         # Raise Error: ErrorCode.SERVICE_INVALID_ID_OBJ
@@ -365,12 +367,12 @@ class TestServiceUser(unittest.TestCase):
 
     def test_f_service_user_get_comment(self):
         # Get successfully
-        self.assertEqual(service_user_get_comment(self.conf, self.const_user_0['_id']['$oid'])[0]['user_id'],
-                         self.const_user_0['_id']['$oid'])
+        self.assertEqual(service_user_get_comment(self.conf, self.data['const_user'][0]['_id']['$oid'])[0]['user_id'],
+                         self.data['const_user'][0]['_id']['$oid'])
 
         # Raise Error: ErrorCode.SERVICE_INVALID_ID_OBJ
         with self.assertRaises(ServiceError) as e:
-            service_user_get_comment(self.conf, self.const_user_1['_id']['$oid'])
+            service_user_get_comment(self.conf, self.data['const_user'][1]['_id']['$oid'])
         self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_USER_NO_VIDEO_OP)
 
         # Raise Error: ErrorCode.SERVICE_INVALID_ID_OBJ
@@ -385,11 +387,11 @@ class TestServiceUser(unittest.TestCase):
 
     def test_g_service_user_get_star(self):
         # Get successfully
-        self.assertEqual(len(service_user_get_star(self.conf, self.const_user_0['_id']['$oid'])), 1)
+        self.assertEqual(len(service_user_get_star(self.conf, self.data['const_user'][0]['_id']['$oid'])), 1)
 
         # Raise Error: ErrorCode.SERVICE_INVALID_ID_OBJ
         with self.assertRaises(ServiceError) as e:
-            service_user_get_star(self.conf, self.const_user_1['_id']['$oid'])
+            service_user_get_star(self.conf, self.data['const_user'][1]['_id']['$oid'])
         self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_USER_NO_VIDEO_OP)
 
         # Raise Error: ErrorCode.SERVICE_INVALID_ID_OBJ
@@ -404,11 +406,11 @@ class TestServiceUser(unittest.TestCase):
 
     def test_h_service_user_get_process(self):
         # Get successfully
-        self.assertEqual(len(service_user_get_process(self.conf, self.const_user_0['_id']['$oid'])), 0)
+        self.assertEqual(len(service_user_get_process(self.conf, self.data['const_user'][0]['_id']['$oid'])), 0)
 
         # Raise Error: ErrorCode.SERVICE_INVALID_ID_OBJ
         with self.assertRaises(ServiceError) as e:
-            service_user_get_process(self.conf, self.const_user_1['_id']['$oid'])
+            service_user_get_process(self.conf, self.data['const_user'][1]['_id']['$oid'])
         self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_USER_NO_VIDEO_OP)
 
         # Raise Error: ErrorCode.SERVICE_INVALID_ID_OBJ
@@ -422,24 +424,19 @@ class TestServiceUser(unittest.TestCase):
         self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_USER_NOT_FOUND)
 
     def test_z_service_user_cancel(self):
-        user_id = query_user_get_by_name(user_name=self.temp_user_0['user_name'])[0].to_dict()['user_id']
+        user_id = query_user_get_by_name(user_name=self.data['temp_user'][0]['user_name'])[0].to_dict()['user_id']
         self.assertEqual(service_user_cancel(self.conf, user_id), 1)
 
 
 class TestServiceVideo(unittest.TestCase):
-    data = util_load_test_data()
-
-    const_user_0 = data['const_user'][0]
-    const_user_1 = data['const_user'][1]
-    const_user_2 = data['const_user'][2]
-
-    temp_user_0 = data['temp_user'][0]
-    temp_user_1 = data['temp_user'][1]
-
-    const_video_0 = data['const_video'][0]
 
     @classmethod
     def setUpClass(cls) -> None:
+        cls.data = util_load_test_data()
+        if float(pf.python_version()[:3]) < 3.7:
+            print("Your python ver." + pf.python_version() + " is not supported. Please update to python 3.8")
+            exit()
+        get_db(config['test'])
         cls.conf = config['test']
         cls.temp_video_title = "test video title"
         cls.temp_video_raw_content = "https://s3.amazon.com/test_video_content.avi"
@@ -451,21 +448,21 @@ class TestServiceVideo(unittest.TestCase):
         cls.temp_video_title_op = "XiXiHaHa"
 
     def test_a_service_video_upload(self):
-        self.assertEqual(service_video_upload(self.conf, user_id=self.const_user_1['_id']['$oid'],
+        self.assertEqual(service_video_upload(self.conf, user_id=self.data['const_user'][1]['_id']['$oid'],
                                               video_title=self.temp_video_title,
                                               video_raw_content=self.temp_video_raw_content)['video_title'],
                          self.temp_video_title)
 
         # Raise Error: ErrorCode.SERVICE_MISSING_PARAM
         with self.assertRaises(ServiceError) as e:
-            service_video_upload(self.conf, user_id=self.const_user_1['_id']['$oid'],
+            service_video_upload(self.conf, user_id=self.data['const_user'][1]['_id']['$oid'],
                                  video_raw_content=self.temp_video_raw_content)
 
         self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_MISSING_PARAM)
 
         # Simply create a video op for testing
         temp_video_id = query_video_get_by_title(self.temp_video_title)[0].to_dict()['video_id']
-        query_video_op_create(user_id=self.const_user_1['_id']['$oid'], video_id=temp_video_id,
+        query_video_op_create(user_id=self.data['const_user'][1]['_id']['$oid'], video_id=temp_video_id,
                               init_time=get_time_now_utc())
 
     def test_b_service_video_info(self):
@@ -604,25 +601,27 @@ class TestServiceVideo(unittest.TestCase):
 
 
 class TestServiceVideoOp(unittest.TestCase):
-    data = util_load_test_data()
-
-    const_user_0 = data['const_user'][0]
 
     @classmethod
     def setUpClass(cls) -> None:
+        cls.data = util_load_test_data()
+        if float(pf.python_version()[:3]) < 3.7:
+            print("Your python ver." + pf.python_version() + " is not supported. Please update to python 3.8")
+            exit()
+        get_db(config['test'])
         # create a video
         cls.conf = config['test']
         cls.temp_video_title = "video op test"
         cls.temp_video_raw_content = "https://s3.amazon.com/test_video_content.avi"
 
-        service_video_upload(conf=cls.conf, user_id=cls.const_user_0['_id']['$oid'],
+        service_video_upload(conf=cls.conf, user_id=cls.data['const_user'][0]['_id']['$oid'],
                              video_title=cls.temp_video_title,
                              video_raw_content=cls.temp_video_raw_content)
 
         temp_video_id = query_video_get_by_title(cls.temp_video_title)[0].to_dict()['video_id']
 
         # create a video op for the video
-        query_video_op_create(user_id=cls.const_user_0['_id']['$oid'], video_id=temp_video_id,
+        query_video_op_create(user_id=cls.data['const_user'][0]['_id']['$oid'], video_id=temp_video_id,
                               init_time=get_time_now_utc())
 
     def test_a_service_video_op_add_view(self):
@@ -679,7 +678,7 @@ class TestServiceVideoOp(unittest.TestCase):
         original_comment = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_comment"]
 
         response = service_video_op_add_comment(self.conf, video_id=temp_video_id,
-                                                user_id=self.const_user_0['_id']['$oid'],
+                                                user_id=self.data['const_user'][0]['_id']['$oid'],
                                                 comment=temp_comment)
         current_comment = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_comment"]
 
@@ -700,11 +699,11 @@ class TestServiceVideoOp(unittest.TestCase):
         self.assertEqual(e.exception.error_code, ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
 
         # Successful test
-        original_comment = query_video_op_get_by_user_video(self.const_user_0['_id']['$oid'],
+        original_comment = query_video_op_get_by_user_video(self.data['const_user'][0]['_id']['$oid'],
                                                             temp_video_id)[0].to_dict()["comment"]
 
         response = service_video_op_get_comment(self.conf, video_id=temp_video_id,
-                                                user_id=self.const_user_0['_id']['$oid'])
+                                                user_id=self.data['const_user'][0]['_id']['$oid'])
 
         self.assertEqual(original_comment, response["comment"])
 
@@ -724,7 +723,7 @@ class TestServiceVideoOp(unittest.TestCase):
 
         # Successful test
         response = service_video_op_update_comment(self.conf, video_id=temp_video_id,
-                                                   user_id=self.const_user_0['_id']['$oid'],
+                                                   user_id=self.data['const_user'][0]['_id']['$oid'],
                                                    comment=temp_comment)
         self.assertEqual(temp_comment, response["comment"])
 
@@ -745,7 +744,7 @@ class TestServiceVideoOp(unittest.TestCase):
         original_comment = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_comment"]
 
         response = service_video_op_cancel_comment(self.conf, video_id=temp_video_id,
-                                                   user_id=self.const_user_0['_id']['$oid'])
+                                                   user_id=self.data['const_user'][0]['_id']['$oid'])
         current_comment = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_comment"]
 
         self.assertEqual(current_comment, original_comment - 1)
@@ -766,12 +765,12 @@ class TestServiceVideoOp(unittest.TestCase):
         self.assertEqual(e.exception.error_code, ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
         with self.assertRaises(RouteError) as e:
             service_video_op_add_process(self.conf, video_id=temp_video_id,
-                                         user_id=self.const_user_0['_id']['$oid'], process=-100)
+                                         user_id=self.data['const_user'][0]['_id']['$oid'], process=-100)
         self.assertEqual(e.exception.error_code, ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
 
         # Successful test
         response = service_video_op_add_process(self.conf, video_id=temp_video_id,
-                                                user_id=self.const_user_0['_id']['$oid'],
+                                                user_id=self.data['const_user'][0]['_id']['$oid'],
                                                 process=temp_process)
         self.assertEqual(temp_process, response["process"])
 
@@ -789,10 +788,10 @@ class TestServiceVideoOp(unittest.TestCase):
         self.assertEqual(e.exception.error_code, ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
 
         # Successful test
-        original_process = query_video_op_get_by_user_video(self.const_user_0['_id']['$oid'],
+        original_process = query_video_op_get_by_user_video(self.data['const_user'][0]['_id']['$oid'],
                                                             temp_video_id)[0].to_dict()["process"]
         response = service_video_op_get_process(self.conf, video_id=temp_video_id,
-                                                user_id=self.const_user_0['_id']['$oid'])
+                                                user_id=self.data['const_user'][0]['_id']['$oid'])
         self.assertEqual(original_process, response["process"])
 
     def test_i_service_video_op_update_process(self):
@@ -810,12 +809,12 @@ class TestServiceVideoOp(unittest.TestCase):
         self.assertEqual(e.exception.error_code, ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
         with self.assertRaises(RouteError) as e:
             service_video_op_update_process(self.conf, video_id=temp_video_id,
-                                            user_id=self.const_user_0['_id']['$oid'], process=-100)
+                                            user_id=self.data['const_user'][0]['_id']['$oid'], process=-100)
         self.assertEqual(e.exception.error_code, ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
 
         # Successful test
         response = service_video_op_update_process(self.conf, video_id=temp_video_id,
-                                                   user_id=self.const_user_0['_id']['$oid'],
+                                                   user_id=self.data['const_user'][0]['_id']['$oid'],
                                                    process=temp_process)
         self.assertEqual(temp_process, response["process"])
 
@@ -834,7 +833,7 @@ class TestServiceVideoOp(unittest.TestCase):
 
         # Successful test
         response = service_video_op_cancel_process(self.conf, video_id=temp_video_id,
-                                                   user_id=self.const_user_0['_id']['$oid'])
+                                                   user_id=self.data['const_user'][0]['_id']['$oid'])
         self.assertEqual(response["process"], 0)
 
     def test_k_service_video_op_add_like(self):
@@ -853,7 +852,7 @@ class TestServiceVideoOp(unittest.TestCase):
         # Successful test
         original_like = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_like"]
         response = service_video_op_add_like(self.conf, video_id=temp_video_id,
-                                             user_id=self.const_user_0['_id']['$oid'])
+                                             user_id=self.data['const_user'][0]['_id']['$oid'])
         current_like = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_like"]
         self.assertEqual(response["like"], True)
         self.assertEqual(response["dislike"], False)
@@ -861,16 +860,16 @@ class TestServiceVideoOp(unittest.TestCase):
 
         # Raise Error: ErrorCode.MONGODB_VIDEO_LIKE_UPDATE_FAILURE
         with self.assertRaises(MongoError) as e:
-            service_video_op_add_like(self.conf, video_id=temp_video_id, user_id=self.const_user_0['_id']['$oid'])
+            service_video_op_add_like(self.conf, video_id=temp_video_id, user_id=self.data['const_user'][0]['_id']['$oid'])
         self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_VIDEO_LIKE_UPDATE_FAILURE)
 
         # If already dislike, can switch to like
         original_like = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_like"]
         original_dislike = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_dislike"]
         response = service_video_op_add_dislike(self.conf, video_id=temp_video_id,
-                                                user_id=self.const_user_0['_id']['$oid'])
+                                                user_id=self.data['const_user'][0]['_id']['$oid'])
         response = service_video_op_add_like(self.conf, video_id=temp_video_id,
-                                             user_id=self.const_user_0['_id']['$oid'])
+                                             user_id=self.data['const_user'][0]['_id']['$oid'])
         current_like = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_like"]
         current_dislike = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_dislike"]
         self.assertEqual(response["like"], True)
@@ -894,7 +893,7 @@ class TestServiceVideoOp(unittest.TestCase):
         # Successful test
         original_like = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_like"]
         response = service_video_op_cancel_like(self.conf, video_id=temp_video_id,
-                                                user_id=self.const_user_0['_id']['$oid'])
+                                                user_id=self.data['const_user'][0]['_id']['$oid'])
         current_like = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_like"]
         self.assertEqual(response["like"], False)
         self.assertEqual(response["dislike"], False)
@@ -902,7 +901,7 @@ class TestServiceVideoOp(unittest.TestCase):
 
         # Raise Error: ErrorCode.MONGODB_VIDEO_LIKE_UPDATE_FAILURE
         with self.assertRaises(MongoError) as e:
-            service_video_op_cancel_like(self.conf, video_id=temp_video_id, user_id=self.const_user_0['_id']['$oid'])
+            service_video_op_cancel_like(self.conf, video_id=temp_video_id, user_id=self.data['const_user'][0]['_id']['$oid'])
         self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_VIDEO_LIKE_UPDATE_FAILURE)
 
     def test_m_service_video_op_add_dislike(self):
@@ -921,7 +920,7 @@ class TestServiceVideoOp(unittest.TestCase):
         # Successful test
         original_dislike = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_dislike"]
         response = service_video_op_add_dislike(self.conf, video_id=temp_video_id,
-                                                user_id=self.const_user_0['_id']['$oid'])
+                                                user_id=self.data['const_user'][0]['_id']['$oid'])
         current_dislike = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_dislike"]
         self.assertEqual(response["like"], False)
         self.assertEqual(response["dislike"], True)
@@ -929,16 +928,16 @@ class TestServiceVideoOp(unittest.TestCase):
 
         # Raise Error: ErrorCode.MONGODB_VIDEO_DISLIKE_UPDATE_FAILURE
         with self.assertRaises(MongoError) as e:
-            service_video_op_add_dislike(self.conf, video_id=temp_video_id, user_id=self.const_user_0['_id']['$oid'])
+            service_video_op_add_dislike(self.conf, video_id=temp_video_id, user_id=self.data['const_user'][0]['_id']['$oid'])
         self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_VIDEO_DISLIKE_UPDATE_FAILURE)
 
         # If already like, can switch to dislike
         original_like = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_like"]
         original_dislike = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_dislike"]
         response = service_video_op_add_like(self.conf, video_id=temp_video_id,
-                                             user_id=self.const_user_0['_id']['$oid'])
+                                             user_id=self.data['const_user'][0]['_id']['$oid'])
         response = service_video_op_add_dislike(self.conf, video_id=temp_video_id,
-                                                user_id=self.const_user_0['_id']['$oid'])
+                                                user_id=self.data['const_user'][0]['_id']['$oid'])
         current_like = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_like"]
         current_dislike = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_dislike"]
         self.assertEqual(response["like"], False)
@@ -962,7 +961,7 @@ class TestServiceVideoOp(unittest.TestCase):
         # Successful test
         original_dislike = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_dislike"]
         response = service_video_op_cancel_dislike(self.conf, video_id=temp_video_id,
-                                                   user_id=self.const_user_0['_id']['$oid'])
+                                                   user_id=self.data['const_user'][0]['_id']['$oid'])
         current_dislike = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_dislike"]
         self.assertEqual(response["like"], False)
         self.assertEqual(response["dislike"], False)
@@ -970,7 +969,7 @@ class TestServiceVideoOp(unittest.TestCase):
 
         # Raise Error: ErrorCode.MONGODB_VIDEO_DISLIKE_UPDATE_FAILURE
         with self.assertRaises(MongoError) as e:
-            service_video_op_cancel_dislike(self.conf, video_id=temp_video_id, user_id=self.const_user_0['_id']['$oid'])
+            service_video_op_cancel_dislike(self.conf, video_id=temp_video_id, user_id=self.data['const_user'][0]['_id']['$oid'])
         self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_VIDEO_DISLIKE_UPDATE_FAILURE)
 
     def test_o_service_video_op_add_star(self):
@@ -989,14 +988,14 @@ class TestServiceVideoOp(unittest.TestCase):
         # Successful test
         original_star = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_star"]
         response = service_video_op_add_star(self.conf, video_id=temp_video_id,
-                                             user_id=self.const_user_0['_id']['$oid'])
+                                             user_id=self.data['const_user'][0]['_id']['$oid'])
         current_star = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_star"]
         self.assertEqual(response["star"], True)
         self.assertEqual(original_star + 1, current_star)
 
         # Raise Error: ErrorCode.MONGODB_VIDEO_DISLIKE_UPDATE_FAILURE
         with self.assertRaises(MongoError) as e:
-            service_video_op_add_star(self.conf, video_id=temp_video_id, user_id=self.const_user_0['_id']['$oid'])
+            service_video_op_add_star(self.conf, video_id=temp_video_id, user_id=self.data['const_user'][0]['_id']['$oid'])
         self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_VIDEO_STAR_UPDATE_FAILURE)
 
     def test_p_service_video_op_cancel_star(self):
@@ -1015,14 +1014,14 @@ class TestServiceVideoOp(unittest.TestCase):
         # Successful test
         original_star = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_star"]
         response = service_video_op_cancel_star(self.conf, video_id=temp_video_id,
-                                                user_id=self.const_user_0['_id']['$oid'])
+                                                user_id=self.data['const_user'][0]['_id']['$oid'])
         current_star = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_star"]
         self.assertEqual(response["star"], False)
         self.assertEqual(original_star - 1, current_star)
 
         # Raise Error: ErrorCode.MONGODB_VIDEO_DISLIKE_UPDATE_FAILURE
         with self.assertRaises(MongoError) as e:
-            service_video_op_cancel_star(self.conf, video_id=temp_video_id, user_id=self.const_user_0['_id']['$oid'])
+            service_video_op_cancel_star(self.conf, video_id=temp_video_id, user_id=self.data['const_user'][0]['_id']['$oid'])
         self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_VIDEO_STAR_UPDATE_FAILURE)
 
     def test_z_delete_testing_data(self):
