@@ -82,7 +82,7 @@ class TestRouteUser(unittest.TestCase):
         wrong_id = '12345678123456781234567'
         with app.test_request_context(
                 '/user/' + wrong_id + '/process', data={}):
-            self.assertEqual(UserUserIdProcess().get(user_id=wrong_id, conf=self.conf).status_code,
+            self.assertEqual(UserUserId().get(user_id=wrong_id, conf=self.conf).status_code,
                              util_error_handler(ServiceError(ErrorCode.SERVICE_INVALID_ID_OBJ)).status_code)
 
     def test_c_route_user_put(self):
@@ -120,7 +120,7 @@ class TestRouteUser(unittest.TestCase):
         wrong_id = '12345678123456781234567'
         with app.test_request_context(
                 '/user/' + wrong_id + '/process', data={}):
-            self.assertEqual(UserUserIdProcess().get(user_id=wrong_id, conf=self.conf).status_code,
+            self.assertEqual(UserUserIdLike().get(user_id=wrong_id, conf=self.conf).status_code,
                              util_error_handler(ServiceError(ErrorCode.SERVICE_INVALID_ID_OBJ)).status_code)
 
     def test_h_route_user_dislike(self):
@@ -146,7 +146,7 @@ class TestRouteUser(unittest.TestCase):
         wrong_id = '12345678123456781234567'
         with app.test_request_context(
                 '/user/' + wrong_id + '/process', data={}):
-            self.assertEqual(UserUserIdProcess().get(user_id=wrong_id, conf=self.conf).status_code,
+            self.assertEqual(UserUserIdDislike().get(user_id=wrong_id, conf=self.conf).status_code,
                              util_error_handler(ServiceError(ErrorCode.SERVICE_INVALID_ID_OBJ)).status_code)
 
     def test_i_route_user_star(self):
@@ -172,7 +172,7 @@ class TestRouteUser(unittest.TestCase):
         wrong_id = '12345678123456781234567'
         with app.test_request_context(
                 '/user/' + wrong_id + '/process', data={}):
-            self.assertEqual(UserUserIdProcess().get(user_id=wrong_id, conf=self.conf).status_code,
+            self.assertEqual(UserUserIdStar().get(user_id=wrong_id, conf=self.conf).status_code,
                              util_error_handler(ServiceError(ErrorCode.SERVICE_INVALID_ID_OBJ)).status_code)
 
     def test_j_route_user_comment(self):
@@ -199,7 +199,7 @@ class TestRouteUser(unittest.TestCase):
         wrong_id = '12345678123456781234567'
         with app.test_request_context(
                 '/user/' + wrong_id + '/process', data={}):
-            self.assertEqual(UserUserIdProcess().get(user_id=wrong_id, conf=self.conf).status_code,
+            self.assertEqual(UserUserIdComment().get(user_id=wrong_id, conf=self.conf).status_code,
                              util_error_handler(ServiceError(ErrorCode.SERVICE_INVALID_ID_OBJ)).status_code)
 
     def test_k_route_user_process(self):
@@ -229,6 +229,16 @@ class TestRouteUser(unittest.TestCase):
             self.assertEqual(UserUserIdProcess().get(user_id=wrong_id, conf=self.conf).status_code,
                              util_error_handler(ServiceError(ErrorCode.SERVICE_INVALID_ID_OBJ)).status_code)
 
+
+# class TestRouteUser(unittest.TestCase):
+#     data = util_load_test_data()
+#     const_user_0 = data['const_user'][0]
+#     const_video_0 = data['const_video'][0]
+#     const_video_op_0 = data['const_video_op'][0]
+#
+#     @classmethod
+#     def setUpClass(cls) -> None:
+#         cls.conf = config['test']
 
 if __name__ == '__main__':
     unittest.main()

@@ -207,7 +207,7 @@ class UserLogout(Resource):
 @user.response(200, 'Successful operation', like_response_list)
 @user.response(400, 'Invalid user id', general_response)
 @user.response(404, 'User not found', general_response)
-@user.response(500, 'Internal server error', )
+@user.response(500, 'Internal server error', general_response)
 class UserUserIdLike(Resource):
 
     def get(self, user_id, conf=config["default"]):
