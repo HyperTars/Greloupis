@@ -7,7 +7,7 @@
 <!-- [![commit activity](https://img.shields.io/github/commit-activity/y/HyperTars/Online-Video-Platform.svg?style=plasticr)](https://github.com/HyperTars/Online-Video-Platform/commits/master) -->
 <!-- [![last commit](https://img.shields.io/github/last-commit/HyperTars/Online-Video-Platform.svg?style=plasticr)](https://github.com/HyperTars/Online-Video-Platform/commits/master) -->
 
-[![Python](https://img.shields.io/badge/python-3.8-blue)](https://www.python.org/downloads/release/python-385/)
+[![Python](https://img.shields.io/badge/python-3.7%20%7C%203.8-blue)](https://www.python.org/downloads/release/python-385/)
 [![npm](https://img.shields.io/badge/npm-6.14.8-blue)](https://blog.npmjs.org/post/626732790304686080/release-6148)
 [![Flask](https://img.shields.io/badge/Flask-1.1.2-blue)](https://pypi.org/project/Flask/)
 [![React](https://img.shields.io/badge/React-17.0.0-blue)](https://reactjs.org/versions)
@@ -21,7 +21,7 @@
 ### Guide
 
 #### Requirement
-- Curently we only support `Python 3.7 / 3.8` (3.6 or below and 3.9 is not supported)
+- Currently we only support `Python 3.7 / 3.8` (3.6 or below and 3.9 is not supported)
 - npm
 
 #### Install dependencies
