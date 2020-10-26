@@ -199,7 +199,6 @@ class UtilError(Exception):
     def __str__(self):
         return repr(self.error_code)
 
-
 # print error code
 # code = ErrorCode.MONGODB_CONNECTION_FAILURE.get_code()
 # print("code:", code)
