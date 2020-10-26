@@ -78,10 +78,12 @@ class TestRouteUser(unittest.TestCase):
         self.assertEqual(len(service_result["video"]), len(response_json["body"]["video"]))
         self.assertEqual(len(service_result["video_op"]), len(response_json["body"]["video_op"]))
 
-        # Raise Error: ErrorCode.SERVICE_USER_NOT_FOUND
-        with self.assertRaises(ServiceError) as e:
-            service_user_get_info(self.conf, '12345678123456781234567')
-        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_INVALID_ID_OBJ)
+        disconnect(alias='default')
+        wrong_id = '12345678123456781234567'
+        with app.test_request_context(
+                '/user/' + wrong_id + '/process', data={}):
+            self.assertEqual(UserUserIdProcess().get(user_id=wrong_id, conf=self.conf).status_code,
+                             util_error_handler(ServiceError(ErrorCode.SERVICE_INVALID_ID_OBJ)).status_code)
 
     def test_c_route_user_put(self):
         pass
@@ -114,10 +116,12 @@ class TestRouteUser(unittest.TestCase):
             self.assertEqual(service_result[i]["user_id"], response_json["body"][i]["user_id"])
             self.assertEqual(service_result[i]["video_id"], response_json["body"][i]["video_id"])
 
-        # Raise Error: ErrorCode.SERVICE_USER_NOT_FOUND
-        with self.assertRaises(ServiceError) as e:
-            service_user_get_info(self.conf, '12345678123456781234567')
-        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_INVALID_ID_OBJ)
+        disconnect(alias='default')
+        wrong_id = '12345678123456781234567'
+        with app.test_request_context(
+                '/user/' + wrong_id + '/process', data={}):
+            self.assertEqual(UserUserIdProcess().get(user_id=wrong_id, conf=self.conf).status_code,
+                             util_error_handler(ServiceError(ErrorCode.SERVICE_INVALID_ID_OBJ)).status_code)
 
     def test_h_route_user_dislike(self):
         temp_user_id = self.const_user_0['_id']['$oid']
@@ -138,10 +142,12 @@ class TestRouteUser(unittest.TestCase):
             self.assertEqual(service_result[i]["user_id"], response_json["body"][i]["user_id"])
             self.assertEqual(service_result[i]["video_id"], response_json["body"][i]["video_id"])
 
-        # Raise Error: ErrorCode.SERVICE_USER_NOT_FOUND
-        with self.assertRaises(ServiceError) as e:
-            service_user_get_info(self.conf, '12345678123456781234567')
-        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_INVALID_ID_OBJ)
+        disconnect(alias='default')
+        wrong_id = '12345678123456781234567'
+        with app.test_request_context(
+                '/user/' + wrong_id + '/process', data={}):
+            self.assertEqual(UserUserIdProcess().get(user_id=wrong_id, conf=self.conf).status_code,
+                             util_error_handler(ServiceError(ErrorCode.SERVICE_INVALID_ID_OBJ)).status_code)
 
     def test_i_route_user_star(self):
         temp_user_id = self.const_user_0['_id']['$oid']
@@ -162,10 +168,12 @@ class TestRouteUser(unittest.TestCase):
             self.assertEqual(service_result[i]["user_id"], response_json["body"][i]["user_id"])
             self.assertEqual(service_result[i]["video_id"], response_json["body"][i]["video_id"])
 
-        # Raise Error: ErrorCode.SERVICE_USER_NOT_FOUND
-        with self.assertRaises(ServiceError) as e:
-            service_user_get_info(self.conf, '12345678123456781234567')
-        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_INVALID_ID_OBJ)
+        disconnect(alias='default')
+        wrong_id = '12345678123456781234567'
+        with app.test_request_context(
+                '/user/' + wrong_id + '/process', data={}):
+            self.assertEqual(UserUserIdProcess().get(user_id=wrong_id, conf=self.conf).status_code,
+                             util_error_handler(ServiceError(ErrorCode.SERVICE_INVALID_ID_OBJ)).status_code)
 
     def test_j_route_user_comment(self):
         temp_user_id = self.const_user_0['_id']['$oid']
@@ -187,10 +195,12 @@ class TestRouteUser(unittest.TestCase):
             self.assertEqual(service_result[i]["video_id"], response_json["body"][i]["video_id"])
             self.assertEqual(service_result[i]["comment"], response_json["body"][i]["comment"])
 
-        # Raise Error: ErrorCode.SERVICE_USER_NOT_FOUND
-        with self.assertRaises(ServiceError) as e:
-            service_user_get_info(self.conf, '12345678123456781234567')
-        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_INVALID_ID_OBJ)
+        disconnect(alias='default')
+        wrong_id = '12345678123456781234567'
+        with app.test_request_context(
+                '/user/' + wrong_id + '/process', data={}):
+            self.assertEqual(UserUserIdProcess().get(user_id=wrong_id, conf=self.conf).status_code,
+                             util_error_handler(ServiceError(ErrorCode.SERVICE_INVALID_ID_OBJ)).status_code)
 
     def test_k_route_user_process(self):
         temp_user_id = self.const_user_0['_id']['$oid']
@@ -212,10 +222,12 @@ class TestRouteUser(unittest.TestCase):
             self.assertEqual(service_result[i]["video_id"], response_json["body"][i]["video_id"])
             self.assertEqual(service_result[i]["process"], response_json["body"][i]["process"])
 
-        # Raise Error: ErrorCode.SERVICE_USER_NOT_FOUND
-        with self.assertRaises(ServiceError) as e:
-            service_user_get_info(self.conf, '12345678123456781234567')
-        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_INVALID_ID_OBJ)
+        disconnect(alias='default')
+        wrong_id = '12345678123456781234567'
+        with app.test_request_context(
+                '/user/' + wrong_id + '/process', data={}):
+            self.assertEqual(UserUserIdProcess().get(user_id=wrong_id, conf=self.conf).status_code,
+                             util_error_handler(ServiceError(ErrorCode.SERVICE_INVALID_ID_OBJ)).status_code)
 
 
 if __name__ == '__main__':
