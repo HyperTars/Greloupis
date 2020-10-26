@@ -145,14 +145,14 @@ class User(Resource):
 @user.response(500, 'Internal server error', general_response)
 class UserUserId(Resource):
 
-    def get(self, user_id):
+    def get(self, user_id, conf=config["default"]):
         """
             Get user information by id
         """
         user_id = request.url.split('/')[-1]
 
         try:
-            result = service_user_get_info(conf=config['default'], user_id=user_id)
+            result = service_user_get_info(conf=conf, user_id=user_id)
             return util_serializer_api_response(200, body=result, msg="Successfully get user information")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
@@ -205,14 +205,14 @@ class UserLogout(Resource):
 @user.response(500, 'Internal server error', )
 class UserUserIdLike(Resource):
 
-    def get(self, user_id):
+    def get(self, user_id, conf=config["default"]):
         """
             Get a list of like by user id
         """
         user_id = request.url.split('/')[-2]
 
         try:
-            like_result = service_user_get_like(conf=config['default'], user_id=user_id)
+            like_result = service_user_get_like(conf=conf, user_id=user_id)
             return util_serializer_api_response(200, body=like_result, msg="Successfully get user likes")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
@@ -226,14 +226,14 @@ class UserUserIdLike(Resource):
 @user.response(500, 'Internal server error', general_response)
 class UserUserIdDislike(Resource):
 
-    def get(self, user_id):
+    def get(self, user_id, conf=config["default"]):
         """
             Get a list of dislike by user id
         """
         user_id = request.url.split('/')[-2]
 
         try:
-            dislike_result = service_user_get_dislike(conf=config['default'], user_id=user_id)
+            dislike_result = service_user_get_dislike(conf=conf, user_id=user_id)
             return util_serializer_api_response(200, body=dislike_result, msg="Successfully get user dislikes")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
@@ -247,19 +247,17 @@ class UserUserIdDislike(Resource):
 @user.response(500, 'Internal server error', general_response)
 class UserUserIdStar(Resource):
 
-    def get(self, user_id):
+    def get(self, user_id, conf=config["default"]):
         """
             Get a list of star by user id
         """
         user_id = request.url.split('/')[-2]
 
         try:
-            star_result = service_user_get_star(conf=config['default'], user_id=user_id)
+            star_result = service_user_get_star(conf=conf, user_id=user_id)
             return util_serializer_api_response(200, body=star_result, msg="Successfully get user comments")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
-
-        return service_user_get_star(conf=config['default'], user_id=user_id)
 
 
 @user.route('/<string:user_id>/comment', methods=['GET'])
@@ -270,14 +268,14 @@ class UserUserIdStar(Resource):
 @user.response(500, 'Internal server error', general_response)
 class UserUserIdComment(Resource):
 
-    def get(self, user_id):
+    def get(self, user_id, conf=config["default"]):
         """
             Get a list of comments by user id
         """
         user_id = request.url.split('/')[-2]
 
         try:
-            comment_result = service_user_get_comment(conf=config['default'], user_id=user_id)
+            comment_result = service_user_get_comment(conf=conf, user_id=user_id)
             return util_serializer_api_response(200, body=comment_result, msg="Successfully get user comments")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
@@ -291,14 +289,14 @@ class UserUserIdComment(Resource):
 @user.response(500, 'Internal server error', general_response)
 class UserUserIdProcess(Resource):
 
-    def get(self, user_id):
+    def get(self, user_id, conf=config["default"]):
         """
             Get a list of comments by user id
         """
         user_id = request.url.split('/')[-2]
 
         try:
-            process_result = service_user_get_comment(conf=config['default'], user_id=user_id)
+            process_result = service_user_get_process(conf=conf, user_id=user_id)
             return util_serializer_api_response(200, body=process_result, msg="Successfully get user processes")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
