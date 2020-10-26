@@ -21,7 +21,7 @@
 ### Guide
 
 #### Requirement
-- Python 3.7+ (3.6 or below is not supported)
+- Curently we only support `Python 3.7 / 3.8` (3.6 or below and 3.9 is not supported)
 - npm
 
 #### Install dependencies
