@@ -12,7 +12,7 @@ run:    dev_env
 github:	FORCE
 	- git add .
 	- git commit -a
-	- git push staging
+	- git push origin
 
 test:	unit report lint
 	echo "unittest and lint check finished"
