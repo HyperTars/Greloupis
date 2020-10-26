@@ -7,6 +7,7 @@ from source.routes.route_video import *
 from source.settings import config
 from source.utils.util_serializer import *
 from source.tests.unit.test_load_data import *
+import platform
 
 app = Flask(__name__)
 
@@ -21,6 +22,11 @@ class TestRouteSearch(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.conf = config['test']
+        py_ver = platform.python_version()[:3]
+        if py_ver != '3.7' and py_ver != '3.8' and py_ver != '3.9':
+            print("Your current python version " + py_ver + " is not supported. Please update to python 3.8")
+            print("========== Python Version Not Supported, Exit Testing ==========")
+            exit()
 
     def test_route_search_user(self):
         # Test search user by keyword
@@ -58,6 +64,11 @@ class TestRouteUser(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.conf = config['test']
+        py_ver = platform.python_version()[:3]
+        if py_ver != '3.7' and py_ver != '3.8' and py_ver != '3.9':
+            print("Your current python version " + py_ver + " is not supported. Please update to python 3.8")
+            print("========== Python Version Not Supported, Exit Testing ==========")
+            exit()
 
     def test_a_route_user_post(self):
         pass

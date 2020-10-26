@@ -6,13 +6,6 @@ import sys
 db = MongoEngine()
 
 
-# Error Model
-class Error(db.Document):
-    call = db.DictField(required=True)
-    response = db.DictField(required=True)
-    date = db.DateTimeField(default=datetime.datetime.now(), required=True)
-
-
 @unique
 class ErrorCode(Enum):
     # General 1 Series
