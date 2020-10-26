@@ -10,9 +10,9 @@ run:    dev_env
 	python3 -m source.app FLASK_APP=app flask run --host=0.0.0.0 --port=5000
 	
 github:	FORCE
-	git pull origin master
 	git add .
 	git commit -a
+	git pull origin master
 	git push origin master
 
 test:	unit report lint

@@ -11,8 +11,8 @@ class TestUserModel(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.data = util_load_test_data()
-        if float(pf.python_version()[:3]) < 3.7:
-            print("Your python ver." + pf.python_version() + " is not supported. Please update to python 3.8")
+        if pf.python_version()[:3] != '3.7' and pf.python_version()[:3] != '3.8':
+            print("Your python ver." + pf.python_version() + " is not supported. Please use python 3.7 or 3.8")
             exit()
 
     def test_user_model_load(self):
@@ -27,10 +27,8 @@ class TestUserModel(unittest.TestCase):
 class TestErrorModel(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        py_ver = pf.python_version()[:3]
-        if py_ver != '3.7' and py_ver != '3.8' and py_ver != '3.9':
-            print("Your current python version " + py_ver + " is not supported. Please update to python 3.8")
-            print("========== Python Version Not Supported, Exit Testing ==========")
+        if pf.python_version()[:3] != '3.7' and pf.python_version()[:3] != '3.8':
+            print("Your python ver." + pf.python_version() + " is not supported. Please use python 3.7 or 3.8")
             exit()
 
     def test_error_class(self):
