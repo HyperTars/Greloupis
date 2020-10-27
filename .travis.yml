@@ -16,7 +16,7 @@ install: true
 # before_script:
 script:
   - make dev_env
-  - make test
+  - make tests
 deploy:
   provider: releases
   api_key: $GITHUB_TOKEN
