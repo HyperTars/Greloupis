@@ -232,15 +232,32 @@ class TestRouteUser(unittest.TestCase):
                              util_error_handler(ServiceError(ErrorCode.SERVICE_INVALID_ID_OBJ)).status_code)
 
 
-# class TestRouteUser(unittest.TestCase):
-#     data = util_load_test_data()
-#     data['const_user'][0] = data['const_user'][0]
-#     data['const_video'][0] = data['const_video'][0]
-#     data['const_video_op'][0] = data['const_video_op'][0]
-#
-#     @classmethod
-#     def setUpClass(cls) -> None:
-#         cls.conf = config['test']
+class TestRouteVideo(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.data = util_load_test_data()
+        if pf.python_version()[:3] != '3.7' and pf.python_version()[:3] != '3.8':
+            print("Your python ver." + pf.python_version() + " is not supported. Please use python 3.7 or 3.8")
+            exit()
+        get_db(config['test'])
+        cls.conf = config['test']
+
+    def test_a_video_post(self):
+        post_data = self.data['temp_video'][0]
+
+        # Test search user by keyword
+        with app.test_request_context('/video', data=post_data):
+            response_json = Video().post(self.conf).get_json()
+            self.assertEqual(response_json["body"][0]["user_id"], post_data["user_id"])
+            self.assertEqual(response_json["body"][0]["video_title"], post_data["video_title"])
+
+    # temp delete function
+    def test_z_video_delete(self):
+        delete_data = self.data['temp_video'][0]
+        temp_video_id = query_video_get_by_title(delete_data["video_title"]).to_dict()["video_id"]
+        query_video_delete(temp_video_id)
+
 
 if __name__ == '__main__':
     unittest.main()

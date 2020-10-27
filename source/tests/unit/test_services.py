@@ -179,7 +179,7 @@ class TestServiceSearchVideo(unittest.TestCase):
         self.assertEqual(len(service_search_video(self.conf, title="xi", ignore_case=False)), 0,
                          msg="Test Search Video: Title (not found)")
 
-        self.assertEqual(len(service_search_video(self.conf, title="E", format="json")), 0,
+        self.assertEqual(len(service_search_video(self.conf, title="E", format="json")), 1,
                          msg="Test Search Video: Title, json")
 
         self.assertEqual(service_search_video(self.conf, video_category="A")[0]['video_title'],
@@ -450,7 +450,7 @@ class TestServiceVideo(unittest.TestCase):
     def test_a_service_video_upload(self):
         self.assertEqual(service_video_upload(self.conf, user_id=self.data['const_user'][1]['_id']['$oid'],
                                               video_title=self.temp_video_title,
-                                              video_raw_content=self.temp_video_raw_content)['video_title'],
+                                              video_raw_content=self.temp_video_raw_content)[0]['video_title'],
                          self.temp_video_title)
 
         # Raise Error: ErrorCode.SERVICE_MISSING_PARAM
@@ -467,7 +467,7 @@ class TestServiceVideo(unittest.TestCase):
 
     def test_b_service_video_info(self):
         temp_video_id = query_video_get_by_title(self.temp_video_title)[0].to_dict()['video_id']
-        self.assertEqual(service_video_info(self.conf, video_id=temp_video_id)['video_title'],
+        self.assertEqual(service_video_info(self.conf, video_id=temp_video_id)[0]['video_title'],
                          self.temp_video_title)
 
         # Raise Error: ErrorCode.SERVICE_VIDEO_NOT_FOUND
@@ -1024,9 +1024,9 @@ class TestServiceVideoOp(unittest.TestCase):
             service_video_op_cancel_star(self.conf, video_id=temp_video_id, user_id=self.data['const_user'][0]['_id']['$oid'])
         self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_VIDEO_STAR_UPDATE_FAILURE)
 
-    def test_z_delete_testing_data(self):
-        temp_video_id = query_video_get_by_title(self.temp_video_title)[0].to_dict()['video_id']
-        service_video_delete(self.conf, video_id=temp_video_id)
+    # def test_z_delete_testing_data(self):
+    #     temp_video_id = query_video_get_by_title(self.temp_video_title)[0].to_dict()['video_id']
+    #     service_video_delete(self.conf, video_id=temp_video_id)
 
 
 if __name__ == "__main__":
