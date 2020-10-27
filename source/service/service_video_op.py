@@ -241,10 +241,10 @@ def service_video_op_add_process(conf, **kw):
         raise MongoError(ErrorCode.MONGODB_VIDEO_OP_EXISTS)
 
     # check if successfully update process
-    if type(kw["process"]) == int and kw["process"] >= 0:
+    if int(kw["process"]) >= 0:
         update_result = query_video_op_update_process(video_op_id, kw["process"], get_time_now_utc())
     else:
-        raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+        raise ServiceError(ErrorCode.SERVICE_INVALID_SEARCH_PARAM)
 
     if update_result == 1:
         query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])
@@ -316,10 +316,10 @@ def service_video_op_update_process(conf, **kw):
     video_op_id = video_op_result[0]["video_op_id"]
 
     # check if successfully update process
-    if type(kw["process"]) == int and kw["process"] >= 0:
+    if int(kw["process"]) >= 0:
         update_result = query_video_op_update_process(video_op_id, kw["process"], get_time_now_utc())
     else:
-        raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+        raise ServiceError(ErrorCode.SERVICE_INVALID_SEARCH_PARAM)
 
     if update_result == 1:
         query_video_op = query_video_op_get_by_user_video(kw["user_id"], kw["video_id"])

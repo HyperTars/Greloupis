@@ -450,7 +450,7 @@ class TestServiceVideo(unittest.TestCase):
     def test_a_service_video_upload(self):
         self.assertEqual(service_video_upload(self.conf, user_id=self.data['const_user'][1]['_id']['$oid'],
                                               video_title=self.temp_video_title,
-                                              video_raw_content=self.temp_video_raw_content)['video_title'],
+                                              video_raw_content=self.temp_video_raw_content)[0]['video_title'],
                          self.temp_video_title)
 
         # Raise Error: ErrorCode.SERVICE_MISSING_PARAM
@@ -467,7 +467,7 @@ class TestServiceVideo(unittest.TestCase):
 
     def test_b_service_video_info(self):
         temp_video_id = query_video_get_by_title(self.temp_video_title)[0].to_dict()['video_id']
-        self.assertEqual(service_video_info(self.conf, video_id=temp_video_id)['video_title'],
+        self.assertEqual(service_video_info(self.conf, video_id=temp_video_id)[0]['video_title'],
                          self.temp_video_title)
 
         # Raise Error: ErrorCode.SERVICE_VIDEO_NOT_FOUND
@@ -763,10 +763,11 @@ class TestServiceVideoOp(unittest.TestCase):
         with self.assertRaises(RouteError) as e:
             service_video_op_add_process(self.conf, video_id="123123", user_id="aaa", process=30)
         self.assertEqual(e.exception.error_code, ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
-        with self.assertRaises(RouteError) as e:
+
+        with self.assertRaises(ServiceError) as e:
             service_video_op_add_process(self.conf, video_id=temp_video_id,
                                          user_id=self.data['const_user'][0]['_id']['$oid'], process=-100)
-        self.assertEqual(e.exception.error_code, ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_INVALID_SEARCH_PARAM)
 
         # Successful test
         response = service_video_op_add_process(self.conf, video_id=temp_video_id,
@@ -807,10 +808,11 @@ class TestServiceVideoOp(unittest.TestCase):
         with self.assertRaises(RouteError) as e:
             service_video_op_update_process(self.conf, video_id="123123", user_id="aaa", process=30)
         self.assertEqual(e.exception.error_code, ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
-        with self.assertRaises(RouteError) as e:
+
+        with self.assertRaises(ServiceError) as e:
             service_video_op_update_process(self.conf, video_id=temp_video_id,
                                             user_id=self.data['const_user'][0]['_id']['$oid'], process=-100)
-        self.assertEqual(e.exception.error_code, ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_INVALID_SEARCH_PARAM)
 
         # Successful test
         response = service_video_op_update_process(self.conf, video_id=temp_video_id,

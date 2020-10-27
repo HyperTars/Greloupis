@@ -4,7 +4,7 @@ REQ_DIR = requirements
 
 FORCE:
 
-prod:	dev_env test github
+prod:	dev_env tests github
 
 run:    dev_env
 	python3 -m source.app FLASK_APP=app flask run --host=0.0.0.0 --port=5000
@@ -14,7 +14,7 @@ github:	FORCE
 	- git commit -a
 	- git push origin
 
-test:	unit report lint
+tests:	unit report lint
 	echo "unittest and lint check finished"
 
 unit:   FORCE
