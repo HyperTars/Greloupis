@@ -252,12 +252,6 @@ class TestRouteVideo(unittest.TestCase):
             self.assertEqual(response_json["body"][0]["user_id"], post_data["user_id"])
             self.assertEqual(response_json["body"][0]["video_title"], post_data["video_title"])
 
-    # temp delete function
-    def test_z_video_delete(self):
-        delete_data = self.data['temp_video'][0]
-        temp_video_id = query_video_get_by_title(delete_data["video_title"]).to_dict()["video_id"]
-        query_video_delete(temp_video_id)
-
 
 if __name__ == '__main__':
     unittest.main()
