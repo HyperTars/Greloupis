@@ -108,17 +108,18 @@ class Video(Resource):
 @video.response(500, 'Internal server error', general_response)
 class VideoVideoId(Resource):
 
-    def get(self, video_id):
+    def get(self, video_id, conf=config["default"]):
         """
             Get video information by video ID
         """
-        video_id = request.url.split('/')[-1]
-        kw = {
-            "video_id": video_id
-        }
 
         try:
-            get_result = service_video_info(conf=config['default'], **kw)
+            video_id = request.url.split('/')[-1]
+            kw = {
+                "video_id": video_id
+            }
+
+            get_result = service_video_info(conf=conf, **kw)
             if len(get_result) == 1:
                 return_body = util_serializer_mongo_results_to_array(get_result, format="json")
                 return util_serializer_api_response(200, body=return_body, msg="Successfully got video by ID")
@@ -128,20 +129,22 @@ class VideoVideoId(Resource):
             return util_error_handler(e)
 
     @video.response(405, 'Method not allowed')
-    def put(self, video_id):
+    def put(self, video_id, conf=config["default"]):
         """
             Update video information by video ID
         """
-        video_id = request.url.split('/')[-1]
-
-        kw = {
-            "video_title": "mock_video_2_updated",
-            "video_status": "public",
-            "video_raw_size": 51.23
-        }
 
         try:
-            update_result = service_video_update(conf=config['default'], video_id=video_id, **kw)
+            kw = dict(request.form)
+            video_id = request.url.split('/')[-1]
+            kw["video_id"] = video_id
+
+            if "video_tag" in kw.keys():
+                kw["video_tag"] = request.form.getlist("video_tag")
+            if "video_category" in kw.keys():
+                kw["video_category"] = request.form.getlist("video_category")
+
+            update_result = service_video_update(conf=conf, **kw)
             if len(update_result) == 1:
                 return_body = util_serializer_mongo_results_to_array(update_result, format="json")
                 return util_serializer_api_response(200, body=return_body, msg="Successfully updated video")
@@ -150,7 +153,7 @@ class VideoVideoId(Resource):
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
-    def delete(self, video_id):
+    def delete(self, video_id, conf=config["default"]):
         """
             Delete video information by video ID
         """
@@ -160,7 +163,7 @@ class VideoVideoId(Resource):
         }
 
         try:
-            delete_result = service_video_delete(conf=config['default'], **kw)
+            delete_result = service_video_delete(conf=conf, **kw)
             if delete_result == 1:
                 return util_serializer_api_response(200, msg="Successfully deleted video")
             else:

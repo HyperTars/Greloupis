@@ -8,6 +8,7 @@ from source.settings import config
 from source.utils.util_serializer import *
 from source.tests.unit.test_load_data import *
 import platform as pf
+import copy
 
 app = Flask(__name__)
 
@@ -242,24 +243,96 @@ class TestRouteVideo(unittest.TestCase):
             exit()
         get_db(config['test'])
         cls.conf = config['test']
+        cls.final_video_name = "full info hh"
 
     def test_a_video_post(self):
         post_data = self.data['temp_video'][0]
 
-        # Test search user by keyword
+        # post video
         with app.test_request_context('/video', data=post_data):
             response_json = Video().post(self.conf).get_json()
             self.assertEqual(response_json["body"][0]["user_id"], post_data["user_id"])
             self.assertEqual(response_json["body"][0]["video_title"], post_data["video_title"])
 
+        # SERVICE_MISSING_PARAM
         with app.test_request_context('/video', data={}):
             error_json = Video().post(self.conf).get_json()
             self.assertEqual(error_json["code"], 400)
 
+    def test_b_video_get(self):
+        temp_video_title = self.data['temp_video'][0]["video_title"]
+        temp_video = util_serializer_mongo_results_to_array(query_video_get_by_title(temp_video_title))[0]
+        temp_video_id = temp_video["video_id"]
+        wrong_id_1 = "123123123"
+        wrong_id_2 = "5f88f883e6ac4f89900ac984"
+
+        # successful case
+        with app.test_request_context('/video/' + temp_video_id, data={}):
+            response_json = VideoVideoId().get(temp_video_id, self.conf).get_json()
+            self.assertEqual(response_json["body"][0]["user_id"], temp_video["user_id"])
+            self.assertEqual(response_json["body"][0]["video_title"], temp_video["video_title"])
+
+        # invalid Param
+        with app.test_request_context('/video/' + wrong_id_1, data={}):
+            error_json = VideoVideoId().get(temp_video_id, self.conf).get_json()
+            self.assertEqual(error_json["code"], 400)
+            self.assertEqual(error_json["message"], ErrorCode.SERVICE_INVALID_ID_OBJ.get_msg())
+
+        # video not found
+        with app.test_request_context('/video/' + wrong_id_2, data={}):
+            error_json = VideoVideoId().get(temp_video_id, self.conf).get_json()
+            self.assertEqual(error_json["code"], 404)
+            self.assertEqual(error_json["message"], ErrorCode.SERVICE_VIDEO_NOT_FOUND.get_msg())
+
+    def test_c_video_update(self):
+        temp_video_title = self.data['temp_video'][0]["video_title"]
+        temp_video = util_serializer_mongo_results_to_array(query_video_get_by_title(temp_video_title))[0]
+        temp_video_id = temp_video["video_id"]
+
+        wrong_id_1 = "123123123"
+        wrong_id_2 = "5f88f883e6ac4f89900ac984"
+
+        update_video = self.data['temp_video'][1]
+        update_video["video_title"] = self.final_video_name
+
+        wrong_status_data = copy.deepcopy(self.data['temp_video'][1])
+        wrong_status_data["video_status"] = "122345"
+
+        # successful case
+        with app.test_request_context('/video/' + temp_video_id, data=update_video):
+            response_json = VideoVideoId().put(temp_video_id, self.conf).get_json()
+            self.assertEqual(response_json["body"][0]["user_id"], update_video["user_id"])
+            self.assertEqual(response_json["body"][0]["video_title"], update_video["video_title"])
+            self.assertEqual(response_json["body"][0]["video_raw_size"], update_video["video_raw_size"])
+            self.assertEqual(response_json["body"][0]["video_status"], update_video["video_status"])
+
+        # invalid video_status
+        with app.test_request_context('/video/' + temp_video_id, data=wrong_status_data):
+            error_json = VideoVideoId().put(temp_video_id, self.conf).get_json()
+            self.assertEqual(error_json["code"], 400)
+            self.assertEqual(error_json["message"], ErrorCode.SERVICE_VIDEO_INVALID_STATUS.get_msg())
+
+        # invalid Param
+        with app.test_request_context('/video/' + wrong_id_1, data={}):
+            error_json = VideoVideoId().get(temp_video_id, self.conf).get_json()
+            self.assertEqual(error_json["code"], 400)
+            self.assertEqual(error_json["message"], ErrorCode.SERVICE_INVALID_ID_OBJ.get_msg())
+
+        # video not found
+        with app.test_request_context('/video/' + wrong_id_2, data=update_video):
+            error_json = VideoVideoId().get(temp_video_id, self.conf).get_json()
+            self.assertEqual(error_json["code"], 404)
+            self.assertEqual(error_json["message"], ErrorCode.SERVICE_VIDEO_NOT_FOUND.get_msg())
+
     def test_z_video_delete(self):
-        delete_title = self.data['temp_video'][0]["video_title"]
-        video_obj = util_serializer_mongo_results_to_array(query_video_get_by_title(delete_title))[0]
-        query_video_delete(video_obj["video_id"])
+        temp_video = util_serializer_mongo_results_to_array(query_video_get_by_title(self.final_video_name))[0]
+        temp_video_id = temp_video["video_id"]
+
+        # successful case
+        with app.test_request_context('/video/' + temp_video_id, data={}):
+            response_json = VideoVideoId().delete(temp_video_id, self.conf).get_json()
+            delete_search = query_video_get_by_video_id(temp_video_id)
+            self.assertEqual(len(delete_search), 0)
 
 
 if __name__ == '__main__':

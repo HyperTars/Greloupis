@@ -11,7 +11,7 @@ def util_error_handler(e):
     if type(e) == RouteError:
         return util_serializer_api_response(404, error_code=e.get_code(), msg=e.get_msg())
     elif type(e) == ServiceError:
-        if e.get_code() == 3004:
+        if e.get_code() == 3004 or e.get_code() == 3011:
             return util_serializer_api_response(404, error_code=e.get_code(), msg=e.get_msg())
         else:
             return util_serializer_api_response(400, error_code=e.get_code(), msg=e.get_msg())
