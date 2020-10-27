@@ -83,19 +83,15 @@ comment_response = video.model(name='ApiResponseWithComment', model={
 @video.response(500, 'Internal server error', general_response)
 class Video(Resource):
 
-    def post(self):
+    def post(self, conf=config["default"]):
         """
             User upload a video
         """
-        kw = {
-            "user_id": "5f88f883e6ac4f89900ac983",
-            "video_title": "mock_video_2",
-            "video_raw_content": "https://s3.amazon.com/mock_video.mp4"
-        }
 
         try:
-            upload_result = service_video_upload(conf=config['default'], **kw)
-            if len(upload_result) == 1:
+            kw = dict(request.form)
+            upload_result = service_video_upload(conf=conf, **kw)
+            if upload_result is not None and upload_result != {}:
                 return_body = util_serializer_mongo_results_to_array(upload_result, format="json")
                 return util_serializer_api_response(200, body=return_body, msg="Successfully uploaded video")
             else:

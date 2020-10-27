@@ -24,7 +24,7 @@ def service_video_upload(conf, **kw):
     uploaded_result = query_video_get_by_title(kw['video_title'])
     if len(uploaded_result) == 0:
         raise ServiceError(ErrorCode.SERVICE_VIDEO_NOT_FOUND)
-    return uploaded_result[0].to_dict()
+    return uploaded_result
 
 
 def service_video_info(conf, **kw):
@@ -43,7 +43,7 @@ def service_video_info(conf, **kw):
     get_result = query_video_get_by_video_id(kw["video_id"])
     if len(get_result) == 0:
         raise ServiceError(ErrorCode.SERVICE_VIDEO_NOT_FOUND)
-    return get_result[0].to_dict()
+    return get_result
 
 
 def service_video_update(conf, **kw):
