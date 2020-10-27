@@ -157,12 +157,13 @@ class VideoVideoId(Resource):
         """
             Delete video information by video ID
         """
-        video_id = request.url.split('/')[-1]
-        kw = {
-            "video_id": video_id
-        }
 
         try:
+            video_id = request.url.split('/')[-1]
+            kw = {
+                "video_id": video_id
+            }
+
             delete_result = service_video_delete(conf=conf, **kw)
             if delete_result == 1:
                 return util_serializer_api_response(200, msg="Successfully deleted video")
@@ -180,33 +181,35 @@ class VideoVideoId(Resource):
 @video.response(500, 'Internal server error', general_response)
 class VideoVideoIdView(Resource):
 
-    def get(self, video_id):
+    def get(self, video_id, conf=config["default"]):
         """
             Get video view count by video ID
         """
-        video_id = request.url.split('/')[-2]
-        kw = {
-            "video_id": video_id
-        }
 
         try:
-            view_result = service_video_op_get_view(conf=config['default'], **kw)
+            video_id = request.url.split('/')[-2]
+            kw = {
+                "video_id": video_id
+            }
+
+            view_result = service_video_op_get_view(conf=conf, **kw)
             return util_serializer_api_response(200, body=view_result, msg="Successfully get video view count")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
     @video.response(405, 'Method not allowed')
-    def put(self, video_id):
+    def put(self, video_id, conf=config["default"]):
         """
             Increment video view count by 1 by video ID
         """
-        video_id = request.url.split('/')[-2]
-        kw = {
-            "video_id": video_id
-        }
 
         try:
-            add_result = service_video_op_add_view(conf=config['default'], **kw)
+            video_id = request.url.split('/')[-2]
+            kw = {
+                "video_id": video_id
+            }
+
+            add_result = service_video_op_add_view(conf=conf, **kw)
             return util_serializer_api_response(200, body=add_result, msg="Successfully add video view count by 1")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
@@ -220,17 +223,18 @@ class VideoVideoIdView(Resource):
 @video.response(500, 'Internal server error', general_response)
 class VideoVideoIdComment(Resource):
 
-    def get(self, video_id):
+    def get(self, video_id, conf=config['default']):
         """
             Get video view comments list by video ID
         """
-        video_id = request.url.split('/')[-2]
-        kw = {
-            "video_id": video_id
-        }
 
         try:
-            comments_result = service_video_comments(conf=config['default'], **kw)
+            video_id = request.url.split('/')[-2]
+            kw = {
+                "video_id": video_id
+            }
+
+            comments_result = service_video_comments(conf=conf, **kw)
             return util_serializer_api_response(200, body=comments_result, msg="Successfully got video comments")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
@@ -245,79 +249,77 @@ class VideoVideoIdComment(Resource):
 @video.response(500, 'Internal server error', general_response)
 class VideoVideoIdCommentUserId(Resource):
 
-    def get(self, video_id, user_id):
+    def get(self, video_id, user_id, conf=config['default']):
         """
             Get a comment by specified video id and user id
         """
-        video_id = request.url.split('/')[-3]
-        user_id = request.url.split('/')[-1]
-
-        kw = {
-            "video_id": video_id,
-            "user_id": user_id
-        }
 
         try:
-            comments_result = service_video_op_get_comment(conf=config['default'], **kw)
+            video_id = request.url.split('/')[-3]
+            user_id = request.url.split('/')[-1]
+
+            kw = {
+                "video_id": video_id,
+                "user_id": user_id
+            }
+
+            comments_result = service_video_op_get_comment(conf=conf, **kw)
             return util_serializer_api_response(200, body=comments_result, msg="Successfully get comments of the user")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
     @video.response(405, 'Method not allowed')
-    def post(self, video_id, user_id):
+    def post(self, video_id, user_id, conf=config['default']):
         """
             Post a comment by specified video id and user id
         """
-        video_id = request.url.split('/')[-3]
-        user_id = request.url.split('/')[-1]
-
-        kw = {
-            "video_id": video_id,
-            "user_id": user_id,
-            "comment": "This video is so funny"
-        }
 
         try:
-            comments_result = service_video_op_add_comment(conf=config['default'], **kw)
+            kw = dict(request.form)
+            video_id = request.url.split('/')[-3]
+            user_id = request.url.split('/')[-1]
+            kw["video_id"] = video_id
+            kw["user_id"] = user_id
+
+            comments_result = service_video_op_add_comment(conf=conf, **kw)
             return util_serializer_api_response(200, body=comments_result, msg="Successfully post a comment")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
     @video.response(405, 'Method not allowed')
-    def put(self, video_id, user_id):
+    def put(self, video_id, user_id, conf=config['default']):
         """
             Update a comment by specified video id and user id
         """
-        video_id = request.url.split('/')[-3]
-        user_id = request.url.split('/')[-1]
-
-        kw = {
-            "video_id": video_id,
-            "user_id": user_id,
-            "comment": "This video is so funny updated"
-        }
 
         try:
-            comments_result = service_video_op_update_comment(conf=config['default'], **kw)
+            kw = dict(request.form)
+            video_id = request.url.split('/')[-3]
+            user_id = request.url.split('/')[-1]
+            kw["video_id"] = video_id
+            kw["user_id"] = user_id
+
+            comments_result = service_video_op_update_comment(conf=conf, **kw)
             return util_serializer_api_response(200, body=comments_result, msg="Successfully update a comment")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
     @video.response(405, 'Method not allowed')
-    def delete(self, video_id, user_id):
+    def delete(self, video_id, user_id, conf=config['default']):
         """
             Delete a comment by specified video id and user id
         """
-        video_id = request.url.split('/')[-3]
-        user_id = request.url.split('/')[-1]
-
-        kw = {
-            "video_id": video_id,
-            "user_id": user_id
-        }
 
         try:
-            comments_result = service_video_op_cancel_comment(conf=config['default'], **kw)
+            video_id = request.url.split('/')[-3]
+            user_id = request.url.split('/')[-1]
+
+            kw = {
+                "video_id": video_id,
+                "user_id": user_id
+            }
+
+            comments_result = service_video_op_cancel_comment(conf=conf, **kw)
             return util_serializer_api_response(200, body=comments_result, msg="Successfully delete a comment")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
@@ -331,17 +333,18 @@ class VideoVideoIdCommentUserId(Resource):
 @video.response(500, 'Internal server error', general_response)
 class VideoVideoIdDislike(Resource):
 
-    def get(self, video_id):
+    def get(self, video_id, conf=config['default']):
         """
             Get a list of dislike by video id
         """
-        video_id = request.url.split('/')[-2]
-        kw = {
-            "video_id": video_id
-        }
 
         try:
-            dislike_result = service_video_dislikes(conf=config['default'], **kw)
+            video_id = request.url.split('/')[-2]
+            kw = {
+                "video_id": video_id
+            }
+
+            dislike_result = service_video_dislikes(conf=conf, **kw)
             return util_serializer_api_response(200, body=dislike_result, msg="Successfully got video dislikes")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
@@ -357,38 +360,40 @@ class VideoVideoIdDislike(Resource):
 @video.response(500, 'Internal server error', general_response)
 class VideoVideoIdDislikeUserId(Resource):
 
-    def post(self, video_id, user_id):
+    def post(self, video_id, user_id, conf=config['default']):
         """
             Post a dislike by specified user and video
         """
-        video_id = request.url.split('/')[-3]
-        user_id = request.url.split('/')[-1]
-
-        kw = {
-            "video_id": video_id,
-            "user_id": user_id,
-        }
 
         try:
-            dislike_result = service_video_op_add_dislike(conf=config['default'], **kw)
+            video_id = request.url.split('/')[-3]
+            user_id = request.url.split('/')[-1]
+
+            kw = {
+                "video_id": video_id,
+                "user_id": user_id,
+            }
+
+            dislike_result = service_video_op_add_dislike(conf=conf, **kw)
             return util_serializer_api_response(200, body=dislike_result, msg="Successfully post a dislike")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
-    def delete(self, video_id, user_id):
+    def delete(self, video_id, user_id, conf=config['default']):
         """
             Undo a dislike by specified user and video
         """
-        video_id = request.url.split('/')[-3]
-        user_id = request.url.split('/')[-1]
-
-        kw = {
-            "video_id": video_id,
-            "user_id": user_id,
-        }
 
         try:
-            dislike_result = service_video_op_cancel_dislike(conf=config['default'], **kw)
+            video_id = request.url.split('/')[-3]
+            user_id = request.url.split('/')[-1]
+
+            kw = {
+                "video_id": video_id,
+                "user_id": user_id,
+            }
+
+            dislike_result = service_video_op_cancel_dislike(conf=conf, **kw)
             return util_serializer_api_response(200, body=dislike_result, msg="Successfully cancel a dislike")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
@@ -404,76 +409,74 @@ class VideoVideoIdDislikeUserId(Resource):
 @video.response(500, 'Internal server error', general_response)
 class VideoVideoIdProcessUserId(Resource):
 
-    def post(self, video_id, user_id):
+    def post(self, video_id, user_id, conf=config['default']):
         """
             Post a new video watching process
         """
-        video_id = request.url.split('/')[-3]
-        user_id = request.url.split('/')[-1]
-
-        kw = {
-            "video_id": video_id,
-            "user_id": user_id,
-            "process": 30
-        }
 
         try:
-            process_result = service_video_op_add_process(conf=config['default'], **kw)
+            kw = dict(request.form)
+            video_id = request.url.split('/')[-3]
+            user_id = request.url.split('/')[-1]
+            kw["video_id"] = video_id
+            kw["user_id"] = user_id
+
+            process_result = service_video_op_add_process(conf=conf, **kw)
             return util_serializer_api_response(200, body=process_result, msg="Successfully add video process")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
-    def get(self, video_id, user_id):
+    def get(self, video_id, user_id, conf=config['default']):
         """
             Get a new video watching process
         """
-        video_id = request.url.split('/')[-3]
-        user_id = request.url.split('/')[-1]
-
-        kw = {
-            "video_id": video_id,
-            "user_id": user_id,
-        }
 
         try:
-            process_result = service_video_op_get_process(conf=config['default'], **kw)
+            video_id = request.url.split('/')[-3]
+            user_id = request.url.split('/')[-1]
+
+            kw = {
+                "video_id": video_id,
+                "user_id": user_id,
+            }
+
+            process_result = service_video_op_get_process(conf=conf, **kw)
             return util_serializer_api_response(200, body=process_result, msg="Successfully get video process")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
-    def put(self, video_id, user_id):
+    def put(self, video_id, user_id, conf=config['default']):
         """
             Update a video watching process
         """
-        video_id = request.url.split('/')[-3]
-        user_id = request.url.split('/')[-1]
-
-        kw = {
-            "video_id": video_id,
-            "user_id": user_id,
-            "process": 60
-        }
 
         try:
-            process_result = service_video_op_update_process(conf=config['default'], **kw)
+            kw = dict(request.form)
+            video_id = request.url.split('/')[-3]
+            user_id = request.url.split('/')[-1]
+            kw["video_id"] = video_id
+            kw["user_id"] = user_id
+
+            process_result = service_video_op_update_process(conf=conf, **kw)
             return util_serializer_api_response(200, body=process_result, msg="Successfully update video process")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
-    def delete(self, video_id, user_id):
+    def delete(self, video_id, user_id, conf=config['default']):
         """
             Delete a video watching process
         """
-        video_id = request.url.split('/')[-3]
-        user_id = request.url.split('/')[-1]
-
-        kw = {
-            "video_id": video_id,
-            "user_id": user_id,
-        }
 
         try:
-            process_result = service_video_op_cancel_process(conf=config['default'], **kw)
+            video_id = request.url.split('/')[-3]
+            user_id = request.url.split('/')[-1]
+
+            kw = {
+                "video_id": video_id,
+                "user_id": user_id,
+            }
+
+            process_result = service_video_op_cancel_process(conf=conf, **kw)
             return util_serializer_api_response(200, body=process_result, msg="Successfully delete video process")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
@@ -487,17 +490,18 @@ class VideoVideoIdProcessUserId(Resource):
 @video.response(500, 'Internal server error', general_response)
 class VideoVideoIdLike(Resource):
 
-    def get(self, video_id):
+    def get(self, video_id, conf=config['default']):
         """
             Get a list of like by video id
         """
-        video_id = request.url.split('/')[-2]
-        kw = {
-            "video_id": video_id
-        }
 
         try:
-            like_result = service_video_likes(conf=config['default'], **kw)
+            video_id = request.url.split('/')[-2]
+            kw = {
+                "video_id": video_id
+            }
+
+            like_result = service_video_likes(conf=conf, **kw)
             return util_serializer_api_response(200, body=like_result, msg="Successfully got video likes")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
@@ -513,38 +517,40 @@ class VideoVideoIdLike(Resource):
 @video.response(500, 'Internal server error', general_response)
 class VideoVideoIdLikeUserId(Resource):
 
-    def post(self, video_id, user_id):
+    def post(self, video_id, user_id, conf=config['default']):
         """
             Post a like by specified user and video
         """
-        video_id = request.url.split('/')[-3]
-        user_id = request.url.split('/')[-1]
-
-        kw = {
-            "video_id": video_id,
-            "user_id": user_id,
-        }
 
         try:
-            like_result = service_video_op_add_like(conf=config['default'], **kw)
+            video_id = request.url.split('/')[-3]
+            user_id = request.url.split('/')[-1]
+
+            kw = {
+                "video_id": video_id,
+                "user_id": user_id,
+            }
+
+            like_result = service_video_op_add_like(conf=conf, **kw)
             return util_serializer_api_response(200, body=like_result, msg="Successfully post a like")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
-    def delete(self, video_id, user_id):
+    def delete(self, video_id, user_id, conf=config['default']):
         """
             Undo a like by specified user and video
         """
-        video_id = request.url.split('/')[-3]
-        user_id = request.url.split('/')[-1]
-
-        kw = {
-            "video_id": video_id,
-            "user_id": user_id,
-        }
 
         try:
-            like_result = service_video_op_cancel_like(conf=config['default'], **kw)
+            video_id = request.url.split('/')[-3]
+            user_id = request.url.split('/')[-1]
+
+            kw = {
+                "video_id": video_id,
+                "user_id": user_id,
+            }
+
+            like_result = service_video_op_cancel_like(conf=conf, **kw)
             return util_serializer_api_response(200, body=like_result, msg="Successfully cancel a like")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
@@ -558,17 +564,18 @@ class VideoVideoIdLikeUserId(Resource):
 @video.response(500, 'Internal server error', general_response)
 class VideoVideoIdStar(Resource):
 
-    def get(self, video_id):
+    def get(self, video_id, conf=config['default']):
         """
             Get a list of star by video id
         """
-        video_id = request.url.split('/')[-2]
-        kw = {
-            "video_id": video_id
-        }
 
         try:
-            star_result = service_video_stars(conf=config['default'], **kw)
+            video_id = request.url.split('/')[-2]
+            kw = {
+                "video_id": video_id
+            }
+
+            star_result = service_video_stars(conf=conf, **kw)
             return util_serializer_api_response(200, body=star_result, msg="Successfully got video stars")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
@@ -584,38 +591,40 @@ class VideoVideoIdStar(Resource):
 @video.response(500, 'Internal server error', general_response)
 class VideoVideoIdStarUserId(Resource):
 
-    def post(self, video_id, user_id):
+    def post(self, video_id, user_id, conf=config['default']):
         """
             Post a star by specified user and video
         """
-        video_id = request.url.split('/')[-3]
-        user_id = request.url.split('/')[-1]
-
-        kw = {
-            "video_id": video_id,
-            "user_id": user_id,
-        }
 
         try:
-            star_result = service_video_op_add_star(conf=config['default'], **kw)
+            video_id = request.url.split('/')[-3]
+            user_id = request.url.split('/')[-1]
+
+            kw = {
+                "video_id": video_id,
+                "user_id": user_id,
+            }
+
+            star_result = service_video_op_add_star(conf=conf, **kw)
             return util_serializer_api_response(200, body=star_result, msg="Successfully add a star")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
-    def delete(self, video_id, user_id):
+    def delete(self, video_id, user_id, conf=config['default']):
         """
             Undo a star by specified user and video
         """
-        video_id = request.url.split('/')[-3]
-        user_id = request.url.split('/')[-1]
-
-        kw = {
-            "video_id": video_id,
-            "user_id": user_id,
-        }
 
         try:
-            star_result = service_video_op_cancel_star(conf=config['default'], **kw)
+            video_id = request.url.split('/')[-3]
+            user_id = request.url.split('/')[-1]
+
+            kw = {
+                "video_id": video_id,
+                "user_id": user_id,
+            }
+
+            star_result = service_video_op_cancel_star(conf=conf, **kw)
             return util_serializer_api_response(200, body=star_result, msg="Successfully cancel a star")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)

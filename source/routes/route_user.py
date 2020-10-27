@@ -150,9 +150,10 @@ class UserUserId(Resource):
         """
             Get user information by id
         """
-        user_id = request.url.split('/')[-1]
 
         try:
+            user_id = request.url.split('/')[-1]
+
             result = service_user_get_info(conf=conf, user_id=user_id)
             return util_serializer_api_response(200, body=result, msg="Successfully get user information")
         except (ServiceError, MongoError, RouteError, Exception) as e:
@@ -214,9 +215,10 @@ class UserUserIdLike(Resource):
         """
             Get a list of like by user id
         """
-        user_id = request.url.split('/')[-2]
 
         try:
+            user_id = request.url.split('/')[-2]
+
             like_result = service_user_get_like(conf=conf, user_id=user_id)
             return util_serializer_api_response(200, body=like_result, msg="Successfully get user likes")
         except (ServiceError, MongoError, RouteError, Exception) as e:
@@ -235,9 +237,10 @@ class UserUserIdDislike(Resource):
         """
             Get a list of dislike by user id
         """
-        user_id = request.url.split('/')[-2]
 
         try:
+            user_id = request.url.split('/')[-2]
+
             dislike_result = service_user_get_dislike(conf=conf, user_id=user_id)
             return util_serializer_api_response(200, body=dislike_result, msg="Successfully get user dislikes")
         except (ServiceError, MongoError, RouteError, Exception) as e:
@@ -256,9 +259,10 @@ class UserUserIdStar(Resource):
         """
             Get a list of star by user id
         """
-        user_id = request.url.split('/')[-2]
 
         try:
+            user_id = request.url.split('/')[-2]
+
             star_result = service_user_get_star(conf=conf, user_id=user_id)
             return util_serializer_api_response(200, body=star_result, msg="Successfully get user comments")
         except (ServiceError, MongoError, RouteError, Exception) as e:
@@ -277,9 +281,10 @@ class UserUserIdComment(Resource):
         """
             Get a list of comments by user id
         """
-        user_id = request.url.split('/')[-2]
 
         try:
+            user_id = request.url.split('/')[-2]
+
             comment_result = service_user_get_comment(conf=conf, user_id=user_id)
             return util_serializer_api_response(200, body=comment_result, msg="Successfully get user comments")
         except (ServiceError, MongoError, RouteError, Exception) as e:
@@ -298,9 +303,10 @@ class UserUserIdProcess(Resource):
         """
             Get a list of comments by user id
         """
-        user_id = request.url.split('/')[-2]
 
         try:
+            user_id = request.url.split('/')[-2]
+
             process_result = service_user_get_process(conf=conf, user_id=user_id)
             return util_serializer_api_response(200, body=process_result, msg="Successfully get user processes")
         except (ServiceError, MongoError, RouteError, Exception) as e:
