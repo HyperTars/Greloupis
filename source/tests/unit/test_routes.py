@@ -473,7 +473,7 @@ class TestRouteVideo(unittest.TestCase):
         # get process error case
         with app.test_request_context('/video/' + temp_video_id + '/process/' + wrong_id,
                                       data={}):
-            error_json = VideoVideoIdCommentUserId().get(temp_video_id, wrong_id, self.conf).get_json()
+            error_json = VideoVideoIdProcessUserId().get(temp_video_id, wrong_id, self.conf).get_json()
             self.assertEqual(error_json["code"], 404)
 
         # update process successful case
@@ -510,7 +510,7 @@ class TestRouteVideo(unittest.TestCase):
             error_json = VideoVideoIdProcessUserId().delete(temp_video_id, wrong_id, self.conf).get_json()
             self.assertEqual(error_json["code"], 404)
 
-    def def_g_video_like(self):
+    def test_g_video_like(self):
         temp_video = util_serializer_mongo_results_to_array(query_video_get_by_title(self.final_video_name))[0]
         temp_video_id = temp_video["video_id"]
         temp_user_id = temp_video["user_id"]
@@ -536,7 +536,6 @@ class TestRouteVideo(unittest.TestCase):
             response_json = VideoVideoIdLike().get(temp_video_id, self.conf).get_json()
             self.assertEqual(response_json["body"][0]["video_id"], temp_video_id)
             self.assertEqual(response_json["body"][0]["user_id"], temp_user_id)
-            self.assertEqual(response_json["body"][0]["like"], True)
 
         # get all likes of the video error case
         with app.test_request_context('/video/' + wrong_id + '/like/',
@@ -558,7 +557,7 @@ class TestRouteVideo(unittest.TestCase):
             error_json = VideoVideoIdLikeUserId().delete(temp_video_id, wrong_id, self.conf).get_json()
             self.assertEqual(error_json["code"], 404)
 
-    def def_h_video_dislike(self):
+    def test_h_video_dislike(self):
         temp_video = util_serializer_mongo_results_to_array(query_video_get_by_title(self.final_video_name))[0]
         temp_video_id = temp_video["video_id"]
         temp_user_id = temp_video["user_id"]
@@ -584,7 +583,6 @@ class TestRouteVideo(unittest.TestCase):
             response_json = VideoVideoIdDislike().get(temp_video_id, self.conf).get_json()
             self.assertEqual(response_json["body"][0]["video_id"], temp_video_id)
             self.assertEqual(response_json["body"][0]["user_id"], temp_user_id)
-            self.assertEqual(response_json["body"][0]["dislike"], True)
 
         # get all dislikes of the video error case
         with app.test_request_context('/video/' + wrong_id + '/dislike/',
@@ -606,7 +604,7 @@ class TestRouteVideo(unittest.TestCase):
             error_json = VideoVideoIdDislikeUserId().delete(temp_video_id, wrong_id, self.conf).get_json()
             self.assertEqual(error_json["code"], 404)
 
-    def def_i_video_star(self):
+    def test_i_video_star(self):
         temp_video = util_serializer_mongo_results_to_array(query_video_get_by_title(self.final_video_name))[0]
         temp_video_id = temp_video["video_id"]
         temp_user_id = temp_video["user_id"]
@@ -632,7 +630,6 @@ class TestRouteVideo(unittest.TestCase):
             response_json = VideoVideoIdStar().get(temp_video_id, self.conf).get_json()
             self.assertEqual(response_json["body"][0]["video_id"], temp_video_id)
             self.assertEqual(response_json["body"][0]["user_id"], temp_user_id)
-            self.assertEqual(response_json["body"][0]["star"], True)
 
         # get all stars of the video error case
         with app.test_request_context('/video/' + wrong_id + '/like/',
