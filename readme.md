@@ -18,10 +18,10 @@
 ### Project Proposal
 - [Proposal](documents/Proposal.md)
   
-### Guide
+### Setup Guide
 
 #### Requirement
-- Currently we only support `Python 3.7 / 3.8` (3.6 or below and 3.9 is not supported)
+- Currently we **only support `Python 3.7 / 3.8` (3.6 or below and 3.9 are not supported)**
 - npm
 
 #### Install dependencies
