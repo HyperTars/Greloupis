@@ -252,6 +252,15 @@ class TestRouteVideo(unittest.TestCase):
             self.assertEqual(response_json["body"][0]["user_id"], post_data["user_id"])
             self.assertEqual(response_json["body"][0]["video_title"], post_data["video_title"])
 
+        with app.test_request_context('/video', data={}):
+            error_json = Video().post(self.conf).get_json()
+            self.assertEqual(error_json["code"], 400)
+
+    def test_z_video_delete(self):
+        delete_title = self.data['temp_video'][0]["video_title"]
+        video_obj = util_serializer_mongo_results_to_array(query_video_get_by_title(delete_title))[0]
+        query_video_delete(video_obj["video_id"])
+
 
 if __name__ == '__main__':
     unittest.main()
