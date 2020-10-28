@@ -46,6 +46,11 @@ make run
 python -m source.app FLASK_APP=app flask run --host=127.0.0.1 --port=8000
 ```
 
+- Or use Docker
+```bash
+make docker_run
+```
+
 - You should be able to visit http://localhost:5000/ now and see a list of swagger APIs.
 
     ![API_Preview](documents/API_Swagger.png)

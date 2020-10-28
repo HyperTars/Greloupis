@@ -2,6 +2,7 @@
 from __future__ import absolute_import, print_function
 from flask import Flask, request, redirect, session
 from source.apiv1 import blueprint
+import os
 # from source.utils.util_request_filter import *
 
 app = Flask(__name__)
@@ -21,4 +22,5 @@ def before_request():
 
 if __name__ == '__main__':
     app.register_blueprint(blueprint)
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True, host='0.0.0.0', port=os.environ.get('PORT', '5000'))
+
