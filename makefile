@@ -46,4 +46,4 @@ docker:
 	- docker push hypertars/online-video-platform
 
 dockerrun:
-	- docker run -p 5000:5000 --rm -it online-video-platform
+	- docker run -p 5000:5000 --rm -it hypertars/online-video-platform:latest

@@ -32,7 +32,7 @@ after_success:
   - coveralls
   - codecov -t $CODECOV_TOKEN
   - sh .travis/deploy_dockerhub.sh
-  - test "$TRAVIS_BRANCH"="master" && sh .travis_deploy_heroku.sh
+  - test "$TRAVIS_BRANCH"="master" && sh .travis/deploy_heroku.sh
 
 notifications:
   email: false
