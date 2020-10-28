@@ -1,4 +1,5 @@
 from .config_base import *
+import multiprocessing
 
 
 # Production settings class

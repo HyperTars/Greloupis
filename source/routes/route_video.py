@@ -1,17 +1,18 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, print_function
-from flask import Flask, request, g, Blueprint
-from flask_restx import Resource, Api, fields, marshal_with, reqparse, Namespace
-import json
-
-from .route_user import thumbnail, general_response, star, comment, like, dislike, \
-    star_response_list, comment_response_list, like_response_list, dislike_response_list
-
+from flask import request
+from flask_restx import Resource, fields, Namespace
+from .route_user import thumbnail, general_response, star, comment, like, \
+    dislike, star_response_list, comment_response_list, like_response_list, \
+    dislike_response_list
 from source.service.service_video import *
 from source.service.service_video_op import *
-from source.utils.util_serializer import *
 from source.utils.util_error_handler import *
 from source.settings import *
+# from flask import Flask, g, Blueprint
+# from flask_restx import Api, marshal_with, reqparse
+# from source.utils.util_serializer import *
+# import json
 
 video = Namespace('video', description='Video APIs')
 

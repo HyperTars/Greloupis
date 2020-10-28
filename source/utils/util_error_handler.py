@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, print_function
-from flask import Flask, request, g, Blueprint
-from flask_restx import Resource, Api, fields, marshal_with, reqparse, Namespace
 
 from source.utils.util_serializer import *
 from source.models.model_errors import *

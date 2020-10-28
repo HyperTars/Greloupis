@@ -4,7 +4,7 @@ from flask import Blueprint
 from flask_restx import Api
 from source.settings import *
 
-from source.routes.route_auth import auth
+# from source.routes.route_auth import auth
 from source.routes.route_user import user
 from source.routes.route_video import video
 from source.routes.route_search import search

@@ -6,6 +6,7 @@ from source.routes.route_video import *
 from source.settings import config
 from source.utils.util_serializer import *
 from source.utils.util_tests import *
+from flask import Flask
 import copy
 
 app = Flask(__name__)

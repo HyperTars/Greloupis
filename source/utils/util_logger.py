@@ -1,8 +1,8 @@
-from flask import current_app
-import logging
-from source.settings import *
+# from flask import current_app
+# import logging
+# from source.settings import *
+# from werkzeug.local import LocalProxy
 from logging.handlers import RotatingFileHandler
-from werkzeug.local import LocalProxy
 
 
 def handler(file_name):

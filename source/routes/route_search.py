@@ -1,16 +1,15 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, print_function
-from flask import Flask, request, g, Blueprint
-from flask_restx import Resource, Api, fields, marshal_with, reqparse, Namespace
-import json
-
+from flask import request
+from flask_restx import Resource, fields, Namespace
 from .route_user import user_info, general_response
 from .route_video import video_info
 from source.service.service_search import *
 from source.settings import *
 from source.utils.util_serializer import *
-
-import logging
+# from flask import Flask, g, Blueprint
+# from flask_restx import Api, marshal_with, reqparse
+# import json
 
 search = Namespace('search', description='Search APIs')
 
