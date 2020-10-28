@@ -1,24 +1,20 @@
 import unittest
-from source.models.model_errors import *
 from source.service.service_search import *
 from source.service.service_user import *
 from source.service.service_video import *
 from source.service.service_video_op import *
 from source.settings import *
-from source.tests.unit.test_load_data import util_load_test_data
-import platform as pf
+from source.utils.util_tests import *
 
 
 class TestServiceSearchUser(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.data = util_load_test_data()
-        if pf.python_version()[:3] != '3.7' and pf.python_version()[:3] != '3.8':
-            print("Your python ver." + pf.python_version() + " is not supported. Please use python 3.7 or 3.8")
+        if util_tests_python_version() is False:
             exit()
+        cls.data = util_tests_load_data()
         cls.conf = config['test']
-        get_db(config['test'])
 
     def test_search_user(self):
         # Search successfully with ignore_case
@@ -165,12 +161,10 @@ class TestServiceSearchVideo(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.data = util_load_test_data()
-        if pf.python_version()[:3] != '3.7' and pf.python_version()[:3] != '3.8':
-            print("Your python ver." + pf.python_version() + " is not supported. Please use python 3.7 or 3.8")
+        if util_tests_python_version() is False:
             exit()
+        cls.data = util_tests_load_data()
         cls.conf = config['test']
-        get_db(config['test'])
 
     def test_search_video(self):
         self.assertEqual(service_search_video(self.conf, title="Xi")[0]['video_title'],
@@ -265,12 +259,10 @@ class TestServiceUser(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.data = util_load_test_data()
-        if pf.python_version()[:3] != '3.7' and pf.python_version()[:3] != '3.8':
-            print("Your python ver." + pf.python_version() + " is not supported. Please use python 3.7 or 3.8")
+        if util_tests_python_version() is False:
             exit()
+        cls.data = util_tests_load_data()
         cls.conf = config['test']
-        get_db(config['test'])
 
     def test_a_service_user_reg(self):
         # Register successfully
@@ -432,11 +424,9 @@ class TestServiceVideo(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.data = util_load_test_data()
-        if pf.python_version()[:3] != '3.7' and pf.python_version()[:3] != '3.8':
-            print("Your python ver." + pf.python_version() + " is not supported. Please use python 3.7 or 3.8")
+        if util_tests_python_version() is False:
             exit()
-        get_db(config['test'])
+        cls.data = util_tests_load_data()
         cls.conf = config['test']
         cls.temp_video_title = "test video title"
         cls.temp_video_raw_content = "https://s3.amazon.com/test_video_content.avi"
@@ -604,13 +594,12 @@ class TestServiceVideoOp(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.data = util_load_test_data()
-        if pf.python_version()[:3] != '3.7' and pf.python_version()[:3] != '3.8':
-            print("Your python ver." + pf.python_version() + " is not supported. Please use python 3.7 or 3.8")
+        if util_tests_python_version() is False:
             exit()
-        get_db(config['test'])
-        # create a video
+        cls.data = util_tests_load_data()
         cls.conf = config['test']
+
+        # create a temp video
         cls.temp_video_title = "video op test"
         cls.temp_video_raw_content = "https://s3.amazon.com/test_video_content.avi"
 

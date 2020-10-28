@@ -1,4 +1,6 @@
 from source.db.mongo import get_db
+from source.db.query_user import *
+from source.db.query_video import *
 from source.db.query_video_op import *
 from source.utils.util_validator import *
 from source.utils.util_serializer import *
@@ -6,7 +8,7 @@ from source.utils.util_pattern import *
 
 
 def service_video_op_add_view(conf, **kw):
-    db = get_db(conf)
+    get_db(conf)
 
     # keyword check and formatting
     if 'video_id' not in kw and 'id' not in kw and '_id' not in kw:
@@ -34,7 +36,7 @@ def service_video_op_add_view(conf, **kw):
 
 
 def service_video_op_get_view(conf, **kw):
-    db = get_db(conf)
+    get_db(conf)
 
     # keyword check and formatting
     if 'video_id' not in kw and 'id' not in kw and '_id' not in kw:
@@ -62,7 +64,7 @@ def service_video_op_get_view(conf, **kw):
 
 
 def service_video_op_add_comment(conf, **kw):
-    db = get_db(conf)
+    get_db(conf)
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw or 'comment' not in kw:
@@ -105,7 +107,7 @@ def service_video_op_add_comment(conf, **kw):
 
 
 def service_video_op_get_comment(conf, **kw):
-    db = get_db(conf)
+    get_db(conf)
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw:
@@ -133,7 +135,7 @@ def service_video_op_get_comment(conf, **kw):
 
 
 def service_video_op_update_comment(conf, **kw):
-    db = get_db(conf)
+    get_db(conf)
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw or 'comment' not in kw:
@@ -174,7 +176,7 @@ def service_video_op_update_comment(conf, **kw):
 
 
 def service_video_op_cancel_comment(conf, **kw):
-    db = get_db(conf)
+    get_db(conf)
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw:
@@ -214,7 +216,7 @@ def service_video_op_cancel_comment(conf, **kw):
 
 
 def service_video_op_add_process(conf, **kw):
-    db = get_db(conf)
+    get_db(conf)
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw or 'process' not in kw:
@@ -262,7 +264,7 @@ def service_video_op_add_process(conf, **kw):
 
 
 def service_video_op_get_process(conf, **kw):
-    db = get_db(conf)
+    get_db(conf)
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw:
@@ -292,7 +294,7 @@ def service_video_op_get_process(conf, **kw):
 
 
 def service_video_op_update_process(conf, **kw):
-    db = get_db(conf)
+    get_db(conf)
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw or 'process' not in kw:
@@ -337,7 +339,7 @@ def service_video_op_update_process(conf, **kw):
 
 
 def service_video_op_cancel_process(conf, **kw):
-    db = get_db(conf)
+    get_db(conf)
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw:
@@ -382,7 +384,7 @@ def service_video_op_cancel_process(conf, **kw):
 
 
 def service_video_op_add_like(conf, **kw):
-    db = get_db(conf)
+    get_db(conf)
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw:
@@ -437,7 +439,7 @@ def service_video_op_add_like(conf, **kw):
 
 
 def service_video_op_cancel_like(conf, **kw):
-    db = get_db(conf)
+    get_db(conf)
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw:
@@ -485,7 +487,7 @@ def service_video_op_cancel_like(conf, **kw):
 
 
 def service_video_op_add_dislike(conf, **kw):
-    db = get_db(conf)
+    get_db(conf)
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw:
@@ -540,7 +542,7 @@ def service_video_op_add_dislike(conf, **kw):
 
 
 def service_video_op_cancel_dislike(conf, **kw):
-    db = get_db(conf)
+    get_db(conf)
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw:
@@ -588,7 +590,7 @@ def service_video_op_cancel_dislike(conf, **kw):
 
 
 def service_video_op_add_star(conf, **kw):
-    db = get_db(conf)
+    get_db(conf)
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw:
@@ -636,7 +638,7 @@ def service_video_op_add_star(conf, **kw):
 
 
 def service_video_op_cancel_star(conf, **kw):
-    db = get_db(conf)
+    get_db(conf)
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw:

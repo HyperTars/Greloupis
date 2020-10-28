@@ -1,18 +1,16 @@
 import unittest
 import imp
-from source.tests.unit.test_load_data import *
+from source.utils.util_tests import *
 from source.models.model_user import *
 from source.models.model_errors import *
-import platform as pf
 
 
 class TestUserModel(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.data = util_load_test_data()
-        if pf.python_version()[:3] != '3.7' and pf.python_version()[:3] != '3.8':
-            print("Your python ver." + pf.python_version() + " is not supported. Please use python 3.7 or 3.8")
+        cls.data = util_tests_load_data()
+        if util_tests_python_version() is False:
             exit()
 
     def test_user_model_load(self):
@@ -25,10 +23,10 @@ class TestUserModel(unittest.TestCase):
 
 
 class TestErrorModel(unittest.TestCase):
+
     @classmethod
     def setUpClass(cls) -> None:
-        if pf.python_version()[:3] != '3.7' and pf.python_version()[:3] != '3.8':
-            print("Your python ver." + pf.python_version() + " is not supported. Please use python 3.7 or 3.8")
+        if util_tests_python_version() is False:
             exit()
 
     def test_error_class(self):

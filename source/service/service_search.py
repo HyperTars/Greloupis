@@ -1,6 +1,3 @@
-import re
-
-from source.settings import *
 from source.db.mongo import get_db
 from source.db.query_user import *
 from source.db.query_video import *
@@ -17,7 +14,7 @@ from source.utils.util_serializer import *
 
 # Search User Caller
 def service_search_user(conf, **kw):
-    db = get_db(conf)
+    get_db(conf)
     kw['service'] = 'user'
     kw = util_pattern_format_param(**kw)
 
@@ -55,7 +52,7 @@ def service_search_user(conf, **kw):
 
 # Search Video Caller
 def service_search_video(conf, **kw):
-    db = get_db(conf)
+    get_db(conf)
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
 

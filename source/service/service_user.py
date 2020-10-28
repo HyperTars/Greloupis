@@ -1,13 +1,11 @@
-from source.models.model_errors import *
-from source.settings import *
-from source.db.query_user import *
-from source.db.query_video import *
-from source.db.query_video_op import *
 from source.utils.util_hash import *
 from source.utils.util_serializer import *
 from source.utils.util_validator import *
 from source.utils.util_pattern import *
 from source.db.mongo import get_db
+from source.db.query_user import *
+from source.db.query_video import *
+from source.db.query_video_op import *
 
 
 def service_user_reg(conf, **kw):
@@ -25,7 +23,7 @@ def service_user_reg(conf, **kw):
     # user_name: str, user_email: str, user_password: str, user_ip = "0.0.0.0"
     # service_user_reg(conf, user_name="t", user_email="k", user_password="lol")
 
-    db = get_db(conf)
+    get_db(conf)
     kw['service'] = 'user'
     kw = util_pattern_format_param(**kw)
     if 'user_name' not in kw or 'user_email' not in kw or 'user_password' not in kw:
@@ -37,7 +35,7 @@ def service_user_reg(conf, **kw):
 
 
 def service_user_check_password(conf, **kw):
-    db = get_db(conf)
+    get_db(conf)
     kw['service'] = 'user'
     kw = util_pattern_format_param(**kw)
 
@@ -57,7 +55,7 @@ def service_user_check_password(conf, **kw):
 # def service_user_get_user(conf, **kw):
 #     # service_user_get_user(config['default'], user_name="t", user_password="lol")
 #
-#     db = get_db(conf)
+#     get_db(conf)
 #
 #     # TODO: validate user by session
 #
@@ -99,12 +97,12 @@ def service_user_check_password(conf, **kw):
 
 
 def service_user_cancel(conf, user_id):
-    db = get_db(conf)
+    get_db(conf)
     return query_user_delete_by_id(user_id)
 
 
 def service_user_get_info(conf, user_id):
-    db = get_db(conf)
+    get_db(conf)
     final_result = {}
 
     # user_id check
@@ -160,7 +158,7 @@ def service_user_get_info(conf, user_id):
 
 
 def service_user_get_like(conf, user_id):
-    db = get_db(conf)
+    get_db(conf)
 
     # user_id check
     if not is_valid_id(user_id):
@@ -189,7 +187,7 @@ def service_user_get_like(conf, user_id):
 
 
 def service_user_get_dislike(conf, user_id):
-    db = get_db(conf)
+    get_db(conf)
 
     # user_id check
     if not is_valid_id(user_id):
@@ -218,7 +216,7 @@ def service_user_get_dislike(conf, user_id):
 
 
 def service_user_get_comment(conf, user_id):
-    db = get_db(conf)
+    get_db(conf)
 
     # user_id check
     if not is_valid_id(user_id):
@@ -248,7 +246,7 @@ def service_user_get_comment(conf, user_id):
 
 
 def service_user_get_star(conf, user_id):
-    db = get_db(conf)
+    get_db(conf)
 
     # user_id check
     if not is_valid_id(user_id):
@@ -277,7 +275,7 @@ def service_user_get_star(conf, user_id):
 
 
 def service_user_get_process(conf, user_id):
-    db = get_db(conf)
+    get_db(conf)
 
     # user_id check
     if not is_valid_id(user_id):

@@ -1,22 +1,19 @@
 import unittest
 from source.settings import *
-from source.db.mongo import get_db
-from source.tests.unit.test_load_data import *
+from source.utils.util_tests import *
+from source.utils.util_pattern import *
 from source.db.query_user import *
 from source.db.query_video import *
 from source.db.query_video_op import *
-from source.models.model_errors import *
-from source.utils.util_pattern import *
-import platform as pf
+from source.db.mongo import get_db
 
 
 class TestQueryUser(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.data = util_load_test_data()
-        if pf.python_version()[:3] != '3.7' and pf.python_version()[:3] != '3.8':
-            print("Your python ver." + pf.python_version() + " is not supported. Please use python 3.7 or 3.8")
+        cls.data = util_tests_load_data()
+        if util_tests_python_version() is False:
             exit()
         get_db(config['test'])
 
@@ -547,9 +544,8 @@ class TestQueryVideo(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.data = util_load_test_data()
-        if pf.python_version()[:3] != '3.7' and pf.python_version()[:3] != '3.8':
-            print("Your python ver." + pf.python_version() + " is not supported. Please use python 3.7 or 3.8")
+        cls.data = util_tests_load_data()
+        if util_tests_python_version() is False:
             exit()
         get_db(config['test'])
 
@@ -904,9 +900,8 @@ class TestQueryVideoOp(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.data = util_load_test_data()
-        if pf.python_version()[:3] != '3.7' and pf.python_version()[:3] != '3.8':
-            print("Your python ver." + pf.python_version() + " is not supported. Please use python 3.7 or 3.8")
+        cls.data = util_tests_load_data()
+        if util_tests_python_version() is False:
             exit()
         get_db(config['test'])
 

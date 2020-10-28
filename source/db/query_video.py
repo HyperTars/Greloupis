@@ -3,7 +3,6 @@ from source.db.query_user import query_user_get_by_id
 from source.models.model_errors import *
 from source.utils.util_time import get_time_now_utc
 import bson
-import datetime
 import re
 
 VALID_VIDEO_STATUS = ['public', 'private', 'processing', 'deleted']

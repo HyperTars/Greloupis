@@ -1,6 +1,5 @@
 from flask_mongoengine import MongoEngine
 from enum import Enum, unique
-import datetime
 import sys
 
 db = MongoEngine()

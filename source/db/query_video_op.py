@@ -1,10 +1,8 @@
 from source.models.model_video_op import VideoOp
-from source.db.query_user import *
 from source.db.query_video import *
 from source.models.model_errors import *
 from source.utils.util_time import get_time_now_utc
 import bson
-import datetime
 import re
 
 
