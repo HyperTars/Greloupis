@@ -40,3 +40,10 @@ connect:
 	- chmod 400 documents/DevOps.pem
 	- ssh -i "documents/DevOps.pem" ubuntu@ec2-54-205-45-145.compute-1.amazonaws.com
 
+docker:
+	- docker build -f dockerfile -t online-video-platform:latest .
+	- docker tag online-video-platform hypertars/online-video-platform
+	- docker push hypertars/online-video-platform
+
+dockerrun:
+	- docker run -p 5000:5000 --rm -it online-video-platform
