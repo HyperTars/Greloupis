@@ -8,6 +8,7 @@ from source.settings import config
 from source.utils.util_serializer import *
 from source.tests.unit.test_load_data import *
 import platform as pf
+import copy
 
 app = Flask(__name__)
 
@@ -232,15 +233,440 @@ class TestRouteUser(unittest.TestCase):
                              util_error_handler(ServiceError(ErrorCode.SERVICE_INVALID_ID_OBJ)).status_code)
 
 
-# class TestRouteUser(unittest.TestCase):
-#     data = util_load_test_data()
-#     data['const_user'][0] = data['const_user'][0]
-#     data['const_video'][0] = data['const_video'][0]
-#     data['const_video_op'][0] = data['const_video_op'][0]
-#
-#     @classmethod
-#     def setUpClass(cls) -> None:
-#         cls.conf = config['test']
+class TestRouteVideo(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.data = util_load_test_data()
+        if pf.python_version()[:3] != '3.7' and pf.python_version()[:3] != '3.8':
+            print("Your python ver." + pf.python_version() + " is not supported. Please use python 3.7 or 3.8")
+            exit()
+        get_db(config['test'])
+        cls.conf = config['test']
+        cls.final_video_name = "full info hh"
+
+    def test_a_video_post(self):
+        post_data = self.data['temp_video'][0]
+
+        # post video
+        with app.test_request_context('/video', data=post_data):
+            response_json = Video().post(self.conf).get_json()
+            self.assertEqual(response_json["body"][0]["user_id"], post_data["user_id"])
+            self.assertEqual(response_json["body"][0]["video_title"], post_data["video_title"])
+
+        # SERVICE_MISSING_PARAM
+        with app.test_request_context('/video', data={}):
+            error_json = Video().post(self.conf).get_json()
+            self.assertEqual(error_json["code"], 400)
+
+    def test_b_video_get(self):
+        temp_video_title = self.data['temp_video'][0]["video_title"]
+        temp_video = util_serializer_mongo_results_to_array(query_video_get_by_title(temp_video_title))[0]
+        temp_video_id = temp_video["video_id"]
+        wrong_id_1 = "123123123"
+        wrong_id_2 = "5f88f883e6ac4f89900ac984"
+
+        # successful case
+        with app.test_request_context('/video/' + temp_video_id, data={}):
+            response_json = VideoVideoId().get(temp_video_id, self.conf).get_json()
+            self.assertEqual(response_json["body"][0]["user_id"], temp_video["user_id"])
+            self.assertEqual(response_json["body"][0]["video_title"], temp_video["video_title"])
+
+        # invalid Param
+        with app.test_request_context('/video/' + wrong_id_1, data={}):
+            error_json = VideoVideoId().get(temp_video_id, self.conf).get_json()
+            self.assertEqual(error_json["code"], 400)
+            self.assertEqual(error_json["message"], ErrorCode.SERVICE_INVALID_ID_OBJ.get_msg())
+
+        # video not found
+        with app.test_request_context('/video/' + wrong_id_2, data={}):
+            error_json = VideoVideoId().get(temp_video_id, self.conf).get_json()
+            self.assertEqual(error_json["code"], 404)
+            self.assertEqual(error_json["message"], ErrorCode.SERVICE_VIDEO_NOT_FOUND.get_msg())
+
+    def test_c_video_update(self):
+        temp_video_title = self.data['temp_video'][0]["video_title"]
+        temp_video = util_serializer_mongo_results_to_array(query_video_get_by_title(temp_video_title))[0]
+        temp_video_id = temp_video["video_id"]
+
+        wrong_id_1 = "123123123"
+        wrong_id_2 = "5f88f883e6ac4f89900ac984"
+
+        update_video = self.data['temp_video'][1]
+        update_video["video_title"] = self.final_video_name
+
+        wrong_status_data = copy.deepcopy(self.data['temp_video'][1])
+        wrong_status_data["video_status"] = "122345"
+
+        # successful case
+        with app.test_request_context('/video/' + temp_video_id, data=update_video):
+            response_json = VideoVideoId().put(temp_video_id, self.conf).get_json()
+            self.assertEqual(response_json["body"][0]["user_id"], update_video["user_id"])
+            self.assertEqual(response_json["body"][0]["video_title"], update_video["video_title"])
+            self.assertEqual(response_json["body"][0]["video_raw_size"], update_video["video_raw_size"])
+            self.assertEqual(response_json["body"][0]["video_status"], update_video["video_status"])
+
+        # invalid video_status
+        with app.test_request_context('/video/' + temp_video_id, data=wrong_status_data):
+            error_json = VideoVideoId().put(temp_video_id, self.conf).get_json()
+            self.assertEqual(error_json["code"], 400)
+            self.assertEqual(error_json["message"], ErrorCode.SERVICE_VIDEO_INVALID_STATUS.get_msg())
+
+        # invalid Param
+        with app.test_request_context('/video/' + wrong_id_1, data={}):
+            error_json = VideoVideoId().get(temp_video_id, self.conf).get_json()
+            self.assertEqual(error_json["code"], 400)
+            self.assertEqual(error_json["message"], ErrorCode.SERVICE_INVALID_ID_OBJ.get_msg())
+
+        # video not found
+        with app.test_request_context('/video/' + wrong_id_2, data=update_video):
+            error_json = VideoVideoId().get(temp_video_id, self.conf).get_json()
+            self.assertEqual(error_json["code"], 404)
+            self.assertEqual(error_json["message"], ErrorCode.SERVICE_VIDEO_NOT_FOUND.get_msg())
+
+    def test_d_video_view(self):
+        temp_video = util_serializer_mongo_results_to_array(query_video_get_by_title(self.final_video_name))[0]
+        temp_video_id = temp_video["video_id"]
+
+        wrong_id = "5f88f883e6ac4f89900ac984"
+
+        # get view successful case
+        with app.test_request_context('/video/' + temp_video_id + '/view', data={}):
+            response_json = VideoVideoIdView().get(temp_video_id, self.conf).get_json()
+            self.assertEqual(response_json["body"]["video_id"], temp_video_id)
+            self.assertEqual(response_json["body"]["view_count"], 0)
+
+        # get view error case
+        with app.test_request_context('/video/' + wrong_id + '/view', data={}):
+            error_json = VideoVideoIdView().get(wrong_id, self.conf).get_json()
+            self.assertEqual(error_json["code"], 404)
+            self.assertEqual(error_json["message"], ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND.get_msg())
+
+        # add view successful case
+        with app.test_request_context('/video/' + temp_video_id + '/view', data={}):
+            response_json = VideoVideoIdView().put(temp_video_id, self.conf).get_json()
+            self.assertEqual(response_json["body"]["video_id"], temp_video_id)
+            self.assertEqual(response_json["body"]["view_count"], 1)
+
+        # add view error case
+        with app.test_request_context('/video/' + wrong_id + '/view', data={}):
+            response_json = VideoVideoIdView().put(temp_video_id, self.conf).get_json()
+            self.assertEqual(error_json["code"], 404)
+            self.assertEqual(error_json["message"], ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND.get_msg())
+
+    def test_e_video_comment(self):
+        temp_video = util_serializer_mongo_results_to_array(query_video_get_by_title(self.final_video_name))[0]
+        temp_video_id = temp_video["video_id"]
+        temp_user_id = temp_video["user_id"]
+        temp_comment = "nice video"
+        temp_comment_updated = "really nice video"
+
+        wrong_id = "5f88f883e6ac4f89900ac984"
+
+        # post comment successful case
+        with app.test_request_context('/video/' + temp_video_id + '/comment/' + temp_user_id,
+                                      data={"comment": temp_comment}):
+            response_json = VideoVideoIdCommentUserId().post(temp_video_id, temp_user_id, self.conf).get_json()
+            self.assertEqual(response_json["body"]["video_id"], temp_video_id)
+            self.assertEqual(response_json["body"]["user_id"], temp_user_id)
+            self.assertEqual(response_json["body"]["comment"], temp_comment)
+
+        # post comment error case
+        with app.test_request_context('/video/' + temp_video_id + '/comment/' + wrong_id,
+                                      data={"comment": temp_comment}):
+            error_json = VideoVideoIdCommentUserId().post(temp_video_id, wrong_id, self.conf).get_json()
+            self.assertEqual(error_json["code"], 404)
+
+        # get comment successful case
+        with app.test_request_context('/video/' + temp_video_id + '/comment/' + temp_user_id,
+                                      data={}):
+            response_json = VideoVideoIdCommentUserId().get(temp_video_id, temp_user_id, self.conf).get_json()
+            self.assertEqual(response_json["body"]["video_id"], temp_video_id)
+            self.assertEqual(response_json["body"]["user_id"], temp_user_id)
+            self.assertEqual(response_json["body"]["comment"], temp_comment)
+
+        # get comment error case
+        with app.test_request_context('/video/' + temp_video_id + '/comment/' + wrong_id,
+                                      data={}):
+            error_json = VideoVideoIdCommentUserId().get(temp_video_id, wrong_id, self.conf).get_json()
+            self.assertEqual(error_json["code"], 404)
+
+        # update comment successful case
+        with app.test_request_context('/video/' + temp_video_id + '/comment/' + temp_user_id,
+                                      data={"comment": temp_comment_updated}):
+            response_json = VideoVideoIdCommentUserId().put(temp_video_id, temp_user_id, self.conf).get_json()
+            self.assertEqual(response_json["body"]["video_id"], temp_video_id)
+            self.assertEqual(response_json["body"]["user_id"], temp_user_id)
+            self.assertEqual(response_json["body"]["comment"], temp_comment_updated)
+
+        # update comment error case
+        with app.test_request_context('/video/' + temp_video_id + '/comment/' + wrong_id,
+                                      data={"comment": temp_comment_updated}):
+            error_json = VideoVideoIdCommentUserId().put(temp_video_id, wrong_id, self.conf).get_json()
+            self.assertEqual(error_json["code"], 404)
+
+        # get all comments of the video successful case
+        with app.test_request_context('/video/' + temp_video_id + '/comment',
+                                      data={}):
+            response_json = VideoVideoIdComment().get(temp_video_id, self.conf).get_json()
+            self.assertEqual(response_json["body"][0]["video_id"], temp_video_id)
+            self.assertEqual(response_json["body"][0]["user_id"], temp_user_id)
+            self.assertEqual(response_json["body"][0]["comment"], temp_comment_updated)
+
+        # get all comments of the video error case
+        with app.test_request_context('/video/' + wrong_id + '/comment/',
+                                      data={}):
+            error_json = VideoVideoIdComment().get(wrong_id, self.conf).get_json()
+            self.assertEqual(error_json["code"], 400)
+
+        # delete comment successful case
+        with app.test_request_context('/video/' + temp_video_id + '/comment/' + temp_user_id,
+                                      data={}):
+            response_json = VideoVideoIdCommentUserId().delete(temp_video_id, temp_user_id, self.conf).get_json()
+            self.assertEqual(response_json["body"]["video_id"], temp_video_id)
+            self.assertEqual(response_json["body"]["user_id"], temp_user_id)
+            self.assertEqual(response_json["body"]["comment"], "")
+
+        # delete comment error case
+        with app.test_request_context('/video/' + temp_video_id + '/comment/' + wrong_id,
+                                      data={}):
+            error_json = VideoVideoIdCommentUserId().delete(temp_video_id, wrong_id, self.conf).get_json()
+            self.assertEqual(error_json["code"], 404)
+
+    def test_f_video_process(self):
+        temp_video = util_serializer_mongo_results_to_array(query_video_get_by_title(self.final_video_name))[0]
+        temp_video_id = temp_video["video_id"]
+        temp_user_id = temp_video["user_id"]
+        temp_process = 30
+        temp_process_updated = 60
+
+        wrong_id = "5f88f883e6ac4f89900ac984"
+
+        # post process successful case
+        with app.test_request_context('/video/' + temp_video_id + '/process/' + temp_user_id,
+                                      data={"process": temp_process}):
+            response_json = VideoVideoIdProcessUserId().post(temp_video_id, temp_user_id, self.conf).get_json()
+            self.assertEqual(response_json["body"]["video_id"], temp_video_id)
+            self.assertEqual(response_json["body"]["user_id"], temp_user_id)
+            self.assertEqual(response_json["body"]["process"], temp_process)
+
+        # post process error case
+        with app.test_request_context('/video/' + temp_video_id + '/process/' + wrong_id,
+                                      data={"process": temp_process}):
+            error_json = VideoVideoIdCommentUserId().post(temp_video_id, wrong_id, self.conf).get_json()
+            self.assertEqual(error_json["code"], 400)
+
+        # post process error case
+        with app.test_request_context('/video/' + temp_video_id + '/process/' + temp_user_id,
+                                      data={"process": -1}):
+            error_json = VideoVideoIdProcessUserId().post(temp_video_id, wrong_id, self.conf).get_json()
+            self.assertEqual(error_json["code"], 500)
+
+        # get process successful case
+        with app.test_request_context('/video/' + temp_video_id + '/process/' + temp_user_id,
+                                      data={}):
+            response_json = VideoVideoIdProcessUserId().get(temp_video_id, temp_user_id, self.conf).get_json()
+            self.assertEqual(response_json["body"]["video_id"], temp_video_id)
+            self.assertEqual(response_json["body"]["user_id"], temp_user_id)
+            self.assertEqual(response_json["body"]["process"], temp_process)
+
+        # get process error case
+        with app.test_request_context('/video/' + temp_video_id + '/process/' + wrong_id,
+                                      data={}):
+            error_json = VideoVideoIdProcessUserId().get(temp_video_id, wrong_id, self.conf).get_json()
+            self.assertEqual(error_json["code"], 404)
+
+        # update process successful case
+        with app.test_request_context('/video/' + temp_video_id + '/process/' + temp_user_id,
+                                      data={"process": temp_process_updated}):
+            response_json = VideoVideoIdProcessUserId().put(temp_video_id, temp_user_id, self.conf).get_json()
+            self.assertEqual(response_json["body"]["video_id"], temp_video_id)
+            self.assertEqual(response_json["body"]["user_id"], temp_user_id)
+            self.assertEqual(response_json["body"]["process"], temp_process_updated)
+
+        # update process error case
+        with app.test_request_context('/video/' + temp_video_id + '/process/' + wrong_id,
+                                      data={"process": temp_process_updated}):
+            error_json = VideoVideoIdProcessUserId().put(temp_video_id, wrong_id, self.conf).get_json()
+            self.assertEqual(error_json["code"], 404)
+
+        # update process error case
+        with app.test_request_context('/video/' + temp_video_id + '/process/' + temp_user_id,
+                                      data={"process": -100}):
+            error_json = VideoVideoIdProcessUserId().put(temp_video_id, temp_user_id, self.conf).get_json()
+            self.assertEqual(error_json["code"], 400)
+
+        # delete process successful case
+        with app.test_request_context('/video/' + temp_video_id + '/process/' + temp_user_id,
+                                      data={}):
+            response_json = VideoVideoIdProcessUserId().delete(temp_video_id, temp_user_id, self.conf).get_json()
+            self.assertEqual(response_json["body"]["video_id"], temp_video_id)
+            self.assertEqual(response_json["body"]["user_id"], temp_user_id)
+            self.assertEqual(response_json["body"]["process"], 0)
+
+        # delete process error case
+        with app.test_request_context('/video/' + temp_video_id + '/process/' + wrong_id,
+                                      data={}):
+            error_json = VideoVideoIdProcessUserId().delete(temp_video_id, wrong_id, self.conf).get_json()
+            self.assertEqual(error_json["code"], 404)
+
+    def test_g_video_like(self):
+        temp_video = util_serializer_mongo_results_to_array(query_video_get_by_title(self.final_video_name))[0]
+        temp_video_id = temp_video["video_id"]
+        temp_user_id = temp_video["user_id"]
+        wrong_id = "5f88f883e6ac4f89900ac984"
+
+        # post like successful case
+        with app.test_request_context('/video/' + temp_video_id + '/like/' + temp_user_id,
+                                      data={}):
+            response_json = VideoVideoIdLikeUserId().post(temp_video_id, temp_user_id, self.conf).get_json()
+            self.assertEqual(response_json["body"]["video_id"], temp_video_id)
+            self.assertEqual(response_json["body"]["user_id"], temp_user_id)
+            self.assertEqual(response_json["body"]["like"], True)
+
+        # post like error case
+        with app.test_request_context('/video/' + temp_video_id + '/like/' + wrong_id,
+                                      data={}):
+            error_json = VideoVideoIdLikeUserId().post(temp_video_id, wrong_id, self.conf).get_json()
+            self.assertEqual(error_json["code"], 404)
+
+        # get all likes of the video successful case
+        with app.test_request_context('/video/' + temp_video_id + '/like',
+                                      data={}):
+            response_json = VideoVideoIdLike().get(temp_video_id, self.conf).get_json()
+            self.assertEqual(response_json["body"][0]["video_id"], temp_video_id)
+            self.assertEqual(response_json["body"][0]["user_id"], temp_user_id)
+
+        # get all likes of the video error case
+        with app.test_request_context('/video/' + wrong_id + '/like/',
+                                      data={}):
+            error_json = VideoVideoIdLike().get(wrong_id, self.conf).get_json()
+            self.assertEqual(error_json["code"], 400)
+
+        # cancel like successful case
+        with app.test_request_context('/video/' + temp_video_id + '/like/' + temp_user_id,
+                                      data={}):
+            response_json = VideoVideoIdLikeUserId().delete(temp_video_id, temp_user_id, self.conf).get_json()
+            self.assertEqual(response_json["body"]["video_id"], temp_video_id)
+            self.assertEqual(response_json["body"]["user_id"], temp_user_id)
+            self.assertEqual(response_json["body"]["like"], False)
+
+        # cancel like error case
+        with app.test_request_context('/video/' + temp_video_id + '/like/' + wrong_id,
+                                      data={}):
+            error_json = VideoVideoIdLikeUserId().delete(temp_video_id, wrong_id, self.conf).get_json()
+            self.assertEqual(error_json["code"], 404)
+
+    def test_h_video_dislike(self):
+        temp_video = util_serializer_mongo_results_to_array(query_video_get_by_title(self.final_video_name))[0]
+        temp_video_id = temp_video["video_id"]
+        temp_user_id = temp_video["user_id"]
+        wrong_id = "5f88f883e6ac4f89900ac984"
+
+        # post dislike successful case
+        with app.test_request_context('/video/' + temp_video_id + '/dislike/' + temp_user_id,
+                                      data={}):
+            response_json = VideoVideoIdDislikeUserId().post(temp_video_id, temp_user_id, self.conf).get_json()
+            self.assertEqual(response_json["body"]["video_id"], temp_video_id)
+            self.assertEqual(response_json["body"]["user_id"], temp_user_id)
+            self.assertEqual(response_json["body"]["dislike"], True)
+
+        # post dislike error case
+        with app.test_request_context('/video/' + temp_video_id + '/dislike/' + wrong_id,
+                                      data={}):
+            error_json = VideoVideoIdDislikeUserId().post(temp_video_id, wrong_id, self.conf).get_json()
+            self.assertEqual(error_json["code"], 404)
+
+        # get all dislikes of the video successful case
+        with app.test_request_context('/video/' + temp_video_id + '/dislike',
+                                      data={}):
+            response_json = VideoVideoIdDislike().get(temp_video_id, self.conf).get_json()
+            self.assertEqual(response_json["body"][0]["video_id"], temp_video_id)
+            self.assertEqual(response_json["body"][0]["user_id"], temp_user_id)
+
+        # get all dislikes of the video error case
+        with app.test_request_context('/video/' + wrong_id + '/dislike/',
+                                      data={}):
+            error_json = VideoVideoIdDislike().get(wrong_id, self.conf).get_json()
+            self.assertEqual(error_json["code"], 400)
+
+        # cancel dislike successful case
+        with app.test_request_context('/video/' + temp_video_id + '/dislike/' + temp_user_id,
+                                      data={}):
+            response_json = VideoVideoIdDislikeUserId().delete(temp_video_id, temp_user_id, self.conf).get_json()
+            self.assertEqual(response_json["body"]["video_id"], temp_video_id)
+            self.assertEqual(response_json["body"]["user_id"], temp_user_id)
+            self.assertEqual(response_json["body"]["dislike"], False)
+
+        # cancel dislike error case
+        with app.test_request_context('/video/' + temp_video_id + '/dislike/' + wrong_id,
+                                      data={}):
+            error_json = VideoVideoIdDislikeUserId().delete(temp_video_id, wrong_id, self.conf).get_json()
+            self.assertEqual(error_json["code"], 404)
+
+    def test_i_video_star(self):
+        temp_video = util_serializer_mongo_results_to_array(query_video_get_by_title(self.final_video_name))[0]
+        temp_video_id = temp_video["video_id"]
+        temp_user_id = temp_video["user_id"]
+        wrong_id = "5f88f883e6ac4f89900ac984"
+
+        # post star successful case
+        with app.test_request_context('/video/' + temp_video_id + '/star/' + temp_user_id,
+                                      data={}):
+            response_json = VideoVideoIdStarUserId().post(temp_video_id, temp_user_id, self.conf).get_json()
+            self.assertEqual(response_json["body"]["video_id"], temp_video_id)
+            self.assertEqual(response_json["body"]["user_id"], temp_user_id)
+            self.assertEqual(response_json["body"]["star"], True)
+
+        # post star error case
+        with app.test_request_context('/video/' + temp_video_id + '/star/' + wrong_id,
+                                      data={}):
+            error_json = VideoVideoIdStarUserId().post(temp_video_id, wrong_id, self.conf).get_json()
+            self.assertEqual(error_json["code"], 404)
+
+        # get all stars of the video successful case
+        with app.test_request_context('/video/' + temp_video_id + '/star',
+                                      data={}):
+            response_json = VideoVideoIdStar().get(temp_video_id, self.conf).get_json()
+            self.assertEqual(response_json["body"][0]["video_id"], temp_video_id)
+            self.assertEqual(response_json["body"][0]["user_id"], temp_user_id)
+
+        # get all stars of the video error case
+        with app.test_request_context('/video/' + wrong_id + '/like/',
+                                      data={}):
+            error_json = VideoVideoIdStar().get(wrong_id, self.conf).get_json()
+            self.assertEqual(error_json["code"], 400)
+
+        # cancel star successful case
+        with app.test_request_context('/video/' + temp_video_id + '/star/' + temp_user_id,
+                                      data={}):
+            response_json = VideoVideoIdStarUserId().delete(temp_video_id, temp_user_id, self.conf).get_json()
+            self.assertEqual(response_json["body"]["video_id"], temp_video_id)
+            self.assertEqual(response_json["body"]["user_id"], temp_user_id)
+            self.assertEqual(response_json["body"]["star"], False)
+
+        # cancel star error case
+        with app.test_request_context('/video/' + temp_video_id + '/star/' + wrong_id,
+                                      data={}):
+            error_json = VideoVideoIdStarUserId().delete(temp_video_id, wrong_id, self.conf).get_json()
+            self.assertEqual(error_json["code"], 404)
+
+    def test_z_video_delete(self):
+        temp_video = util_serializer_mongo_results_to_array(query_video_get_by_title(self.final_video_name))[0]
+        temp_video_id = temp_video["video_id"]
+
+        # successful case
+        with app.test_request_context('/video/' + temp_video_id, data={}):
+            response_json = VideoVideoId().delete(temp_video_id, self.conf).get_json()
+            delete_search = query_video_get_by_video_id(temp_video_id)
+            self.assertEqual(len(delete_search), 0)
+
+        # video not found
+        with app.test_request_context('/video/' + temp_video_id, data={}):
+            error_json = VideoVideoId().delete(temp_video_id, self.conf).get_json()
+            self.assertEqual(error_json["code"], 404)
+            self.assertEqual(error_json["message"], ErrorCode.MONGODB_VIDEO_NOT_FOUND.get_msg())
+
 
 if __name__ == '__main__':
     unittest.main()
