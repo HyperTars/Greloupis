@@ -1,13 +1,11 @@
 import unittest
-from flask import Flask, request
 from mongoengine.connection import disconnect
 from source.routes.route_search import *
 from source.routes.route_user import *
 from source.routes.route_video import *
 from source.settings import config
 from source.utils.util_serializer import *
-from source.tests.unit.test_load_data import *
-import platform as pf
+from source.utils.util_tests import *
 import copy
 
 app = Flask(__name__)
@@ -17,17 +15,14 @@ class TestRouteSearch(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.data = util_load_test_data()
-        if pf.python_version()[:3] != '3.7' and pf.python_version()[:3] != '3.8':
-            print("Your python ver." + pf.python_version() + " is not supported. Please use python 3.7 or 3.8")
+        if util_tests_python_version() is False:
             exit()
-        get_db(config['test'])
+        cls.data = util_tests_load_data()
         cls.conf = config['test']
 
     def test_route_search_user(self):
         # Test search user by keyword
         with app.test_request_context('/search/user?keyword=' + self.data['const_user'][0]['user_name'], data={}):
-            keyword = request.args.get('keyword')
 
             response_json = RouteSearchUser().get(self.conf).get_json()
             self.assertEqual(response_json["body"][0]["user_id"], self.data['const_user'][0]['_id']['$oid'],
@@ -41,7 +36,6 @@ class TestRouteSearch(unittest.TestCase):
         # Test search video by keyword
         with app.test_request_context(
                 '/search/video?keyword=xixihaha', data={}):
-            keyword = request.args.get('keyword')
 
             response_json = RouteSearchVideo().get(self.conf).get_json()
             self.assertEqual(response_json["body"][0]["video_id"], "5f88c0307a6eb86b0eccc8d2",
@@ -55,11 +49,9 @@ class TestRouteUser(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.data = util_load_test_data()
-        if pf.python_version()[:3] != '3.7' and pf.python_version()[:3] != '3.8':
-            print("Your python ver." + pf.python_version() + " is not supported. Please use python 3.7 or 3.8")
+        if util_tests_python_version() is False:
             exit()
-        get_db(config['test'])
+        cls.data = util_tests_load_data()
         cls.conf = config['test']
 
     def test_a_route_user_post(self):
@@ -237,11 +229,9 @@ class TestRouteVideo(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.data = util_load_test_data()
-        if pf.python_version()[:3] != '3.7' and pf.python_version()[:3] != '3.8':
-            print("Your python ver." + pf.python_version() + " is not supported. Please use python 3.7 or 3.8")
+        if util_tests_python_version() is False:
             exit()
-        get_db(config['test'])
+        cls.data = util_tests_load_data()
         cls.conf = config['test']
         cls.final_video_name = "full info hh"
 
@@ -657,7 +647,7 @@ class TestRouteVideo(unittest.TestCase):
 
         # successful case
         with app.test_request_context('/video/' + temp_video_id, data={}):
-            response_json = VideoVideoId().delete(temp_video_id, self.conf).get_json()
+            # response_json = VideoVideoId().delete(temp_video_id, self.conf).get_json()
             delete_search = query_video_get_by_video_id(temp_video_id)
             self.assertEqual(len(delete_search), 0)
 

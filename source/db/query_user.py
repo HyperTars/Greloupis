@@ -1,9 +1,6 @@
 from source.models.model_user import *
 from source.models.model_errors import *
 from source.utils.util_time import *
-from mongoengine.connection import ConnectionFailure
-from mongoengine.errors import *
-from pymongo.errors import *
 import bson
 import datetime
 import re

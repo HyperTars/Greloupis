@@ -11,7 +11,7 @@ VALID_VIDEO_STATUS = ['public', 'private', 'processing', 'deleted']
 
 
 def service_video_upload(conf, **kw):
-    db = get_db(conf)
+    get_db(conf)
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
 
@@ -28,7 +28,7 @@ def service_video_upload(conf, **kw):
 
 
 def service_video_info(conf, **kw):
-    db = get_db(conf)
+    get_db(conf)
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
 
@@ -47,7 +47,7 @@ def service_video_info(conf, **kw):
 
 
 def service_video_update(conf, **kw):
-    db = get_db(conf)
+    get_db(conf)
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
 
@@ -97,7 +97,7 @@ def service_video_update(conf, **kw):
 
 
 def service_video_comments(conf, **kw):
-    db = get_db(conf)
+    get_db(conf)
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
 
@@ -129,7 +129,7 @@ def service_video_comments(conf, **kw):
 
 
 def service_video_likes(conf, **kw):
-    db = get_db(conf)
+    get_db(conf)
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
 
@@ -160,7 +160,7 @@ def service_video_likes(conf, **kw):
 
 
 def service_video_dislikes(conf, **kw):
-    db = get_db(conf)
+    get_db(conf)
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
 
@@ -191,7 +191,7 @@ def service_video_dislikes(conf, **kw):
 
 
 def service_video_stars(conf, **kw):
-    db = get_db(conf)
+    get_db(conf)
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
 
@@ -222,7 +222,7 @@ def service_video_stars(conf, **kw):
 
 
 def service_video_delete(conf, **kw):
-    db = get_db(conf)
+    get_db(conf)
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
 
