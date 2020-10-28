@@ -2,6 +2,10 @@ pytvenv/
 *venv*
 log.txt
 logs.txt
+node_module/
+*node_module*
+coverage.xml
+frontend/coverage/
 
 ### VS Code ###
 vs_code/
