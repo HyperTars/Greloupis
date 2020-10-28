@@ -4,7 +4,7 @@ REQ_DIR = requirements
 
 FORCE:
 
-prod:	dev_env test github
+prod:	dev_env tests github
 
 run:    dev_env
 	python3 -m source.app FLASK_APP=app flask run --host=0.0.0.0 --port=5000
@@ -12,9 +12,9 @@ run:    dev_env
 github:	FORCE
 	- git add .
 	- git commit -a
-	- git push origin master
+	- git push origin
 
-test:	unit report lint
+tests:	unit report lint
 	echo "unittest and lint check finished"
 
 unit:   FORCE
@@ -40,3 +40,10 @@ connect:
 	- chmod 400 documents/DevOps.pem
 	- ssh -i "documents/DevOps.pem" ubuntu@ec2-54-205-45-145.compute-1.amazonaws.com
 
+docker:
+	- docker build -f dockerfile -t online-video-platform:latest .
+	- docker tag online-video-platform hypertars/online-video-platform
+	- docker push hypertars/online-video-platform
+
+dockerrun:
+	- docker run -p 5000:5000 --rm -it online-video-platform
