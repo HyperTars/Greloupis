@@ -1,6 +1,8 @@
 LINTER = flake8
 SRC_DIR = source
 REQ_DIR = requirements
+TAG = latest
+DOCKER_REPO = hypertars/online-video-platform
 
 FORCE:
 
@@ -21,7 +23,7 @@ unit:   FORCE
 	coverage run --source=source -m pytest --disable-pytest-warnings
 
 lint:	FORCE
-	$(LINTER) $(SRC_DIR)/. --exit-zero --ignore=E501,F401,F403,F405,F841
+	$(LINTER) $(SRC_DIR)/. --exit-zero --ignore=E501,F401,F403,F405
 
 dev_env:	FORCE
 	pip3 install -r $(REQ_DIR)/requirements-dev.txt
@@ -38,12 +40,18 @@ coverage:
 
 connect:
 	- chmod 400 documents/DevOps.pem
-	- ssh -i "documents/DevOps.pem" ubuntu@ec2-54-205-45-145.compute-1.amazonaws.com
+	- ssh -i "documents/DevOps.pem" $(EC2_SERVER)
 
 docker:
-	- docker build -f Dockerfile -t online-video-platform:latest .
-	- docker tag online-video-platform hypertars/online-video-platform
-	- docker push hypertars/online-video-platform
+	- docker login --username $(DOCKER_USER) --password $(DOCKER_PASS)
+	- docker build -f Dockerfile -t $(DOCKER_BUILD):$(TAG) .
+	- docker tag $(DOCKER_BUILD) $(DOCKER_REPO)
+	- docker push $(DOCKER_REPO)
 
-dockerrun:
-	- docker run -p 5000:5000 --rm -it hypertars/online-video-platform:latest
+docker_run:
+	- docker run -p 5000:5000 --rm -it $(DOCKER_REPO):$(TAG)
+
+heroku:
+	- docker login --username _ --password=$(HEROKU_API_KEY) registry.heroku.com
+	- heroku container:push web --app $(HEROKU_APP_NAME)
+	- heroku container:release web --app $(HEROKU_APP_NAME)
