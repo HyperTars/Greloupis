@@ -95,7 +95,7 @@ python -m source.app FLASK_APP=app flask run --host=127.0.0.1 --port=8000
   - [CodeCov page](https://codecov.io/gh/HyperTars/Online-Video-Platform)
   - [Coveralls page](https://coveralls.io/github/HyperTars/Online-Video-Platform)
   - [Docker page](https://hub.docker.com/r/hypertars/online-video-platform)
-- We will deploy our project to our website: www.hypertars.me (under construction)
+- We will deploy our project to [Heroku](https://online-video-platform.herokuapp.com/) (Still under construction)
 
 
 ### Contributors
