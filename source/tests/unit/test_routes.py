@@ -647,7 +647,7 @@ class TestRouteVideo(unittest.TestCase):
 
         # successful case
         with app.test_request_context('/video/' + temp_video_id, data={}):
-            # response_json = VideoVideoId().delete(temp_video_id, self.conf).get_json()
+            VideoVideoId().delete(temp_video_id, self.conf).get_json()
             delete_search = query_video_get_by_video_id(temp_video_id)
             self.assertEqual(len(delete_search), 0)
 
