@@ -4,6 +4,6 @@ TAG="latest"
 else
 TAG="$TRAVIS_BRANCH"
 fi
-docker build -f dockerfile -t $DOCKER_BUILD:$TAG .
+docker build -f Dockerfile -t $DOCKER_BUILD:$TAG .
 docker tag $DOCKER_BUILD $DOCKER_REPO
 docker push $DOCKER_REPO

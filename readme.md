@@ -2,8 +2,6 @@
 [![build](https://travis-ci.com/HyperTars/Online-Video-Platform.svg?token=btA3ungCKHqWzLxCoxT7&branch=master)](https://travis-ci.com/HyperTars/Online-Video-Platform)
 [![CodeCov Status](https://codecov.io/gh/HyperTars/Online-Video-Platform/branch/master/graph/badge.svg?token=8K7ODQK5BV)](https://codecov.io/gh/HyperTars/Online-Video-Platform/tree/master/source)
 [![Coverall Status](https://coveralls.io/repos/github/HyperTars/Online-Video-Platform/badge.svg?t=dyCGTT)](https://coveralls.io/github/HyperTars/Online-Video-Platform)
-
-[![docker build](https://img.shields.io/docker/automated/hypertars/online-video-platform)](https://hub.docker.com/r/hypertars/online-video-platform/builds)
 [![docker status](https://img.shields.io/docker/cloud/build/hypertars/online-video-platform)](https://hub.docker.com/repository/docker/hypertars/online-video-platform)
 [![docker image size](https://img.shields.io/docker/image-size/hypertars/online-video-platform)](https://hub.docker.com/r/hypertars/online-video-platform/tags)
 
@@ -92,7 +90,7 @@ python -m source.app FLASK_APP=app flask run --host=127.0.0.1 --port=8000
 ### CI / CD 
 - We use `Travis-CI`, `CodeCov`, `Coveralls` and `Docker` to do CI/CD works
   - Our [Travis Conf](.travis.yml)
-  - Our [Docker Conf](dockerfile) and [Docker Trigger](.travis/deploy_dockerhub.sh)
+  - Our [Docker Conf](Dockerfile) and [Docker Trigger](.travis/deploy_dockerhub.sh)
   - [Travis-CI page](https://travis-ci.com/github/HyperTars/Online-Video-Platform)
   - [CodeCov page](https://codecov.io/gh/HyperTars/Online-Video-Platform)
   - [Coveralls page](https://coveralls.io/github/HyperTars/Online-Video-Platform)
