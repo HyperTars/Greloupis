@@ -6,5 +6,5 @@ EXPOSE 5000
 COPY . /app
 WORKDIR /app
 RUN make dev_env
-ENTRYPOINT ["python3", "-m", "source.app"]
-CMD ["FLASK_APP=app", "flask", "run", "--host=0.0.0.0", "--port=5000"]
+ENTRYPOINT ["make", "run"]
+# CMD [""]
