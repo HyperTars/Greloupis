@@ -8,3 +8,4 @@ pytest
 coveralls
 pyyaml
 codecov
+flask_cors

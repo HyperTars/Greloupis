@@ -4,10 +4,20 @@ from flask import Flask, render_template
 from source.apiv1 import blueprint
 from source.settings import config
 import os
+from flask_cors import CORS
 # from source.utils.util_request_filter import *
 # from flask import request, redirect, session
 
+frontend_conf = {
+  'ORIGINS': [
+    'http://localhost:3000',  # React
+    'http://127.0.0.1:3000',  # React
+  ],
+}
+
 app = Flask(__name__)
+CORS(app, resources={r'/*': {'origins': frontend_conf['ORIGINS']}},
+     supports_credentials=True)
 
 # @app.route("/")
 # def index():
