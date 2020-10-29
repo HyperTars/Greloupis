@@ -109,7 +109,7 @@ make prod
 ### CI / CD 
 - We use `Travis-CI`, `Docker` and `Heroku` to do CI/CD works
   - Our [Travis Conf](.travis.yml) and [Travis-CI Page](https://travis-ci.com/github/HyperTars/Online-Video-Platform)
-  - Our [Docker Conf](Dockerfile) and [Docker Page](https://hub.docker.com/r/hypertars/online-video-platform)
+  - Our [Docker Conf](docker-compose.yml) and [Docker Frontend](https://hub.docker.com/r/hypertars/greloupis-frontend/tags) [Docker Backend](https://hub.docker.com/r/hypertars/greloupis-backend/tags)
   - We will deploy our project to [Heroku](https://online-video-platform.herokuapp.com/) (Still under construction)
 
 
