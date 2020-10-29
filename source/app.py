@@ -9,12 +9,12 @@ import os
 
 app = Flask(__name__)
 
-@app.route("/")
-def index():
-    APP_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    print(APP_PATH)
-    TEMPLATE_PATH = os.path.join(APP_PATH, 'source/templates/')
-    return render_template('index.html')
+# @app.route("/")
+# def index():
+#     APP_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+#     print(APP_PATH)
+#     TEMPLATE_PATH = os.path.join(APP_PATH, 'source/templates/')
+#     return render_template('index.html')
 """
 @app.before_request
 def before_request():
