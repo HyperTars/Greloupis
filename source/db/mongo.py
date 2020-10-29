@@ -2,7 +2,7 @@
 
 from flask import Flask
 from flask_mongoengine import MongoEngine
-from source.settings import *
+from source.settings import config
 
 
 def get_db(conf=config['default']):

@@ -1,17 +1,32 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, print_function
-from flask import Flask, request, g, Blueprint
-from flask_restx import Resource, Api, fields, marshal_with, reqparse, Namespace
-import json
-
-from .route_user import thumbnail, general_response, star, comment, like, dislike, \
-    star_response_list, comment_response_list, like_response_list, dislike_response_list
-
-from source.service.service_video import *
-from source.service.service_video_op import *
-from source.utils.util_serializer import *
-from source.utils.util_error_handler import *
-from source.settings import *
+from flask import request
+from flask_restx import Resource, fields, Namespace
+from .route_user import thumbnail, general_response, star, comment, like, \
+    dislike, star_response_list, comment_response_list, like_response_list, \
+    dislike_response_list
+from source.service.service_video import service_video_info, \
+    service_video_delete, service_video_comments, service_video_dislikes, \
+    service_video_likes, service_video_stars, service_video_update, \
+    service_video_upload
+from source.service.service_video_op import service_video_op_add_comment, \
+    service_video_op_add_dislike, service_video_op_add_like, \
+    service_video_op_add_process, service_video_op_add_star, \
+    service_video_op_add_view, service_video_op_cancel_comment, \
+    service_video_op_cancel_dislike, service_video_op_cancel_like, \
+    service_video_op_cancel_process, service_video_op_cancel_star, \
+    service_video_op_get_comment, service_video_op_get_process, \
+    service_video_op_get_view, service_video_op_update_comment, \
+    service_video_op_update_process
+from source.utils.util_error_handler import util_error_handler
+from source.utils.util_serializer import util_serializer_api_response, \
+    util_serializer_mongo_results_to_array
+from source.settings import config
+from source.models.model_errors import ServiceError, RouteError, MongoError
+# from flask import Flask, g, Blueprint
+# from flask_restx import Api, marshal_with, reqparse
+# from source.utils.util_serializer import *
+# import json
 
 video = Namespace('video', description='Video APIs')
 
@@ -92,10 +107,13 @@ class Video(Resource):
             kw = dict(request.form)
             upload_result = service_video_upload(conf=conf, **kw)
             if upload_result is not None and upload_result != {}:
-                return_body = util_serializer_mongo_results_to_array(upload_result, format="json")
-                return util_serializer_api_response(200, body=return_body, msg="Successfully uploaded video")
+                return_body = util_serializer_mongo_results_to_array(
+                    upload_result, format="json")
+                return util_serializer_api_response(
+                    200, body=return_body, msg="Successfully uploaded video")
             else:
-                return util_serializer_api_response(500, msg="Failed to upload video")
+                return util_serializer_api_response(
+                    500, msg="Failed to upload video")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
@@ -121,10 +139,13 @@ class VideoVideoId(Resource):
 
             get_result = service_video_info(conf=conf, **kw)
             if len(get_result) == 1:
-                return_body = util_serializer_mongo_results_to_array(get_result, format="json")
-                return util_serializer_api_response(200, body=return_body, msg="Successfully got video by ID")
+                return_body = util_serializer_mongo_results_to_array(
+                    get_result, format="json")
+                return util_serializer_api_response(
+                    200, body=return_body, msg="Successfully got video by ID")
             else:
-                return util_serializer_api_response(500, msg="Failed to get video by ID")
+                return util_serializer_api_response(
+                    500, msg="Failed to get video by ID")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
@@ -146,10 +167,13 @@ class VideoVideoId(Resource):
 
             update_result = service_video_update(conf=conf, **kw)
             if len(update_result) == 1:
-                return_body = util_serializer_mongo_results_to_array(update_result, format="json")
-                return util_serializer_api_response(200, body=return_body, msg="Successfully updated video")
+                return_body = util_serializer_mongo_results_to_array(
+                    update_result, format="json")
+                return util_serializer_api_response(
+                    200, body=return_body, msg="Successfully updated video")
             else:
-                return util_serializer_api_response(500, msg="Failed to update video")
+                return util_serializer_api_response(
+                    500, msg="Failed to update video")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
@@ -166,9 +190,11 @@ class VideoVideoId(Resource):
 
             delete_result = service_video_delete(conf=conf, **kw)
             if delete_result == 1:
-                return util_serializer_api_response(200, msg="Successfully deleted video")
+                return util_serializer_api_response(
+                    200, msg="Successfully deleted video")
             else:
-                return util_serializer_api_response(500, msg="Failed to delete video")
+                return util_serializer_api_response(
+                    500, msg="Failed to delete video")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
@@ -193,7 +219,8 @@ class VideoVideoIdView(Resource):
             }
 
             view_result = service_video_op_get_view(conf=conf, **kw)
-            return util_serializer_api_response(200, body=view_result, msg="Successfully get video view count")
+            return util_serializer_api_response(
+                200, body=view_result, msg="Successfully get video view count")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
@@ -210,7 +237,9 @@ class VideoVideoIdView(Resource):
             }
 
             add_result = service_video_op_add_view(conf=conf, **kw)
-            return util_serializer_api_response(200, body=add_result, msg="Successfully add video view count by 1")
+            return util_serializer_api_response(
+                200, body=add_result,
+                msg="Successfully add video view count by 1")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
@@ -235,12 +264,15 @@ class VideoVideoIdComment(Resource):
             }
 
             comments_result = service_video_comments(conf=conf, **kw)
-            return util_serializer_api_response(200, body=comments_result, msg="Successfully got video comments")
+            return util_serializer_api_response(
+                200, body=comments_result,
+                msg="Successfully got video comments")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
 
-@video.route('/<string:video_id>/comment/<string:user_id>', methods=['DELETE', 'GET', 'PUT', 'POST'])
+@video.route('/<string:video_id>/comment/<string:user_id>',
+             methods=['DELETE', 'GET', 'PUT', 'POST'])
 @video.param('video_id', 'Video ID')
 @video.param('user_id', 'User ID')
 @video.response(200, 'Successful operation', comment_response)
@@ -264,7 +296,9 @@ class VideoVideoIdCommentUserId(Resource):
             }
 
             comments_result = service_video_op_get_comment(conf=conf, **kw)
-            return util_serializer_api_response(200, body=comments_result, msg="Successfully get comments of the user")
+            return util_serializer_api_response(
+                200, body=comments_result,
+                msg="Successfully get comments of the user")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
@@ -282,7 +316,8 @@ class VideoVideoIdCommentUserId(Resource):
             kw["user_id"] = user_id
 
             comments_result = service_video_op_add_comment(conf=conf, **kw)
-            return util_serializer_api_response(200, body=comments_result, msg="Successfully post a comment")
+            return util_serializer_api_response(
+                200, body=comments_result, msg="Successfully post a comment")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
@@ -300,7 +335,8 @@ class VideoVideoIdCommentUserId(Resource):
             kw["user_id"] = user_id
 
             comments_result = service_video_op_update_comment(conf=conf, **kw)
-            return util_serializer_api_response(200, body=comments_result, msg="Successfully update a comment")
+            return util_serializer_api_response(
+                200, body=comments_result, msg="Successfully update a comment")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
@@ -320,7 +356,8 @@ class VideoVideoIdCommentUserId(Resource):
             }
 
             comments_result = service_video_op_cancel_comment(conf=conf, **kw)
-            return util_serializer_api_response(200, body=comments_result, msg="Successfully delete a comment")
+            return util_serializer_api_response(
+                200, body=comments_result, msg="Successfully delete a comment")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
@@ -345,12 +382,14 @@ class VideoVideoIdDislike(Resource):
             }
 
             dislike_result = service_video_dislikes(conf=conf, **kw)
-            return util_serializer_api_response(200, body=dislike_result, msg="Successfully got video dislikes")
+            return util_serializer_api_response(
+                200, body=dislike_result, msg="Successfully got video dislikes")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
 
-@video.route('/<string:video_id>/dislike/<string:user_id>', methods=['DELETE', 'POST'])
+@video.route('/<string:video_id>/dislike/<string:user_id>',
+             methods=['DELETE', 'POST'])
 @video.param('video_id', 'Video ID')
 @video.param('user_id', 'User ID')
 @video.response(200, 'Successful operation', dislike_response)
@@ -375,7 +414,8 @@ class VideoVideoIdDislikeUserId(Resource):
             }
 
             dislike_result = service_video_op_add_dislike(conf=conf, **kw)
-            return util_serializer_api_response(200, body=dislike_result, msg="Successfully post a dislike")
+            return util_serializer_api_response(
+                200, body=dislike_result, msg="Successfully post a dislike")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
@@ -394,12 +434,14 @@ class VideoVideoIdDislikeUserId(Resource):
             }
 
             dislike_result = service_video_op_cancel_dislike(conf=conf, **kw)
-            return util_serializer_api_response(200, body=dislike_result, msg="Successfully cancel a dislike")
+            return util_serializer_api_response(
+                200, body=dislike_result, msg="Successfully cancel a dislike")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
 
-@video.route('/<string:video_id>/process/<string:user_id>', methods=['DELETE', 'POST', 'PUT', 'GET'])
+@video.route('/<string:video_id>/process/<string:user_id>',
+             methods=['DELETE', 'POST', 'PUT', 'GET'])
 @video.param('video_id', 'Video ID')
 @video.param('user_id', 'User ID')
 @video.response(200, 'Successful operation', general_response)
@@ -422,7 +464,8 @@ class VideoVideoIdProcessUserId(Resource):
             kw["user_id"] = user_id
 
             process_result = service_video_op_add_process(conf=conf, **kw)
-            return util_serializer_api_response(200, body=process_result, msg="Successfully add video process")
+            return util_serializer_api_response(
+                200, body=process_result, msg="Successfully add video process")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
@@ -441,7 +484,8 @@ class VideoVideoIdProcessUserId(Resource):
             }
 
             process_result = service_video_op_get_process(conf=conf, **kw)
-            return util_serializer_api_response(200, body=process_result, msg="Successfully get video process")
+            return util_serializer_api_response(
+                200, body=process_result, msg="Successfully get video process")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
@@ -458,7 +502,9 @@ class VideoVideoIdProcessUserId(Resource):
             kw["user_id"] = user_id
 
             process_result = service_video_op_update_process(conf=conf, **kw)
-            return util_serializer_api_response(200, body=process_result, msg="Successfully update video process")
+            return util_serializer_api_response(
+                200, body=process_result,
+                msg="Successfully update video process")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
@@ -477,7 +523,9 @@ class VideoVideoIdProcessUserId(Resource):
             }
 
             process_result = service_video_op_cancel_process(conf=conf, **kw)
-            return util_serializer_api_response(200, body=process_result, msg="Successfully delete video process")
+            return util_serializer_api_response(
+                200, body=process_result,
+                msg="Successfully delete video process")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
@@ -502,12 +550,14 @@ class VideoVideoIdLike(Resource):
             }
 
             like_result = service_video_likes(conf=conf, **kw)
-            return util_serializer_api_response(200, body=like_result, msg="Successfully got video likes")
+            return util_serializer_api_response(
+                200, body=like_result, msg="Successfully got video likes")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
 
-@video.route('/<string:video_id>/like/<string:user_id>', methods=['DELETE', 'POST'])
+@video.route('/<string:video_id>/like/<string:user_id>',
+             methods=['DELETE', 'POST'])
 @video.param('video_id', 'Video ID')
 @video.param('user_id', 'User ID')
 @video.response(200, 'Successful operation', like_response)
@@ -532,7 +582,8 @@ class VideoVideoIdLikeUserId(Resource):
             }
 
             like_result = service_video_op_add_like(conf=conf, **kw)
-            return util_serializer_api_response(200, body=like_result, msg="Successfully post a like")
+            return util_serializer_api_response(
+                200, body=like_result, msg="Successfully post a like")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
@@ -551,7 +602,8 @@ class VideoVideoIdLikeUserId(Resource):
             }
 
             like_result = service_video_op_cancel_like(conf=conf, **kw)
-            return util_serializer_api_response(200, body=like_result, msg="Successfully cancel a like")
+            return util_serializer_api_response(
+                200, body=like_result, msg="Successfully cancel a like")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
@@ -576,12 +628,14 @@ class VideoVideoIdStar(Resource):
             }
 
             star_result = service_video_stars(conf=conf, **kw)
-            return util_serializer_api_response(200, body=star_result, msg="Successfully got video stars")
+            return util_serializer_api_response(
+                200, body=star_result, msg="Successfully got video stars")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
 
-@video.route('/<string:video_id>/star/<string:user_id>', methods=['DELETE', 'POST'])
+@video.route('/<string:video_id>/star/<string:user_id>',
+             methods=['DELETE', 'POST'])
 @video.param('video_id', 'Video ID')
 @video.param('user_id', 'User ID')
 @video.response(200, 'Successful operation', star_response)
@@ -606,7 +660,8 @@ class VideoVideoIdStarUserId(Resource):
             }
 
             star_result = service_video_op_add_star(conf=conf, **kw)
-            return util_serializer_api_response(200, body=star_result, msg="Successfully add a star")
+            return util_serializer_api_response(
+                200, body=star_result, msg="Successfully add a star")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
@@ -625,6 +680,7 @@ class VideoVideoIdStarUserId(Resource):
             }
 
             star_result = service_video_op_cancel_star(conf=conf, **kw)
-            return util_serializer_api_response(200, body=star_result, msg="Successfully cancel a star")
+            return util_serializer_api_response(
+                200, body=star_result, msg="Successfully cancel a star")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)

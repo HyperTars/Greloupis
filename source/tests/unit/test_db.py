@@ -1,11 +1,34 @@
 import unittest
-from source.settings import *
-from source.utils.util_tests import *
-from source.utils.util_pattern import *
-from source.db.query_user import *
-from source.db.query_video import *
-from source.db.query_video_op import *
+from source.settings import config
+from source.utils.util_tests import util_tests_load_data, \
+    util_tests_python_version
+from source.utils.util_pattern import util_pattern_compile
+from source.db.query_user import query_user_get_by_id, \
+    query_user_update_details, query_user_create, query_user_delete_by_name, \
+    query_user_get_by_name, query_user_get_by_email, \
+    query_user_update_status, query_user_add_follow, \
+    query_user_delete_follow, query_user_update_name, \
+    query_user_update_password, query_user_update_thumbnail, \
+    query_user_add_login, query_user_delete_by_id, \
+    query_user_search_by_contains, query_user_search_by_pattern, \
+    query_user_search_by_aggregate
+from source.db.query_video import query_video_get_by_user_id, \
+    query_video_cnt_incr_by_one, query_video_update, query_video_delete, \
+    query_video_search_by_pattern, query_video_create, \
+    query_video_get_by_title, query_video_search_by_aggregate, \
+    query_video_cnt_decr_by_one, query_video_search_by_contains, \
+    query_video_get_by_video_id
+from source.db.query_video_op import query_video_op_create, \
+    query_video_op_get_by_user_video, query_video_op_get_by_op_id, \
+    query_video_op_update_process, query_video_op_update_comment, \
+    query_video_op_update_like, query_video_op_update_dislike, \
+    query_video_op_update_star, query_video_op_search_comment_by_contains, \
+    query_video_op_search_comment_by_pattern, query_video_op_get_by_user_id, \
+    query_video_op_get_by_video_id, query_video_op_delete
 from source.db.mongo import get_db
+from source.models.model_errors import MongoError, ErrorCode
+from source.utils.util_time import get_time_now_utc
+import bson
 
 
 class TestQueryUser(unittest.TestCase):
@@ -19,16 +42,18 @@ class TestQueryUser(unittest.TestCase):
 
     def test_a_user_create(self):
         # Create successfully
-        self.assertEqual(query_user_create(user_name=self.data['temp_user'][0]['user_name'],
-                                           user_email=self.data['temp_user'][0]['user_email'],
-                                           user_password=self.data['temp_user'][0]['user_password']).user_name,
-                         self.data['temp_user'][0]['user_name'])
+        self.assertEqual(query_user_create(
+            user_name=self.data['temp_user'][0]['user_name'],
+            user_email=self.data['temp_user'][0]['user_email'],
+            user_password=self.data['temp_user'][0]['user_password']).user_name,
+            self.data['temp_user'][0]['user_name'])
 
-        self.assertEqual(query_user_create(user_name=self.data['temp_user'][1]['user_name'],
-                                           user_email=self.data['temp_user'][1]['user_email'],
-                                           user_password=self.data['temp_user'][1]['user_password'],
-                                           user_ip=self.data['temp_user'][1]['user_reg_ip']).user_name,
-                         self.data['temp_user'][1]['user_name'])
+        self.assertEqual(query_user_create(
+            user_name=self.data['temp_user'][1]['user_name'],
+            user_email=self.data['temp_user'][1]['user_email'],
+            user_password=self.data['temp_user'][1]['user_password'],
+            user_ip=self.data['temp_user'][1]['user_reg_ip']).user_name,
+            self.data['temp_user'][1]['user_name'])
 
         # Raise Error: ErrorCode.MONGODB_STR_EXPECTED
         with self.assertRaises(MongoError) as e:
@@ -37,20 +62,27 @@ class TestQueryUser(unittest.TestCase):
 
         # Raise Error: ErrorCode.MONGODB_USER_NAME_TAKEN
         with self.assertRaises(MongoError) as e1:
-            query_user_create(user_name=self.data['temp_user'][0]['user_name'], user_email="NotImportantEmail",
+            query_user_create(user_name=self.data['temp_user'][0]['user_name'],
+                              user_email="NotImportantEmail",
                               user_password="NotImportantPassword")
-        self.assertEqual(e1.exception.error_code, ErrorCode.MONGODB_USER_NAME_TAKEN)
+        self.assertEqual(e1.exception.error_code,
+                         ErrorCode.MONGODB_USER_NAME_TAKEN)
 
         # Raise Error: ErrorCode.MONGODB_USER_EMAIL_TAKEN
         with self.assertRaises(MongoError) as e2:
-            query_user_create(user_name="NotImportantName", user_email=self.data['temp_user'][0]['user_email'],
-                              user_password="NotImportantPassword")
-        self.assertEqual(e2.exception.error_code, ErrorCode.MONGODB_USER_EMAIL_TAKEN)
+            query_user_create(
+                user_name="NotImportantName",
+                user_email=self.data['temp_user'][0]['user_email'],
+                user_password="NotImportantPassword")
+        self.assertEqual(e2.exception.error_code,
+                         ErrorCode.MONGODB_USER_EMAIL_TAKEN)
 
     def test_b_user_get_by_name(self):
         # Get successfully
-        temp_model = query_user_get_by_name(self.data['const_user'][0]['user_name'])[0]
-        self.assertEqual(temp_model.user_email, self.data['const_user'][0]['user_email'])
+        temp_model = query_user_get_by_name(
+            self.data['const_user'][0]['user_name'])[0]
+        self.assertEqual(temp_model.user_email,
+                         self.data['const_user'][0]['user_email'])
 
         # Raise Error: ErrorCode.MONGODB_STR_EXPECTED
         with self.assertRaises(MongoError) as e:
@@ -59,8 +91,10 @@ class TestQueryUser(unittest.TestCase):
 
     def test_c_user_get_by_email(self):
         # Get successfully
-        temp_model = query_user_get_by_email(self.data['const_user'][0]['user_email'])[0]
-        self.assertEqual(temp_model.user_name, self.data['const_user'][0]['user_name'])
+        temp_model = query_user_get_by_email(
+            self.data['const_user'][0]['user_email'])[0]
+        self.assertEqual(temp_model.user_name,
+                         self.data['const_user'][0]['user_name'])
 
         # Raise Error: ErrorCode.MONGODB_STR_EXPECTED
         with self.assertRaises(MongoError) as e:
@@ -69,9 +103,11 @@ class TestQueryUser(unittest.TestCase):
 
     def test_d_user_get_by_id(self):
         # Get successfully
-        temp_model = query_user_get_by_name(self.data['const_user'][0]['user_name'])[0]
+        temp_model = query_user_get_by_name(
+            self.data['const_user'][0]['user_name'])[0]
         temp_model_1 = query_user_get_by_id(temp_model.to_dict()['user_id'])[0]
-        self.assertEqual(temp_model_1.user_name, self.data['const_user'][0]['user_name'])
+        self.assertEqual(temp_model_1.user_name,
+                         self.data['const_user'][0]['user_name'])
 
         # Raise Error: ErrorCode.MONGODB_STR_EXPECTED
         with self.assertRaises(MongoError) as e:
@@ -80,12 +116,15 @@ class TestQueryUser(unittest.TestCase):
 
     def test_e_user_update_status(self):
         # Update successfully
-        temp_model = query_user_get_by_name(self.data['const_user'][0]['user_name'])[0]
+        temp_model = query_user_get_by_name(
+            self.data['const_user'][0]['user_name'])[0]
         temp_user_id = temp_model.to_dict()['user_id']
         query_user_update_status(temp_user_id, "private")
-        self.assertEqual(query_user_get_by_id(temp_user_id)[0].user_status, "private")
+        self.assertEqual(
+            query_user_get_by_id(temp_user_id)[0].user_status, "private")
         query_user_update_status(temp_user_id, "public")
-        self.assertEqual(query_user_get_by_id(temp_user_id)[0].user_status, "public")
+        self.assertEqual(
+            query_user_get_by_id(temp_user_id)[0].user_status, "public")
 
         # Raise Error: ErrorCode.MONGODB_STR_EXPECTED
         with self.assertRaises(MongoError) as e:
@@ -95,24 +134,30 @@ class TestQueryUser(unittest.TestCase):
         # Raise Error: ErrorCode.MONGODB_USER_NOT_FOUND
         with self.assertRaises(MongoError) as e:
             query_user_update_status("123412341234123412341234", "private")
-        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_USER_NOT_FOUND)
+        self.assertEqual(e.exception.error_code,
+                         ErrorCode.MONGODB_USER_NOT_FOUND)
 
         # Raise Error: ErrorCode.MONGODB_USER_NOT_FOUND
         with self.assertRaises(MongoError) as e:
             query_user_update_status(temp_user_id, "open")
-        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_USER_INVALID_STATUS)
+        self.assertEqual(e.exception.error_code,
+                         ErrorCode.MONGODB_USER_INVALID_STATUS)
 
     def test_f_user_add_follow(self):
         # Update successfully
-        temp_model_1 = query_user_get_by_name(self.data['temp_user'][0]['user_name'])[0]
-        temp_model_2 = query_user_get_by_name(self.data['temp_user'][1]['user_name'])[0]
+        temp_model_1 = query_user_get_by_name(
+            self.data['temp_user'][0]['user_name'])[0]
+        temp_model_2 = query_user_get_by_name(
+            self.data['temp_user'][1]['user_name'])[0]
         temp_user_id_1 = temp_model_1.to_dict()['user_id']
         temp_user_id_2 = temp_model_2.to_dict()['user_id']
         query_user_add_follow(temp_user_id_1, temp_user_id_2)
         temp_model_1_updated = query_user_get_by_id(temp_user_id_1)[0]
         temp_model_2_updated = query_user_get_by_id(temp_user_id_2)[0]
-        self.assertIn(temp_user_id_2, temp_model_1_updated.to_dict()['user_following'])
-        self.assertIn(temp_user_id_1, temp_model_2_updated.to_dict()['user_follower'])
+        self.assertIn(temp_user_id_2,
+                      temp_model_1_updated.to_dict()['user_following'])
+        self.assertIn(temp_user_id_1,
+                      temp_model_2_updated.to_dict()['user_follower'])
 
         # Raise Error: ErrorCode.MONGODB_STR_EXPECTED
         with self.assertRaises(MongoError) as e:
@@ -122,22 +167,27 @@ class TestQueryUser(unittest.TestCase):
         # Raise Error: ErrorCode.MONGODB_FOLLOWER_NOT_FOUND
         with self.assertRaises(MongoError) as e:
             query_user_add_follow("123456781234567812345678", temp_user_id_1)
-        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_FOLLOWER_NOT_FOUND)
+        self.assertEqual(e.exception.error_code,
+                         ErrorCode.MONGODB_FOLLOWER_NOT_FOUND)
 
         # Raise Error: ErrorCode.MONGODB_FOLLOWED_NOT_FOUND
         with self.assertRaises(MongoError) as e:
             query_user_add_follow(temp_user_id_2, "123456781234567812345678")
-        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_FOLLOWED_NOT_FOUND)
+        self.assertEqual(e.exception.error_code,
+                         ErrorCode.MONGODB_FOLLOWED_NOT_FOUND)
 
         # Raise Error: ErrorCode.MONGODB_FOLLOW_REL_EXISTS
         with self.assertRaises(MongoError) as e:
             query_user_add_follow(temp_user_id_1, temp_user_id_2)
-        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_FOLLOW_REL_EXISTS)
+        self.assertEqual(e.exception.error_code,
+                         ErrorCode.MONGODB_FOLLOW_REL_EXISTS)
 
     def test_g_user_delete_follow(self):
         # Update successfully
-        temp_model_1 = query_user_get_by_name(self.data['temp_user'][0]['user_name'])[0]
-        temp_model_2 = query_user_get_by_name(self.data['temp_user'][1]['user_name'])[0]
+        temp_model_1 = query_user_get_by_name(
+            self.data['temp_user'][0]['user_name'])[0]
+        temp_model_2 = query_user_get_by_name(
+            self.data['temp_user'][1]['user_name'])[0]
         temp_user_id_1 = temp_model_1.to_dict()['user_id']
         temp_user_id_2 = temp_model_2.to_dict()['user_id']
         self.assertIn(temp_user_id_2, temp_model_1.to_dict()['user_following'])
