@@ -6,6 +6,7 @@
 [![docker image size](https://img.shields.io/docker/image-size/hypertars/online-video-platform)](https://hub.docker.com/r/hypertars/online-video-platform/tags)
 <!-- [![docker build](https://img.shields.io/docker/cloud/automated/hypertars/online-video-platform)](https://hub.docker.com/r/hypertars/online-video-platform/builds) -->
 <!-- [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier) -->
+<!-- [![tested with jest](https://img.shields.io/badge/tested_with-jest-99424f.svg)](https://github.com/facebook/jest) -->
 
 <!-- [![stars](https://img.shields.io/github/stars/HyperTars/Online-Video-Platform.svg?style=plasticr)](https://github.com/HyperTars/Online-Video-Platform/stargazers) -->
 <!-- [![commit activity](https://img.shields.io/github/commit-activity/y/HyperTars/Online-Video-Platform.svg?style=plasticr)](https://github.com/HyperTars/Online-Video-Platform/commits/master) -->
