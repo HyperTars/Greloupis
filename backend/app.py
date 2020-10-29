@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, print_function
-from flask import Flask
+from flask import Flask, render_template
 from apiv1 import blueprint
 from settings import config
 from flask_cors import CORS
@@ -19,12 +19,12 @@ app = Flask(__name__)
 CORS(app, resources={r'/*': {'origins': frontend_conf['ORIGINS']}},
      supports_credentials=True)
 
-# @app.route("/")
-# def index():
-#     APP_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-#     print(APP_PATH)
-#     TEMPLATE_PATH = os.path.join(APP_PATH, 'source/templates/')
-#     return render_template('index.html')
+@app.route("/")
+def index():
+    APP_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    print(APP_PATH)
+    TEMPLATE_PATH = os.path.join(APP_PATH, 'source/templates/')
+    return render_template('index.html')
 """
 @app.before_request
 def before_request():

@@ -1,5 +1,4 @@
 pytvenv/
-*venv*
 log.txt
 logs.txt
 node_module/

@@ -25,7 +25,7 @@ lint:	FORCE
 	$(LINTER) $(BACKEND_DIR)/. --exit-zero --ignore=E501
 
 dev_env:	FORCE
-	pip3 install -r $(REQ_DIR)/requirements-dev.txt
+	cd $(BACKEND_DIR); make dev_env
 
 docs:	#FORCE
 	cd $(BACKEND_DIR); make docs
@@ -34,25 +34,24 @@ report:
 	cd $(BACKEND_DIR); make report
 
 coverage:
-	- cd $(BACKEND_DIR); coveralls
-	- cd $(BACKEND_DIR); codecov -t $(CODECOV_TOKEN)
+	cd $(BACKEND_DIR); make coverage
 
 connect:
 	- chmod 400 documents/DevOps.pem
 	- ssh -i "documents/DevOps.pem" $(EC2_SERVER)
 
 docker:
-	- docker login --username $(DOCKER_USER) --password $(DOCKER_PASS)
-	- docker build -f Dockerfile -t $(DOCKER_BUILD):$(TAG) .
-	- docker tag $(DOCKER_BUILD) $(DOCKER_REPO)
-	- docker push $(DOCKER_REPO)
+	cd $(BACKEND_DIR); make docker
 
 docker_run:
-	- docker run -p 5000:5000 --rm -it $(DOCKER_REPO):$(TAG)
+	cd $(BACKEND_DIR); make docker_run
 
 docker_test:
+	cd $(BACKEND_DIR); make docker_test
+
+docker_clean:
 	- docker stop $(docker ps -aq)
-	- docker run -p 5000:5000 $(DOCKER_BUILD)
+	- docker system prune -a
 
 heroku:
 	- docker login --username _ --password=$(HEROKU_API_KEY) registry.heroku.com
