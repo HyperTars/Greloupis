@@ -13,6 +13,7 @@ frontend_conf = {
     'ORIGINS': [
         'http://localhost:3000',  # React
         'http://127.0.0.1:3000',  # React
+        'http://0.0.0.0:3000'  # React
     ],
 }
 
