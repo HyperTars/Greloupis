@@ -1,10 +1,9 @@
 from source.models.model_video_op import VideoOp
-from source.db.query_user import *
-from source.db.query_video import *
-from source.models.model_errors import *
+from source.db.query_user import query_user_get_by_id
+from source.db.query_video import query_video_get_by_video_id
+from source.models.model_errors import ErrorCode, MongoError
 from source.utils.util_time import get_time_now_utc
 import bson
-import datetime
 import re
 
 

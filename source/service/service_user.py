@@ -1,13 +1,14 @@
-from source.models.model_errors import *
-from source.settings import *
-from source.db.query_user import *
-from source.db.query_video import *
-from source.db.query_video_op import *
-from source.utils.util_hash import *
-from source.utils.util_serializer import *
-from source.utils.util_validator import *
-from source.utils.util_pattern import *
+from source.utils.util_hash import util_hash_encode
+from source.utils.util_serializer import util_serializer_mongo_results_to_array
+from source.utils.util_validator import is_valid_id
+from source.utils.util_pattern import util_pattern_format_param
 from source.db.mongo import get_db
+from source.db.query_user import query_user_create, query_user_get_by_name, \
+    query_user_get_by_email, query_user_delete_by_id, query_user_get_by_id
+from source.db.query_video import query_video_get_by_user_id
+from source.db.query_video_op import query_video_op_get_by_user_id
+from source.models.model_errors import ServiceError, ErrorCode
+import datetime
 
 
 def service_user_reg(conf, **kw):
@@ -25,19 +26,21 @@ def service_user_reg(conf, **kw):
     # user_name: str, user_email: str, user_password: str, user_ip = "0.0.0.0"
     # service_user_reg(conf, user_name="t", user_email="k", user_password="lol")
 
-    db = get_db(conf)
+    get_db(conf)
     kw['service'] = 'user'
     kw = util_pattern_format_param(**kw)
-    if 'user_name' not in kw or 'user_email' not in kw or 'user_password' not in kw:
+    if 'user_name' not in kw or 'user_email' not in kw \
+            or 'user_password' not in kw:
         raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
 
-    query_user_create(kw['user_name'], kw['user_email'], util_hash_encode(kw['user_password']))
+    query_user_create(kw['user_name'], kw['user_email'],
+                      util_hash_encode(kw['user_password']))
 
     return query_user_get_by_name(kw['user_name'])[0].to_dict()
 
 
 def service_user_check_password(conf, **kw):
-    db = get_db(conf)
+    get_db(conf)
     kw['service'] = 'user'
     kw = util_pattern_format_param(**kw)
 
@@ -55,9 +58,10 @@ def service_user_check_password(conf, **kw):
 
 
 # def service_user_get_user(conf, **kw):
-#     # service_user_get_user(config['default'], user_name="t", user_password="lol")
+#     # service_user_get_user(config['default'], user_name="t",
+#                             user_password="lol")
 #
-#     db = get_db(conf)
+#     get_db(conf)
 #
 #     # TODO: validate user by session
 #
@@ -99,12 +103,12 @@ def service_user_check_password(conf, **kw):
 
 
 def service_user_cancel(conf, user_id):
-    db = get_db(conf)
+    get_db(conf)
     return query_user_delete_by_id(user_id)
 
 
 def service_user_get_info(conf, user_id):
-    db = get_db(conf)
+    get_db(conf)
     final_result = {}
 
     # user_id check
@@ -114,7 +118,8 @@ def service_user_get_info(conf, user_id):
     # table: user
     user_result = query_user_get_by_id(user_id)
     if len(user_result) == 1:
-        user_result_dict_array = util_serializer_mongo_results_to_array(user_result)
+        user_result_dict_array = \
+            util_serializer_mongo_results_to_array(user_result)
 
         # convert datetime format to str
         for each_result in user_result_dict_array:
@@ -129,7 +134,8 @@ def service_user_get_info(conf, user_id):
     # table: video (belong to this user)
     video_result = query_video_get_by_user_id(user_id)
     if len(video_result) > 0:
-        video_result_dict_array = util_serializer_mongo_results_to_array(video_result)
+        video_result_dict_array = \
+            util_serializer_mongo_results_to_array(video_result)
 
         # convert datetime format to str
         for each_result in video_result_dict_array:
@@ -144,7 +150,8 @@ def service_user_get_info(conf, user_id):
     # table: video op (belong to this user)
     video_op_result = query_video_op_get_by_user_id(user_id)
     if len(video_op_result) > 0:
-        video_op_result_dict_array = util_serializer_mongo_results_to_array(video_op_result)
+        video_op_result_dict_array = \
+            util_serializer_mongo_results_to_array(video_op_result)
 
         # convert datetime format to str
         for each_result in video_op_result_dict_array:
@@ -160,7 +167,7 @@ def service_user_get_info(conf, user_id):
 
 
 def service_user_get_like(conf, user_id):
-    db = get_db(conf)
+    get_db(conf)
 
     # user_id check
     if not is_valid_id(user_id):
@@ -189,7 +196,7 @@ def service_user_get_like(conf, user_id):
 
 
 def service_user_get_dislike(conf, user_id):
-    db = get_db(conf)
+    get_db(conf)
 
     # user_id check
     if not is_valid_id(user_id):
@@ -218,7 +225,7 @@ def service_user_get_dislike(conf, user_id):
 
 
 def service_user_get_comment(conf, user_id):
-    db = get_db(conf)
+    get_db(conf)
 
     # user_id check
     if not is_valid_id(user_id):
@@ -248,7 +255,7 @@ def service_user_get_comment(conf, user_id):
 
 
 def service_user_get_star(conf, user_id):
-    db = get_db(conf)
+    get_db(conf)
 
     # user_id check
     if not is_valid_id(user_id):
@@ -277,7 +284,7 @@ def service_user_get_star(conf, user_id):
 
 
 def service_user_get_process(conf, user_id):
-    db = get_db(conf)
+    get_db(conf)
 
     # user_id check
     if not is_valid_id(user_id):

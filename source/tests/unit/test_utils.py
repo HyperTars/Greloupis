@@ -1,20 +1,20 @@
 import unittest
-from source.utils.util_hash import *
-from source.utils.util_validator import *
-from source.utils.util_request_filter import *
-from source.utils.util_logger import *
-from source.utils.util_error_handler import *
-from source.utils.util_pattern import *
-import platform as pf
+import re
+from source.utils.util_hash import util_hash_sha512, util_hash_encode, \
+    util_hash_create_salt, util_hash_md5_with_salt
+from source.utils.util_validator import is_valid_id
+from source.utils.util_request_filter import \
+    util_request_filter_malicious_ip, util_request_filter_xss
+from source.utils.util_logger import util_logger_handler, RotatingFileHandler
+from source.utils.util_error_handler import util_error_handler
+from source.utils.util_pattern import util_pattern_format_param, \
+    util_pattern_build
+from source.models.model_errors import ErrorCode, ServiceError, UtilError, \
+    RouteError, MongoError
+from source.utils.util_serializer import util_serializer_dict_to_json
 
 
 class TestUtilErrorHandler(unittest.TestCase):
-
-    @classmethod
-    def setUpClass(cls) -> None:
-        if pf.python_version()[:3] != '3.7' and pf.python_version()[:3] != '3.8':
-            print("Your python ver." + pf.python_version() + " is not supported. Please use python 3.7 or 3.8")
-            exit()
 
     def test_util_error_handler_mongo_error(self):
         with self.assertRaises(MongoError) as e:
@@ -52,12 +52,6 @@ class TestUtilErrorHandler(unittest.TestCase):
 
 class TestUtilHash(unittest.TestCase):
 
-    @classmethod
-    def setUpClass(cls) -> None:
-        if pf.python_version()[:3] != '3.7' and pf.python_version()[:3] != '3.8':
-            print("Your python ver." + pf.python_version() + " is not supported. Please use python 3.7 or 3.8")
-            exit()
-
     def test_util_hash_encode(self):
         test_str = "kkk"
         self.assertEqual(util_hash_encode(test_str), util_hash_sha512(test_str))
@@ -71,24 +65,13 @@ class TestUtilHash(unittest.TestCase):
 
 class TestUtilLogger(unittest.TestCase):
 
-    @classmethod
-    def setUpClass(cls) -> None:
-        if pf.python_version()[:3] != '3.7' and pf.python_version()[:3] != '3.8':
-            print("Your python ver." + pf.python_version() + " is not supported. Please use python 3.7 or 3.8")
-            exit()
-
     def test_util_logger_handler(self):
         file_name = "logs.txt"
-        self.assertEqual(type(handler(file_name)), RotatingFileHandler)
+        self.assertEqual(type(util_logger_handler(file_name)),
+                         RotatingFileHandler)
 
 
 class TestUtilPattern(unittest.TestCase):
-
-    @classmethod
-    def setUpClass(cls) -> None:
-        if pf.python_version()[:3] != '3.7' and pf.python_version()[:3] != '3.8':
-            print("Your python ver." + pf.python_version() + " is not supported. Please use python 3.7 or 3.8")
-            exit()
 
     def test_util_pattern_format_param(self):
         temp_str = "111"
@@ -138,29 +121,27 @@ class TestUtilPattern(unittest.TestCase):
     def test_util_test_pattern_build(self):
         test_str = "111"
         kw = util_pattern_build(user_reg_date=test_str, exact=False)
-        self.assertEqual(kw['user_reg_date'], re.compile('.*' + test_str + '.*'))
+        self.assertEqual(kw['user_reg_date'],
+                         re.compile('.*' + test_str + '.*'))
 
         kw = util_pattern_build(video_tag=test_str, exact=False)
         self.assertEqual(kw['video_tag'], re.compile('.*' + test_str + '.*'))
 
         kw = util_pattern_build(video_category=test_str, exact=False)
-        self.assertEqual(kw['video_category'], re.compile('.*' + test_str + '.*'))
+        self.assertEqual(kw['video_category'],
+                         re.compile('.*' + test_str + '.*'))
 
         kw = util_pattern_build(video_op_comment=test_str, exact=False)
-        self.assertEqual(kw['video_op_comment'], re.compile('.*' + test_str + '.*'))
+        self.assertEqual(kw['video_op_comment'],
+                         re.compile('.*' + test_str + '.*'))
 
         with self.assertRaises(UtilError) as e:
             util_pattern_build(nonsense=test_str)
-        self.assertEqual(e.exception.error_code, ErrorCode.UTIL_INVALID_PATTERN_PARAM)
+        self.assertEqual(e.exception.error_code,
+                         ErrorCode.UTIL_INVALID_PATTERN_PARAM)
 
 
 class TestUtilRequestFilter(unittest.TestCase):
-
-    @classmethod
-    def setUpClass(cls) -> None:
-        if pf.python_version()[:3] != '3.7' and pf.python_version()[:3] != '3.8':
-            print("Your python ver." + pf.python_version() + " is not supported. Please use python 3.7 or 3.8")
-            exit()
 
     def test_util_request_filter_xss(self):
         util_request_filter_xss()
@@ -170,12 +151,6 @@ class TestUtilRequestFilter(unittest.TestCase):
 
 
 class TestUtilSerializer(unittest.TestCase):
-
-    @classmethod
-    def setUpClass(cls) -> None:
-        if pf.python_version()[:3] != '3.7' and pf.python_version()[:3] != '3.8':
-            print("Your python ver." + pf.python_version() + " is not supported. Please use python 3.7 or 3.8")
-            exit()
 
     def test_util_serializer_dict_to_json_ymd_hms(self):
         data = {"time": "2020-09-26 17:56:42"}
@@ -194,21 +169,10 @@ class TestUtilSerializer(unittest.TestCase):
 
 
 class TestUtilTime(unittest.TestCase):
-
-    @classmethod
-    def setUpClass(cls) -> None:
-        if pf.python_version()[:3] != '3.7' and pf.python_version()[:3] != '3.8':
-            print("Your python ver." + pf.python_version() + " is not supported. Please use python 3.7 or 3.8")
-            exit()
+    pass
 
 
 class TestValidator(unittest.TestCase):
-
-    @classmethod
-    def setUpClass(cls) -> None:
-        if pf.python_version()[:3] != '3.7' and pf.python_version()[:3] != '3.8':
-            print("Your python ver." + pf.python_version() + " is not supported. Please use python 3.7 or 3.8")
-            exit()
 
     def test_util_validator(self):
         test_id_1 = "5f88f883e6ac4f89900ac983"

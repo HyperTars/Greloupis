@@ -1,24 +1,46 @@
 import unittest
-from source.models.model_errors import *
-from source.service.service_search import *
-from source.service.service_user import *
-from source.service.service_video import *
-from source.service.service_video_op import *
-from source.settings import *
-from source.tests.unit.test_load_data import util_load_test_data
-import platform as pf
+from source.service.service_search import service_search_video, \
+    service_search_user, service_search_user_by_contains, \
+    service_search_video_by_pattern, service_search_user_by_aggregation, \
+    service_search_user_by_pattern, service_search_video_by_aggregation, \
+    service_search_video_by_contains
+from source.service.service_user import service_user_reg, \
+    service_user_get_star, service_user_get_process, service_user_get_like, \
+    service_user_get_info, service_user_get_dislike, \
+    service_user_get_comment, service_user_check_password, service_user_cancel
+from source.service.service_video import service_video_info, \
+    service_video_delete, service_video_comments, service_video_dislikes, \
+    service_video_likes, service_video_stars, service_video_update, \
+    service_video_upload
+from source.service.service_video_op import service_video_op_add_comment, \
+    service_video_op_add_dislike, service_video_op_add_like, \
+    service_video_op_add_process, service_video_op_add_star, \
+    service_video_op_add_view, service_video_op_cancel_comment, \
+    service_video_op_cancel_dislike, service_video_op_cancel_like, \
+    service_video_op_cancel_process, service_video_op_cancel_star, \
+    service_video_op_get_comment, service_video_op_get_process, \
+    service_video_op_get_view, service_video_op_update_comment, \
+    service_video_op_update_process, query_video_op_get_by_user_video, \
+    query_video_op_create
+from source.settings import config
+from source.utils.util_tests import util_tests_python_version, \
+    util_tests_load_data
+from source.db.query_user import query_user_get_by_name
+from source.db.query_video import query_video_get_by_title, \
+    query_video_get_by_video_id
+from source.db.query_video_op import query_video_op_get_by_video_id
+from source.models.model_errors import ErrorCode, MongoError, ServiceError
+from source.utils.util_time import get_time_now_utc
 
 
 class TestServiceSearchUser(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.data = util_load_test_data()
-        if pf.python_version()[:3] != '3.7' and pf.python_version()[:3] != '3.8':
-            print("Your python ver." + pf.python_version() + " is not supported. Please use python 3.7 or 3.8")
+        if util_tests_python_version() is False:
             exit()
+        cls.data = util_tests_load_data()
         cls.conf = config['test']
-        get_db(config['test'])
 
     def test_search_user(self):
         # Search successfully with ignore_case
@@ -165,12 +187,10 @@ class TestServiceSearchVideo(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.data = util_load_test_data()
-        if pf.python_version()[:3] != '3.7' and pf.python_version()[:3] != '3.8':
-            print("Your python ver." + pf.python_version() + " is not supported. Please use python 3.7 or 3.8")
+        if util_tests_python_version() is False:
             exit()
+        cls.data = util_tests_load_data()
         cls.conf = config['test']
-        get_db(config['test'])
 
     def test_search_video(self):
         self.assertEqual(service_search_video(self.conf, title="Xi")[0]['video_title'],
@@ -265,12 +285,10 @@ class TestServiceUser(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.data = util_load_test_data()
-        if pf.python_version()[:3] != '3.7' and pf.python_version()[:3] != '3.8':
-            print("Your python ver." + pf.python_version() + " is not supported. Please use python 3.7 or 3.8")
+        if util_tests_python_version() is False:
             exit()
+        cls.data = util_tests_load_data()
         cls.conf = config['test']
-        get_db(config['test'])
 
     def test_a_service_user_reg(self):
         # Register successfully
@@ -432,11 +450,9 @@ class TestServiceVideo(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.data = util_load_test_data()
-        if pf.python_version()[:3] != '3.7' and pf.python_version()[:3] != '3.8':
-            print("Your python ver." + pf.python_version() + " is not supported. Please use python 3.7 or 3.8")
+        if util_tests_python_version() is False:
             exit()
-        get_db(config['test'])
+        cls.data = util_tests_load_data()
         cls.conf = config['test']
         cls.temp_video_title = "test video title"
         cls.temp_video_raw_content = "https://s3.amazon.com/test_video_content.avi"
@@ -604,13 +620,12 @@ class TestServiceVideoOp(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.data = util_load_test_data()
-        if pf.python_version()[:3] != '3.7' and pf.python_version()[:3] != '3.8':
-            print("Your python ver." + pf.python_version() + " is not supported. Please use python 3.7 or 3.8")
+        if util_tests_python_version() is False:
             exit()
-        get_db(config['test'])
-        # create a video
+        cls.data = util_tests_load_data()
         cls.conf = config['test']
+
+        # create a temp video
         cls.temp_video_title = "video op test"
         cls.temp_video_raw_content = "https://s3.amazon.com/test_video_content.avi"
 
@@ -633,9 +648,10 @@ class TestServiceVideoOp(unittest.TestCase):
         self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_MISSING_PARAM)
 
         # Raise Error: ErrorCode.ROUTE_INVALID_REQUEST_PARAM
-        with self.assertRaises(RouteError) as e:
+        with self.assertRaises(ServiceError) as e:
             service_video_op_add_view(self.conf, video_id="123123")
-        self.assertEqual(e.exception.error_code, ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+        self.assertEqual(e.exception.error_code,
+                         ErrorCode.SERVICE_INVALID_ID_OBJ)
 
         # Successful test
         original_view = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_view"]
@@ -651,9 +667,10 @@ class TestServiceVideoOp(unittest.TestCase):
         self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_MISSING_PARAM)
 
         # Raise Error: ErrorCode.ROUTE_INVALID_REQUEST_PARAM
-        with self.assertRaises(RouteError) as e:
+        with self.assertRaises(ServiceError) as e:
             service_video_op_get_view(self.conf, video_id="123123")
-        self.assertEqual(e.exception.error_code, ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+        self.assertEqual(e.exception.error_code,
+                         ErrorCode.SERVICE_INVALID_ID_OBJ)
 
         # Successful test
         original_view = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_view"]
@@ -670,9 +687,10 @@ class TestServiceVideoOp(unittest.TestCase):
         self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_MISSING_PARAM)
 
         # Raise Error: ErrorCode.ROUTE_INVALID_REQUEST_PARAM
-        with self.assertRaises(RouteError) as e:
+        with self.assertRaises(ServiceError) as e:
             service_video_op_add_comment(self.conf, video_id="123123", user_id="aaa", comment="")
-        self.assertEqual(e.exception.error_code, ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+        self.assertEqual(e.exception.error_code,
+                         ErrorCode.SERVICE_INVALID_ID_OBJ)
 
         # Successful test
         original_comment = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_comment"]
@@ -694,9 +712,10 @@ class TestServiceVideoOp(unittest.TestCase):
         self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_MISSING_PARAM)
 
         # Raise Error: ErrorCode.ROUTE_INVALID_REQUEST_PARAM
-        with self.assertRaises(RouteError) as e:
+        with self.assertRaises(ServiceError) as e:
             service_video_op_cancel_comment(self.conf, video_id="123123", user_id="aaa")
-        self.assertEqual(e.exception.error_code, ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+        self.assertEqual(e.exception.error_code,
+                         ErrorCode.SERVICE_INVALID_ID_OBJ)
 
         # Successful test
         original_comment = query_video_op_get_by_user_video(self.data['const_user'][0]['_id']['$oid'],
@@ -717,9 +736,10 @@ class TestServiceVideoOp(unittest.TestCase):
         self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_MISSING_PARAM)
 
         # Raise Error: ErrorCode.ROUTE_INVALID_REQUEST_PARAM
-        with self.assertRaises(RouteError) as e:
+        with self.assertRaises(ServiceError) as e:
             service_video_op_update_comment(self.conf, video_id="123123", user_id="aaa", comment="")
-        self.assertEqual(e.exception.error_code, ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+        self.assertEqual(e.exception.error_code,
+                         ErrorCode.SERVICE_INVALID_ID_OBJ)
 
         # Successful test
         response = service_video_op_update_comment(self.conf, video_id=temp_video_id,
@@ -736,9 +756,10 @@ class TestServiceVideoOp(unittest.TestCase):
         self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_MISSING_PARAM)
 
         # Raise Error: ErrorCode.ROUTE_INVALID_REQUEST_PARAM
-        with self.assertRaises(RouteError) as e:
+        with self.assertRaises(ServiceError) as e:
             service_video_op_cancel_comment(self.conf, video_id="123123", user_id="aaa")
-        self.assertEqual(e.exception.error_code, ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+        self.assertEqual(e.exception.error_code,
+                         ErrorCode.SERVICE_INVALID_ID_OBJ)
 
         # Successful test
         original_comment = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_comment"]
@@ -760,9 +781,9 @@ class TestServiceVideoOp(unittest.TestCase):
         self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_MISSING_PARAM)
 
         # Raise Error: ErrorCode.ROUTE_INVALID_REQUEST_PARAM
-        with self.assertRaises(RouteError) as e:
+        with self.assertRaises(ServiceError) as e:
             service_video_op_add_process(self.conf, video_id="123123", user_id="aaa", process=30)
-        self.assertEqual(e.exception.error_code, ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_INVALID_ID_OBJ)
 
         with self.assertRaises(ServiceError) as e:
             service_video_op_add_process(self.conf, video_id=temp_video_id,
@@ -784,9 +805,9 @@ class TestServiceVideoOp(unittest.TestCase):
         self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_MISSING_PARAM)
 
         # Raise Error: ErrorCode.ROUTE_INVALID_REQUEST_PARAM
-        with self.assertRaises(RouteError) as e:
+        with self.assertRaises(ServiceError) as e:
             service_video_op_get_process(self.conf, video_id="123123", user_id="aaa")
-        self.assertEqual(e.exception.error_code, ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_INVALID_ID_OBJ)
 
         # Successful test
         original_process = query_video_op_get_by_user_video(self.data['const_user'][0]['_id']['$oid'],
@@ -805,9 +826,9 @@ class TestServiceVideoOp(unittest.TestCase):
         self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_MISSING_PARAM)
 
         # Raise Error: ErrorCode.ROUTE_INVALID_REQUEST_PARAM
-        with self.assertRaises(RouteError) as e:
+        with self.assertRaises(ServiceError) as e:
             service_video_op_update_process(self.conf, video_id="123123", user_id="aaa", process=30)
-        self.assertEqual(e.exception.error_code, ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_INVALID_ID_OBJ)
 
         with self.assertRaises(ServiceError) as e:
             service_video_op_update_process(self.conf, video_id=temp_video_id,
@@ -829,9 +850,9 @@ class TestServiceVideoOp(unittest.TestCase):
         self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_MISSING_PARAM)
 
         # Raise Error: ErrorCode.ROUTE_INVALID_REQUEST_PARAM
-        with self.assertRaises(RouteError) as e:
+        with self.assertRaises(ServiceError) as e:
             service_video_op_cancel_process(self.conf, video_id="123123", user_id="aaa")
-        self.assertEqual(e.exception.error_code, ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_INVALID_ID_OBJ)
 
         # Successful test
         response = service_video_op_cancel_process(self.conf, video_id=temp_video_id,
@@ -847,9 +868,9 @@ class TestServiceVideoOp(unittest.TestCase):
         self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_MISSING_PARAM)
 
         # Raise Error: ErrorCode.ROUTE_INVALID_REQUEST_PARAM
-        with self.assertRaises(RouteError) as e:
+        with self.assertRaises(ServiceError) as e:
             service_video_op_add_like(self.conf, video_id="123123", user_id="aaa")
-        self.assertEqual(e.exception.error_code, ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_INVALID_ID_OBJ)
 
         # Successful test
         original_like = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_like"]
@@ -888,9 +909,9 @@ class TestServiceVideoOp(unittest.TestCase):
         self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_MISSING_PARAM)
 
         # Raise Error: ErrorCode.ROUTE_INVALID_REQUEST_PARAM
-        with self.assertRaises(RouteError) as e:
+        with self.assertRaises(ServiceError) as e:
             service_video_op_cancel_like(self.conf, video_id="123123", user_id="aaa")
-        self.assertEqual(e.exception.error_code, ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_INVALID_ID_OBJ)
 
         # Successful test
         original_like = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_like"]
@@ -915,9 +936,9 @@ class TestServiceVideoOp(unittest.TestCase):
         self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_MISSING_PARAM)
 
         # Raise Error: ErrorCode.ROUTE_INVALID_REQUEST_PARAM
-        with self.assertRaises(RouteError) as e:
+        with self.assertRaises(ServiceError) as e:
             service_video_op_add_dislike(self.conf, video_id="123123", user_id="aaa")
-        self.assertEqual(e.exception.error_code, ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_INVALID_ID_OBJ)
 
         # Successful test
         original_dislike = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_dislike"]
@@ -956,9 +977,9 @@ class TestServiceVideoOp(unittest.TestCase):
         self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_MISSING_PARAM)
 
         # Raise Error: ErrorCode.ROUTE_INVALID_REQUEST_PARAM
-        with self.assertRaises(RouteError) as e:
+        with self.assertRaises(ServiceError) as e:
             service_video_op_cancel_dislike(self.conf, video_id="123123", user_id="aaa")
-        self.assertEqual(e.exception.error_code, ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_INVALID_ID_OBJ)
 
         # Successful test
         original_dislike = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_dislike"]
@@ -983,9 +1004,9 @@ class TestServiceVideoOp(unittest.TestCase):
         self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_MISSING_PARAM)
 
         # Raise Error: ErrorCode.ROUTE_INVALID_REQUEST_PARAM
-        with self.assertRaises(RouteError) as e:
+        with self.assertRaises(ServiceError) as e:
             service_video_op_add_star(self.conf, video_id="123123", user_id="aaa")
-        self.assertEqual(e.exception.error_code, ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_INVALID_ID_OBJ)
 
         # Successful test
         original_star = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_star"]
@@ -1009,9 +1030,9 @@ class TestServiceVideoOp(unittest.TestCase):
         self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_MISSING_PARAM)
 
         # Raise Error: ErrorCode.ROUTE_INVALID_REQUEST_PARAM
-        with self.assertRaises(RouteError) as e:
+        with self.assertRaises(ServiceError) as e:
             service_video_op_cancel_star(self.conf, video_id="123123", user_id="aaa")
-        self.assertEqual(e.exception.error_code, ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_INVALID_ID_OBJ)
 
         # Successful test
         original_star = query_video_get_by_video_id(temp_video_id)[0].to_dict()["video_star"]

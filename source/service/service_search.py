@@ -1,11 +1,12 @@
-import re
-
-from source.settings import *
 from source.db.mongo import get_db
-from source.db.query_user import *
-from source.db.query_video import *
-from source.utils.util_pattern import *
-from source.utils.util_serializer import *
+from source.db.query_user import query_user_search_by_aggregate, \
+    query_user_search_by_pattern, query_user_search_by_contains
+from source.db.query_video import query_video_search_by_contains, \
+    query_video_search_by_aggregate, query_video_search_by_pattern
+from source.utils.util_pattern import util_pattern_build, \
+    util_pattern_format_param, util_pattern_slice
+from source.utils.util_serializer import util_serializer_mongo_results_to_array
+from source.models.model_errors import ServiceError, ErrorCode
 
 
 #########################
@@ -14,10 +15,9 @@ from source.utils.util_serializer import *
 # TODO: add search all (including search video by comment content, uploader, etc.)
 # TODO: by comment: search VideoOp.comment -> video_id -> Video.video_id
 # TODO: by uploader: search User.user_id -> user_id -> Video.user_id
-
 # Search User Caller
 def service_search_user(conf, **kw):
-    db = get_db(conf)
+    get_db(conf)
     kw['service'] = 'user'
     kw = util_pattern_format_param(**kw)
 
@@ -55,7 +55,7 @@ def service_search_user(conf, **kw):
 
 # Search Video Caller
 def service_search_video(conf, **kw):
-    db = get_db(conf)
+    get_db(conf)
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
 
@@ -75,13 +75,16 @@ def service_search_video(conf, **kw):
         kw = util_pattern_build(**kw)
         res_search = service_search_video_by_pattern(**kw)
     elif 'pattern' in kw and kw['pattern'] is True:
+        # Pattern search
         kw = util_pattern_build(**kw)
-        res_search = service_search_video_by_pattern(**kw)  # Pattern search
+        res_search = service_search_video_by_pattern(**kw)
     elif 'aggregate' in kw and kw['aggregate'] is True:
-        res_search = service_search_video_by_aggregation(**kw)  # Aggregate search
+        # Aggregate search
+        res_search = service_search_video_by_aggregation(**kw)
         return res_search
     else:
-        res_search = service_search_video_by_contains(**kw)  # Contains keyword (single) search
+        # Contains keyword (single) search
+        res_search = service_search_video_by_contains(**kw)
 
     # Convert to json (if format="json")
     if 'json' in kw and kw['json'] is True \
@@ -111,9 +114,11 @@ def service_search_user_by_contains(**kw):
     elif 'user_email' in kw:
         return query_user_search_by_contains(user_email=kw['user_email'])
     elif 'user_first_name' in kw:
-        return query_user_search_by_contains(user_first_name=kw['user_first_name'])
+        return query_user_search_by_contains(
+            user_first_name=kw['user_first_name'])
     elif 'user_last_name' in kw:
-        return query_user_search_by_contains(user_last_name=kw['user_last_name'])
+        return query_user_search_by_contains(
+            user_last_name=kw['user_last_name'])
     elif 'user_phone' in kw:
         return query_user_search_by_contains(user_phone=kw['user_phone'])
     elif 'user_street1' in kw:
@@ -136,7 +141,7 @@ def service_search_user_by_contains(**kw):
 
 def service_search_video_by_contains(**kw):
     """
-    Currently support searching 'id', 'title', 'channel', 'category', 'tag' of videos
+    Currently support searching 'id', 'title', 'channel', 'category', 'tag'
     :param kw:
     :return:
     """
@@ -147,11 +152,13 @@ def service_search_video_by_contains(**kw):
     elif 'video_channel' in kw:
         return query_video_search_by_contains(video_channel=kw['video_channel'])
     elif 'video_category' in kw:
-        return query_video_search_by_contains(video_category=kw['video_category'])
+        return query_video_search_by_contains(
+            video_category=kw['video_category'])
     elif 'video_tag' in kw:
         return query_video_search_by_contains(video_tag=kw['video_tag'])
     elif 'video_description' in kw:
-        return query_video_search_by_contains(video_description=kw['video_description'])
+        return query_video_search_by_contains(
+            video_description=kw['video_description'])
 
     raise ServiceError(ErrorCode.SERVICE_INVALID_SEARCH_PARAM)
 
@@ -163,9 +170,11 @@ def service_search_user_by_pattern(**kw):
     elif 'user_email' in kw:
         return query_user_search_by_pattern(pattern_email=kw['user_email'])
     elif 'user_first_name' in kw:
-        return query_user_search_by_pattern(pattern_first_name=kw['user_first_name'])
+        return query_user_search_by_pattern(
+            pattern_first_name=kw['user_first_name'])
     elif 'user_last_name' in kw:
-        return query_user_search_by_pattern(pattern_last_name=kw['user_last_name'])
+        return query_user_search_by_pattern(
+            pattern_last_name=kw['user_last_name'])
     elif 'user_phone' in kw:
         return query_user_search_by_pattern(pattern_phone=kw['user_phone'])
     elif 'user_street1' in kw:
@@ -190,9 +199,11 @@ def service_search_video_by_pattern(**kw):
     if 'video_title' in kw:
         return query_video_search_by_pattern(pattern_title=kw['video_title'])
     elif 'video_channel' in kw:
-        return query_video_search_by_pattern(pattern_channel=kw['video_channel'])
+        return query_video_search_by_pattern(
+            pattern_channel=kw['video_channel'])
     elif 'video_description' in kw:
-        return query_video_search_by_pattern(pattern_description=kw['video_description'])
+        return query_video_search_by_pattern(
+            pattern_description=kw['video_description'])
 
     raise ServiceError(ErrorCode.SERVICE_PATTERN_SEARCH_NOT_SUPPORT)
 
@@ -200,9 +211,13 @@ def service_search_video_by_pattern(**kw):
 # Search by aggregate
 def service_search_user_by_aggregation(search_dict=None, **kw):
     # Search by aggregate (can search multi attributes)
+    if search_dict is None and len(kw) == 0:
+        raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
     return query_user_search_by_aggregate(search_dict)
 
 
 def service_search_video_by_aggregation(search_dict=None, **kw):
     # Search by aggregate (can search multi attributes)
+    if search_dict is None and len(kw) == 0:
+        raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
     return query_video_search_by_aggregate(search_dict)

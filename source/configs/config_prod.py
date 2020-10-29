@@ -1,4 +1,6 @@
-from .config_base import *
+from .config_base import BaseConfig
+import multiprocessing
+import os
 
 
 # Production settings class

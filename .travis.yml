@@ -7,7 +7,7 @@ python:
   - "3.7"
 sudo: required
 services:
-  # -docker
+  - docker
 env:
   global:
     - TRAVIS=true
@@ -29,10 +29,9 @@ deploy:
 
 # after_failure:
 after_success:
-  - coveralls
-  - codecov -t $CODECOV_TOKEN
-  # - sh .travis/deploy_dockerhub.sh
-  # - test "$TRAVIS_BRANCH"="master" && sh .travis_deploy_heroku.sh
+  - make coverage
+  - make docker
+  - test "$TRAVIS_BRANCH"="master" && make heroku
 
 notifications:
   email: false

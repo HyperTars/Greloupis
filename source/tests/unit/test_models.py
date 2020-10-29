@@ -1,34 +1,36 @@
 import unittest
 import imp
-from source.tests.unit.test_load_data import *
-from source.models.model_user import *
-from source.models.model_errors import *
-import platform as pf
+from source.utils.util_tests import util_tests_python_version, \
+    util_tests_load_data
+from source.models.model_user import User
+from source.models.model_errors import ErrorCode, MongoError, ServiceError, \
+    RouteError, UtilError
 
 
 class TestUserModel(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.data = util_load_test_data()
-        if pf.python_version()[:3] != '3.7' and pf.python_version()[:3] != '3.8':
-            print("Your python ver." + pf.python_version() + " is not supported. Please use python 3.7 or 3.8")
+        cls.data = util_tests_load_data()
+        if util_tests_python_version() is False:
             exit()
 
     def test_user_model_load(self):
         temp_user = self.data['temp_user'][2]
         user = User(**temp_user)
         self.assertEqual(user.user_name, temp_user['user_name'])
-        self.assertEqual(user.user_detail.user_first_name, temp_user['user_detail']['user_first_name'])
-        self.assertEqual(user.user_login[0].user_login_time, temp_user['user_login'][0]['user_login_time'])
+        self.assertEqual(user.user_detail.user_first_name,
+                         temp_user['user_detail']['user_first_name'])
+        self.assertEqual(user.user_login[0].user_login_time,
+                         temp_user['user_login'][0]['user_login_time'])
         self.assertEqual(user.user_follower, temp_user['user_follower'])
 
 
 class TestErrorModel(unittest.TestCase):
+
     @classmethod
     def setUpClass(cls) -> None:
-        if pf.python_version()[:3] != '3.7' and pf.python_version()[:3] != '3.8':
-            print("Your python ver." + pf.python_version() + " is not supported. Please use python 3.7 or 3.8")
+        if util_tests_python_version() is False:
             exit()
 
     def test_error_class(self):
@@ -37,13 +39,15 @@ class TestErrorModel(unittest.TestCase):
     def test_error_code(self):
         # ErrorCode Class
         self.assertEqual(ErrorCode.MONGODB_CONNECTION_FAILURE.get_code(), 4000)
-        self.assertEqual(ErrorCode.MONGODB_CONNECTION_FAILURE.get_msg(), "MongoDB Connection Failure")
+        self.assertEqual(ErrorCode.MONGODB_CONNECTION_FAILURE.get_msg(),
+                         "MongoDB Connection Failure")
 
     def test_mongo_error(self):
         # Raise normal MongoError successfully
         with self.assertRaises(MongoError) as e:
             raise MongoError(ErrorCode.MONGODB_USER_NOT_FOUND)
-        self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_USER_NOT_FOUND)
+        self.assertEqual(e.exception.error_code,
+                         ErrorCode.MONGODB_USER_NOT_FOUND)
 
         # Wrong MongoError Param
         with self.assertRaises(MongoError) as e:
@@ -54,8 +58,10 @@ class TestErrorModel(unittest.TestCase):
         # Get code & msg
         with self.assertRaises(MongoError) as e:
             raise MongoError(ErrorCode.MONGODB_CONNECTION_FAILURE)
-        self.assertEqual(e.exception.get_code(), ErrorCode.MONGODB_CONNECTION_FAILURE.get_code())
-        self.assertEqual(e.exception.get_msg(), ErrorCode.MONGODB_CONNECTION_FAILURE.get_msg())
+        self.assertEqual(e.exception.get_code(),
+                         ErrorCode.MONGODB_CONNECTION_FAILURE.get_code())
+        self.assertEqual(e.exception.get_msg(),
+                         ErrorCode.MONGODB_CONNECTION_FAILURE.get_msg())
 
     def test_service_error(self):
         # Raise normal ServiceError successfully
@@ -72,14 +78,17 @@ class TestErrorModel(unittest.TestCase):
         # Get code & msg
         with self.assertRaises(ServiceError) as e:
             raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
-        self.assertEqual(e.exception.get_code(), ErrorCode.SERVICE_MISSING_PARAM.get_code())
-        self.assertEqual(e.exception.get_msg(), ErrorCode.SERVICE_MISSING_PARAM.get_msg())
+        self.assertEqual(e.exception.get_code(),
+                         ErrorCode.SERVICE_MISSING_PARAM.get_code())
+        self.assertEqual(e.exception.get_msg(),
+                         ErrorCode.SERVICE_MISSING_PARAM.get_msg())
 
     def test_route_error(self):
         # Raise normal ServiceError successfully
         with self.assertRaises(RouteError) as e:
             raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
-        self.assertEqual(e.exception.error_code, ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+        self.assertEqual(e.exception.error_code,
+                         ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
 
         # Wrong ServiceError Param
         with self.assertRaises(RouteError) as e:
@@ -90,14 +99,17 @@ class TestErrorModel(unittest.TestCase):
         # Get code & msg
         with self.assertRaises(RouteError) as e:
             raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
-        self.assertEqual(e.exception.get_code(), ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_code())
-        self.assertEqual(e.exception.get_msg(), ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg())
+        self.assertEqual(e.exception.get_code(),
+                         ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_code())
+        self.assertEqual(e.exception.get_msg(),
+                         ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg())
 
     def test_util_error(self):
         # Raise normal ServiceError successfully
         with self.assertRaises(UtilError) as e:
             raise UtilError(ErrorCode.UTIL_INVALID_PATTERN_PARAM)
-        self.assertEqual(e.exception.error_code, ErrorCode.UTIL_INVALID_PATTERN_PARAM)
+        self.assertEqual(e.exception.error_code,
+                         ErrorCode.UTIL_INVALID_PATTERN_PARAM)
 
         # Wrong ServiceError Param
         with self.assertRaises(UtilError) as e:
@@ -108,8 +120,10 @@ class TestErrorModel(unittest.TestCase):
         # Get code & msg
         with self.assertRaises(UtilError) as e:
             raise UtilError(ErrorCode.UTIL_INVALID_PATTERN_PARAM)
-        self.assertEqual(e.exception.get_code(), ErrorCode.UTIL_INVALID_PATTERN_PARAM.get_code())
-        self.assertEqual(e.exception.get_msg(), ErrorCode.UTIL_INVALID_PATTERN_PARAM.get_msg())
+        self.assertEqual(e.exception.get_code(),
+                         ErrorCode.UTIL_INVALID_PATTERN_PARAM.get_code())
+        self.assertEqual(e.exception.get_msg(),
+                         ErrorCode.UTIL_INVALID_PATTERN_PARAM.get_msg())
 
 
 if __name__ == '__main__':
