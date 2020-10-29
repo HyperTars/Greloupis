@@ -5,6 +5,7 @@
 [![docker status](https://img.shields.io/docker/cloud/build/hypertars/online-video-platform)](https://hub.docker.com/repository/docker/hypertars/online-video-platform)
 [![docker image size](https://img.shields.io/docker/image-size/hypertars/online-video-platform)](https://hub.docker.com/r/hypertars/online-video-platform/tags)
 <!-- [![docker build](https://img.shields.io/docker/cloud/automated/hypertars/online-video-platform)](https://hub.docker.com/r/hypertars/online-video-platform/builds) -->
+<!-- [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier) -->
 
 <!-- [![stars](https://img.shields.io/github/stars/HyperTars/Online-Video-Platform.svg?style=plasticr)](https://github.com/HyperTars/Online-Video-Platform/stargazers) -->
 <!-- [![commit activity](https://img.shields.io/github/commit-activity/y/HyperTars/Online-Video-Platform.svg?style=plasticr)](https://github.com/HyperTars/Online-Video-Platform/commits/master) -->
@@ -59,8 +60,9 @@ make docker_run
 
 
 ### Designs
-#### Coding Style: Naming Convention
-- See full [Naming Convention](documents/NamingConventions.md)
+#### Coding Style
+- Python: [PEP 8 Naming Convention](documents/NamingConventions.md)
+- React: [Prettier](https://github.com/prettier/prettier)
 
 #### Models Design (Entity)
 - See full [Models Design](documents/Models.md)
@@ -89,6 +91,9 @@ make docker_run
 
 ### Tests
 - See full [Test Cases](documents/Test.md)
+- Coverage
+    - [CodeCov](https://codecov.io/gh/HyperTars/Online-Video-Platform)
+    - [Coveralls](https://coveralls.io/github/HyperTars/Online-Video-Platform)
 - Connect to AWS EC2 server:
     ```bash
     make connect
@@ -99,8 +104,6 @@ make docker_run
   - Our [Travis Conf](.travis.yml)
   - Our [Docker Conf](Dockerfile) and [Docker Trigger](.travis/deploy_dockerhub.sh)
   - [Travis-CI page](https://travis-ci.com/github/HyperTars/Online-Video-Platform)
-  - [CodeCov page](https://codecov.io/gh/HyperTars/Online-Video-Platform)
-  - [Coveralls page](https://coveralls.io/github/HyperTars/Online-Video-Platform)
   - [Docker page](https://hub.docker.com/r/hypertars/online-video-platform)
 - We will deploy our project to [Heroku](https://online-video-platform.herokuapp.com/) (Still under construction)
 
