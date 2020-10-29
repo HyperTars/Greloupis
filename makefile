@@ -3,7 +3,7 @@ BACKEND_DIR = backend
 FRONTEND_DIR = frontend
 REQ_DIR = requirements
 TAG = latest
-DOCKER_REPO = hypertars/online-video-platform
+DOCKER_REPO = hypertars/greloupis
 
 FORCE:
 
@@ -49,6 +49,11 @@ docker_run:
 
 docker_status:
 	docker-compose ps
+
+docker_push:
+	- docker login --username $(DOCKER_USER) --password $(DOCKER_PASS)
+	- docker-compose build --pull
+	- docker-compose push
 
 docker_build_backend:
 	cd $(BACKEND_DIR); make docker_build

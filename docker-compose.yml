@@ -11,6 +11,7 @@ services:
       - 3000:3000
     volumes:
       - ./certs:/etc/nginx/certs
+    image: hypertars/greloupis-frontend:latest
 
   backend:
     restart: always
@@ -24,3 +25,4 @@ services:
       - FLASK_ENV=development
       - FLASK_APP=app.py
       - FLASK_DEBUG=1
+    image: hypertars/greloupis-backend:latest

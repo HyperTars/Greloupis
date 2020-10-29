@@ -27,7 +27,7 @@ script:
 # after_failure:
 after_success:
   - make coverage
-  - test "$TRAVIS_BRANCH"="master" && make docker
+  - test "$TRAVIS_BRANCH"="master" && make docker_push
   - test "$TRAVIS_BRANCH"="master" && make heroku
 
 notifications:

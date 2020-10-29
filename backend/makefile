@@ -1,6 +1,6 @@
 LINTER = flake8
 TAG = latest
-DOCKER_REPO = hypertars/online-video-platform
+BACKEND_REPO = hypertars/greloupis-backend
 DOCFILES = $(shell ls *.py | sed 's/.py/.html/')
 
 dev_env:
@@ -26,16 +26,15 @@ docs: $(DOCFILES)
 
 docker_build:
 	- docker login --username $(DOCKER_USER) --password $(DOCKER_PASS)
-	- docker build -f Dockerfile -t $(DOCKER_BUILD):$(TAG) .
-	- docker tag $(DOCKER_BUILD) $(DOCKER_REPO)
-	- docker push $(DOCKER_REPO)
+	- docker build -f Dockerfile -t $(BACKEND_BUILD):$(TAG) .
+	- docker tag $(BACKEND_BUILD) $(BACKEND_REPO)
+	- docker push $(BACKEND_REPO)
 
 docker_run:
-	- docker stop $(docker ps -aq)
-	- docker run -p 5000:5000 $(DOCKER_BUILD)
+	- docker run -p 5000:5000 $(BACKEND_BUILD)
 
 docker_hub:
-	- docker run -p 5000:5000 --rm -it $(DOCKER_REPO):$(TAG)
+	- docker run -p 5000:5000 --rm -it $(BACKEND_REPO):$(TAG)
 
 %.html: %.py
 	pydoc3 -w ./$<
