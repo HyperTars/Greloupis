@@ -6,6 +6,7 @@ node_module/
 *node_module*
 coverage.xml
 frontend/coverage/
+frontend/coverage/*
 
 ### VS Code ###
 vs_code/

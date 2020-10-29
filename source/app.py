@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, print_function
-from flask import Flask
+from flask import Flask, render_template
 from source.apiv1 import blueprint
 from source.settings import config
 import os
@@ -9,6 +9,12 @@ import os
 
 app = Flask(__name__)
 
+@app.route("/")
+def index():
+    APP_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    print(APP_PATH)
+    TEMPLATE_PATH = os.path.join(APP_PATH, 'source/templates/')
+    return render_template('index.html')
 """
 @app.before_request
 def before_request():
