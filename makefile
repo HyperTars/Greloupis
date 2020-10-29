@@ -1,5 +1,6 @@
 LINTER = flake8
 BACKEND_DIR = backend
+FRONTEND_DIR = frontend
 REQ_DIR = requirements
 TAG = latest
 DOCKER_REPO = hypertars/online-video-platform
@@ -40,14 +41,26 @@ connect:
 	- chmod 400 documents/DevOps.pem
 	- ssh -i "documents/DevOps.pem" $(EC2_SERVER)
 
-docker:
-	cd $(BACKEND_DIR); make docker
+docker_build:
+	docker-compose build
 
 docker_run:
+	docker-compose up
+
+docker_status:
+	docker-compose ps
+
+docker_build_backend:
+	cd $(BACKEND_DIR); make docker_build
+
+docker_run_backend:
 	cd $(BACKEND_DIR); make docker_run
 
-docker_test:
-	cd $(BACKEND_DIR); make docker_test
+docker_build_frontend:
+	cd $(FRONTEND_DIR); make docker_build
+
+docker_run_frontend:
+	cd $(FRONTEND_DIR); make docker_run
 
 docker_clean:
 	- docker stop $(docker ps -aq)

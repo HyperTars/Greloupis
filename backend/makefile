@@ -4,7 +4,6 @@ DOCKER_REPO = hypertars/online-video-platform
 DOCFILES = $(shell ls *.py | sed 's/.py/.html/')
 
 dev_env:
-	# pip3 install --no-index --find-links=site-packages/ -r requirements.txt
 	pip3 install -r requirements.txt
 	
 run:
@@ -25,18 +24,18 @@ coverage:
 
 docs: $(DOCFILES)
 
-docker:
+docker_build:
 	- docker login --username $(DOCKER_USER) --password $(DOCKER_PASS)
 	- docker build -f Dockerfile -t $(DOCKER_BUILD):$(TAG) .
 	- docker tag $(DOCKER_BUILD) $(DOCKER_REPO)
 	- docker push $(DOCKER_REPO)
 
 docker_run:
-	- docker run -p 5000:5000 --rm -it $(DOCKER_REPO):$(TAG)
-
-docker_test:
 	- docker stop $(docker ps -aq)
 	- docker run -p 5000:5000 $(DOCKER_BUILD)
+
+docker_hub:
+	- docker run -p 5000:5000 --rm -it $(DOCKER_REPO):$(TAG)
 
 %.html: %.py
 	pydoc3 -w ./$<
