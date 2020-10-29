@@ -1,5 +1,5 @@
 LINTER = flake8
-SRC_DIR = source
+BACKEND_DIR = backend
 REQ_DIR = requirements
 TAG = latest
 DOCKER_REPO = hypertars/online-video-platform
@@ -8,34 +8,34 @@ FORCE:
 
 prod:	dev_env tests github
 
-run:    dev_env
-	python3 -m source.app FLASK_APP=app flask run --host=0.0.0.0 --port=5000
+run:
+	cd $(BACKEND_DIR); make run
 
 github:	FORCE
 	- git commit -a
 	- git push origin
 
-tests:	unit report lint
+tests:	dev_env unit report lint
 	echo "unittest and lint check finished"
 
 unit:   FORCE
-	coverage run --source=source -m pytest --disable-pytest-warnings
+	cd $(BACKEND_DIR); make unit
 
 lint:	FORCE
-	$(LINTER) $(SRC_DIR)/. --exit-zero --ignore=E501
+	$(LINTER) $(BACKEND_DIR)/. --exit-zero --ignore=E501
 
 dev_env:	FORCE
 	pip3 install -r $(REQ_DIR)/requirements-dev.txt
 
 docs:	#FORCE
-	cd $(SRC_DIR); make docs
+	cd $(BACKEND_DIR); make docs
 
 report:
-	coverage report
+	cd $(BACKEND_DIR); make report
 
 coverage:
-	- coveralls
-	- codecov -t $(CODECOV_TOKEN)
+	- cd $(BACKEND_DIR); coveralls
+	- cd $(BACKEND_DIR); codecov -t $(CODECOV_TOKEN)
 
 connect:
 	- chmod 400 documents/DevOps.pem
@@ -49,6 +49,10 @@ docker:
 
 docker_run:
 	- docker run -p 5000:5000 --rm -it $(DOCKER_REPO):$(TAG)
+
+docker_test:
+	- docker stop $(docker ps -aq)
+	- docker run -p 5000:5000 $(DOCKER_BUILD)
 
 heroku:
 	- docker login --username _ --password=$(HEROKU_API_KEY) registry.heroku.com

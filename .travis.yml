@@ -1,6 +1,3 @@
-branches:
-  only:
-  - master
 language: python
 python:
   - "3.8"
@@ -17,20 +14,20 @@ install: true
 script:
   - make dev_env
   - make tests
-deploy:
-  provider: releases
-  api_key: $GITHUB_TOKEN
-  file_glob: true
-  file:
-    - source/*
-  skip_cleanup: true
-  on:
-    tags: true
+#deploy:
+#  provider: releases
+#  api_key: $GITHUB_TOKEN
+#  file_glob: true
+#  file:
+#    - backend/*
+#  skip_cleanup: true
+#  on:
+#    tags: true
 
 # after_failure:
 after_success:
   - make coverage
-  - make docker
+  - test "$TRAVIS_BRANCH"="master" && make docker
   - test "$TRAVIS_BRANCH"="master" && make heroku
 
 notifications:
