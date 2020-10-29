@@ -4,7 +4,10 @@ import {BrowserRouter as Router} from 'react-router-dom';
 class App extends Component {
   
   render() {
-    let url = "http://localhost:5000/user/5f88f883e6ac4f89900ac983"
+    let LOCAL_BASE_URL = "127.0.0.1"
+    let TEST_BASE_URL = "0.0.0.0"
+
+    let url = `http://${TEST_BASE_URL}:5000/user/5f88f883e6ac4f89900ac983`
 
     fetch(url, {credentials: "include"})
       .then(response => response.json());
