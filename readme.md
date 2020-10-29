@@ -5,8 +5,8 @@
 [![docker status](https://img.shields.io/docker/cloud/build/hypertars/online-video-platform)](https://hub.docker.com/repository/docker/hypertars/online-video-platform)
 [![docker image size](https://img.shields.io/docker/image-size/hypertars/online-video-platform)](https://hub.docker.com/r/hypertars/online-video-platform/tags)
 <!-- [![docker build](https://img.shields.io/docker/cloud/automated/hypertars/online-video-platform)](https://hub.docker.com/r/hypertars/online-video-platform/builds) -->
-<!-- [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier) -->
 <!-- [![tested with jest](https://img.shields.io/badge/tested_with-jest-99424f.svg)](https://github.com/facebook/jest) -->
+<!-- [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier) -->
 
 <!-- [![stars](https://img.shields.io/github/stars/HyperTars/Online-Video-Platform.svg?style=plasticr)](https://github.com/HyperTars/Online-Video-Platform/stargazers) -->
 <!-- [![commit activity](https://img.shields.io/github/commit-activity/y/HyperTars/Online-Video-Platform.svg?style=plasticr)](https://github.com/HyperTars/Online-Video-Platform/commits/master) -->
@@ -59,11 +59,16 @@ make docker_run
 
     ![API_Preview](documents/API_Swagger.png)
 
+#### Make Prod
+- To make prod, run
+```bash
+make prod
+```
 
 ### Designs
 #### Coding Style
-- Python: [PEP 8 Naming Convention](documents/NamingConventions.md)
-- React: [Prettier](https://github.com/prettier/prettier)
+- Python: [PEP8](https://www.python.org/dev/peps/pep-0008/)
+- React: [ES6](http://es6-features.org/)
 
 #### Models Design (Entity)
 - See full [Models Design](documents/Models.md)
@@ -93,20 +98,18 @@ make docker_run
 ### Tests
 - See full [Test Cases](documents/Test.md)
 - Coverage
-    - [CodeCov](https://codecov.io/gh/HyperTars/Online-Video-Platform)
-    - [Coveralls](https://coveralls.io/github/HyperTars/Online-Video-Platform)
+  - [CodeCov](https://codecov.io/gh/HyperTars/Online-Video-Platform)
+  - [Coveralls](https://coveralls.io/github/HyperTars/Online-Video-Platform)
 - Connect to AWS EC2 server:
     ```bash
     make connect
     ```
 
 ### CI / CD 
-- We use `Travis-CI`, `CodeCov`, `Coveralls` and `Docker` to do CI/CD works
-  - Our [Travis Conf](.travis.yml)
-  - Our [Docker Conf](Dockerfile) and [Docker Trigger](.travis/deploy_dockerhub.sh)
-  - [Travis-CI page](https://travis-ci.com/github/HyperTars/Online-Video-Platform)
-  - [Docker page](https://hub.docker.com/r/hypertars/online-video-platform)
-- We will deploy our project to [Heroku](https://online-video-platform.herokuapp.com/) (Still under construction)
+- We use `Travis-CI`, `Docker` and `Heroku` to do CI/CD works
+  - Our [Travis Conf](.travis.yml) and [Travis-CI Page](https://travis-ci.com/github/HyperTars/Online-Video-Platform)
+  - Our [Docker Conf](Dockerfile) and [Docker Page](https://hub.docker.com/r/hypertars/online-video-platform)
+  - We will deploy our project to [Heroku](https://online-video-platform.herokuapp.com/) (Still under construction)
 
 
 ### Contributors
@@ -116,3 +119,4 @@ make docker_run
   [HyperTars](https://github.com/HyperTars) | Wenzhou Li | [wl2154](mailto:wl2154@nyu.edu)
   [MikeYan01](https://github.com/MikeYan01) | Linyi Yan | [ly1333](mailto:ly1333@nyu.edu)
   [FatBin](https://github.com/FatBin) | Xuanbin Luo | [xl2806](mailto:xl2806@nyu.edu)
+

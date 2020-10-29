@@ -1,6 +1,3 @@
-branches:
-  only:
-  - master
 language: python
 python:
   - "3.8"
@@ -29,9 +26,8 @@ deploy:
 
 # after_failure:
 after_success:
-  - coveralls
-  - codecov -t $CODECOV_TOKEN
-  - make docker
+  - make coverage
+  - test "$TRAVIS_BRANCH"="master" && make docker
   - test "$TRAVIS_BRANCH"="master" && make heroku
 
 notifications:
