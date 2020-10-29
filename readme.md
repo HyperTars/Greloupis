@@ -28,7 +28,7 @@
 ### Setup Guide
 
 #### Requirement
-- Currently we **only support `Python 3.7 / 3.8` (3.6 or below and 3.9 are not supported)**
+- Currently, we **only support `Python 3.7 / 3.8` (3.6 or below and 3.9 are not supported)**
 - npm
 
 #### Install dependencies
@@ -40,31 +40,45 @@ make dev_env
 #### Run test
 - To run test, run
 ```bash
-make test
+make tests
 ```
-
-#### Start server
-- To start server, run
-```bash
-make run
-# OR
-python -m source.app FLASK_APP=app flask run --host=127.0.0.1 --port=8000
-```
-
-- Or use Docker
-```bash
-make docker_run
-```
-
-- You should be able to visit http://localhost:5000/ now and see a list of swagger APIs.
-
-    ![API_Preview](documents/API_Swagger.png)
 
 #### Make Prod
 - To make prod, run
 ```bash
 make prod
 ```
+
+#### Start server
+- To start both frontend and backend, run
+```bash
+make docker_run
+```
+
+- To start backend, run
+```bash
+# from docker hub
+make docker_run_backend
+# from local build
+make docker_build_backend
+# OR
+python backend/app.py FLASK_APP=app flask run --host=127.0.0.1 --port=8000
+```
+
+- To start frontend, run
+```bash
+# from docker hub
+make docker_run_frontend
+# from local build
+make docker_build_frontend
+# OR open frontend/ and
+npm install
+npm run build
+```
+
+- You should be able to view our project
+    - Frontend: 0.0.0.0/3000
+    - Backend: 0.0.0.0/5000
 
 ### Designs
 #### Coding Style
@@ -109,7 +123,7 @@ make prod
 ### CI / CD 
 - We use `Travis-CI`, `Docker` and `Heroku` to do CI/CD works
   - Our [Travis Conf](.travis.yml) and [Travis-CI Page](https://travis-ci.com/github/HyperTars/Online-Video-Platform)
-  - Our [Docker Conf](docker-compose.yml) and [Docker Frontend](https://hub.docker.com/r/hypertars/greloupis-frontend/tags) [Docker Backend](https://hub.docker.com/r/hypertars/greloupis-backend/tags)
+  - Our [Docker Conf](docker-compose.yml) and [Docker Frontend](https://hub.docker.com/r/hypertars/greloupis-frontend/tags) | [Docker Backend](https://hub.docker.com/r/hypertars/greloupis-backend/tags)
   - We will deploy our project to [Heroku](https://online-video-platform.herokuapp.com/) (Still under construction)
 
 

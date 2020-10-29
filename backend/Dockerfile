@@ -3,5 +3,5 @@ RUN mkdir -p /usr/src/app
 COPY . /usr/src/app
 WORKDIR /usr/src/app
 RUN make dev_env
-ENTRYPOINT ["make", "run"]
+CMD ["make", "run"]
 # CMD [""]

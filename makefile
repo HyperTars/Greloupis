@@ -56,16 +56,16 @@ docker_push:
 	- docker-compose push
 
 docker_build_backend:
-	cd $(BACKEND_DIR); make docker_build
+	cd $(BACKEND_DIR); make docker_build docker_run
 
 docker_run_backend:
-	cd $(BACKEND_DIR); make docker_run
+	cd $(BACKEND_DIR); make docker_hub
 
 docker_build_frontend:
-	cd $(FRONTEND_DIR); make docker_build
+	cd $(FRONTEND_DIR); make docker_build docker_run
 
 docker_run_frontend:
-	cd $(FRONTEND_DIR); make docker_run
+	cd $(FRONTEND_DIR); make docker_hub
 
 docker_clean:
 	- docker stop $(docker ps -aq)
