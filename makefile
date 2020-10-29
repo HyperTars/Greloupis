@@ -23,7 +23,7 @@ unit:   FORCE
 	coverage run --source=source -m pytest --disable-pytest-warnings
 
 lint:	FORCE
-	$(LINTER) $(SRC_DIR)/. --exit-zero --ignore=E501,F401,F403,F405
+	$(LINTER) $(SRC_DIR)/. --exit-zero --ignore=E501
 
 dev_env:	FORCE
 	pip3 install -r $(REQ_DIR)/requirements-dev.txt

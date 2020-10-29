@@ -1,10 +1,17 @@
 import unittest
-from source.utils.util_hash import *
-from source.utils.util_validator import *
-from source.utils.util_request_filter import *
-from source.utils.util_logger import *
-from source.utils.util_error_handler import *
-from source.utils.util_pattern import *
+import re
+from source.utils.util_hash import util_hash_sha512, util_hash_encode, \
+    util_hash_create_salt, util_hash_md5_with_salt
+from source.utils.util_validator import is_valid_id
+from source.utils.util_request_filter import \
+    util_request_filter_malicious_ip, util_request_filter_xss
+from source.utils.util_logger import util_logger_handler, RotatingFileHandler
+from source.utils.util_error_handler import util_error_handler
+from source.utils.util_pattern import util_pattern_format_param, \
+    util_pattern_build
+from source.models.model_errors import ErrorCode, ServiceError, UtilError, \
+    RouteError, MongoError
+from source.utils.util_serializer import util_serializer_dict_to_json
 
 
 class TestUtilErrorHandler(unittest.TestCase):
@@ -60,7 +67,8 @@ class TestUtilLogger(unittest.TestCase):
 
     def test_util_logger_handler(self):
         file_name = "logs.txt"
-        self.assertEqual(type(handler(file_name)), RotatingFileHandler)
+        self.assertEqual(type(util_logger_handler(file_name)),
+                         RotatingFileHandler)
 
 
 class TestUtilPattern(unittest.TestCase):
@@ -113,20 +121,24 @@ class TestUtilPattern(unittest.TestCase):
     def test_util_test_pattern_build(self):
         test_str = "111"
         kw = util_pattern_build(user_reg_date=test_str, exact=False)
-        self.assertEqual(kw['user_reg_date'], re.compile('.*' + test_str + '.*'))
+        self.assertEqual(kw['user_reg_date'],
+                         re.compile('.*' + test_str + '.*'))
 
         kw = util_pattern_build(video_tag=test_str, exact=False)
         self.assertEqual(kw['video_tag'], re.compile('.*' + test_str + '.*'))
 
         kw = util_pattern_build(video_category=test_str, exact=False)
-        self.assertEqual(kw['video_category'], re.compile('.*' + test_str + '.*'))
+        self.assertEqual(kw['video_category'],
+                         re.compile('.*' + test_str + '.*'))
 
         kw = util_pattern_build(video_op_comment=test_str, exact=False)
-        self.assertEqual(kw['video_op_comment'], re.compile('.*' + test_str + '.*'))
+        self.assertEqual(kw['video_op_comment'],
+                         re.compile('.*' + test_str + '.*'))
 
         with self.assertRaises(UtilError) as e:
             util_pattern_build(nonsense=test_str)
-        self.assertEqual(e.exception.error_code, ErrorCode.UTIL_INVALID_PATTERN_PARAM)
+        self.assertEqual(e.exception.error_code,
+                         ErrorCode.UTIL_INVALID_PATTERN_PARAM)
 
 
 class TestUtilRequestFilter(unittest.TestCase):

@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, print_function
-from flask import Flask, request, g, Blueprint, session, url_for, redirect, render_template, render_template_string
-from flask_restx import Resource, Api, fields, marshal_with, reqparse, Namespace
-import flask_wtf
-from source.service.service_user import *
-from source.utils.util_serializer import *
-from source.settings import *
+from flask_restx import Namespace
+
+# from flask import Flask, request, g, Blueprint, session, url_for, redirect, render_template, render_template_string
+# from flask_restx import Resource, Api, fields, marshal_with, reqparse,
+# import flask_wtf
+# from source.service.service_user import *
+# from source.utils.util_serializer import *
+# from source.settings import *
 
 auth = Namespace('auth', description='Auth APIs')
 users = []
