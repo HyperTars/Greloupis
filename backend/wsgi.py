@@ -1,4 +1,7 @@
 from app import app
+from settings import config
+from apiv1 import blueprint
+import os
 
 
 if __name__ == "__main__":

@@ -5,6 +5,7 @@ from apiv1 import blueprint
 from settings import config
 from flask_cors import CORS
 import os
+
 # from source.utils.util_request_filter import *
 # from flask import request, redirect, session
 
@@ -19,12 +20,15 @@ app = Flask(__name__)
 CORS(app, resources={r'/*': {'origins': frontend_conf['ORIGINS']}},
      supports_credentials=True)
 
+
 @app.route("/")
 def index():
     APP_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     print(APP_PATH)
-    TEMPLATE_PATH = os.path.join(APP_PATH, 'source/templates/')
+    os.path.join(APP_PATH, 'source/templates/')
     return render_template('index.html')
+
+
 """
 @app.before_request
 def before_request():
