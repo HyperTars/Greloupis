@@ -2,7 +2,7 @@
 from __future__ import absolute_import, print_function
 from flask import Flask
 from source.apiv1 import blueprint
-from source.settings import *
+from source.settings import config
 import os
 # from source.utils.util_request_filter import *
 # from flask import request, redirect, session

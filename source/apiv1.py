@@ -2,7 +2,7 @@
 from __future__ import absolute_import, print_function
 from flask import Blueprint
 from flask_restx import Api
-from source.settings import *
+from source.settings import config
 
 # from source.routes.route_auth import auth
 from source.routes.route_user import user

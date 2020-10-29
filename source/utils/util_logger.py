@@ -5,7 +5,7 @@
 from logging.handlers import RotatingFileHandler
 
 
-def handler(file_name):
+def util_logger_handler(file_name):
     return RotatingFileHandler(file_name, maxBytes=102400, delay=False, encoding='UTF-8', backupCount=15)
 
 # def log_config(file_name, level=logging.DEBUG):

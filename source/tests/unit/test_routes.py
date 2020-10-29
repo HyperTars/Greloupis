@@ -1,11 +1,24 @@
 import unittest
 from mongoengine.connection import disconnect
-from source.routes.route_search import *
-from source.routes.route_user import *
-from source.routes.route_video import *
+from source.routes.route_search import RouteSearchUser, RouteSearchVideo
+from source.routes.route_user import UserUserId, UserUserIdStar, \
+    UserUserIdComment, UserUserIdDislike, UserUserIdLike, UserUserIdProcess
+from source.routes.route_video import Video, VideoVideoId, \
+    VideoVideoIdComment, VideoVideoIdCommentUserId, VideoVideoIdDislike, \
+    VideoVideoIdDislikeUserId, VideoVideoIdLike, VideoVideoIdLikeUserId, \
+    VideoVideoIdProcessUserId, VideoVideoIdStar, VideoVideoIdStarUserId, \
+    VideoVideoIdView
 from source.settings import config
-from source.utils.util_serializer import *
-from source.utils.util_tests import *
+from source.utils.util_serializer import util_serializer_mongo_results_to_array
+from source.utils.util_tests import util_tests_load_data, \
+    util_tests_python_version
+from source.service.service_user import service_user_get_comment, \
+    service_user_get_dislike, service_user_get_info, service_user_get_like, \
+    service_user_get_process, service_user_get_star
+from source.utils.util_error_handler import util_error_handler
+from source.db.query_video import query_video_get_by_video_id, \
+    query_video_get_by_title
+from source.models.model_errors import ErrorCode, ServiceError
 from flask import Flask
 import copy
 
@@ -341,7 +354,7 @@ class TestRouteVideo(unittest.TestCase):
 
         # add view error case
         with app.test_request_context('/video/' + wrong_id + '/view', data={}):
-            response_json = VideoVideoIdView().put(temp_video_id, self.conf).get_json()
+            VideoVideoIdView().put(temp_video_id, self.conf).get_json()
             self.assertEqual(error_json["code"], 404)
             self.assertEqual(error_json["message"], ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND.get_msg())
 

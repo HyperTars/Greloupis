@@ -1,5 +1,5 @@
 import re
-from source.models.model_errors import *
+from source.models.model_errors import ErrorCode, UtilError
 
 
 def util_pattern_format_param(**kw):

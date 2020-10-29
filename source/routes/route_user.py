@@ -2,10 +2,13 @@
 from __future__ import absolute_import, print_function
 from flask import request
 from flask_restx import Resource, fields, Namespace
-from source.service.service_user import *
-from source.utils.util_error_handler import *
-from source.settings import *
-from source.utils.util_serializer import *
+from source.service.service_user import service_user_get_comment, \
+    service_user_get_dislike, service_user_get_info, service_user_get_like, \
+    service_user_get_process, service_user_get_star
+from source.utils.util_error_handler import util_error_handler
+from source.settings import config
+from source.utils.util_serializer import util_serializer_api_response
+from source.models.model_errors import MongoError, RouteError, ServiceError
 # from source.utils.util_validator import *
 # from flask import Flask, g, Blueprint
 # from flask_restx import Api, marshal_with, reqparse
@@ -157,7 +160,9 @@ class UserUserId(Resource):
             user_id = request.url.split('/')[-1]
 
             result = service_user_get_info(conf=conf, user_id=user_id)
-            return util_serializer_api_response(200, body=result, msg="Successfully get user information")
+            return util_serializer_api_response(200, body=result,
+                                                msg="Get user info "
+                                                    "successfully")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
@@ -222,7 +227,9 @@ class UserUserIdLike(Resource):
             user_id = request.url.split('/')[-2]
 
             like_result = service_user_get_like(conf=conf, user_id=user_id)
-            return util_serializer_api_response(200, body=like_result, msg="Successfully get user likes")
+            return util_serializer_api_response(200, body=like_result,
+                                                msg="Get user likes "
+                                                    "successfully")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
@@ -243,8 +250,11 @@ class UserUserIdDislike(Resource):
         try:
             user_id = request.url.split('/')[-2]
 
-            dislike_result = service_user_get_dislike(conf=conf, user_id=user_id)
-            return util_serializer_api_response(200, body=dislike_result, msg="Successfully get user dislikes")
+            dislike_result = service_user_get_dislike(conf=conf,
+                                                      user_id=user_id)
+            return util_serializer_api_response(200, body=dislike_result,
+                                                msg="Get user dislikes "
+                                                    "successfully")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
@@ -266,7 +276,9 @@ class UserUserIdStar(Resource):
             user_id = request.url.split('/')[-2]
 
             star_result = service_user_get_star(conf=conf, user_id=user_id)
-            return util_serializer_api_response(200, body=star_result, msg="Successfully get user comments")
+            return util_serializer_api_response(200, body=star_result,
+                                                msg="Get user comments "
+                                                    "successfully")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
@@ -287,8 +299,11 @@ class UserUserIdComment(Resource):
         try:
             user_id = request.url.split('/')[-2]
 
-            comment_result = service_user_get_comment(conf=conf, user_id=user_id)
-            return util_serializer_api_response(200, body=comment_result, msg="Successfully get user comments")
+            comment_result = service_user_get_comment(conf=conf,
+                                                      user_id=user_id)
+            return util_serializer_api_response(200, body=comment_result,
+                                                msg="Get user comments "
+                                                    "successfully")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
@@ -309,7 +324,10 @@ class UserUserIdProcess(Resource):
         try:
             user_id = request.url.split('/')[-2]
 
-            process_result = service_user_get_process(conf=conf, user_id=user_id)
-            return util_serializer_api_response(200, body=process_result, msg="Successfully get user processes")
+            process_result = service_user_get_process(conf=conf,
+                                                      user_id=user_id)
+            return util_serializer_api_response(200, body=process_result,
+                                                msg="Get user processes "
+                                                    "successfully")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)

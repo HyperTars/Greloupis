@@ -1,4 +1,4 @@
-from .config_base import *
+from .config_base import BaseConfig
 
 
 # Development settings class

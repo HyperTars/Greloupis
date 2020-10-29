@@ -1,6 +1,6 @@
-from source.models.model_video import *
+from source.models.model_video import Video, VideoURI
 from source.db.query_user import query_user_get_by_id
-from source.models.model_errors import *
+from source.models.model_errors import MongoError, ErrorCode
 from source.utils.util_time import get_time_now_utc
 import bson
 import re
