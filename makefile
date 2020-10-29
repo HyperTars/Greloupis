@@ -10,9 +10,8 @@ prod:	dev_env tests github
 
 run:    dev_env
 	python3 -m source.app FLASK_APP=app flask run --host=0.0.0.0 --port=5000
-	
+
 github:	FORCE
-	- git add .
 	- git commit -a
 	- git push origin
 

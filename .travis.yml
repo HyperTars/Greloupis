@@ -29,8 +29,7 @@ deploy:
 
 # after_failure:
 after_success:
-  - coveralls
-  - codecov -t $CODECOV_TOKEN
+  - make coverage
   - make docker
   - test "$TRAVIS_BRANCH"="master" && make heroku
 
