@@ -75,10 +75,9 @@ class TestServiceSearchUser(unittest.TestCase):
                     }
             }
         ]
-        self.assertEqual(service_search_user(self.conf, aggregate=True,
-                                             search_dict=pipeline)[0][
-                             'user_name'],
-                         self.data['const_user'][0]['user_name'])
+        result = service_search_user(self.conf, aggregate=True,
+                                     search_dict=pipeline)[0]['user_name']
+        self.assertEqual(result, self.data['const_user'][0]['user_name'])
 
         # Raise Error: ErrorCode.SERVICE_PARAM_SLICE_NOT_SUPPORT
         with self.assertRaises(ServiceError) as e:
@@ -88,44 +87,39 @@ class TestServiceSearchUser(unittest.TestCase):
 
     def test_search_user_by_contains(self):
         user = self.data['const_user'][0]
-        self.assertEqual(
-            service_search_user_by_contains(user_id=user['_id']['$oid'])[0][
-                'user_name'],
-            user['user_name'])
-        self.assertEqual(
-            service_search_user_by_contains(user_email=user['user_email'])[0][
-                'user_name'],
-            user['user_name'])
-        self.assertEqual(service_search_user_by_contains(
+        res = service_search_user_by_contains(user_id=user['_id']['$oid'])
+        self.assertEqual(res[0]['user_name'], user['user_name'])
+        res = service_search_user_by_contains(user_email=user['user_email'])
+        self.assertEqual(res[0]['user_name'], user['user_name'])
+        res = service_search_user_by_contains(
             user_first_name=user['user_detail']['user_first_name'])
-                         [0]['user_name'], user['user_name'])
-        self.assertEqual(service_search_user_by_contains(
+        self.assertEqual(res[0]['user_name'], user['user_name'])
+        res = service_search_user_by_contains(
             user_last_name=user['user_detail']['user_last_name'])
-                         [0]['user_name'], user['user_name'])
-        self.assertEqual(service_search_user_by_contains(
+        self.assertEqual(res[0]['user_name'], user['user_name'])
+        res = service_search_user_by_contains(
             user_phone=user['user_detail']['user_phone'])
-                         [0]['user_name'], user['user_name'])
-        self.assertEqual(service_search_user_by_contains(
+        self.assertEqual(res[0]['user_name'], user['user_name'])
+        res = service_search_user_by_contains(
             user_street1=user['user_detail']['user_street1'])
-                         [0]['user_name'], user['user_name'])
-        self.assertEqual(service_search_user_by_contains(
+        self.assertEqual(res[0]['user_name'], user['user_name'])
+        res = service_search_user_by_contains(
             user_street2=user['user_detail']['user_street2'])
-                         [0]['user_name'], user['user_name'])
-        self.assertEqual(service_search_user_by_contains(
+        self.assertEqual(res[0]['user_name'], user['user_name'])
+        res = service_search_user_by_contains(
             user_city=user['user_detail']['user_city'])
-                         [0]['user_name'], user['user_name'])
-        self.assertEqual(service_search_user_by_contains(
+        self.assertEqual(res[0]['user_name'], user['user_name'])
+        res = service_search_user_by_contains(
             user_state=user['user_detail']['user_state'])
-                         [0]['user_name'], user['user_name'])
-        self.assertEqual(service_search_user_by_contains(
+        self.assertEqual(res[0]['user_name'], user['user_name'])
+        res = service_search_user_by_contains(
             user_country=user['user_detail']['user_country'])
-                         [0]['user_name'], user['user_name'])
-        self.assertEqual(service_search_user_by_contains(
+        self.assertEqual(res[0]['user_name'], user['user_name'])
+        res = service_search_user_by_contains(
             user_zip=user['user_detail']['user_zip'])
-                         [0]['user_name'], user['user_name'])
-        self.assertEqual(
-            service_search_user_by_contains(user_status=user['user_status'])
-            [0]['user_name'], user['user_name'])
+        self.assertEqual(res[0]['user_name'], user['user_name'])
+        res = service_search_user_by_contains(user_status=user['user_status'])
+        self.assertEqual(res[0]['user_name'], user['user_name'])
 
         # Raise Error: ErrorCode.SERVICE_PARAM_SLICE_NOT_SUPPORT
         with self.assertRaises(ServiceError) as e:
@@ -312,33 +306,29 @@ class TestServiceSearchVideo(unittest.TestCase):
                     }
             }
         ]
-        self.assertEqual(service_search_video(self.conf, aggregate=True,
-                                              search_dict=pipeline)[0][
-                             'video_title'],
+        res = service_search_video(self.conf, aggregate=True,
+                                   search_dict=pipeline)
+        self.assertEqual(res[0]['video_title'],
                          self.data['const_video'][0]['video_title'])
 
     def test_search_video_by_contains(self):
         video = self.data['const_video'][0]
-        self.assertEqual(
-            service_search_video_by_contains(video_id=video['_id']['$oid'])[0]
-            ['video_title'], video['video_title'])
-        self.assertEqual(
-            service_search_video_by_contains(video_title=video['video_title'])[
-                0]
-            ['video_title'], video['video_title'])
-        self.assertEqual(service_search_video_by_contains(
-            video_channel=video['video_channel'][0:2])[0]
-                         ['video_title'], video['video_title'])
-        self.assertEqual(service_search_video_by_contains(
-            video_category=video['video_category'][0])[0]
-                         ['video_title'], video['video_title'])
-        self.assertEqual(
-            service_search_video_by_contains(video_tag=video['video_tag'][0])[
-                0]
-            ['video_title'], video['video_title'])
-        self.assertEqual(service_search_video_by_contains(
-            video_description=video['video_description'][1:4])[0]
-                         ['video_title'], video['video_title'])
+        res = service_search_video_by_contains(video_id=video['_id']['$oid'])
+        self.assertEqual(res[0]['video_title'], video['video_title'])
+        res = service_search_video_by_contains(
+            video_title=video['video_title'])
+        self.assertEqual(res[0]['video_title'], video['video_title'])
+        res = service_search_video_by_contains(
+            video_channel=video['video_channel'][0:2])
+        self.assertEqual(res[0]['video_title'], video['video_title'])
+        res = service_search_video_by_contains(
+            video_category=video['video_category'][0])
+        self.assertEqual(res[0]['video_title'], video['video_title'])
+        res = service_search_video_by_contains(video_tag=video['video_tag'][0])
+        self.assertEqual(res[0]['video_title'], video['video_title'])
+        res = service_search_video_by_contains(
+            video_description=video['video_description'][1:4])
+        self.assertEqual(res[0]['video_title'], video['video_title'])
 
         # Raise Error: ErrorCode.SERVICE_PARAM_SLICE_NOT_SUPPORT
         with self.assertRaises(ServiceError) as e:
@@ -453,16 +443,14 @@ class TestServiceUser(unittest.TestCase):
 
     def test_c_service_user_get_info(self):
         # Get successfully
-        self.assertEqual(service_user_get_info(self.conf,
-                                               self.data['const_user'][0][
-                                                   '_id']['$oid'])['user'][0][
-                             'user_name'],
+        res = service_user_get_info(self.conf,
+                                    self.data['const_user'][0]['_id']['$oid'])
+        self.assertEqual(res['user'][0]['user_name'],
                          self.data['const_user'][0]['user_name'])
 
-        self.assertEqual(service_user_get_info(self.conf,
-                                               self.data['const_user'][1][
-                                                   '_id']['$oid'])['user'][0][
-                             'user_name'],
+        res = service_user_get_info(self.conf,
+                                    self.data['const_user'][1]['_id']['$oid'])
+        self.assertEqual(res['user'][0]['user_name'],
                          self.data['const_user'][1]['user_name'])
 
         # Raise Error: ErrorCode.SERVICE_INVALID_ID_OBJ
@@ -479,9 +467,9 @@ class TestServiceUser(unittest.TestCase):
 
     def test_d_service_user_get_like(self):
         # Get successfully
-        self.assertEqual(len(service_user_get_like(self.conf,
-                                                   self.data['const_user'][0][
-                                                       '_id']['$oid'])), 0)
+        res = service_user_get_like(self.conf,
+                                    self.data['const_user'][0]['_id']['$oid'])
+        self.assertEqual(len(res), 0)
 
         # Raise Error: ErrorCode.SERVICE_INVALID_ID_OBJ
         with self.assertRaises(ServiceError) as e:
@@ -504,10 +492,9 @@ class TestServiceUser(unittest.TestCase):
 
     def test_e_service_user_get_dislike(self):
         # Get successfully
-        self.assertEqual(service_user_get_dislike(self.conf,
-                                                  self.data['const_user'][0][
-                                                      '_id']['$oid'])[0][
-                             'user_id'],
+        oid = self.data['const_user'][0]['_id']['$oid']
+        res = service_user_get_dislike(self.conf, oid)
+        self.assertEqual(res[0]['user_id'],
                          self.data['const_user'][0]['_id']['$oid'])
 
         # Raise Error: ErrorCode.SERVICE_INVALID_ID_OBJ
@@ -531,10 +518,9 @@ class TestServiceUser(unittest.TestCase):
 
     def test_f_service_user_get_comment(self):
         # Get successfully
-        self.assertEqual(service_user_get_comment(self.conf,
-                                                  self.data['const_user'][0][
-                                                      '_id']['$oid'])[0][
-                             'user_id'],
+        oid = self.data['const_user'][0]['_id']['$oid']
+        res = service_user_get_comment(self.conf, oid)
+        self.assertEqual(res[0]['user_id'],
                          self.data['const_user'][0]['_id']['$oid'])
 
         # Raise Error: ErrorCode.SERVICE_INVALID_ID_OBJ
@@ -558,9 +544,9 @@ class TestServiceUser(unittest.TestCase):
 
     def test_g_service_user_get_star(self):
         # Get successfully
-        self.assertEqual(len(service_user_get_star(self.conf,
-                                                   self.data['const_user'][0][
-                                                       '_id']['$oid'])), 1)
+        res = service_user_get_star(self.conf,
+                                    self.data['const_user'][0]['_id']['$oid'])
+        self.assertEqual(len(res), 1)
 
         # Raise Error: ErrorCode.SERVICE_INVALID_ID_OBJ
         with self.assertRaises(ServiceError) as e:
@@ -583,10 +569,9 @@ class TestServiceUser(unittest.TestCase):
 
     def test_h_service_user_get_process(self):
         # Get successfully
-        self.assertEqual(len(service_user_get_process(self.conf,
-                                                      self.data['const_user'][
-                                                          0]['_id']['$oid'])),
-                         0)
+        oid = self.data['const_user'][0]['_id']['$oid']
+        res = service_user_get_process(self.conf, oid)
+        self.assertEqual(len(res), 0)
 
         # Raise Error: ErrorCode.SERVICE_INVALID_ID_OBJ
         with self.assertRaises(ServiceError) as e:
@@ -645,9 +630,9 @@ class TestServiceVideo(unittest.TestCase):
 
         # Raise Error: ErrorCode.SERVICE_MISSING_PARAM
         with self.assertRaises(ServiceError) as e:
+            oid = self.data['const_user'][1]['_id']['$oid']
             service_video_upload(self.conf,
-                                 user_id=self.data['const_user'][1]['_id'][
-                                     '$oid'],
+                                 user_id=oid,
                                  video_raw_content=self.temp_video_raw_content)
 
         self.assertEqual(e.exception.error_code,
