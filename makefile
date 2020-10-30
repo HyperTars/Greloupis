@@ -9,7 +9,7 @@ FORCE:
 
 prod:	dev_env tests github
 
-dev_env:	dev_env_backend #dev_env_frontend
+dev_env:	dev_env_backend dev_env_frontend
 
 github:	FORCE
 	- git commit -a
@@ -17,7 +17,7 @@ github:	FORCE
 
 tests:
 	cd $(BACKEND_DIR); make tests
-	# cd $(FRONTEND_DIR); make tests
+	cd $(FRONTEND_DIR); make tests
 
 docs:	#FORCE
 	cd $(BACKEND_DIR); make docs
