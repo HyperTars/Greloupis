@@ -8,7 +8,7 @@ dev_env_frontend:
 run_frontend:
 	npm start
 
-tests:	dev_env_frontend
+tests:
 	npm run test
 
 report:

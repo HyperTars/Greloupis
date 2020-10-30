@@ -9,24 +9,13 @@ import os
 # from source.utils.util_request_filter import *
 # from flask import request, redirect, session
 
-frontend_conf = {
-    'ORIGINS': [
-        'http://localhost:3000',  # React
-        'http://127.0.0.1:3000',  # React
-        'http://0.0.0.0:3000'  # React
-    ],
-}
-
 app = Flask(__name__)
-CORS(app, resources={r'/*': {'origins': frontend_conf['ORIGINS']}},
+CORS(app, resources={r'/*': {'origins': config['test'].FRONTEND}},
      supports_credentials=True)
 
 
 @app.route("/")
 def index():
-    APP_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    print(APP_PATH)
-    os.path.join(APP_PATH, 'source/templates/')
     return render_template('index.html')
 
 
