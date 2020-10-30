@@ -54,7 +54,8 @@ class TestUtilHash(unittest.TestCase):
 
     def test_util_hash_encode(self):
         test_str = "kkk"
-        self.assertEqual(util_hash_encode(test_str), util_hash_sha512(test_str))
+        self.assertEqual(util_hash_encode(test_str),
+                         util_hash_sha512(test_str))
 
     def test_util_md5_with_salt(self):
         test_str = "kkk"

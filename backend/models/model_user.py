@@ -21,7 +21,8 @@ class UserDetail(db.EmbeddedDocument):
 
 
 class UserLogin(db.EmbeddedDocument):
-    user_login_ip = db.StringField(max_length=50, default="0.0.0.0", required=True)
+    user_login_ip = db.StringField(max_length=50, default="0.0.0.0",
+                                   required=True)
     user_login_time = db.DateTimeField()
 
 
@@ -31,7 +32,8 @@ class User(db.Document):
     user_name = db.StringField(max_length=60, required=True, unique=True)
     user_password = db.StringField(max_length=512, required=True, default="")
     user_detail = db.EmbeddedDocumentField('UserDetail', required=True)
-    user_status = db.StringField(max_length=50, required=True, default="public")
+    user_status = db.StringField(max_length=50, required=True,
+                                 default="public")
     user_thumbnail = db.StringField(max_length=200, required=True, default="")
     user_reg_date = db.DateTimeField()
     user_login = db.ListField(db.EmbeddedDocumentField('UserLogin'))
@@ -45,8 +47,10 @@ class User(db.Document):
         user_following_array = []
         user_follower_array = []
 
-        user_detail_dict['user_first_name'] = self.user_detail.user_first_name or ""
-        user_detail_dict['user_last_name'] = self.user_detail.user_last_name or ""
+        user_detail_dict[
+            'user_first_name'] = self.user_detail.user_first_name or ""
+        user_detail_dict[
+            'user_last_name'] = self.user_detail.user_last_name or ""
         user_detail_dict['user_phone'] = self.user_detail.user_phone or ""
         user_detail_dict['user_street1'] = self.user_detail.user_street1 or ""
         user_detail_dict['user_street2'] = self.user_detail.user_street2 or ""
@@ -56,7 +60,8 @@ class User(db.Document):
         user_detail_dict['user_zip'] = self.user_detail.user_zip or ""
 
         for login in self.user_login:
-            temp_login = {'user_login_ip': login.user_login_ip, 'user_login_time': login.user_login_time}
+            temp_login = {'user_login_ip': login.user_login_ip,
+                          'user_login_time': login.user_login_time}
             user_login_array.append(temp_login)
 
         for following in self.user_following:

@@ -25,7 +25,8 @@ class Video(db.Document):
     transcoder will start transcoding, but user can create a video now
     """
     video_raw_content = db.StringField(required=True)
-    video_raw_status = db.StringField(max_length=20, default="pending", required=True)
+    video_raw_status = db.StringField(max_length=20, default="pending",
+                                      required=True)
     video_raw_size = db.FloatField(default=0)  # in MB
     video_duration = db.IntField(default=0)  # in second
     video_channel = db.StringField(default="self-made")
@@ -33,7 +34,8 @@ class Video(db.Document):
     video_category = db.ListField(db.StringField())
     video_description = db.StringField(max_length=1000, default="")
     video_language = db.StringField(max_length=20)
-    video_status = db.StringField(max_length=20, default="public", required=True)
+    video_status = db.StringField(max_length=20, default="public",
+                                  required=True)
     video_view = db.LongField(default=0)
     video_comment = db.LongField(default=0)
     video_like = db.LongField(default=0)
