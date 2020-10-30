@@ -67,7 +67,8 @@ class TestErrorModel(unittest.TestCase):
         # Raise normal ServiceError successfully
         with self.assertRaises(ServiceError) as e:
             raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
-        self.assertEqual(e.exception.error_code, ErrorCode.SERVICE_MISSING_PARAM)
+        self.assertEqual(e.exception.error_code,
+                         ErrorCode.SERVICE_MISSING_PARAM)
 
         # Wrong ServiceError Param
         with self.assertRaises(ServiceError) as e:

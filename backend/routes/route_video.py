@@ -23,6 +23,7 @@ from utils.util_serializer import util_serializer_api_response, \
     util_serializer_mongo_results_to_array
 from settings import config
 from models.model_errors import ServiceError, RouteError, MongoError
+
 # from flask import Flask, g, Blueprint
 # from flask_restx import Api, marshal_with, reqparse
 # from source.utils.util_serializer import *
@@ -383,7 +384,8 @@ class VideoVideoIdDislike(Resource):
 
             dislike_result = service_video_dislikes(conf=conf, **kw)
             return util_serializer_api_response(
-                200, body=dislike_result, msg="Successfully got video dislikes")
+                200, body=dislike_result,
+                msg="Successfully got video dislikes")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 

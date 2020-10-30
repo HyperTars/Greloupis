@@ -15,7 +15,10 @@ class DevConfig(BaseConfig):
     DATA_FORMAT = "dict"
 
     # Mongo DB
-    MONGO_ENDPOINT = "mongodb+srv://devops:DevOps@mongodbcluster.v4vtj.mongodb.net/online_video_platform_dev?retryWrites=true&w=majority"
+    MONGO_ENDPOINT = "mongodb+srv://devops:DevOps@mongodbcluster.v4vtj" \
+                     ".mongodb.net/online_video_platform_dev?retryWrites" \
+                     "=true" \
+                     "&w=majority"
     MONGO_DATABASE = "online_video_platform"
     MONGODB_SETTINGS = {
         'db': MONGO_DATABASE,

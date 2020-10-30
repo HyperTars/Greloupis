@@ -12,7 +12,8 @@ from models.model_errors import ServiceError, ErrorCode
 #########################
 # Service Search Caller #
 #########################
-# TODO: add search all (including search video by comment content, uploader, etc.)
+# TODO: add search all (including search video by comment content, uploader,
+#  etc.)
 # TODO: by comment: search VideoOp.comment -> video_id -> Video.video_id
 # TODO: by uploader: search User.user_id -> user_id -> Video.user_id
 # Search User Caller
@@ -47,7 +48,8 @@ def service_search_user(conf, **kw):
     if 'json' in kw and kw['json'] is True \
             or 'dict' in kw and kw['dict'] is False \
             or 'format' in kw and kw['format'] == "json":
-        return util_serializer_mongo_results_to_array(res_search, format="json")
+        return util_serializer_mongo_results_to_array(res_search,
+                                                      format="json")
 
     # default format="dict"
     return util_serializer_mongo_results_to_array(res_search)
@@ -70,7 +72,8 @@ def service_search_video(conf, **kw):
 
     # Search
     # TODO: Support aggregation pipeline
-    if kw['ignore_case'] is False or kw['exact'] is True or kw['slice'] is True:
+    if kw['ignore_case'] is False or kw['exact'] is True or kw['slice']\
+            is True:
         kw = util_pattern_slice(**kw)
         kw = util_pattern_build(**kw)
         res_search = service_search_video_by_pattern(**kw)
@@ -90,7 +93,8 @@ def service_search_video(conf, **kw):
     if 'json' in kw and kw['json'] is True \
             or 'dict' in kw and kw['dict'] is False \
             or 'format' in kw and kw['format'] == "json":
-        return util_serializer_mongo_results_to_array(res_search, format="json")
+        return util_serializer_mongo_results_to_array(res_search,
+                                                      format="json")
 
     # default format="dict"
     return util_serializer_mongo_results_to_array(res_search)
@@ -150,7 +154,8 @@ def service_search_video_by_contains(**kw):
     elif 'video_title' in kw:
         return query_video_search_by_contains(video_title=kw['video_title'])
     elif 'video_channel' in kw:
-        return query_video_search_by_contains(video_channel=kw['video_channel'])
+        return query_video_search_by_contains(
+            video_channel=kw['video_channel'])
     elif 'video_category' in kw:
         return query_video_search_by_contains(
             video_category=kw['video_category'])

@@ -23,7 +23,8 @@ def query_video_create(user_id: str, video_title: str, video_raw_content: str):
 
     :param user_id: (required) user's unique id
     :param video_title: (required) video's title
-    :param video_raw_content: (required) URI of raw video data (in temp space, to be transcode)
+    :param video_raw_content: (required) URI of raw video data (in temp
+    space, to be transcode)
     :return: video created (Video Model)
     """
 
@@ -47,12 +48,18 @@ def query_video_create(user_id: str, video_title: str, video_raw_content: str):
     video_upload_date = get_time_now_utc()
 
     # Construct Video Model
-    video = Video(user_id=user_id, video_title=video_title, video_raw_content=video_raw_content,
-                  video_raw_status=video_raw_status, video_raw_size=video_raw_size, video_duration=video_duration,
-                  video_channel=video_channel, video_tag=video_tag, video_category=video_category,
-                  video_description=video_description, video_language=video_language, video_status=video_status,
-                  video_view=0, video_comment=0, video_like=0, video_dislike=0, video_star=0, video_share=0,
-                  video_thumbnail=video_thumbnail, video_upload_date=video_upload_date, video_uri=VideoURI())
+    video = Video(user_id=user_id, video_title=video_title,
+                  video_raw_content=video_raw_content,
+                  video_raw_status=video_raw_status,
+                  video_raw_size=video_raw_size, video_duration=video_duration,
+                  video_channel=video_channel, video_tag=video_tag,
+                  video_category=video_category,
+                  video_description=video_description,
+                  video_language=video_language, video_status=video_status,
+                  video_view=0, video_comment=0, video_like=0, video_dislike=0,
+                  video_star=0, video_share=0,
+                  video_thumbnail=video_thumbnail,
+                  video_upload_date=video_upload_date, video_uri=VideoURI())
 
     return video.save()
 
@@ -63,7 +70,8 @@ def query_video_create(user_id: str, video_title: str, video_raw_content: str):
 def query_video_get_by_video_id(video_id: str):
     """
     :param video_id: video's unique id
-    :return: an array of such Video (len == 0 or 1), len == 0 if no such video_id, len == 1 if found
+    :return: an array of such Video (len == 0 or 1), len == 0 if no such
+    video_id, len == 1 if found
     """
     return Video.objects(_id=bson.ObjectId(video_id))
 
@@ -79,7 +87,8 @@ def query_video_get_by_user_id(user_id: str):
 def query_video_get_by_title(video_title: str):
     """
     :param video_title: video's unique title
-    :return: an array of such Video (len == 0 or 1), len == 0 if no such video_id, len == 1 if found
+    :return: an array of such Video (len == 0 or 1), len == 0 if no such
+    video_id, len == 1 if found
     """
     return Video.objects(video_title=video_title)
 
@@ -89,7 +98,8 @@ def query_video_get_by_title(video_title: str):
 ##########
 def query_video_cnt_incr_by_one(video_id: str, video_cnt: str):
     """
-    This is for incrementing total number of views/comments/likes/dislikes/stars/shares
+    This is for incrementing total number of
+    views/comments/likes/dislikes/stars/shares
     :param video_id: video's unique id
     :param video_cnt: can choose from (view/comment/like/dislike/star/share)
     :return: 1 if succeeded
@@ -100,17 +110,23 @@ def query_video_cnt_incr_by_one(video_id: str, video_cnt: str):
 
     _id = bson.ObjectId(video_id)
 
-    if video_cnt == 'view' or video_cnt == 'views' or video_cnt == 'video_view':
+    if video_cnt == 'view' or video_cnt == 'views' or video_cnt == \
+            'video_view':
         Video.objects(_id=_id).update(inc__video_view=1)
-    elif video_cnt == 'comment' or video_cnt == 'comments' or video_cnt == 'video_comment':
+    elif video_cnt == 'comment' or video_cnt == 'comments' or video_cnt == \
+            'video_comment':
         Video.objects(_id=_id).update(inc__video_comment=1)
-    elif video_cnt == 'like' or video_cnt == 'likes' or video_cnt == 'video_like':
+    elif video_cnt == 'like' or video_cnt == 'likes' or video_cnt == \
+            'video_like':
         Video.objects(_id=_id).update(inc__video_like=1)
-    elif video_cnt == 'dislike' or video_cnt == 'dislikes' or video_cnt == 'video_dislike':
+    elif video_cnt == 'dislike' or video_cnt == 'dislikes' or video_cnt == \
+            'video_dislike':
         Video.objects(_id=_id).update(inc__video_dislike=1)
-    elif video_cnt == 'star' or video_cnt == 'stars' or video_cnt == 'video_star':
+    elif video_cnt == 'star' or video_cnt == 'stars' or video_cnt == \
+            'video_star':
         Video.objects(_id=_id).update(inc__video_star=1)
-    elif video_cnt == 'share' or video_cnt == 'shares' or video_cnt == 'video_share':
+    elif video_cnt == 'share' or video_cnt == 'shares' or video_cnt == \
+            'video_share':
         Video.objects(_id=_id).update(inc__video_share=1)
     else:
         raise MongoError(ErrorCode.MONGODB_INVALID_VIDEO_CNT_PARAM)
@@ -120,7 +136,8 @@ def query_video_cnt_incr_by_one(video_id: str, video_cnt: str):
 
 def query_video_cnt_decr_by_one(video_id: str, video_cnt: str):
     """
-    This is for decrementing total number of views/comments/likes/dislikes/stars/shares.
+    This is for decrementing total number of
+    views/comments/likes/dislikes/stars/shares.
 
     :param video_id: video's unique id
     :param video_cnt: can choose from (view/comment/like/dislike/star/share)
@@ -137,32 +154,38 @@ def query_video_cnt_decr_by_one(video_id: str, video_cnt: str):
     _id = bson.ObjectId(video_id)
     video = videos[0].to_dict()
 
-    if video_cnt == 'view' or video_cnt == 'views' or video_cnt == 'video_view':
+    if video_cnt == 'view' or video_cnt == 'views' or video_cnt == \
+            'video_view':
         if video['video_view'] <= 0:
             return 0
             # raise MongoError(ErrorCode.MONGODB_VIDEO_CNT_ZERO)
         Video.objects(_id=_id).update(dec__video_view=1)
-    if video_cnt == 'comment' or video_cnt == 'comments' or video_cnt == 'video_comment':
+    if video_cnt == 'comment' or video_cnt == 'comments' or video_cnt == \
+            'video_comment':
         if video['video_comment'] <= 0:
             return 0
             # raise MongoError(ErrorCode.MONGODB_VIDEO_CNT_ZERO)
         Video.objects(_id=_id).update(dec__video_comment=1)
-    if video_cnt == 'like' or video_cnt == 'likes' or video_cnt == 'video_like':
+    if video_cnt == 'like' or video_cnt == 'likes' or video_cnt == \
+            'video_like':
         if video['video_like'] <= 0:
             return 0
             # raise MongoError(ErrorCode.MONGODB_VIDEO_CNT_ZERO)
         Video.objects(_id=_id).update(dec__video_like=1)
-    if video_cnt == 'dislike' or video_cnt == 'dislikes' or video_cnt == 'video_dislike':
+    if video_cnt == 'dislike' or video_cnt == 'dislikes' or video_cnt == \
+            'video_dislike':
         if video['video_dislike'] <= 0:
             return 0
             # raise MongoError(ErrorCode.MONGODB_VIDEO_CNT_ZERO)
         Video.objects(_id=_id).update(dec__video_dislike=1)
-    if video_cnt == 'star' or video_cnt == 'stars' or video_cnt == 'video_star':
+    if video_cnt == 'star' or video_cnt == 'stars' or video_cnt == \
+            'video_star':
         if video['video_star'] <= 0:
             return 0
             # raise MongoError(ErrorCode.MONGODB_VIDEO_CNT_ZERO)
         Video.objects(_id=_id).update(dec__video_star=1)
-    if video_cnt == 'share' or video_cnt == 'shares' or video_cnt == 'video_share':
+    if video_cnt == 'share' or video_cnt == 'shares' or video_cnt == \
+            'video_share':
         if video['video_share'] <= 0:
             return 0
             # raise MongoError(ErrorCode.MONGODB_VIDEO_CNT_ZERO)
@@ -177,20 +200,28 @@ def query_video_update(video_id: str, **kw):
     :param video_id: video's unique id
     :param kw:
         :key "video_title": (```str```, optional) new title
-        :key "video_raw_content": (```str```, optional) new URI of raw video data (in temp space, to be transcode)
-        :key "video_raw_status": (```str```, optional) new status of raw video data, default
-        :key "video_raw_size": (```float```, optional) new size of raw video data
-        :key "video_duration": (```int```, optional) duration of video in second
-        :key "video_channel": (```str```, optional) channel of video (default self-made)
+        :key "video_raw_content": (```str```, optional) new URI of raw video
+        data (in temp space, to be transcode)
+        :key "video_raw_status": (```str```, optional) new status of raw
+        video data, default
+        :key "video_raw_size": (```float```, optional) new size of raw video
+        data
+        :key "video_duration": (```int```, optional) duration of video in
+        second
+        :key "video_channel": (```str```, optional) channel of video (default
+        self-made)
         :key "video_tag": (```list```, optional) array of new tags
         :key "video_category": (```list```, optional) array of new categories
         :key "video_description": (```str```, optional) new description
         :key "video_language": (```str```, optional) new language
         :key "video_status": (```str```, optional) new status, default: public
         :key "video_thumbnail": (```str```, optional) new thumbnail uri
-        :key "video_uri_low": (```str```, optional) new final uri (480p low resolution)
-        :key "video_uri_mid": (```str```, optional) new final uri (720p mid resolution)
-        :key "video_uri_high": (```str```, optional) new final uri (1080p high resolution)
+        :key "video_uri_low": (```str```, optional) new final uri (480p low
+        resolution)
+        :key "video_uri_mid": (```str```, optional) new final uri (720p mid
+        resolution)
+        :key "video_uri_high": (```str```, optional) new final uri (1080p
+        high resolution)
     \nAt least one key must be provided
     :return: 1 if succeeded
     """
@@ -206,7 +237,8 @@ def query_video_update(video_id: str, **kw):
             raise MongoError(ErrorCode.MONGODB_VIDEO_TITLE_TAKEN)
         Video.objects(_id=_id).update(video_title=kw['video_title'])
     if 'video_raw_content' in kw:
-        Video.objects(_id=_id).update(video_raw_content=kw['video_raw_content'])
+        Video.objects(_id=_id).update(
+            video_raw_content=kw['video_raw_content'])
     if 'video_raw_status' in kw:
         Video.objects(_id=_id).update(video_raw_status=kw['video_raw_status'])
     if 'video_raw_size' in kw:
@@ -224,7 +256,8 @@ def query_video_update(video_id: str, **kw):
             raise MongoError(ErrorCode.MONGODB_LIST_EXPECTED)
         Video.objects(_id=_id).update(video_category=kw['video_category'])
     if 'video_description' in kw:
-        Video.objects(_id=_id).update(video_description=kw['video_description'])
+        Video.objects(_id=_id).update(
+            video_description=kw['video_description'])
     if 'video_language' in kw:
         Video.objects(_id=_id).update(video_language=kw['video_language'])
     if 'video_status' in kw:
@@ -234,11 +267,14 @@ def query_video_update(video_id: str, **kw):
     if 'video_thumbnail' in kw:
         Video.objects(_id=_id).update(video_thumbnail=kw['video_thumbnail'])
     if 'video_uri_low' in kw:
-        Video.objects(_id=_id).update(video_uri__video_uri_low=kw['video_uri_low'])
+        Video.objects(_id=_id).update(
+            video_uri__video_uri_low=kw['video_uri_low'])
     if 'video_uri_mid' in kw:
-        Video.objects(_id=_id).update(video_uri__video_uri_mid=kw['video_uri_mid'])
+        Video.objects(_id=_id).update(
+            video_uri__video_uri_mid=kw['video_uri_mid'])
     if 'video_uri_high' in kw:
-        Video.objects(_id=_id).update(video_uri__video_uri_high=kw['video_uri_high'])
+        Video.objects(_id=_id).update(
+            video_uri__video_uri_high=kw['video_uri_high'])
 
     return 1
 
@@ -269,7 +305,8 @@ def query_video_search_by_contains(**kw):
     :param kw: keyword arguments
         :key "video_id": (```str```, optional) video's unique id
         :key "user_id": (```str```, optional) user's unique id
-        :key "video_title": (```str```, optional) string of video title to be searched
+        :key "video_title": (```str```, optional) string of video title to be
+        searched
         :key "video_channel": (```str```, optional) channel of videos
         :key "video_category": (```str```, optional) category of videos
     \nAt least one key must be provided
@@ -290,13 +327,16 @@ def query_video_search_by_contains(**kw):
     elif 'video_title' in kw:
         return Video.objects.filter(video_title__icontains=kw['video_title'])
     elif 'video_channel' in kw:
-        return Video.objects.filter(video_channel__icontains=kw['video_channel'])
+        return Video.objects.filter(
+            video_channel__icontains=kw['video_channel'])
     elif 'video_category' in kw:
-        return Video.objects.filter(video_category__icontains=kw['video_category'])
+        return Video.objects.filter(
+            video_category__icontains=kw['video_category'])
     elif 'video_tag' in kw:
         return Video.objects.filter(video_tag__icontains=kw['video_tag'])
     elif 'video_description' in kw:
-        return Video.objects.filter(video_description__icontains=kw['video_description'])
+        return Video.objects.filter(
+            video_description__icontains=kw['video_description'])
 
     raise MongoError(ErrorCode.MONGODB_INVALID_SEARCH_PARAM)
 
@@ -307,7 +347,8 @@ def query_video_search_by_pattern(**kw):
     Search video by pattern
     :param kw: keyword arguments
         :key "pattern_title": (```str```, optional) search title pattern
-        :key "pattern_description": (```str```, optional) search description pattern
+        :key "pattern_description": (```str```, optional) search description
+        pattern
     \nAt least one key must be provided
     :return: array of searching results (Video Model)
     """

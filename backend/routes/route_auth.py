@@ -2,7 +2,8 @@
 from __future__ import absolute_import, print_function
 from flask_restx import Namespace
 
-# from flask import Flask, request, g, Blueprint, session, url_for, redirect, render_template, render_template_string
+# from flask import Flask, request, g, Blueprint, session, url_for, redirect,
+# render_template, render_template_string
 # from flask_restx import Resource, Api, fields, marshal_with, reqparse,
 # import flask_wtf
 # from source.service.service_user import *
@@ -21,7 +22,8 @@ def login():
     #     user_name = request.form['username']
     #     user_password = request.form['password']
     #     try:
-    #         user = service_user_login(conf=config['default'], user_name=user_name, user_password=user_password)
+    #         user = service_user_login(conf=config['default'],
+    #         user_name=user_name, user_password=user_password)
     #     except ServiceError:
     #         return redirect(url_for('login'))
     #     session['user_id'] = user['user_id']

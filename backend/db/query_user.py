@@ -11,7 +11,8 @@ VALID_USER_STATUS = ["public", "private", "closed"]
 ##########
 # CREATE #
 ##########
-def query_user_create(user_name: str, user_email: str, user_password: str, user_ip="0.0.0.0"):
+def query_user_create(user_name: str, user_email: str, user_password: str,
+                      user_ip="0.0.0.0"):
     """
     :param user_name: user's unique nickname
     :param user_email: user's unique email
@@ -19,7 +20,8 @@ def query_user_create(user_name: str, user_email: str, user_password: str, user_
     :param user_ip: user's ip address (default 0.0.0.0)
     :return: user object if succeeded
     """
-    if type(user_name) != str or type(user_email) != str or type(user_password) != str:
+    if type(user_name) != str or type(user_email) != str or type(
+            user_password) != str:
         raise MongoError(ErrorCode.MONGODB_STR_EXPECTED)
 
     if len(query_user_get_by_name(user_name)) > 0:
@@ -28,12 +30,15 @@ def query_user_create(user_name: str, user_email: str, user_password: str, user_
     elif len(query_user_get_by_email(user_email)) > 0:
         raise MongoError(ErrorCode.MONGODB_USER_EMAIL_TAKEN)
 
-    login = [UserLogin(user_login_ip=user_ip, user_login_time=get_time_now_utc())]
+    login = [
+        UserLogin(user_login_ip=user_ip, user_login_time=get_time_now_utc())]
 
     # EmbeddedDocument must be included when creating
     # user_detail, user_reg_date
-    user = User(user_name=user_name, user_email=user_email, user_password=user_password,
-                user_detail=UserDetail(), user_status="private", user_thumbnail="",
+    user = User(user_name=user_name, user_email=user_email,
+                user_password=user_password,
+                user_detail=UserDetail(), user_status="private",
+                user_thumbnail="",
                 user_reg_date=get_time_now_utc(), user_login=login,
                 user_following=[], user_follower=[])
 
@@ -46,7 +51,8 @@ def query_user_create(user_name: str, user_email: str, user_password: str, user_
 def query_user_get_by_name(user_name: str):
     """
     :param user_name: user name
-    :return: an array of such User, len == 0 if no such user_name, len == 1 if found
+    :return: an array of such User, len == 0 if no such user_name, len == 1
+    if found
     """
     if type(user_name) != str:
         raise MongoError(ErrorCode.MONGODB_STR_EXPECTED)
@@ -57,7 +63,8 @@ def query_user_get_by_name(user_name: str):
 def query_user_get_by_email(user_email: str):
     """
     :param user_email: user email
-    :return: an array of such User (len == 0 or 1), len == 0 if no such user_email, len == 1 if found
+    :return: an array of such User (len == 0 or 1), len == 0 if no such
+    user_email, len == 1 if found
     """
     if type(user_email) != str:
         raise MongoError(ErrorCode.MONGODB_STR_EXPECTED)
@@ -68,7 +75,8 @@ def query_user_get_by_email(user_email: str):
 def query_user_get_by_id(user_id: str):
     """
     :param user_id: user id
-    :return: an array of such User (len == 0 or 1), len == 0 if no such user_id, len == 1 if found
+    :return: an array of such User (len == 0 or 1), len == 0 if no such
+    user_id, len == 1 if found
     """
     if type(user_id) != str:
         raise MongoError(ErrorCode.MONGODB_STR_EXPECTED)
@@ -94,7 +102,8 @@ def query_user_update_status(user_id: str, user_status: str):
     if user_status not in VALID_USER_STATUS:
         raise MongoError(ErrorCode.MONGODB_USER_INVALID_STATUS)
 
-    return User.objects(_id=bson.ObjectId(user_id)).update(user_status=user_status)
+    return User.objects(_id=bson.ObjectId(user_id)).update(
+        user_status=user_status)
 
 
 def query_user_add_follow(follower_id: str, following_id: str):
@@ -115,11 +124,14 @@ def query_user_add_follow(follower_id: str, following_id: str):
     if len(following) == 0:
         raise MongoError(ErrorCode.MONGODB_FOLLOWED_NOT_FOUND)
 
-    if following_id in follower[0].user_following and follower_id in following[0].user_follower:
+    if following_id in follower[0].user_following and follower_id in \
+            following[0].user_follower:
         raise MongoError(ErrorCode.MONGODB_FOLLOW_REL_EXISTS)
 
-    User.objects(_id=bson.ObjectId(follower_id)).update(add_to_set__user_following=following_id)
-    User.objects(_id=bson.ObjectId(following_id)).update(add_to_set__user_follower=follower_id)
+    User.objects(_id=bson.ObjectId(follower_id)).update(
+        add_to_set__user_following=following_id)
+    User.objects(_id=bson.ObjectId(following_id)).update(
+        add_to_set__user_follower=follower_id)
 
     return 1
 
@@ -142,8 +154,10 @@ def query_user_delete_follow(follower_id: str, following_id: str):
     if len(following) == 0:
         raise MongoError(ErrorCode.MONGODB_FOLLOWED_NOT_FOUND)
 
-    User.objects(_id=bson.ObjectId(follower_id)).update(pull__user_following=following_id)
-    User.objects(_id=bson.ObjectId(following_id)).update(pull__user_follower=follower_id)
+    User.objects(_id=bson.ObjectId(follower_id)).update(
+        pull__user_following=following_id)
+    User.objects(_id=bson.ObjectId(following_id)).update(
+        pull__user_follower=follower_id)
 
     return 1
 
@@ -188,7 +202,8 @@ def query_user_update_password(user_id: str, user_password: str):
     if user_password == old_password:
         raise MongoError(ErrorCode.MONGODB_UPDATE_SAME_PASS)
 
-    return User.objects(_id=bson.ObjectId(user_id)).update(user_password=user_password)
+    return User.objects(_id=bson.ObjectId(user_id)).update(
+        user_password=user_password)
 
 
 def query_user_update_thumbnail(user_id: str, user_thumbnail: str):
@@ -204,7 +219,8 @@ def query_user_update_thumbnail(user_id: str, user_thumbnail: str):
     if len(users) == 0:
         raise MongoError(ErrorCode.MONGODB_USER_NOT_FOUND)
 
-    User.objects(_id=bson.ObjectId(user_id)).update(user_thumbnail=user_thumbnail)
+    User.objects(_id=bson.ObjectId(user_id)).update(
+        user_thumbnail=user_thumbnail)
 
 
 def query_user_update_details(user_id: str, **kw):
@@ -238,21 +254,29 @@ def query_user_update_details(user_id: str, **kw):
     _id = bson.ObjectId(user_id)
 
     if 'user_first_name' in kw:
-        User.objects(_id=_id).update(set__user_detail__user_first_name=kw['user_first_name'])
+        User.objects(_id=_id).update(
+            set__user_detail__user_first_name=kw['user_first_name'])
     if 'user_last_name' in kw:
-        User.objects(_id=_id).update(set__user_detail__user_last_name=kw['user_last_name'])
+        User.objects(_id=_id).update(
+            set__user_detail__user_last_name=kw['user_last_name'])
     if 'user_phone' in kw:
-        User.objects(_id=_id).update(set__user_detail__user_phone=kw['user_phone'])
+        User.objects(_id=_id).update(
+            set__user_detail__user_phone=kw['user_phone'])
     if 'user_street1' in kw:
-        User.objects(_id=_id).update(set__user_detail__user_street1=kw['user_street1'])
+        User.objects(_id=_id).update(
+            set__user_detail__user_street1=kw['user_street1'])
     if 'user_street2' in kw:
-        User.objects(_id=_id).update(set__user_detail__user_street2=kw['user_street2'])
+        User.objects(_id=_id).update(
+            set__user_detail__user_street2=kw['user_street2'])
     if 'user_city' in kw:
-        User.objects(_id=_id).update(set__user_detail__user_city=kw['user_city'])
+        User.objects(_id=_id).update(
+            set__user_detail__user_city=kw['user_city'])
     if 'user_state' in kw:
-        User.objects(_id=_id).update(set__user_detail__user_state=kw['user_state'])
+        User.objects(_id=_id).update(
+            set__user_detail__user_state=kw['user_state'])
     if 'user_country' in kw:
-        User.objects(_id=_id).update(set__user_detail__user_country=kw['user_country'])
+        User.objects(_id=_id).update(
+            set__user_detail__user_country=kw['user_country'])
     if 'user_zip' in kw:
         User.objects(_id=_id).update(set__user_detail__user_zip=kw['user_zip'])
 
@@ -263,10 +287,12 @@ def query_user_add_login(user_id: str, ip="0.0.0.0", time=get_time_now_utc()):
     """
     :param user_id: user's unique id
     :param ip: user's login ip address
-    :param time: user's login time (utc, optional), default: current system time (utc)
+    :param time: user's login time (utc, optional), default: current system
+    time (utc)
     :return: 1 if succeeded
     """
-    if type(user_id) != str or type(ip) != str or type(time) != datetime.datetime:
+    if type(user_id) != str or type(ip) != str or type(
+            time) != datetime.datetime:
         raise MongoError(ErrorCode.MONGODB_STR_EXPECTED)
 
     users = query_user_get_by_id(user_id)
@@ -279,7 +305,8 @@ def query_user_add_login(user_id: str, ip="0.0.0.0", time=get_time_now_utc()):
     latest_login_time = login_history[-1].user_login_time
     if len(login_history) >= 10:
         # Delete oldest history
-        User.objects(_id=bson.ObjectId(user_id)).update(pull__user_login__user_login_time=oldest_login_time)
+        User.objects(_id=bson.ObjectId(user_id)).update(
+            pull__user_login__user_login_time=oldest_login_time)
 
     # TODO: update latest 10 login info method, some bugs for current version
     # add new login info
@@ -289,7 +316,8 @@ def query_user_add_login(user_id: str, ip="0.0.0.0", time=get_time_now_utc()):
         raise MongoError(ErrorCode.MONGODB_LOGIN_INFO_EXISTS)
     new_login = {'user_login_ip': ip, 'user_login_time': time}
 
-    User.objects(_id=bson.ObjectId(user_id)).update(add_to_set__user_login=[new_login])
+    User.objects(_id=bson.ObjectId(user_id)).update(
+        add_to_set__user_login=[new_login])
 
     return 1
 
@@ -339,17 +367,23 @@ def query_user_search_by_contains(**kw):
     :param kw: keyword arguments
         :key "user_name": (optional) single keyword of username to be searched
         :key "user_email": (optional) single keyword of email to be searched
-        :key "user_first_name": (optional) single keyword of first name to be searched
-        :key "user_last_name": (optional) single keyword of last name to be searched
+        :key "user_first_name": (optional) single keyword of first name to be
+        searched
+        :key "user_last_name": (optional) single keyword of last name to be
+        searched
         :key "user_phone": (optional) single keyword of phone to be searched
-        :key "user_street1": (optional) single keyword of street1 to be searched
-        :key "user_street2": (optional) single keyword of street2 to be searched
+        :key "user_street1": (optional) single keyword of street1 to be
+        searched
+        :key "user_street2": (optional) single keyword of street2 to be
+        searched
         :key "user_city": (optional) single keyword of city to be searched
         :key "user_state": (optional) single keyword of state to be searched
-        :key "user_country": (optional) single keyword of country to be searched
+        :key "user_country": (optional) single keyword of country to be
+        searched
         :key "user_zip": (optional) single keyword of zip to be searched
         :key "user_status": (optional) single keyword of status to be searched
-        :key "user_reg_date": (optional) single keyword of reg date to be searched
+        :key "user_reg_date": (optional) single keyword of reg date to be
+        searched
     \nAt least one key must be provided
     :return: array of searching results (User Model)
     """
@@ -367,23 +401,32 @@ def query_user_search_by_contains(**kw):
     elif 'user_email' in kw:
         return User.objects.filter(user_email__icontains=kw['user_email'])
     elif 'user_first_name' in kw:
-        return User.objects.filter(user_detail__user_first_name__icontains=kw['user_first_name'])
+        return User.objects.filter(
+            user_detail__user_first_name__icontains=kw['user_first_name'])
     elif 'user_last_name' in kw:
-        return User.objects.filter(user_detail__user_last_name__icontains=kw['user_last_name'])
+        return User.objects.filter(
+            user_detail__user_last_name__icontains=kw['user_last_name'])
     elif 'user_phone' in kw:
-        return User.objects.filter(user_detail__user_phone__icontains=kw['user_phone'])
+        return User.objects.filter(
+            user_detail__user_phone__icontains=kw['user_phone'])
     elif 'user_street1' in kw:
-        return User.objects.filter(user_detail__user_street1__icontains=kw['user_street1'])
+        return User.objects.filter(
+            user_detail__user_street1__icontains=kw['user_street1'])
     elif 'user_street2' in kw:
-        return User.objects.filter(user_detail__user_street2__icontains=kw['user_street2'])
+        return User.objects.filter(
+            user_detail__user_street2__icontains=kw['user_street2'])
     elif 'user_city' in kw:
-        return User.objects.filter(user_detail__user_city__icontains=kw['user_city'])
+        return User.objects.filter(
+            user_detail__user_city__icontains=kw['user_city'])
     elif 'user_state' in kw:
-        return User.objects.filter(user_detail__user_state__icontains=kw['user_state'])
+        return User.objects.filter(
+            user_detail__user_state__icontains=kw['user_state'])
     elif 'user_country' in kw:
-        return User.objects.filter(user_detail__user_country__icontains=kw['user_country'])
+        return User.objects.filter(
+            user_detail__user_country__icontains=kw['user_country'])
     elif 'user_zip' in kw:
-        return User.objects.filter(user_detail__user_zip__icontains=kw['user_zip'])
+        return User.objects.filter(
+            user_detail__user_zip__icontains=kw['user_zip'])
     elif 'user_status' in kw:
         return User.objects.filter(user_status__icontains=kw['user_status'])
 
@@ -397,14 +440,19 @@ def query_user_search_by_pattern(**kw):
     :param kw: keyword arguments
         :key "user_name": (optional) single keyword of username to be searched
         :key "user_email": (optional) single keyword of email to be searched
-        :key "user_first_name": (optional) single keyword of first name to be searched
-        :key "user_last_name": (optional) single keyword of last name to be searched
+        :key "user_first_name": (optional) single keyword of first name to be
+        searched
+        :key "user_last_name": (optional) single keyword of last name to be
+        searched
         :key "user_phone": (optional) single keyword of phone to be searched
-        :key "user_street1": (optional) single keyword of street1 to be searched
-        :key "user_street2": (optional) single keyword of street2 to be searched
+        :key "user_street1": (optional) single keyword of street1 to be
+        searched
+        :key "user_street2": (optional) single keyword of street2 to be
+        searched
         :key "user_city": (optional) single keyword of city to be searched
         :key "user_state": (optional) single keyword of state to be searched
-        :key "user_country": (optional) single keyword of country to be searched
+        :key "user_country": (optional) single keyword of country to be
+        searched
         :key "user_zip": (optional) single keyword of zip to be searched
         :key "user_status": (optional) single keyword of status to be searched
     \nAt least one key must be provided
@@ -423,9 +471,11 @@ def query_user_search_by_pattern(**kw):
     elif 'pattern_email' in kw:
         return User.objects(user_email=kw['pattern_email'])
     elif 'pattern_first_name' in kw:
-        return User.objects(user_detail__user_first_name=kw['pattern_first_name'])
+        return User.objects(
+            user_detail__user_first_name=kw['pattern_first_name'])
     elif 'pattern_last_name' in kw:
-        return User.objects(user_detail__user_last_name=kw['pattern_last_name'])
+        return User.objects(
+            user_detail__user_last_name=kw['pattern_last_name'])
     elif 'pattern_phone' in kw:
         return User.objects(user_detail__user_phone=kw['pattern_phone'])
     elif 'pattern_street1' in kw:
