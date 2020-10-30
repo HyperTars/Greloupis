@@ -1,8 +1,11 @@
 pytvenv/
-*venv*
 log.txt
 logs.txt
-
+node_module/
+*node_module*
+frontend/coverage/
+frontend/coverage/*
+site-packages/
 ### VS Code ###
 vs_code/
 .vscode
