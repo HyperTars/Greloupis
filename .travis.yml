@@ -12,11 +12,9 @@ env:
 install: true
 # before_script:
 script:
-  - sudo apt-get remove nodejs npm
-  - sudo apt-get update
-  - sudo apt-get upgrade
-  - curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
-  - sudo apt-get install -y nodejs
+  - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.36.0/install.sh | bash
+  - nvm install 14.15.0
+  - nvm use 14.15.0
   - node -v
   - make dev_env
   - make tests
