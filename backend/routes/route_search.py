@@ -43,8 +43,7 @@ class RouteSearchVideo(Resource):
         req_dict = util_serializer_request(request.args)
         if 'keyword' not in req_dict:
             return {ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_code():
-                    ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg()}, \
-                   200, None
+                    ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg()}, 200, None
 
         search_result_json = service_search_video(conf=conf,
                                                   title=req_dict['keyword'],
@@ -70,8 +69,7 @@ class RouteSearchUser(Resource):
 
         if 'keyword' not in req_dict:
             return {ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_code():
-                    ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg()}, \
-                   200, None
+                    ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg()}, 200, None
 
         search_result_json = service_search_user(conf=conf,
                                                  name=req_dict['keyword'],
