@@ -104,7 +104,8 @@ def service_video_op_add_comment(conf, **kw):
 
         query_video_op = query_video_op_get_by_user_video(kw["user_id"],
                                                           kw["video_id"])
-        video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[0]
+        video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[
+            0]
 
         return_body = {
             "user_id": video_op_obj["user_id"],
@@ -134,7 +135,8 @@ def service_video_op_get_comment(conf, **kw):
     query_video_op = query_video_op_get_by_user_video(kw["user_id"],
                                                       kw["video_id"])
     if len(query_video_op) == 1:
-        video_op_result = util_serializer_mongo_results_to_array(query_video_op)
+        video_op_result = util_serializer_mongo_results_to_array(
+            query_video_op)
         return_body = {
             "user_id": video_op_result[0]["user_id"],
             "video_id": video_op_result[0]["video_id"],
@@ -179,7 +181,8 @@ def service_video_op_update_comment(conf, **kw):
     if update_result == 1:
         query_video_op = query_video_op_get_by_user_video(kw["user_id"],
                                                           kw["video_id"])
-        video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[0]
+        video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[
+            0]
 
         return_body = {
             "user_id": video_op_obj["user_id"],
@@ -209,7 +212,8 @@ def service_video_op_cancel_comment(conf, **kw):
     query_video_op = query_video_op_get_by_user_video(kw["user_id"],
                                                       kw["video_id"])
     if len(query_video_op) == 1:
-        video_op_result = util_serializer_mongo_results_to_array(query_video_op)
+        video_op_result = util_serializer_mongo_results_to_array(
+            query_video_op)
         video_op_id = video_op_result[0]["video_op_id"]
 
         update_result = query_video_op_update_comment(video_op_id, "",
@@ -276,7 +280,8 @@ def service_video_op_add_process(conf, **kw):
     if update_result == 1:
         query_video_op = query_video_op_get_by_user_video(kw["user_id"],
                                                           kw["video_id"])
-        video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[0]
+        video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[
+            0]
 
         return_body = {
             "user_id": video_op_obj["user_id"],
@@ -306,7 +311,8 @@ def service_video_op_get_process(conf, **kw):
     query_video_op = query_video_op_get_by_user_video(kw["user_id"],
                                                       kw["video_id"])
     if len(query_video_op) == 1:
-        video_op_result = util_serializer_mongo_results_to_array(query_video_op)
+        video_op_result = util_serializer_mongo_results_to_array(
+            query_video_op)
         video_op_obj = video_op_result[0]
 
         return_body = {
@@ -357,7 +363,8 @@ def service_video_op_update_process(conf, **kw):
     if update_result == 1:
         query_video_op = query_video_op_get_by_user_video(kw["user_id"],
                                                           kw["video_id"])
-        video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[0]
+        video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[
+            0]
 
         return_body = {
             "user_id": video_op_obj["user_id"],
@@ -406,7 +413,8 @@ def service_video_op_cancel_process(conf, **kw):
     if update_result == 1:
         query_video_op = query_video_op_get_by_user_video(kw["user_id"],
                                                           kw["video_id"])
-        video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[0]
+        video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[
+            0]
 
         return_body = {
             "user_id": video_op_obj["user_id"],
@@ -463,7 +471,8 @@ def service_video_op_add_like(conf, **kw):
 
         query_video_op = query_video_op_get_by_user_video(kw["user_id"],
                                                           kw["video_id"])
-        video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[0]
+        video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[
+            0]
 
         return_body = {
             "user_id": video_op_obj["user_id"],
@@ -575,7 +584,8 @@ def service_video_op_add_dislike(conf, **kw):
 
         query_video_op = query_video_op_get_by_user_video(kw["user_id"],
                                                           kw["video_id"])
-        video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[0]
+        video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[
+            0]
 
         return_body = {
             "user_id": video_op_obj["user_id"],
@@ -682,7 +692,8 @@ def service_video_op_add_star(conf, **kw):
 
         query_video_op = query_video_op_get_by_user_video(kw["user_id"],
                                                           kw["video_id"])
-        video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[0]
+        video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[
+            0]
 
         return_body = {
             "user_id": video_op_obj["user_id"],

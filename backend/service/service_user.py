@@ -24,7 +24,8 @@ def service_user_reg(conf, **kw):
     :return user model:
     """
     # user_name: str, user_email: str, user_password: str, user_ip = "0.0.0.0"
-    # service_user_reg(conf, user_name="t", user_email="k", user_password="lol")
+    # service_user_reg(conf, user_name="t", user_email="k",
+    # user_password="lol")
 
     get_db(conf)
     kw['service'] = 'user'

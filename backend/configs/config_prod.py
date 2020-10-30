@@ -22,7 +22,9 @@ class ProdConfig(BaseConfig):
     DEBUG = False
 
     # DB URI
-    MONGO_ENDPOINT = "mongodb+srv://devops:DevOps@mongodbcluster.v4vtj.mongodb.net/online_video_platform?retryWrites=true&w=majority"
+    MONGO_ENDPOINT = "mongodb+srv://devops:DevOps@mongodbcluster.v4vtj" \
+                     ".mongodb.net/online_video_platform?retryWrites=true&w" \
+                     "=majority"
     MONGO_DATABASE = "online_video_platform"
 
     # Config Flask

@@ -103,9 +103,11 @@ def util_pattern_format_param(**kw):
 
 def util_pattern_slice(**kw):
     if 'video_title' in kw:
-        kw['video_title'] = '.*'.join(kw['video_title'].replace("%20", " ").split(" "))
+        kw['video_title'] = '.*'.join(
+            kw['video_title'].replace("%20", " ").split(" "))
     elif 'video_description' in kw:
-        kw['video_description'] = '.*'.join(kw['video_description'].replace("%20", " ").split(" "))
+        kw['video_description'] = '.*'.join(
+            kw['video_description'].replace("%20", " ").split(" "))
     return kw
 
 
@@ -117,7 +119,8 @@ def util_pattern_build(**kw):
     elif 'user_email' in kw:
         kw['user_email'] = util_pattern_compile(kw['user_email'], **kw)
     elif 'user_first_name' in kw:
-        kw['user_first_name'] = util_pattern_compile(kw['user_first_name'], **kw)
+        kw['user_first_name'] = util_pattern_compile(kw['user_first_name'],
+                                                     **kw)
     elif 'user_last_name' in kw:
         kw['user_last_name'] = util_pattern_compile(kw['user_last_name'], **kw)
     elif 'user_phone' in kw:
@@ -149,11 +152,13 @@ def util_pattern_build(**kw):
     elif 'video_category' in kw:
         kw['video_category'] = util_pattern_compile(kw['video_category'], **kw)
     elif 'video_description' in kw:
-        kw['video_description'] = util_pattern_compile(kw['video_description'], **kw)
+        kw['video_description'] = util_pattern_compile(kw['video_description'],
+                                                       **kw)
 
     # VideoOp
     elif 'video_op_comment' in kw:
-        kw['video_op_comment'] = util_pattern_compile(kw['video_op_comment'], **kw)
+        kw['video_op_comment'] = util_pattern_compile(kw['video_op_comment'],
+                                                      **kw)
     # TODO: add more attr search support
     else:
         raise UtilError(ErrorCode.UTIL_INVALID_PATTERN_PARAM)

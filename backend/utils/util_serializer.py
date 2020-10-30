@@ -34,11 +34,14 @@ def util_serializer_api_response(code, body=[{}], error_code=None, msg=""):
             response = {"code": code, "message": str(msg)}
         else:
             error_code = str(error_code)
-            response = {"code": code, "error_code": error_code, "message": str(msg)}
+            response = {"code": code, "error_code": error_code,
+                        "message": str(msg)}
 
-    result = json.dumps(response, indent=4, sort_keys=True, separators=(',', ': ')) \
+    result = json.dumps(response, indent=4, sort_keys=True,
+                        separators=(',', ': ')) \
         .replace("'", "/^").replace('\\"', "'").replace('"{', '{') \
-        .replace('}"', '}').replace("'", '"').replace("'", '"').replace("/^", "'")
+        .replace('}"', '}').replace("'", '"').replace("'", '"').replace("/^",
+                                                                        "'")
 
     return Response(result, status=code, mimetype='application/json')
 
