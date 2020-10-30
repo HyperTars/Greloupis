@@ -2,9 +2,7 @@
 [![build](https://travis-ci.com/HyperTars/Online-Video-Platform.svg?token=btA3ungCKHqWzLxCoxT7&branch=master)](https://travis-ci.com/HyperTars/Online-Video-Platform)
 [![CodeCov Status](https://codecov.io/gh/HyperTars/Online-Video-Platform/branch/master/graph/badge.svg?token=8K7ODQK5BV)](https://codecov.io/gh/HyperTars/Online-Video-Platform/tree/master/source)
 [![Coverall Status](https://coveralls.io/repos/github/HyperTars/Online-Video-Platform/badge.svg?t=dyCGTT)](https://coveralls.io/github/HyperTars/Online-Video-Platform)
-[![docker status](https://img.shields.io/docker/cloud/build/hypertars/online-video-platform)](https://hub.docker.com/repository/docker/hypertars/online-video-platform)
-[![docker image size](https://img.shields.io/docker/image-size/hypertars/online-video-platform)](https://hub.docker.com/r/hypertars/online-video-platform/tags)
-<!-- [![docker build](https://img.shields.io/docker/cloud/automated/hypertars/online-video-platform)](https://hub.docker.com/r/hypertars/online-video-platform/builds) -->
+
 <!-- [![tested with jest](https://img.shields.io/badge/tested_with-jest-99424f.svg)](https://github.com/facebook/jest) -->
 <!-- [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier) -->
 
@@ -18,6 +16,17 @@
 [![Flask](https://img.shields.io/badge/Flask-1.1.2-blue)](https://pypi.org/project/Flask/)
 [![React](https://img.shields.io/badge/React-17.0.0-blue)](https://reactjs.org/versions)
 [![MongoDB](https://img.shields.io/badge/MongoDB-4.4-blue)](https://docs.mongodb.com/manual/release-notes/4.4/)
+
+- Frontend
+[![docker status](https://img.shields.io/docker/cloud/build/hypertars/greloupis-frontend)](https://hub.docker.com/repository/docker/hypertars/greloupis-frontend)
+[![docker image size](https://img.shields.io/docker/image-size/hypertars/greloupis-frontend)](https://hub.docker.com/r/hypertars/greloupis-frontend/tags)
+<!-- [![docker build](https://img.shields.io/docker/cloud/automated/hypertars/greloupis-frontend)](https://hub.docker.com/r/hypertars/online-video-platform/greloupis-frontends) -->
+
+- Backend
+[![docker status](https://img.shields.io/docker/cloud/build/hypertars/greloupis-backend)](https://hub.docker.com/repository/docker/hypertars/greloupis-backend)
+[![docker image size](https://img.shields.io/docker/image-size/hypertars/greloupis-backend)](https://hub.docker.com/r/hypertars/greloupis-backend/tags)
+<!-- [![docker build](https://img.shields.io/docker/cloud/automated/hypertars/greloupis-backend)](https://hub.docker.com/r/hypertars/greloupis-backend/builds) -->
+
 <!-- [Video.js](https://img.shields.io/badge/Video.js-7.8.4-blue) -->
 <!-- [![tested with jest](https://img.shields.io/badge/tested_with-jest-99424f.svg)](https://github.com/facebook/jest) -->
 
