@@ -13,7 +13,9 @@ install: true
 # before_script:
 script:
   - node -v
-  - sudo npm install n -g && n stable
+  - sudo apt-get update
+  - sudo apt-get install nodejs
+  - sudo apt-get install npm
   - make dev_env
   - make tests
 #deploy:
