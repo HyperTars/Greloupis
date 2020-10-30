@@ -26,7 +26,7 @@ coverage:
 	- codecov -t $(CODECOV_TOKEN)
 
 lint:
-	$(LINTER) . --exit-zero --ignore=E501
+	$(LINTER) . --exit-zero
 
 docs: $(DOCFILES)
 
