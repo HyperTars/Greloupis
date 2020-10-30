@@ -12,6 +12,9 @@ env:
 install: true
 # before_script:
 script:
+  - sudo apt-get remove nodejs npm
+  - sudo apt-get update
+  - sudo apt-get upgrade
   - curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
   - sudo apt-get install -y nodejs
   - node -v
