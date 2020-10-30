@@ -12,7 +12,7 @@ run_backend:
 wsgi_run:
 	gunicorn --bind 0.0.0.0:5000 wsgi:app
 
-tests:	dev_env_backend unit report lint
+tests:	unit report lint
 	echo "unittest and lint check finished"
 
 unit:
