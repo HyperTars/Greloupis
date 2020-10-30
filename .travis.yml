@@ -14,21 +14,21 @@ install: true
 script:
   - make dev_env
   - make tests
-deploy:
-  provider: releases
-  api_key: $GITHUB_TOKEN
-  file_glob: true
-  file:
-    - source/*
-  skip_cleanup: true
-  on:
-    tags: true
+#deploy:
+#  provider: releases
+#  api_key: $GITHUB_TOKEN
+#  file_glob: true
+#  file:
+#    - backend/*
+#  skip_cleanup: true
+#  on:
+#    tags: true
 
 # after_failure:
 after_success:
   - make coverage
-  - test "$TRAVIS_BRANCH"="master" && make docker
-  - test "$TRAVIS_BRANCH"="master" && make heroku
+  - test $TRAVIS_BRANCH = "master" && test $TRAVIS_PULL_REQUEST = "false" && make docker_push
+  - test $TRAVIS_BRANCH = "master" && test $TRAVIS_PULL_REQUEST = "false" && make heroku
 
 notifications:
   email: false

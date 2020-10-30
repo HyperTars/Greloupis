@@ -2,10 +2,10 @@ flake8
 flask
 flask-restx
 flask-mongoengine
+flask-cors
 dnspython
 blinker
 pytest
 coveralls
 pyyaml
 codecov
-flask_cors
