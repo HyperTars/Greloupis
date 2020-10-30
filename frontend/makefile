@@ -12,7 +12,7 @@ report:
 
 docker_build:
 	- docker login --username $(DOCKER_USER) --password $(DOCKER_PASS)
-	- docker build -f Dockerfile -t $(FRONTEND_REPO):(TAG) .
+	- docker build -f Dockerfile -t $(FRONTEND_BUILD):$(TAG) .
 	- docker tag $(FRONTEND_BUILD) $(FRONTEND_REPO)
 	- docker push $(FRONTEND_REPO)
 
