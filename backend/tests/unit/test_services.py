@@ -1052,5 +1052,7 @@ class TestServiceVideoOp(unittest.TestCase):
         service_video_delete(self.conf, video_id=temp_video_id)
 
 
+"""
 if __name__ == "__main__":
     unittest.main()
+"""

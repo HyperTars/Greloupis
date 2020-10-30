@@ -126,5 +126,7 @@ class TestErrorModel(unittest.TestCase):
                          ErrorCode.UTIL_INVALID_PATTERN_PARAM.get_msg())
 
 
+"""
 if __name__ == '__main__':
     unittest.main()
+"""

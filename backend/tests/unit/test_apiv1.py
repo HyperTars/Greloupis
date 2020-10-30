@@ -17,5 +17,7 @@ class TestApiV1(unittest.TestCase):
                          "Blueprint search namespace check")
 
 
+"""
 if __name__ == '__main__':
     unittest.main()
+"""

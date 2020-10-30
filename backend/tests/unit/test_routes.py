@@ -672,5 +672,7 @@ class TestRouteVideo(unittest.TestCase):
             self.assertEqual(error_json["message"], ErrorCode.MONGODB_VIDEO_NOT_FOUND.get_msg())
 
 
+"""
 if __name__ == '__main__':
     unittest.main()
+"""

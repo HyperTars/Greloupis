@@ -9,5 +9,7 @@ class TestApp(unittest.TestCase):
         self.assertEqual(app.name, 'app', msg="Flask app name check")
 
 
+"""
 if __name__ == '__main__':
     unittest.main()
+"""
