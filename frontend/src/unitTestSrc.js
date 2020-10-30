@@ -1,3 +1,4 @@
-export function sumAB(a, b) {
+function sumAB(a, b) {
     return a + b;
 }
+export default sumAB;
