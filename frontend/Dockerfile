@@ -2,9 +2,8 @@ FROM node:latest as build
 RUN mkdir -p /usr/src/app
 COPY . /usr/src/app
 WORKDIR /usr/src/app
-RUN npm install
-RUN npm run build
-CMD ["npm", "start"]
+RUN make dev_env_frontend
+CMD ["make", "run_frontend"]
 
 #FROM nginx:alpine
 #COPY --from=build /usr/src/app/build /usr/share/nginx/html

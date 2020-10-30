@@ -1,10 +1,14 @@
 FRONTEND_REPO = hypertars/greloupis-frontend
 TAG = latest
 
-run_react:
+dev_env_frontend:
+	npm install
+	npm run build
+
+run_frontend:
 	npm start
 
-test:
+tests:	dev_env_frontend
 	npm run test
 
 report:
