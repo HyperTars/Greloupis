@@ -12,6 +12,7 @@ env:
 install: true
 # before_script:
 script:
+  - npm install n -g
   - make dev_env
   - make tests
 #deploy:
