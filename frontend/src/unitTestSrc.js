@@ -1,5 +1,3 @@
-export default {
-    sum(a, b){
-        return a + b;
-    }
+export function sumAB(a, b) {
+    return a + b;
 }
