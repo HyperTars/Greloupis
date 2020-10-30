@@ -15,7 +15,6 @@ script:
   - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.36.0/install.sh | bash
   - nvm install 14.15.0
   - nvm use 14.15.0
-  - node -v
   - make dev_env
   - make tests
 #deploy:
