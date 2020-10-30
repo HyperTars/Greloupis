@@ -181,5 +181,7 @@ class TestValidator(unittest.TestCase):
         self.assertEqual(is_valid_id(test_id_2), False)
 
 
+"""
 if __name__ == '__main__':
     unittest.main()
+"""

@@ -1129,5 +1129,7 @@ class TestQueryVideoOp(unittest.TestCase):
         self.assertEqual(e.exception.error_code, ErrorCode.MONGODB_RE_PATTERN_EXPECTED)
 
 
+"""
 if __name__ == "__main__":
     unittest.main()
+"""
