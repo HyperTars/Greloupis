@@ -17,7 +17,7 @@ github:	FORCE
 
 tests:
 	cd $(BACKEND_DIR); make tests
-	cd $(FRONTEND_DIR); make tests
+	# cd $(FRONTEND_DIR); make tests
 
 docs:	#FORCE
 	cd $(BACKEND_DIR); make docs
