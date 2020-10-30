@@ -3,14 +3,17 @@ TAG = latest
 BACKEND_REPO = hypertars/greloupis-backend
 DOCFILES = $(shell ls *.py | sed 's/.py/.html/')
 
-dev_env:
+dev_env_backend:
 	pip3 install -r requirements.txt
 	
-run:
+run_backend:
 	python3 app.py FLASK_APP=app flask run --host=0.0.0.0 --port=5000
 
 wsgi_run:
 	gunicorn --bind 0.0.0.0:5000 wsgi:app
+
+tests:	dev_env_backend unit report lint
+	echo "unittest and lint check finished"
 
 unit:
 	coverage run --source ./ -m py.test --disable-pytest-warnings
@@ -21,6 +24,9 @@ report:
 coverage:
 	- coveralls
 	- codecov -t $(CODECOV_TOKEN)
+
+lint:
+	$(LINTER) . --exit-zero --ignore=E501
 
 docs: $(DOCFILES)
 

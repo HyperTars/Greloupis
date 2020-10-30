@@ -9,30 +9,22 @@ FORCE:
 
 prod:	dev_env tests github
 
-run:
-	cd $(BACKEND_DIR); make run
+dev_env:	dev_env_backend dev_env_frontend
 
 github:	FORCE
 	- git commit -a
 	- git push origin
 
-tests:	dev_env unit report lint
-	echo "unittest and lint check finished"
-
-unit:   FORCE
-	cd $(BACKEND_DIR); make unit
-
-lint:	FORCE
-	$(LINTER) $(BACKEND_DIR)/. --exit-zero --ignore=E501
-
-dev_env:	FORCE
-	cd $(BACKEND_DIR); make dev_env
+tests:
+	cd $(BACKEND_DIR); make tests
+	cd $(FRONTEND_DIR); make tests
 
 docs:	#FORCE
 	cd $(BACKEND_DIR); make docs
 
 report:
 	cd $(BACKEND_DIR); make report
+	cd $(FRONTEND_DIR); make report
 
 coverage:
 	cd $(BACKEND_DIR); make coverage
@@ -41,6 +33,7 @@ connect:
 	- chmod 400 documents/DevOps.pem
 	- ssh -i "documents/DevOps.pem" $(EC2_SERVER)
 
+# For both frontend and backend
 docker_build:
 	docker-compose build
 
@@ -55,22 +48,39 @@ docker_push:
 	- docker-compose build --pull
 	- docker-compose push
 
-docker_build_backend:
-	cd $(BACKEND_DIR); make docker_build docker_run
-
-docker_run_backend:
-	cd $(BACKEND_DIR); make docker_hub
-
-docker_build_frontend:
-	cd $(FRONTEND_DIR); make docker_build docker_run
-
-docker_run_frontend:
-	cd $(FRONTEND_DIR); make docker_hub
-
 docker_clean:
 	- docker stop $(docker ps -aq)
 	- docker system prune -a
 
+# Build and Run from local Docker (for development tests)
+docker_build_backend:
+	cd $(BACKEND_DIR); make docker_build docker_run
+
+docker_build_frontend:
+	cd $(FRONTEND_DIR); make docker_build docker_run
+
+# Run from Docker Hub (for fast use)
+docker_run_backend:
+	cd $(BACKEND_DIR); make docker_hub
+
+docker_run_frontend:
+	cd $(FRONTEND_DIR); make docker_hub
+
+# Run from native python or npm (for Dockerfile use)
+run_backend:
+	cd $(BACKEND_DIR); make run_backend
+
+run_frontend:
+	cd $(FRONTEND_DIR); make run_frontend
+
+# build dev env (for Dockerfile use)
+dev_env_backend:
+	cd $(BACKEND_DIR); make dev_env_backend
+
+dev_env_frontend:
+	cd $(FRONTEND_DIR); make dev_env_frontend
+
+# Heroku
 heroku:
 	- docker login --username _ --password=$(HEROKU_API_KEY) registry.heroku.com
 	- heroku container:push web --app $(HEROKU_APP_NAME)

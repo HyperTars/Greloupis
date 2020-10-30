@@ -68,21 +68,20 @@ make docker_run
 ```bash
 # from docker hub
 make docker_run_backend
-# from local build
+# from local docker build
 make docker_build_backend
-# OR
-python backend/app.py FLASK_APP=app flask run --host=127.0.0.1 --port=8000
+# from python
+make run_backend
 ```
 
 - To start frontend, run
 ```bash
 # from docker hub
 make docker_run_frontend
-# from local build
+# from local docker build
 make docker_build_frontend
-# OR open frontend/ and
-npm install
-npm run build
+# from npm
+make run_frontend
 ```
 
 - You should be able to view our project
