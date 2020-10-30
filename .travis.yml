@@ -30,13 +30,8 @@ script:
 # after_failure:
 after_success:
   - make coverage
-<<<<<<< HEAD
   - test $TRAVIS_BRANCH = "master" && test $TRAVIS_PULL_REQUEST = "false" && make docker_push
   - test $TRAVIS_BRANCH = "master" && test $TRAVIS_PULL_REQUEST = "false" && make heroku
-=======
-  - test "$TRAVIS_BRANCH"="master" && make docker
-  - test "$TRAVIS_BRANCH"="master" && make heroku
->>>>>>> 325e51aeb95a43c959df052ac5af38181f88a5a1
 
 notifications:
   email: false
