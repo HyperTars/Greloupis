@@ -25,7 +25,7 @@
     [![Flask](https://img.shields.io/badge/Flask-1.1.2-blue)](https://pypi.org/project/Flask/)
     [![React](https://img.shields.io/badge/React-17.0.0-blue)](https://reactjs.org/versions)
     [![MongoDB](https://img.shields.io/badge/MongoDB-4.4-blue)](https://docs.mongodb.com/manual/release-notes/4.4/)
-
+    [![uWSGI](https://img.shields.io/badge/uWSGI-2.0.19-blue)](https://uwsgi-docs.readthedocs.io/en/latest/)
 
 <!-- [Video.js](https://img.shields.io/badge/Video.js-7.8.4-blue) -->
 <!-- [![tested with jest](https://img.shields.io/badge/tested_with-jest-99424f.svg)](https://github.com/facebook/jest) -->

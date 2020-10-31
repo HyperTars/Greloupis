@@ -6,6 +6,8 @@ node_module/
 frontend/coverage/
 frontend/coverage/*
 site-packages/
+*.icloud
+
 ### VS Code ###
 vs_code/
 .vscode
