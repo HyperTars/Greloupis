@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, print_function
-from flask import Flask, render_template
+from flask import Flask
 from apiv1 import blueprint
 from settings import config
 from flask_cors import CORS
@@ -12,12 +12,6 @@ import os
 app = Flask(__name__)
 CORS(app, resources={r'/*': {'origins': config['test'].FRONTEND}},
      supports_credentials=True)
-
-
-@app.route("/")
-def index():
-    return render_template('index.html')
-
 
 """
 @app.before_request
