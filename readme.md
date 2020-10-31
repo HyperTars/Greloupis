@@ -83,9 +83,9 @@ make prod
         ```bash
         make docker_build_backend
         ```
-    - From uWSGI
+    - From uWSGI (use uWSGI to replace flask WSGI)
         ```bash
-        make run_backend  # use uWSGI to replace flask WSGI
+        make run_backend
         ```
     - From native python flask
         ```bash
