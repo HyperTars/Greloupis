@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, print_function
+
+import yaml
 from flask import Flask
 from apiv1 import blueprint
 from settings import config
 from flask_cors import CORS
 import os
-
+import logging.config
 # from source.utils.util_request_filter import *
 # from flask import request, redirect, session
 
@@ -29,4 +31,8 @@ def before_request():
 if __name__ == '__main__':
     app.config.from_object(config['test'])
     app.register_blueprint(blueprint)
+    with open('logging.yml', 'r') as f:
+        conf = yaml.safe_load(f.read())
+        logging.config.dictConfig(conf)
     app.run(debug=True, host='0.0.0.0', port=os.environ.get('PORT', '5000'))
+
