@@ -43,13 +43,19 @@ class TestConfig(BaseConfig):
 
     # Frontend
     FRONTEND = [
+        'http://localhost:8081',
+        'http://localhost:8080',
+        'http://localhost:8000',
         'http://localhost:5000',
         'http://localhost:3000',
         'http://localhost:443',
         'http://localhost:80',
         'http://localhost',
         'http://localhost/',
-        'http://localhost/api'
+        'http://localhost/api',
+        'http://127.0.0.1:8081',
+        'http://127.0.0.1:8080',
+        'http://127.0.0.1:8000',
         'http://127.0.0.1:5000',
         'http://127.0.0.1:3000',
         'http://127.0.0.1:443',
@@ -57,6 +63,9 @@ class TestConfig(BaseConfig):
         'http://127.0.0.1/api',
         'http://127.0.0.1',
         'http://127.0.0.1/',
+        'http://0.0.0.0:8081',
+        'http://0.0.0.0:8080',
+        'http://0.0.0.0:8000',
         'http://0.0.0.0:5000',
         'http://0.0.0.0:3000',
         'http://0.0.0.0:443',
