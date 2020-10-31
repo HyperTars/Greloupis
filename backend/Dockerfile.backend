@@ -1,0 +1,7 @@
+FROM python:3.8.6
+RUN mkdir -p /usr/src/app
+COPY . /usr/src/app
+WORKDIR /usr/src/app
+RUN make dev_env_backend
+EXPOSE 5000
+CMD ["make", "run_backend"]
