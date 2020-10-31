@@ -13,12 +13,6 @@ app = Flask(__name__)
 CORS(app, resources={r'/*': {'origins': config['test'].FRONTEND}},
      supports_credentials=True)
 
-
-@app.route("/")
-def index():
-    return render_template('index.html')
-
-
 """
 @app.before_request
 def before_request():

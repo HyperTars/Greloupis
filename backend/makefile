@@ -9,9 +9,9 @@ dev_env_backend:
 run_backend:
 	python3 app.py FLASK_APP=app flask run --host=0.0.0.0 --port=5000
 
-wsgi_run:
-	gunicorn --bind 0.0.0.0:5000 wsgi:app
-
+run_wsgi:
+	uwsgi --http localhost:5000 --wsgi-file wsgi.py --callable app
+	
 tests:	unit report lint
 	echo "unittest and lint check finished"
 
