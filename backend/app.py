@@ -30,6 +30,9 @@ def before_request():
 
 @app.after_request
 def add_cors_headers(response):
+    if request is None or request.referrer is None:
+        return response
+
     r = request.referrer[:-1]
     if r in config['test'].FRONTEND:
         response.headers.add('Access-Control-Allow-Origin', r)
