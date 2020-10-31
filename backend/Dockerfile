@@ -1,6 +1,7 @@
-FROM python:3.8.6
+FROM python:3.8.6-alpine
+RUN apk add python3-dev build-base linux-headers
 RUN mkdir -p /usr/src/app
 COPY . /usr/src/app
 WORKDIR /usr/src/app
-RUN make dev_env_backend
-CMD ["make", "run_backend"]
+RUN pip3 install -r requirements.txt
+CMD ["uwsgi", "uwsgi.ini"]
