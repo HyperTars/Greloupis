@@ -63,35 +63,48 @@ make tests
 make prod
 ```
 
-#### Start server
-- To start both frontend and backend, run
-```bash
-make docker_run
-```
+#### Run
+- To run both frontend and backend (http://localhost)
+    - Start
+        ```bash
+        make docker_build  # build from docker-compose.yml
+        ```
+    - Run
+        ```bash
+        make docker_run
+        ```
 
-- To start backend, run
-```bash
-# from docker hub
-make docker_run_backend
-# from local docker build
-make docker_build_backend
-# from native python
-make run_backend
-```
+- To run backend only (http://localhost:5000 or http://0.0.0.0:5000)
+    - From Docker Hub 
+        ```bash
+        make docker_run_backend (including build and run)
+        ```
+    - From local docker build
+        ```bash
+        make docker_build_backend
+        ```
+    - From uWSGI (use uWSGI to replace flask WSGI)
+        ```bash
+        make run_backend
+        ```
+    - From native python flask
+        ```bash
+        python3 backend/app.py FLASK_APP=app flask run --host=0.0.0.0 --port=5000
+        ```
 
-- To start frontend, run
-```bash
-# from docker hub
-make docker_run_frontend
-# from local docker build
-make docker_build_frontend
-# from native npm
-make run_frontend
-```
-
-- You should be able to view our project
-    - Frontend: http://0.0.0.0:3000 or http://localhost:3000
-    - Backend: http://0.0.0.0:5000 or http://localhost:5000
+- To run frontend only
+    - From Docker Hub (http://localhost)
+        ```bash
+        make docker_run_frontend
+        ```
+    - From local docker build (including build and run) (http://localhost)
+        ```bash
+        make docker_build_frontend
+        ```
+    - From native npm (http://localhost:3000 or http://0.0.0.0:3000)
+        ```bash
+        make run_frontend
+        ```
 
 ### Designs
 #### Coding Style

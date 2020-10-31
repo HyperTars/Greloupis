@@ -10,7 +10,8 @@ services:
       - 443:443
       - 3000:3000
     volumes:
-      - ./certs:/etc/nginx/certs
+      - ./frontend:/usr/src/app
+      #- ./certs:/etc/nginx/certs
     image: hypertars/greloupis-frontend:latest
 
   backend:
