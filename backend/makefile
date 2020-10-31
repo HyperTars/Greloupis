@@ -6,11 +6,11 @@ DOCFILES = $(shell ls *.py | sed 's/.py/.html/')
 dev_env_backend:
 	pip3 install -r requirements.txt
 	
-run_backend:
-	python3 app.py FLASK_APP=app flask run --host=0.0.0.0 --port=5000
+run_backend:	run_wsgi
+	# python3 app.py FLASK_APP=app flask run --host=0.0.0.0 --port=5000
 
 run_wsgi:
-	uwsgi --http localhost:5000 --wsgi-file wsgi.py --callable app
+	uwsgi --http 0.0.0.0:5000 --wsgi-file wsgi.py --callable app
 	
 tests:	unit report lint
 	echo "unittest and lint check finished"
