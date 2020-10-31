@@ -3,7 +3,6 @@ from __future__ import absolute_import, print_function
 from flask import Flask, request
 from apiv1 import blueprint
 from settings import config
-from flask_cors import CORS
 import os
 
 # from source.utils.util_request_filter import *
