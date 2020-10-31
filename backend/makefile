@@ -11,7 +11,6 @@ run_backend:	run_wsgi
 
 run_wsgi:
 	uwsgi uwsgi.ini
-	# uwsgi --http 0.0.0.0:5000 --wsgi-file wsgi.py --callable app
 	
 tests:	unit report lint
 	echo "unittest and lint check finished"
@@ -33,7 +32,7 @@ docs: $(DOCFILES)
 
 docker_build:
 	- docker login --username $(DOCKER_USER) --password $(DOCKER_PASS)
-	- docker build -f Dockerfile -t $(BACKEND_BUILD):$(TAG) .
+	- docker build -f Dockerfile.backend -t $(BACKEND_BUILD):$(TAG) .
 	- docker tag $(BACKEND_BUILD) $(BACKEND_REPO)
 	- docker push $(BACKEND_REPO)
 

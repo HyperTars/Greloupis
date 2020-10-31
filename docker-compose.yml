@@ -4,14 +4,13 @@ services:
     container_name: frontend
     build:
       context: ./frontend
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.frontend
     ports:
       - 80:80
       - 443:443
       - 3000:3000
     volumes:
       - ./frontend:/usr/src/app
-      #- ./certs:/etc/nginx/certs
     image: hypertars/greloupis-frontend:latest
 
   backend:
@@ -19,7 +18,7 @@ services:
     container_name: backend
     build:
       context: ./backend
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.backend
     ports:
       - 5000:5000
     volumes:
