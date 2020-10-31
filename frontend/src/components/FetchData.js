@@ -52,8 +52,19 @@ function fetchJsonWithErrorHandling(url, options = {}) {
   );
 }
 
+// user related APIs
+
 export function getUserInfoById(endpoint, id) {
   const url = `${endpoint}/user/${id}`;
+  return fetchJsonWithErrorHandling(url);
+}
+
+// video related APIs
+
+// search related APIs
+
+export function searchUserByKeyword(endpoint, keyword) {
+  const url = `${endpoint}/search/user?keyword=${keyword}`;
   return fetchJsonWithErrorHandling(url);
 }
 
