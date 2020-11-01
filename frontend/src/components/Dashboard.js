@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { getUserInfoById, searchVideoByKeyword } from "./FetchData";
+import {
+  getUserInfo,
+  searchVideo,
+  updateVideoViews,
+  updateUserVideoProcess,
+} from "./FetchData";
 
 function Dashboard({ endpoint }) {
   let test_user_id = "5f88f883e6ac4f89900ac983";
   let test_keyword = "ih";
+  let test_video_id = "5f8da0af45a235561c15910c";
 
   const [loading, setLoading] = useState(true);
 
@@ -11,9 +17,11 @@ function Dashboard({ endpoint }) {
 
   const [userData, setUserData] = useState(null);
   const [searchResult, setSearchResult] = useState(null);
+  const [updateResult, setUpdateResult] = useState(null);
+  const [updateProcess, setUpdateProcess] = useState(null);
 
   useEffect(() => {
-    getUserInfoById(endpoint, test_user_id)
+    getUserInfo(endpoint, test_user_id)
       .then((res) => {
         if (res == null) {
           return;
@@ -30,7 +38,7 @@ function Dashboard({ endpoint }) {
   }, [endpoint, test_user_id]);
 
   useEffect(() => {
-    searchVideoByKeyword(endpoint, test_keyword)
+    searchVideo(endpoint, test_keyword)
       .then((res) => {
         if (res == null) {
           return;
@@ -44,6 +52,40 @@ function Dashboard({ endpoint }) {
         setErrorMsg(e.message);
       });
   }, [endpoint, test_keyword]);
+
+  useEffect(() => {
+    updateVideoViews(endpoint, test_video_id)
+      .then((res) => {
+        if (res == null) {
+          return;
+        }
+
+        console.log(res);
+        setUpdateResult(res.body);
+      })
+      .catch((e) => {
+        setLoading(false);
+        setErrorMsg(e.message);
+      });
+  }, [endpoint, test_video_id]);
+
+  useEffect(() => {
+    updateUserVideoProcess(endpoint, test_video_id, test_user_id, {
+      process: parseInt(Math.random() * 1000 + 1, 10),
+    })
+      .then((res) => {
+        if (res == null) {
+          return;
+        }
+
+        console.log(res);
+        setUpdateProcess(res.body);
+      })
+      .catch((e) => {
+        setLoading(false);
+        setErrorMsg(e.message);
+      });
+  }, [endpoint, test_video_id, test_user_id]);
 
   const loadingFormat = (
     <div>
@@ -59,8 +101,6 @@ function Dashboard({ endpoint }) {
 
   const sampleFormat = (
     <div>
-      <div>"Hello world"</div>
-
       <div>
         User name: {!userData ? "Loading" : userData["user"][0]["user_name"]}
       </div>
@@ -72,6 +112,16 @@ function Dashboard({ endpoint }) {
       <div>
         Search video title:{" "}
         {!searchResult ? "Loading" : searchResult[0]["video_title"]}
+      </div>
+
+      <div>
+        Update video view result:{" "}
+        {!updateResult ? "Loading" : updateResult["view_count"]}
+      </div>
+
+      <div>
+        Update video process result:{" "}
+        {!updateProcess ? "Loading" : updateProcess["process"]}
       </div>
     </div>
   );

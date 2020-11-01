@@ -307,7 +307,7 @@ class TestRouteVideo(unittest.TestCase):
                              post_data["video_title"])
 
         # SERVICE_MISSING_PARAM
-        with app.test_request_context('/video', data={}):
+        with app.test_request_context('/video', data={"user_id": "123"}):
             error_json = Video().post(self.conf).get_json()
             self.assertEqual(error_json["code"], 400)
 
