@@ -4,26 +4,27 @@ services:
     container_name: frontend
     build:
       context: ./frontend
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.frontend
     ports:
       - 80:80
       - 443:443
       - 3000:3000
     volumes:
       - ./frontend:/usr/src/app
-      #- ./certs:/etc/nginx/certs
     image: hypertars/greloupis-frontend:latest
 
   backend:
     restart: always
     container_name: backend
-    build: ./backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.backend
     ports:
       - 5000:5000
     volumes:
       - ./backend:/usr/src/app
     environment:
       - FLASK_ENV=development
-      - FLASK_APP=app.py
+      - FLASK_APP=wsgi.py
       - FLASK_DEBUG=1
     image: hypertars/greloupis-backend:latest
