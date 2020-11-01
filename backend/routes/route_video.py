@@ -24,6 +24,7 @@ from utils.util_serializer import util_serializer_api_response, \
 from settings import config
 from models.model_errors import ServiceError, RouteError, MongoError
 
+import ast
 # from flask import Flask, g, Blueprint
 # from flask_restx import Api, marshal_with, reqparse
 # from source.utils.util_serializer import *
@@ -105,7 +106,12 @@ class Video(Resource):
         """
 
         try:
-            kw = dict(request.form)
+            if request.form != {}:
+                kw = dict(request.form)
+            else:
+                raw_data = request.data.decode("utf-8")
+                kw = ast.literal_eval(raw_data)
+
             upload_result = service_video_upload(conf=conf, **kw)
             if upload_result is not None and upload_result != {}:
                 return_body = util_serializer_mongo_results_to_array(
@@ -157,7 +163,12 @@ class VideoVideoId(Resource):
         """
 
         try:
-            kw = dict(request.form)
+            if request.form != {}:
+                kw = dict(request.form)
+            else:
+                raw_data = request.data.decode("utf-8")
+                kw = ast.literal_eval(raw_data)
+
             video_id = request.url.split('/')[-1]
             kw["video_id"] = video_id
 
@@ -310,7 +321,12 @@ class VideoVideoIdCommentUserId(Resource):
         """
 
         try:
-            kw = dict(request.form)
+            if request.form != {}:
+                kw = dict(request.form)
+            else:
+                raw_data = request.data.decode("utf-8")
+                kw = ast.literal_eval(raw_data)
+
             video_id = request.url.split('/')[-3]
             user_id = request.url.split('/')[-1]
             kw["video_id"] = video_id
@@ -329,7 +345,12 @@ class VideoVideoIdCommentUserId(Resource):
         """
 
         try:
-            kw = dict(request.form)
+            if request.form != {}:
+                kw = dict(request.form)
+            else:
+                raw_data = request.data.decode("utf-8")
+                kw = ast.literal_eval(raw_data)
+
             video_id = request.url.split('/')[-3]
             user_id = request.url.split('/')[-1]
             kw["video_id"] = video_id
@@ -459,7 +480,12 @@ class VideoVideoIdProcessUserId(Resource):
         """
 
         try:
-            kw = dict(request.form)
+            if request.form != {}:
+                kw = dict(request.form)
+            else:
+                raw_data = request.data.decode("utf-8")
+                kw = ast.literal_eval(raw_data)
+
             video_id = request.url.split('/')[-3]
             user_id = request.url.split('/')[-1]
             kw["video_id"] = video_id
@@ -497,7 +523,11 @@ class VideoVideoIdProcessUserId(Resource):
         """
 
         try:
-            kw = dict(request.form)
+            if request.form != {}:
+                kw = dict(request.form)
+            else:
+                raw_data = request.data.decode("utf-8")
+                kw = ast.literal_eval(raw_data)
             video_id = request.url.split('/')[-3]
             user_id = request.url.split('/')[-1]
             kw["video_id"] = video_id
