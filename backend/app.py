@@ -52,7 +52,4 @@ def add_cors_headers(response):
 
 
 if __name__ == '__main__':
-    # with open('logging.yml', 'r') as f:
-    #     conf = yaml.safe_load(f.read())
-    #     logging.config.dictConfig(conf)
     app.run(debug=True, host='0.0.0.0', port=os.environ.get('PORT', '5000'))
