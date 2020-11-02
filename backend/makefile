@@ -1,7 +1,6 @@
 LINTER = flake8
 TAG = latest
 BACKEND_REPO = hypertars/greloupis-backend
-DOCFILES = $(shell ls *.py | sed 's/.py/.html/')
 
 dev_env_backend:
 	pip3 install -r requirements.txt
@@ -10,7 +9,7 @@ run_backend:	run_wsgi
 	# python3 app.py FLASK_APP=app flask run --host=0.0.0.0 --port=5000
 
 run_wsgi:
-	uwsgi uwsgi.ini
+	uwsgi --http localhost:5000 --wsgi-file  wsgi.py --callable app
 	
 tests:	unit report lint
 	echo "unittest and lint check finished"
@@ -28,20 +27,29 @@ coverage:
 lint:
 	$(LINTER) --exit-zero ./
 
-docs: $(DOCFILES)
+doc:
+	pydoc -w ./
+	mv *.html docs
 
 docker_build:
+	- docker build -f Dockerfile -t $(BACKEND_BUILD):$(TAG) .
+
+docker_run:
+	- docker run -p 5000:5000 --env PORT=5000 $(BACKEND_BUILD)
+
+docker_push:
 	- docker login --username $(DOCKER_USER) --password $(DOCKER_PASS)
-	- docker build -f Dockerfile.backend -t $(BACKEND_BUILD):$(TAG) .
 	- docker tag $(BACKEND_BUILD) $(BACKEND_REPO)
 	- docker push $(BACKEND_REPO)
 
-docker_run:
-	- docker run -p 5000:5000 $(BACKEND_BUILD)
-
 docker_hub:
-	- docker run -p 5000:5000 --rm -it $(BACKEND_REPO):$(TAG)
+	- docker run -p 5000:5000 --env PORT=5000 --rm -it $(BACKEND_REPO):$(TAG)
 
 %.html: %.py
 	pydoc3 -w ./$<
 	git add $@
+
+heroku:
+	- docker login --username _ --password=$(HEROKU_API_KEY) registry.heroku.com
+	- heroku container:push web --app greloupis-backend
+	- heroku container:release web --app greloupis-backend

@@ -64,10 +64,10 @@ make prod
 ```
 
 #### Run
-- To run both frontend and backend (http://localhost)
-    - Start
+- To run both frontend(http://localhost:3000) and backend (http://localhost:5000)
+    - Start (build from docker-compose.yml)
         ```bash
-        make docker_build  # build from docker-compose.yml
+        make docker_build
         ```
     - Run
         ```bash
@@ -92,16 +92,16 @@ make prod
         python3 backend/app.py FLASK_APP=app flask run --host=0.0.0.0 --port=5000
         ```
 
-- To run frontend only
-    - From Docker Hub (http://localhost)
+- To run frontend only (http://localhost:3000 or http://0.0.0.0:3000)
+    - From Docker Hub
         ```bash
         make docker_run_frontend
         ```
-    - From local docker build (including build and run) (http://localhost)
+    - From local docker build
         ```bash
         make docker_build_frontend
         ```
-    - From native npm (http://localhost:3000 or http://0.0.0.0:3000)
+    - From native npm
         ```bash
         make run_frontend
         ```
@@ -146,7 +146,7 @@ make prod
 - We use `Travis-CI`, `Docker` and `Heroku` to do CI/CD works
   - Our [Travis Conf](.travis.yml) and [Travis-CI Page](https://travis-ci.com/github/HyperTars/Online-Video-Platform)
   - Our [Docker Conf](docker-compose.yml) and [Docker Frontend](https://hub.docker.com/r/hypertars/greloupis-frontend/tags) | [Docker Backend](https://hub.docker.com/r/hypertars/greloupis-backend/tags)
-  - We will deploy our project to [Heroku](https://online-video-platform.herokuapp.com/) (Still under construction)
+  - Our [Heroku Frontend](http://greloupis-frontend.herokuapp.com/) and [Heroku Backend](http://greloupis-backend.herokuapp.com/)
 
 
 ### Contributors

@@ -1,0 +1,12 @@
+server {
+    listen $PORT default_server;
+
+    location / {
+        root /usr/share/nginx/html;
+        index index.html index.htm;
+    }
+
+    location /api {
+        return 301 http://greloupis-backend.herokuapp.com;
+    }
+}
