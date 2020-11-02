@@ -35,7 +35,7 @@ after_success:
 notifications:
   email: false
 # [OPTIONAL] before_deploy
-deploy
+deploy:
   - test $TRAVIS_BRANCH = "master" && test $TRAVIS_PULL_REQUEST = "false" && make heroku
 # [OPTIONAL] after_deploy
 # after_script
