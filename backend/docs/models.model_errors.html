@@ -1,0 +1,535 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module models.model_errors</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="models.html"><font color="#ffffff">models</font></a>.model_errors</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users/hypertars/Documents/Codes/Frontend-OVP/backend/models/model_errors.py">/Users/hypertars/Documents/Codes/Frontend-OVP/backend/models/model_errors.py</a></font></td></tr></table>
+    <p></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="sys.html">sys</a><br>
+</td><td width="25%" valign=top></td><td width="25%" valign=top></td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="builtins.html#Exception">builtins.Exception</a>(<a href="builtins.html#BaseException">builtins.BaseException</a>)
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="models.model_errors.html#ModelError">ModelError</a>
+</font></dt><dt><font face="helvetica, arial"><a href="models.model_errors.html#MongoError">MongoError</a>
+</font></dt><dt><font face="helvetica, arial"><a href="models.model_errors.html#RouteError">RouteError</a>
+</font></dt><dt><font face="helvetica, arial"><a href="models.model_errors.html#ServiceError">ServiceError</a>
+</font></dt><dt><font face="helvetica, arial"><a href="models.model_errors.html#UtilError">UtilError</a>
+</font></dt></dl>
+</dd>
+<dt><font face="helvetica, arial"><a href="enum.html#Enum">enum.Enum</a>(<a href="builtins.html#object">builtins.object</a>)
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="models.model_errors.html#ErrorCode">ErrorCode</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="ErrorCode">class <strong>ErrorCode</strong></a>(<a href="enum.html#Enum">enum.Enum</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#ErrorCode">ErrorCode</a>(value,&nbsp;names=None,&nbsp;*,&nbsp;module=None,&nbsp;qualname=None,&nbsp;type=None,&nbsp;start=1)<br>
+&nbsp;<br>
+An&nbsp;enumeration.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="models.model_errors.html#ErrorCode">ErrorCode</a></dd>
+<dd><a href="enum.html#Enum">enum.Enum</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>ERR_INCORRECT_CODE</strong> = &lt;ErrorCode.ERR_INCORRECT_CODE: {1001: 'Error Code: Incorrect Error Code'}&gt;</dl>
+
+<dl><dt><strong>MODEL_PASS_NOT_READABLE</strong> = &lt;ErrorCode.MODEL_PASS_NOT_READABLE: {5001: 'Password Is Not Readable'}&gt;</dl>
+
+<dl><dt><strong>MONGODB_CONNECTION_FAILURE</strong> = &lt;ErrorCode.MONGODB_CONNECTION_FAILURE: {4000: 'MongoDB Connection Failure'}&gt;</dl>
+
+<dl><dt><strong>MONGODB_DICT_EXPECTED</strong> = &lt;ErrorCode.MONGODB_DICT_EXPECTED: {4129: 'MongoDB Error: type &lt;dict&gt; Expected'}&gt;</dl>
+
+<dl><dt><strong>MONGODB_EMPTY_PARAM</strong> = &lt;ErrorCode.MONGODB_EMPTY_PARAM: {4111: 'MongoDB Error: Empty Input Param'}&gt;</dl>
+
+<dl><dt><strong>MONGODB_FOLLOWED_NOT_FOUND</strong> = &lt;ErrorCode.MONGODB_FOLLOWED_NOT_FOUND: {4121: 'MongoDB Error: User To Be Followed Not Found'}&gt;</dl>
+
+<dl><dt><strong>MONGODB_FOLLOWER_NOT_FOUND</strong> = &lt;ErrorCode.MONGODB_FOLLOWER_NOT_FOUND: {4120: 'MongoDB Error: User Follower Not Found'}&gt;</dl>
+
+<dl><dt><strong>MONGODB_FOLLOW_REL_EXISTS</strong> = &lt;ErrorCode.MONGODB_FOLLOW_REL_EXISTS: {4119: 'Mo...B Error: Following Relationship Already Exists'}&gt;</dl>
+
+<dl><dt><strong>MONGODB_INVALID_SEARCH_PARAM</strong> = &lt;ErrorCode.MONGODB_INVALID_SEARCH_PARAM: {4110: 'MongoDB Error: Invalid Searching Param'}&gt;</dl>
+
+<dl><dt><strong>MONGODB_INVALID_THUMBNAIL</strong> = &lt;ErrorCode.MONGODB_INVALID_THUMBNAIL: {4117: 'MongoDB Error: Invalid Thumbnail Type'}&gt;</dl>
+
+<dl><dt><strong>MONGODB_INVALID_VIDEO_CNT_PARAM</strong> = &lt;ErrorCode.MONGODB_INVALID_VIDEO_CNT_PARAM: {4108: 'MongoDB Error: Invalid Video Count Param'}&gt;</dl>
+
+<dl><dt><strong>MONGODB_LIST_EXPECTED</strong> = &lt;ErrorCode.MONGODB_LIST_EXPECTED: {4107: 'MongoDB Error: type &lt;list&gt; expected'}&gt;</dl>
+
+<dl><dt><strong>MONGODB_LOGIN_INFO_EXISTS</strong> = &lt;ErrorCode.MONGODB_LOGIN_INFO_EXISTS: {4118: 'MongoDB Error: Login Info Already Exists'}&gt;</dl>
+
+<dl><dt><strong>MONGODB_RE_PATTERN_EXPECTED</strong> = &lt;ErrorCode.MONGODB_RE_PATTERN_EXPECTED: {4122: 'MongoDB Error: type &lt;re:Pattern&gt; Expected'}&gt;</dl>
+
+<dl><dt><strong>MONGODB_STR_EXPECTED</strong> = &lt;ErrorCode.MONGODB_STR_EXPECTED: {4123: 'MongoDB Error: type &lt;str&gt; Expected'}&gt;</dl>
+
+<dl><dt><strong>MONGODB_THUMBNAIL_MISS_ONE</strong> = &lt;ErrorCode.MONGODB_THUMBNAIL_MISS_ONE: {4106: 'M...mbnail missing one argument, must provide both'}&gt;</dl>
+
+<dl><dt><strong>MONGODB_UPDATE_SAME_NAME</strong> = &lt;ErrorCode.MONGODB_UPDATE_SAME_NAME: {4115: 'MongoDB Error: Update To Same Name'}&gt;</dl>
+
+<dl><dt><strong>MONGODB_UPDATE_SAME_PASS</strong> = &lt;ErrorCode.MONGODB_UPDATE_SAME_PASS: {4116: 'MongoDB Error: Update To Same Password'}&gt;</dl>
+
+<dl><dt><strong>MONGODB_USER_CREATE_FAILURE</strong> = &lt;ErrorCode.MONGODB_USER_CREATE_FAILURE: {4124: 'MongoDB Error: User Creation Failure'}&gt;</dl>
+
+<dl><dt><strong>MONGODB_USER_CREATE_FOLLOW_FAILURE</strong> = &lt;ErrorCode.MONGODB_USER_CREATE_FOLLOW_FAILURE: {...Error: User Create Follow Relationship Failure'}&gt;</dl>
+
+<dl><dt><strong>MONGODB_USER_DELETE_FOLLOW_FAILURE</strong> = &lt;ErrorCode.MONGODB_USER_DELETE_FOLLOW_FAILURE: {...Error: User Delete Follow Relationship Failure'}&gt;</dl>
+
+<dl><dt><strong>MONGODB_USER_EMAIL_TAKEN</strong> = &lt;ErrorCode.MONGODB_USER_EMAIL_TAKEN: {4113: 'MongoDB Error: User Email Already Taken'}&gt;</dl>
+
+<dl><dt><strong>MONGODB_USER_INVALID_STATUS</strong> = &lt;ErrorCode.MONGODB_USER_INVALID_STATUS: {4114: 'MongoDB Error: Invalid User Status'}&gt;</dl>
+
+<dl><dt><strong>MONGODB_USER_NAME_TAKEN</strong> = &lt;ErrorCode.MONGODB_USER_NAME_TAKEN: {4104: 'MongoDB Error: User Name Already Taken'}&gt;</dl>
+
+<dl><dt><strong>MONGODB_USER_NOT_FOUND</strong> = &lt;ErrorCode.MONGODB_USER_NOT_FOUND: {4101: 'MongoDB Error: User Not Found'}&gt;</dl>
+
+<dl><dt><strong>MONGODB_VIDEO_CNT_ZERO</strong> = &lt;ErrorCode.MONGODB_VIDEO_CNT_ZERO: {4109: 'MongoDB Error: Video Count Param Already Down To Zero'}&gt;</dl>
+
+<dl><dt><strong>MONGODB_VIDEO_COMMENT_DELETE_FAILURE</strong> = &lt;ErrorCode.MONGODB_VIDEO_COMMENT_DELETE_FAILURE:...: 'MongoDB Error: Video Comment Delete Failure'}&gt;</dl>
+
+<dl><dt><strong>MONGODB_VIDEO_COMMENT_UPDATE_FAILURE</strong> = &lt;ErrorCode.MONGODB_VIDEO_COMMENT_UPDATE_FAILURE:...: 'MongoDB Error: Video Comment Update Failure'}&gt;</dl>
+
+<dl><dt><strong>MONGODB_VIDEO_CREATE_FAILURE</strong> = &lt;ErrorCode.MONGODB_VIDEO_CREATE_FAILURE: {4127: 'MongoDB Error: Video Creation Failure'}&gt;</dl>
+
+<dl><dt><strong>MONGODB_VIDEO_DELETE_FAILURE</strong> = &lt;ErrorCode.MONGODB_VIDEO_DELETE_FAILURE: {4131: 'MongoDB Error: Video Delete Failure'}&gt;</dl>
+
+<dl><dt><strong>MONGODB_VIDEO_DISLIKE_UPDATE_FAILURE</strong> = &lt;ErrorCode.MONGODB_VIDEO_DISLIKE_UPDATE_FAILURE:...: 'MongoDB Error: Video Dislike Update Failure'}&gt;</dl>
+
+<dl><dt><strong>MONGODB_VIDEO_INVALID_STATUS</strong> = &lt;ErrorCode.MONGODB_VIDEO_INVALID_STATUS: {4128: 'MongoDB Error: Video Invalid Status'}&gt;</dl>
+
+<dl><dt><strong>MONGODB_VIDEO_LIKE_UPDATE_FAILURE</strong> = &lt;ErrorCode.MONGODB_VIDEO_LIKE_UPDATE_FAILURE: {4136: 'MongoDB Error: Video Like Update Failure'}&gt;</dl>
+
+<dl><dt><strong>MONGODB_VIDEO_NOT_FOUND</strong> = &lt;ErrorCode.MONGODB_VIDEO_NOT_FOUND: {4102: 'MongoDB Error: Video Not Found'}&gt;</dl>
+
+<dl><dt><strong>MONGODB_VIDEO_OP_EXISTS</strong> = &lt;ErrorCode.MONGODB_VIDEO_OP_EXISTS: {4112: 'MongoDB Error: Video Op Already Exists'}&gt;</dl>
+
+<dl><dt><strong>MONGODB_VIDEO_OP_NOT_FOUND</strong> = &lt;ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND: {4103: 'MongoDB Error: VideoOp Not Found'}&gt;</dl>
+
+<dl><dt><strong>MONGODB_VIDEO_PROCESS_DELETE_FAILURE</strong> = &lt;ErrorCode.MONGODB_VIDEO_PROCESS_DELETE_FAILURE:...: 'MongoDB Error: Video Process Delete Failure'}&gt;</dl>
+
+<dl><dt><strong>MONGODB_VIDEO_PROCESS_UPDATE_FAILURE</strong> = &lt;ErrorCode.MONGODB_VIDEO_PROCESS_UPDATE_FAILURE:...: 'MongoDB Error: Video Process Update Failure'}&gt;</dl>
+
+<dl><dt><strong>MONGODB_VIDEO_STAR_UPDATE_FAILURE</strong> = &lt;ErrorCode.MONGODB_VIDEO_STAR_UPDATE_FAILURE: {4138: 'MongoDB Error: Video Star Update Failure'}&gt;</dl>
+
+<dl><dt><strong>MONGODB_VIDEO_TITLE_TAKEN</strong> = &lt;ErrorCode.MONGODB_VIDEO_TITLE_TAKEN: {4105: 'MongoDB Error: Video Title Already Taken'}&gt;</dl>
+
+<dl><dt><strong>MONGODB_VIDEO_UPDATE_FAILURE</strong> = &lt;ErrorCode.MONGODB_VIDEO_UPDATE_FAILURE: {4130: 'MongoDB Error: Video Update Failure'}&gt;</dl>
+
+<dl><dt><strong>ROUTE_INVALID_REQUEST_PARAM</strong> = &lt;ErrorCode.ROUTE_INVALID_REQUEST_PARAM: {2001: 'Route Error: Invalid Request Parameters'}&gt;</dl>
+
+<dl><dt><strong>SERVICE_INVALID_ID_OBJ</strong> = &lt;ErrorCode.SERVICE_INVALID_ID_OBJ: {3008: 'Service Error: Invalid ID Object'}&gt;</dl>
+
+<dl><dt><strong>SERVICE_INVALID_SEARCH_PARAM</strong> = &lt;ErrorCode.SERVICE_INVALID_SEARCH_PARAM: {3007: 'Service Error: Invalid Search Param'}&gt;</dl>
+
+<dl><dt><strong>SERVICE_MISSING_PARAM</strong> = &lt;ErrorCode.SERVICE_MISSING_PARAM: {3003: 'Service Error: Missing Essential Param'}&gt;</dl>
+
+<dl><dt><strong>SERVICE_PARAM_SLICE_NOT_SUPPORT</strong> = &lt;ErrorCode.SERVICE_PARAM_SLICE_NOT_SUPPORT: {300...ce Error: Current Param Does Not Support Slice'}&gt;</dl>
+
+<dl><dt><strong>SERVICE_PATTERN_SEARCH_NOT_SUPPORT</strong> = &lt;ErrorCode.SERVICE_PATTERN_SEARCH_NOT_SUPPORT: {... Current Param Does Not Support Pattern Search'}&gt;</dl>
+
+<dl><dt><strong>SERVICE_USER_AUTH_FAILURE</strong> = &lt;ErrorCode.SERVICE_USER_AUTH_FAILURE: {3006: 'Service Error: User Auth Failure'}&gt;</dl>
+
+<dl><dt><strong>SERVICE_USER_CREATION_FAILURE</strong> = &lt;ErrorCode.SERVICE_USER_CREATION_FAILURE: {3005: 'Service Error: User Creation Failure'}&gt;</dl>
+
+<dl><dt><strong>SERVICE_USER_NOT_FOUND</strong> = &lt;ErrorCode.SERVICE_USER_NOT_FOUND: {3004: 'Service Error: User Not Found'}&gt;</dl>
+
+<dl><dt><strong>SERVICE_USER_NO_VIDEO_OP</strong> = &lt;ErrorCode.SERVICE_USER_NO_VIDEO_OP: {3009: 'Service Error: Current User Has No Video Op'}&gt;</dl>
+
+<dl><dt><strong>SERVICE_VIDEO_INVALID_STATUS</strong> = &lt;ErrorCode.SERVICE_VIDEO_INVALID_STATUS: {3010: 'Service Error: Invalid Video Status'}&gt;</dl>
+
+<dl><dt><strong>SERVICE_VIDEO_NOT_FOUND</strong> = &lt;ErrorCode.SERVICE_VIDEO_NOT_FOUND: {3011: 'Service Error: Video Not Found'}&gt;</dl>
+
+<dl><dt><strong>UTIL_INVALID_PATTERN_PARAM</strong> = &lt;ErrorCode.UTIL_INVALID_PATTERN_PARAM: {6001: 'Util Error: Pattern Compile Param Not Supported'}&gt;</dl>
+
+<hr>
+Data descriptors inherited from <a href="enum.html#Enum">enum.Enum</a>:<br>
+<dl><dt><strong>name</strong></dt>
+<dd><tt>The&nbsp;name&nbsp;of&nbsp;the&nbsp;Enum&nbsp;member.</tt></dd>
+</dl>
+<dl><dt><strong>value</strong></dt>
+<dd><tt>The&nbsp;value&nbsp;of&nbsp;the&nbsp;Enum&nbsp;member.</tt></dd>
+</dl>
+<hr>
+Readonly properties inherited from <a href="enum.html#EnumMeta">enum.EnumMeta</a>:<br>
+<dl><dt><strong>__members__</strong></dt>
+<dd><tt>Returns&nbsp;a&nbsp;mapping&nbsp;of&nbsp;member&nbsp;name-&gt;value.<br>
+&nbsp;<br>
+This&nbsp;mapping&nbsp;lists&nbsp;all&nbsp;enum&nbsp;members,&nbsp;including&nbsp;aliases.&nbsp;Note&nbsp;that&nbsp;this<br>
+is&nbsp;a&nbsp;read-only&nbsp;view&nbsp;of&nbsp;the&nbsp;internal&nbsp;mapping.</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="ModelError">class <strong>ModelError</strong></a>(<a href="builtins.html#Exception">builtins.Exception</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>Common&nbsp;base&nbsp;class&nbsp;for&nbsp;all&nbsp;non-exit&nbsp;exceptions.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="models.model_errors.html#ModelError">ModelError</a></dd>
+<dd><a href="builtins.html#Exception">builtins.Exception</a></dd>
+<dd><a href="builtins.html#BaseException">builtins.BaseException</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Methods inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><a name="ModelError-__init__"><strong>__init__</strong></a>(self, /, *args, **kwargs)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<hr>
+Static methods inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><a name="ModelError-__new__"><strong>__new__</strong></a>(*args, **kwargs)<font color="#909090"><font face="helvetica, arial"> from <a href="builtins.html#type">builtins.type</a></font></font></dt><dd><tt>Create&nbsp;and&nbsp;return&nbsp;a&nbsp;new&nbsp;object.&nbsp;&nbsp;See&nbsp;help(type)&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><a name="ModelError-__delattr__"><strong>__delattr__</strong></a>(self, name, /)</dt><dd><tt>Implement&nbsp;delattr(self,&nbsp;name).</tt></dd></dl>
+
+<dl><dt><a name="ModelError-__getattribute__"><strong>__getattribute__</strong></a>(self, name, /)</dt><dd><tt>Return&nbsp;getattr(self,&nbsp;name).</tt></dd></dl>
+
+<dl><dt><a name="ModelError-__reduce__"><strong>__reduce__</strong></a>(...)</dt><dd><tt>Helper&nbsp;for&nbsp;pickle.</tt></dd></dl>
+
+<dl><dt><a name="ModelError-__repr__"><strong>__repr__</strong></a>(self, /)</dt><dd><tt>Return&nbsp;repr(self).</tt></dd></dl>
+
+<dl><dt><a name="ModelError-__setattr__"><strong>__setattr__</strong></a>(self, name, value, /)</dt><dd><tt>Implement&nbsp;setattr(self,&nbsp;name,&nbsp;value).</tt></dd></dl>
+
+<dl><dt><a name="ModelError-__setstate__"><strong>__setstate__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="ModelError-__str__"><strong>__str__</strong></a>(self, /)</dt><dd><tt>Return&nbsp;str(self).</tt></dd></dl>
+
+<dl><dt><a name="ModelError-with_traceback"><strong>with_traceback</strong></a>(...)</dt><dd><tt><a href="builtins.html#Exception">Exception</a>.<a href="#ModelError-with_traceback">with_traceback</a>(tb)&nbsp;--<br>
+set&nbsp;self.<strong>__traceback__</strong>&nbsp;to&nbsp;tb&nbsp;and&nbsp;return&nbsp;self.</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><strong>__cause__</strong></dt>
+<dd><tt>exception&nbsp;cause</tt></dd>
+</dl>
+<dl><dt><strong>__context__</strong></dt>
+<dd><tt>exception&nbsp;context</tt></dd>
+</dl>
+<dl><dt><strong>__dict__</strong></dt>
+</dl>
+<dl><dt><strong>__suppress_context__</strong></dt>
+</dl>
+<dl><dt><strong>__traceback__</strong></dt>
+</dl>
+<dl><dt><strong>args</strong></dt>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="MongoError">class <strong>MongoError</strong></a>(<a href="builtins.html#Exception">builtins.Exception</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#MongoError">MongoError</a>(error_code,&nbsp;message='',&nbsp;*args,&nbsp;**kwargs)<br>
+&nbsp;<br>
+Common&nbsp;base&nbsp;class&nbsp;for&nbsp;all&nbsp;non-exit&nbsp;exceptions.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="models.model_errors.html#MongoError">MongoError</a></dd>
+<dd><a href="builtins.html#Exception">builtins.Exception</a></dd>
+<dd><a href="builtins.html#BaseException">builtins.BaseException</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="MongoError-__init__"><strong>__init__</strong></a>(self, error_code, message='', *args, **kwargs)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<dl><dt><a name="MongoError-__str__"><strong>__str__</strong></a>(self)</dt><dd><tt>Return&nbsp;str(self).</tt></dd></dl>
+
+<dl><dt><a name="MongoError-get_code"><strong>get_code</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="MongoError-get_msg"><strong>get_msg</strong></a>(self)</dt></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Static methods inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><a name="MongoError-__new__"><strong>__new__</strong></a>(*args, **kwargs)<font color="#909090"><font face="helvetica, arial"> from <a href="builtins.html#type">builtins.type</a></font></font></dt><dd><tt>Create&nbsp;and&nbsp;return&nbsp;a&nbsp;new&nbsp;object.&nbsp;&nbsp;See&nbsp;help(type)&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><a name="MongoError-__delattr__"><strong>__delattr__</strong></a>(self, name, /)</dt><dd><tt>Implement&nbsp;delattr(self,&nbsp;name).</tt></dd></dl>
+
+<dl><dt><a name="MongoError-__getattribute__"><strong>__getattribute__</strong></a>(self, name, /)</dt><dd><tt>Return&nbsp;getattr(self,&nbsp;name).</tt></dd></dl>
+
+<dl><dt><a name="MongoError-__reduce__"><strong>__reduce__</strong></a>(...)</dt><dd><tt>Helper&nbsp;for&nbsp;pickle.</tt></dd></dl>
+
+<dl><dt><a name="MongoError-__repr__"><strong>__repr__</strong></a>(self, /)</dt><dd><tt>Return&nbsp;repr(self).</tt></dd></dl>
+
+<dl><dt><a name="MongoError-__setattr__"><strong>__setattr__</strong></a>(self, name, value, /)</dt><dd><tt>Implement&nbsp;setattr(self,&nbsp;name,&nbsp;value).</tt></dd></dl>
+
+<dl><dt><a name="MongoError-__setstate__"><strong>__setstate__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="MongoError-with_traceback"><strong>with_traceback</strong></a>(...)</dt><dd><tt><a href="builtins.html#Exception">Exception</a>.<a href="#MongoError-with_traceback">with_traceback</a>(tb)&nbsp;--<br>
+set&nbsp;self.<strong>__traceback__</strong>&nbsp;to&nbsp;tb&nbsp;and&nbsp;return&nbsp;self.</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><strong>__cause__</strong></dt>
+<dd><tt>exception&nbsp;cause</tt></dd>
+</dl>
+<dl><dt><strong>__context__</strong></dt>
+<dd><tt>exception&nbsp;context</tt></dd>
+</dl>
+<dl><dt><strong>__dict__</strong></dt>
+</dl>
+<dl><dt><strong>__suppress_context__</strong></dt>
+</dl>
+<dl><dt><strong>__traceback__</strong></dt>
+</dl>
+<dl><dt><strong>args</strong></dt>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="RouteError">class <strong>RouteError</strong></a>(<a href="builtins.html#Exception">builtins.Exception</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#RouteError">RouteError</a>(error_code,&nbsp;message='',&nbsp;*args,&nbsp;**kwargs)<br>
+&nbsp;<br>
+Common&nbsp;base&nbsp;class&nbsp;for&nbsp;all&nbsp;non-exit&nbsp;exceptions.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="models.model_errors.html#RouteError">RouteError</a></dd>
+<dd><a href="builtins.html#Exception">builtins.Exception</a></dd>
+<dd><a href="builtins.html#BaseException">builtins.BaseException</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="RouteError-__init__"><strong>__init__</strong></a>(self, error_code, message='', *args, **kwargs)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<dl><dt><a name="RouteError-__str__"><strong>__str__</strong></a>(self)</dt><dd><tt>Return&nbsp;str(self).</tt></dd></dl>
+
+<dl><dt><a name="RouteError-get_code"><strong>get_code</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="RouteError-get_msg"><strong>get_msg</strong></a>(self)</dt></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Static methods inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><a name="RouteError-__new__"><strong>__new__</strong></a>(*args, **kwargs)<font color="#909090"><font face="helvetica, arial"> from <a href="builtins.html#type">builtins.type</a></font></font></dt><dd><tt>Create&nbsp;and&nbsp;return&nbsp;a&nbsp;new&nbsp;object.&nbsp;&nbsp;See&nbsp;help(type)&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><a name="RouteError-__delattr__"><strong>__delattr__</strong></a>(self, name, /)</dt><dd><tt>Implement&nbsp;delattr(self,&nbsp;name).</tt></dd></dl>
+
+<dl><dt><a name="RouteError-__getattribute__"><strong>__getattribute__</strong></a>(self, name, /)</dt><dd><tt>Return&nbsp;getattr(self,&nbsp;name).</tt></dd></dl>
+
+<dl><dt><a name="RouteError-__reduce__"><strong>__reduce__</strong></a>(...)</dt><dd><tt>Helper&nbsp;for&nbsp;pickle.</tt></dd></dl>
+
+<dl><dt><a name="RouteError-__repr__"><strong>__repr__</strong></a>(self, /)</dt><dd><tt>Return&nbsp;repr(self).</tt></dd></dl>
+
+<dl><dt><a name="RouteError-__setattr__"><strong>__setattr__</strong></a>(self, name, value, /)</dt><dd><tt>Implement&nbsp;setattr(self,&nbsp;name,&nbsp;value).</tt></dd></dl>
+
+<dl><dt><a name="RouteError-__setstate__"><strong>__setstate__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="RouteError-with_traceback"><strong>with_traceback</strong></a>(...)</dt><dd><tt><a href="builtins.html#Exception">Exception</a>.<a href="#RouteError-with_traceback">with_traceback</a>(tb)&nbsp;--<br>
+set&nbsp;self.<strong>__traceback__</strong>&nbsp;to&nbsp;tb&nbsp;and&nbsp;return&nbsp;self.</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><strong>__cause__</strong></dt>
+<dd><tt>exception&nbsp;cause</tt></dd>
+</dl>
+<dl><dt><strong>__context__</strong></dt>
+<dd><tt>exception&nbsp;context</tt></dd>
+</dl>
+<dl><dt><strong>__dict__</strong></dt>
+</dl>
+<dl><dt><strong>__suppress_context__</strong></dt>
+</dl>
+<dl><dt><strong>__traceback__</strong></dt>
+</dl>
+<dl><dt><strong>args</strong></dt>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="ServiceError">class <strong>ServiceError</strong></a>(<a href="builtins.html#Exception">builtins.Exception</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#ServiceError">ServiceError</a>(error_code,&nbsp;message='',&nbsp;*args,&nbsp;**kwargs)<br>
+&nbsp;<br>
+Common&nbsp;base&nbsp;class&nbsp;for&nbsp;all&nbsp;non-exit&nbsp;exceptions.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="models.model_errors.html#ServiceError">ServiceError</a></dd>
+<dd><a href="builtins.html#Exception">builtins.Exception</a></dd>
+<dd><a href="builtins.html#BaseException">builtins.BaseException</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="ServiceError-__init__"><strong>__init__</strong></a>(self, error_code, message='', *args, **kwargs)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<dl><dt><a name="ServiceError-__str__"><strong>__str__</strong></a>(self)</dt><dd><tt>Return&nbsp;str(self).</tt></dd></dl>
+
+<dl><dt><a name="ServiceError-get_code"><strong>get_code</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="ServiceError-get_msg"><strong>get_msg</strong></a>(self)</dt></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Static methods inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><a name="ServiceError-__new__"><strong>__new__</strong></a>(*args, **kwargs)<font color="#909090"><font face="helvetica, arial"> from <a href="builtins.html#type">builtins.type</a></font></font></dt><dd><tt>Create&nbsp;and&nbsp;return&nbsp;a&nbsp;new&nbsp;object.&nbsp;&nbsp;See&nbsp;help(type)&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><a name="ServiceError-__delattr__"><strong>__delattr__</strong></a>(self, name, /)</dt><dd><tt>Implement&nbsp;delattr(self,&nbsp;name).</tt></dd></dl>
+
+<dl><dt><a name="ServiceError-__getattribute__"><strong>__getattribute__</strong></a>(self, name, /)</dt><dd><tt>Return&nbsp;getattr(self,&nbsp;name).</tt></dd></dl>
+
+<dl><dt><a name="ServiceError-__reduce__"><strong>__reduce__</strong></a>(...)</dt><dd><tt>Helper&nbsp;for&nbsp;pickle.</tt></dd></dl>
+
+<dl><dt><a name="ServiceError-__repr__"><strong>__repr__</strong></a>(self, /)</dt><dd><tt>Return&nbsp;repr(self).</tt></dd></dl>
+
+<dl><dt><a name="ServiceError-__setattr__"><strong>__setattr__</strong></a>(self, name, value, /)</dt><dd><tt>Implement&nbsp;setattr(self,&nbsp;name,&nbsp;value).</tt></dd></dl>
+
+<dl><dt><a name="ServiceError-__setstate__"><strong>__setstate__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="ServiceError-with_traceback"><strong>with_traceback</strong></a>(...)</dt><dd><tt><a href="builtins.html#Exception">Exception</a>.<a href="#ServiceError-with_traceback">with_traceback</a>(tb)&nbsp;--<br>
+set&nbsp;self.<strong>__traceback__</strong>&nbsp;to&nbsp;tb&nbsp;and&nbsp;return&nbsp;self.</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><strong>__cause__</strong></dt>
+<dd><tt>exception&nbsp;cause</tt></dd>
+</dl>
+<dl><dt><strong>__context__</strong></dt>
+<dd><tt>exception&nbsp;context</tt></dd>
+</dl>
+<dl><dt><strong>__dict__</strong></dt>
+</dl>
+<dl><dt><strong>__suppress_context__</strong></dt>
+</dl>
+<dl><dt><strong>__traceback__</strong></dt>
+</dl>
+<dl><dt><strong>args</strong></dt>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="UtilError">class <strong>UtilError</strong></a>(<a href="builtins.html#Exception">builtins.Exception</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#UtilError">UtilError</a>(error_code,&nbsp;message='',&nbsp;*args,&nbsp;**kwargs)<br>
+&nbsp;<br>
+Common&nbsp;base&nbsp;class&nbsp;for&nbsp;all&nbsp;non-exit&nbsp;exceptions.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="models.model_errors.html#UtilError">UtilError</a></dd>
+<dd><a href="builtins.html#Exception">builtins.Exception</a></dd>
+<dd><a href="builtins.html#BaseException">builtins.BaseException</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="UtilError-__init__"><strong>__init__</strong></a>(self, error_code, message='', *args, **kwargs)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<dl><dt><a name="UtilError-__str__"><strong>__str__</strong></a>(self)</dt><dd><tt>Return&nbsp;str(self).</tt></dd></dl>
+
+<dl><dt><a name="UtilError-get_code"><strong>get_code</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="UtilError-get_msg"><strong>get_msg</strong></a>(self)</dt></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Static methods inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><a name="UtilError-__new__"><strong>__new__</strong></a>(*args, **kwargs)<font color="#909090"><font face="helvetica, arial"> from <a href="builtins.html#type">builtins.type</a></font></font></dt><dd><tt>Create&nbsp;and&nbsp;return&nbsp;a&nbsp;new&nbsp;object.&nbsp;&nbsp;See&nbsp;help(type)&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><a name="UtilError-__delattr__"><strong>__delattr__</strong></a>(self, name, /)</dt><dd><tt>Implement&nbsp;delattr(self,&nbsp;name).</tt></dd></dl>
+
+<dl><dt><a name="UtilError-__getattribute__"><strong>__getattribute__</strong></a>(self, name, /)</dt><dd><tt>Return&nbsp;getattr(self,&nbsp;name).</tt></dd></dl>
+
+<dl><dt><a name="UtilError-__reduce__"><strong>__reduce__</strong></a>(...)</dt><dd><tt>Helper&nbsp;for&nbsp;pickle.</tt></dd></dl>
+
+<dl><dt><a name="UtilError-__repr__"><strong>__repr__</strong></a>(self, /)</dt><dd><tt>Return&nbsp;repr(self).</tt></dd></dl>
+
+<dl><dt><a name="UtilError-__setattr__"><strong>__setattr__</strong></a>(self, name, value, /)</dt><dd><tt>Implement&nbsp;setattr(self,&nbsp;name,&nbsp;value).</tt></dd></dl>
+
+<dl><dt><a name="UtilError-__setstate__"><strong>__setstate__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="UtilError-with_traceback"><strong>with_traceback</strong></a>(...)</dt><dd><tt><a href="builtins.html#Exception">Exception</a>.<a href="#UtilError-with_traceback">with_traceback</a>(tb)&nbsp;--<br>
+set&nbsp;self.<strong>__traceback__</strong>&nbsp;to&nbsp;tb&nbsp;and&nbsp;return&nbsp;self.</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><strong>__cause__</strong></dt>
+<dd><tt>exception&nbsp;cause</tt></dd>
+</dl>
+<dl><dt><strong>__context__</strong></dt>
+<dd><tt>exception&nbsp;context</tt></dd>
+</dl>
+<dl><dt><strong>__dict__</strong></dt>
+</dl>
+<dl><dt><strong>__suppress_context__</strong></dt>
+</dl>
+<dl><dt><strong>__traceback__</strong></dt>
+</dl>
+<dl><dt><strong>args</strong></dt>
+</dl>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>db</strong> = &lt;flask_mongoengine.MongoEngine object&gt;</td></tr></table>
+</body></html>

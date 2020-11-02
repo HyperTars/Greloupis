@@ -1,0 +1,13 @@
+# Greloupis - Online Video Platform
+export COVERALLS_REPO_TOKEN="d0uSUWTxdI9YRQNQOEQ9IxTjwgcjnYaGl"
+export CODECOV_TOKEN="a767bea5-9464-4229-b6f4-e420874311b3"
+export PROFILE="dev"
+export TRAVIS_BRANCH="master"
+export DOCKER_USER="hypertars"
+export BACKEND_BUILD="greloupis-backend"
+export FRONTEND_BUILD="greloupis-frontend"
+export DOCKER_EMAIL="hypertars@gmail.com"
+export DOCKER_PASS="a231662c-42da-4c60-b52f-a3284235f26a"
+export HEROKU_API_KEY="d85e2e49-8e22-4a2c-9b1c-530d90b5e29c"
+export HEROKU_APP_NAME="greloupis"
+export EC2_SERVER="ubuntu@ec2-54-205-45-145.compute-1.amazonaws.com"

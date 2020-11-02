@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: package configs</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>configs</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users/hypertars/Documents/Codes/Frontend-OVP/backend/configs/__init__.py">/Users/hypertars/Documents/Codes/Frontend-OVP/backend/configs/__init__.py</a></font></td></tr></table>
+    <p><tt>from&nbsp;os&nbsp;import&nbsp;environ<br>
+&nbsp;<br>
+PROFILE&nbsp;=&nbsp;environ.get("PROFILE",&nbsp;"dev")<br>
+&nbsp;<br>
+if&nbsp;PROFILE&nbsp;==&nbsp;"dev":<br>
+&nbsp;&nbsp;&nbsp;&nbsp;from&nbsp;.config_dev&nbsp;import&nbsp;*<br>
+elif&nbsp;PROFILE&nbsp;==&nbsp;"prod":<br>
+&nbsp;&nbsp;&nbsp;&nbsp;from&nbsp;.config_prod&nbsp;import&nbsp;*<br>
+else:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;from&nbsp;.config_test&nbsp;import&nbsp;*<br>
+&nbsp;<br>
+&nbsp;<br>
+def&nbsp;get(name,&nbsp;default=None):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;import&nbsp;source.settings&nbsp;as&nbsp;this_module<br>
+&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;getattr(this_module,&nbsp;name,&nbsp;default)</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Package Contents</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="configs.config_base.html">config_base</a><br>
+</td><td width="25%" valign=top><a href="configs.config_dev.html">config_dev</a><br>
+</td><td width="25%" valign=top><a href="configs.config_prod.html">config_prod</a><br>
+</td><td width="25%" valign=top><a href="configs.config_test.html">config_test</a><br>
+</td></tr></table></td></tr></table>
+</body></html>

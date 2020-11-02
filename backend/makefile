@@ -27,7 +27,7 @@ coverage:
 lint:
 	$(LINTER) --exit-zero ./
 
-doc:
+document:
 	pydoc -w ./
 	mv *.html docs
 
@@ -45,11 +45,7 @@ docker_push:
 docker_hub:
 	- docker run -p 5000:5000 --env PORT=5000 --rm -it $(BACKEND_REPO):$(TAG)
 
-%.html: %.py
-	pydoc3 -w ./$<
-	git add $@
-
 heroku:
 	- docker login --username _ --password=$(HEROKU_API_KEY) registry.heroku.com
-	- heroku container:push web --app greloupis-backend
-	- heroku container:release web --app greloupis-backend
+	- heroku container:push web --app $(BACKEND_BUILD)
+	- heroku container:release web --app $(BACKEND_BUILD)

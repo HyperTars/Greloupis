@@ -11,8 +11,8 @@ services:
       - 3000:3000
     volumes:
       - ./frontend:/usr/src/app
-      - ./frontend/nginx.template:/etc/nginx/conf.d/default.conf.template
-      - ./frontend/nginx.conf:/etc/nginx/nginx/conf
+      - ./frontend/configs/nginx.template:/etc/nginx/conf.d/default.conf.template
+      - ./frontend/configs/nginx.conf:/etc/nginx/nginx/conf
     environment:
       - PORT=3000
     image: hypertars/greloupis-frontend:latest

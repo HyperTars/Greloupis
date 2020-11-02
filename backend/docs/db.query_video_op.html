@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module db.query_video_op</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="db.html"><font color="#ffffff">db</font></a>.query_video_op</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users/hypertars/Documents/Codes/Frontend-OVP/backend/db/query_video_op.py">/Users/hypertars/Documents/Codes/Frontend-OVP/backend/db/query_video_op.py</a></font></td></tr></table>
+    <p></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="bson.html">bson</a><br>
+</td><td width="25%" valign=top><a href="re.html">re</a><br>
+</td><td width="25%" valign=top></td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-query_video_op_create"><strong>query_video_op_create</strong></a>(user_id: str, video_id: str, init_time=datetime.datetime(2020, 11, 2, 13, 0, 29))</dt><dd><tt>Create&nbsp;video&nbsp;operations<br>
+&nbsp;<br>
+:param&nbsp;user_id:&nbsp;user's&nbsp;unique&nbsp;id<br>
+:param&nbsp;video_id:&nbsp;video's&nbsp;unique&nbsp;id<br>
+:param&nbsp;init_time:&nbsp;op&nbsp;creation&nbsp;time&nbsp;(optional,&nbsp;default&nbsp;utc&nbsp;now)<br>
+:return&nbsp;VideoOp&nbsp;model&nbsp;if&nbsp;succeeded,&nbsp;-1&nbsp;if&nbsp;no&nbsp;such&nbsp;user,&nbsp;-2&nbsp;if&nbsp;no&nbsp;such<br>
+video,&nbsp;-3&nbsp;if&nbsp;VideoOp&nbsp;exists</tt></dd></dl>
+ <dl><dt><a name="-query_video_op_delete"><strong>query_video_op_delete</strong></a>(op_id: str, silent=False)</dt><dd><tt>:param&nbsp;op_id:&nbsp;op's&nbsp;unique&nbsp;id<br>
+:param&nbsp;silent:&nbsp;delete&nbsp;video&nbsp;op&nbsp;regardless&nbsp;of&nbsp;existence<br>
+:return:&nbsp;1&nbsp;if&nbsp;succeeded,&nbsp;-1&nbsp;if&nbsp;no&nbsp;such&nbsp;video</tt></dd></dl>
+ <dl><dt><a name="-query_video_op_get_by_op_id"><strong>query_video_op_get_by_op_id</strong></a>(op_id: str)</dt><dd><tt>:param:&nbsp;op_id,&nbsp;video&nbsp;operation&nbsp;unique&nbsp;id<br>
+:return:&nbsp;an&nbsp;array&nbsp;of&nbsp;such&nbsp;video_op&nbsp;(len&nbsp;==&nbsp;0&nbsp;or&nbsp;1),&nbsp;len&nbsp;==&nbsp;0&nbsp;if&nbsp;no&nbsp;such<br>
+video_op_id,&nbsp;len&nbsp;==&nbsp;1&nbsp;if&nbsp;found</tt></dd></dl>
+ <dl><dt><a name="-query_video_op_get_by_user_id"><strong>query_video_op_get_by_user_id</strong></a>(user_id: str)</dt><dd><tt>:param:&nbsp;user_id,&nbsp;user's&nbsp;unique&nbsp;id<br>
+:return:&nbsp;an&nbsp;array&nbsp;of&nbsp;such&nbsp;video_op,&nbsp;len&nbsp;==&nbsp;0&nbsp;if&nbsp;no&nbsp;such&nbsp;video_op</tt></dd></dl>
+ <dl><dt><a name="-query_video_op_get_by_user_video"><strong>query_video_op_get_by_user_video</strong></a>(user_id: str, video_id: str)</dt><dd><tt>:param:&nbsp;user_id,&nbsp;user's&nbsp;unique&nbsp;id<br>
+:param:&nbsp;video_id,&nbsp;video's&nbsp;unique&nbsp;id<br>
+:return:&nbsp;an&nbsp;array&nbsp;of&nbsp;such&nbsp;video_op&nbsp;(len&nbsp;==&nbsp;0&nbsp;or&nbsp;1),&nbsp;len&nbsp;==&nbsp;0&nbsp;if&nbsp;no&nbsp;such<br>
+video_op,&nbsp;len&nbsp;==&nbsp;1&nbsp;if&nbsp;found</tt></dd></dl>
+ <dl><dt><a name="-query_video_op_get_by_video_id"><strong>query_video_op_get_by_video_id</strong></a>(video_id: str)</dt><dd><tt>:param:&nbsp;video_id,&nbsp;video's&nbsp;unique&nbsp;id<br>
+:return:&nbsp;an&nbsp;array&nbsp;of&nbsp;such&nbsp;video_op,&nbsp;len&nbsp;==&nbsp;0&nbsp;if&nbsp;no&nbsp;such&nbsp;video_op</tt></dd></dl>
+ <dl><dt><a name="-query_video_op_search_comment_by_contains"><strong>query_video_op_search_comment_by_contains</strong></a>(comment: str)</dt><dd><tt>Search&nbsp;video&nbsp;op&nbsp;by&nbsp;comment&nbsp;keyword<br>
+:param&nbsp;comment:&nbsp;comment&nbsp;keyword<br>
+:return:&nbsp;result&nbsp;array&nbsp;of&nbsp;VideoOp&nbsp;Model</tt></dd></dl>
+ <dl><dt><a name="-query_video_op_search_comment_by_pattern"><strong>query_video_op_search_comment_by_pattern</strong></a>(comment)</dt><dd><tt>Search&nbsp;video&nbsp;op&nbsp;by&nbsp;comment&nbsp;pattern<br>
+:param&nbsp;comment:&nbsp;comment&nbsp;pattern<br>
+:return:&nbsp;result&nbsp;array&nbsp;of&nbsp;VideoOp&nbsp;Model</tt></dd></dl>
+ <dl><dt><a name="-query_video_op_update_comment"><strong>query_video_op_update_comment</strong></a>(op_id: str, comment: str, comment_date=datetime.datetime(2020, 11, 2, 13, 0, 29))</dt><dd><tt>:param:&nbsp;op_id,&nbsp;video&nbsp;op&nbsp;unique&nbsp;id<br>
+:param:&nbsp;comment,&nbsp;video&nbsp;comment<br>
+:param:&nbsp;comment_date&nbsp;(optional,&nbsp;default&nbsp;utc&nbsp;now)<br>
+:return:&nbsp;1&nbsp;if&nbsp;succeeded,&nbsp;-1&nbsp;if&nbsp;no&nbsp;such&nbsp;video_op</tt></dd></dl>
+ <dl><dt><a name="-query_video_op_update_dislike"><strong>query_video_op_update_dislike</strong></a>(op_id: str, dislike: bool, dislike_date=datetime.datetime(2020, 11, 2, 13, 0, 29))</dt><dd><tt>:param:&nbsp;op_id,&nbsp;video&nbsp;op&nbsp;unique&nbsp;id<br>
+:param:&nbsp;dislike,&nbsp;video&nbsp;dislike&nbsp;(boolean)<br>
+:param:&nbsp;dislike_date&nbsp;(optional,&nbsp;default&nbsp;utc&nbsp;now)<br>
+:return:&nbsp;1&nbsp;if&nbsp;succeeded,&nbsp;-1&nbsp;if&nbsp;no&nbsp;such&nbsp;video_op</tt></dd></dl>
+ <dl><dt><a name="-query_video_op_update_like"><strong>query_video_op_update_like</strong></a>(op_id: str, like: bool, like_date=datetime.datetime(2020, 11, 2, 13, 0, 29))</dt><dd><tt>:param:&nbsp;op_id,&nbsp;video&nbsp;op&nbsp;unique&nbsp;id<br>
+:param:&nbsp;like,&nbsp;video&nbsp;like&nbsp;(boolean)<br>
+:param:&nbsp;like_date&nbsp;(optional,&nbsp;default&nbsp;utc&nbsp;now)<br>
+:return:&nbsp;1&nbsp;if&nbsp;succeeded,&nbsp;-1&nbsp;if&nbsp;no&nbsp;such&nbsp;video_op</tt></dd></dl>
+ <dl><dt><a name="-query_video_op_update_process"><strong>query_video_op_update_process</strong></a>(op_id: str, process: int, process_date=datetime.datetime(2020, 11, 2, 13, 0, 29))</dt><dd><tt>:param:&nbsp;op_id,&nbsp;video&nbsp;op&nbsp;unique&nbsp;id<br>
+:param:&nbsp;process,&nbsp;video&nbsp;watching&nbsp;process<br>
+:param:&nbsp;process_date&nbsp;(optional,&nbsp;default&nbsp;utc&nbsp;now)<br>
+:return:&nbsp;1&nbsp;if&nbsp;succeeded,&nbsp;-1&nbsp;if&nbsp;no&nbsp;such&nbsp;video_op</tt></dd></dl>
+ <dl><dt><a name="-query_video_op_update_star"><strong>query_video_op_update_star</strong></a>(op_id: str, star: bool, star_date=datetime.datetime(2020, 11, 2, 13, 0, 29))</dt><dd><tt>:param:&nbsp;op_id,&nbsp;video&nbsp;op&nbsp;unique&nbsp;id<br>
+:param:&nbsp;star,&nbsp;video&nbsp;star&nbsp;(boolean)<br>
+:param:&nbsp;star_date&nbsp;(optional,&nbsp;default&nbsp;utc&nbsp;now)<br>
+:return:&nbsp;1&nbsp;if&nbsp;succeeded,&nbsp;-1&nbsp;if&nbsp;no&nbsp;such&nbsp;video_op</tt></dd></dl>
+</td></tr></table>
+</body></html>
