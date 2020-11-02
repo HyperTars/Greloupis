@@ -10,14 +10,14 @@
     [![docker status](https://img.shields.io/docker/cloud/build/hypertars/greloupis-frontend)](https://hub.docker.com/r/hypertars/greloupis-frontend)
     [![docker image size](https://img.shields.io/docker/image-size/hypertars/greloupis-frontend)](https://hub.docker.com/r/hypertars/greloupis-frontend/tags)
     [![docker build](https://img.shields.io/docker/cloud/automated/hypertars/greloupis-frontend)](https://hub.docker.com/r/hypertars/online-video-platform/greloupis-frontends)
-    [![Heroku](https://pyheroku-badge.herokuapp.com/?app=greloupis-frontend&style=flat)](http://greloupis-frontend.herokuapp.com/)
+    [![Heroku](https://pyheroku-badge.herokuapp.com/?app=greloupis-frontend&style=flat)](https://greloupis-frontend.herokuapp.com/)
 
 - Delivery (Backend)
 
     [![docker status](https://img.shields.io/docker/cloud/build/hypertars/greloupis-backend)](https://hub.docker.com/r/hypertars/greloupis-backend)
     [![docker image size](https://img.shields.io/docker/image-size/hypertars/greloupis-backend)](https://hub.docker.com/r/hypertars/greloupis-backend/tags)
     [![docker build](https://img.shields.io/docker/cloud/automated/hypertars/greloupis-backend)](https://hub.docker.com/r/hypertars/greloupis-backend/builds)
-    [![Heroku](https://pyheroku-badge.herokuapp.com/?app=greloupis-backend&style=flat)](http://greloupis-backend.herokuapp.com/)
+    [![Heroku](https://pyheroku-badge.herokuapp.com/?app=greloupis-backend&style=flat)](https://greloupis-backend.herokuapp.com/)
 
 - Environment Compatibility
 
@@ -148,7 +148,7 @@ make prod
 - We use `Travis-CI`, `Docker` and `Heroku` to do CI/CD works
   - Our [Travis Conf](.travis.yml) and [Travis-CI Page](https://travis-ci.com/github/HyperTars/Online-Video-Platform)
   - Our [Docker Conf](docker-compose.yml) and [Docker Frontend](https://hub.docker.com/r/hypertars/greloupis-frontend/tags) | [Docker Backend](https://hub.docker.com/r/hypertars/greloupis-backend/tags)
-  - Our [Heroku Frontend](http://greloupis-frontend.herokuapp.com/) and [Heroku Backend](http://greloupis-backend.herokuapp.com/)
+  - Our [Heroku Frontend](https://greloupis-frontend.herokuapp.com/) and [Heroku Backend](https://greloupis-backend.herokuapp.com/)
 
 
 ### Contributors
