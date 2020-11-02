@@ -3,6 +3,8 @@ from __future__ import absolute_import, print_function
 
 import yaml
 from flask import Flask, request
+from flask_jwt_extended import JWTManager
+
 from apiv1 import blueprint
 from settings import config
 import os
@@ -13,6 +15,7 @@ import logging.config
 app = Flask(__name__)
 app.config.from_object(config['test'])
 app.register_blueprint(blueprint)
+jwt = JWTManager(app)
 with open('logging.yml', 'r') as f:
     conf = yaml.safe_load(f.read())
     logging.config.dictConfig(conf)
