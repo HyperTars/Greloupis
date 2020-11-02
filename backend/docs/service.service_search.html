@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module service.service_search</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="service.html"><font color="#ffffff">service</font></a>.service_search</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users/hypertars/Documents/Codes/Frontend-OVP/backend/service/service_search.py">/Users/hypertars/Documents/Codes/Frontend-OVP/backend/service/service_search.py</a></font></td></tr></table>
+    <p></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-service_search_user"><strong>service_search_user</strong></a>(conf, **kw)</dt><dd><tt>#########################<br>
+#&nbsp;Service&nbsp;Search&nbsp;Caller&nbsp;#<br>
+#########################<br>
+#&nbsp;TODO:&nbsp;add&nbsp;search&nbsp;all&nbsp;(including&nbsp;search&nbsp;video&nbsp;by&nbsp;comment&nbsp;content,&nbsp;uploader,<br>
+#&nbsp;&nbsp;etc.)<br>
+#&nbsp;TODO:&nbsp;by&nbsp;comment:&nbsp;search&nbsp;VideoOp.comment&nbsp;-&gt;&nbsp;video_id&nbsp;-&gt;&nbsp;Video.video_id<br>
+#&nbsp;TODO:&nbsp;by&nbsp;uploader:&nbsp;search&nbsp;User.user_id&nbsp;-&gt;&nbsp;user_id&nbsp;-&gt;&nbsp;Video.user_id<br>
+#&nbsp;Search&nbsp;User&nbsp;Caller</tt></dd></dl>
+ <dl><dt><a name="-service_search_user_by_aggregation"><strong>service_search_user_by_aggregation</strong></a>(search_dict=None, **kw)</dt><dd><tt>#&nbsp;Search&nbsp;by&nbsp;aggregate</tt></dd></dl>
+ <dl><dt><a name="-service_search_user_by_contains"><strong>service_search_user_by_contains</strong></a>(**kw)</dt><dd><tt>choose&nbsp;one&nbsp;attribute&nbsp;to&nbsp;search&nbsp;one&nbsp;keyword,&nbsp;case&nbsp;sensitive<br>
+:param&nbsp;user_name:&nbsp;(optional)&nbsp;single&nbsp;keyword&nbsp;of&nbsp;username&nbsp;to&nbsp;be&nbsp;searched<br>
+:param&nbsp;user_email:&nbsp;(optional)&nbsp;single&nbsp;keyword&nbsp;of&nbsp;email&nbsp;to&nbsp;be&nbsp;searched<br>
+:return:&nbsp;array&nbsp;of&nbsp;searching&nbsp;results</tt></dd></dl>
+ <dl><dt><a name="-service_search_user_by_pattern"><strong>service_search_user_by_pattern</strong></a>(**kw)</dt><dd><tt>#&nbsp;Search&nbsp;by&nbsp;pattern</tt></dd></dl>
+ <dl><dt><a name="-service_search_video"><strong>service_search_video</strong></a>(conf, **kw)</dt><dd><tt>#&nbsp;Search&nbsp;Video&nbsp;Caller</tt></dd></dl>
+ <dl><dt><a name="-service_search_video_by_aggregation"><strong>service_search_video_by_aggregation</strong></a>(search_dict=None, **kw)</dt></dl>
+ <dl><dt><a name="-service_search_video_by_contains"><strong>service_search_video_by_contains</strong></a>(**kw)</dt><dd><tt>Currently&nbsp;support&nbsp;searching&nbsp;'id',&nbsp;'title',&nbsp;'channel',&nbsp;'category',&nbsp;'tag'<br>
+:param&nbsp;kw:<br>
+:return:</tt></dd></dl>
+ <dl><dt><a name="-service_search_video_by_pattern"><strong>service_search_video_by_pattern</strong></a>(**kw)</dt></dl>
+</td></tr></table>
+</body></html>
