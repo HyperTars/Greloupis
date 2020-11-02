@@ -31,11 +31,11 @@ script:
 after_success:
   - make coverage
   - test $TRAVIS_BRANCH = "master" && test $TRAVIS_PULL_REQUEST = "false" && make docker_push
-  # - test $TRAVIS_BRANCH = "master" && test $TRAVIS_PULL_REQUEST = "false" && make heroku
 
 notifications:
   email: false
 # [OPTIONAL] before_deploy
-# [OPTIONAL] deploy
+deploy
+  - test $TRAVIS_BRANCH = "master" && test $TRAVIS_PULL_REQUEST = "false" && make heroku
 # [OPTIONAL] after_deploy
 # after_script

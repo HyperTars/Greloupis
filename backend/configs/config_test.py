@@ -43,6 +43,9 @@ class TestConfig(BaseConfig):
 
     # Frontend
     FRONTEND = [
+        'http://greloupis-backend.herokuapp.com',
+        'http://greloupis-frontend.herokuapp.com',
+        'https://greloupis-frontend.herokuapp.com',
         'http://localhost:8081',
         'http://localhost:8080',
         'http://localhost:8000',
@@ -72,6 +75,6 @@ class TestConfig(BaseConfig):
         'http://0.0.0.0:80',
         'http://0.0.0.0/api',
         'http://0.0.0.0/',
-        'http://0.0.0.0',
+        'http://0.0.0.0'
     ]
     CORS_ALLOW_HEADERS = 'Content-Type'
