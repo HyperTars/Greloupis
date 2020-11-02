@@ -64,10 +64,10 @@ make prod
 ```
 
 #### Run
-- To run both frontend and backend (http://localhost)
-    - Start
+- To run both frontend(http://localhost:3000) and backend (http://localhost:5000)
+    - Start (build from docker-compose.yml)
         ```bash
-        make docker_build  # build from docker-compose.yml
+        make docker_build
         ```
     - Run
         ```bash
@@ -92,16 +92,16 @@ make prod
         python3 backend/app.py FLASK_APP=app flask run --host=0.0.0.0 --port=5000
         ```
 
-- To run frontend only
-    - From Docker Hub (http://localhost)
+- To run frontend only (http://localhost:3000 or http://0.0.0.0:3000)
+    - From Docker Hub
         ```bash
         make docker_run_frontend
         ```
-    - From local docker build (including build and run) (http://localhost)
+    - From local docker build
         ```bash
         make docker_build_frontend
         ```
-    - From native npm (http://localhost:3000 or http://0.0.0.0:3000)
+    - From native npm
         ```bash
         make run_frontend
         ```

@@ -32,10 +32,10 @@ doc:
 	mv *.html docs
 
 docker_build:
-	- docker build -f Dockerfile.backend -t $(BACKEND_BUILD):$(TAG) .
+	- docker build -f Dockerfile -t $(BACKEND_BUILD):$(TAG) .
 
 docker_run:
-	- docker run -p 5000:5000 $(BACKEND_BUILD)
+	- docker run -p 5000:5000 --env PORT=5000 $(BACKEND_BUILD)
 
 docker_push:
 	- docker login --username $(DOCKER_USER) --password $(DOCKER_PASS)
@@ -43,7 +43,7 @@ docker_push:
 	- docker push $(BACKEND_REPO)
 
 docker_hub:
-	- docker run -p 5000:5000 --rm -it $(BACKEND_REPO):$(TAG)
+	- docker run -p 5000:5000 --env PORT=5000 --rm -it $(BACKEND_REPO):$(TAG)
 
 %.html: %.py
 	pydoc3 -w ./$<
