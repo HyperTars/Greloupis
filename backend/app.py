@@ -6,9 +6,11 @@ from flask import Flask, request
 from flask_jwt_extended import JWTManager
 
 from apiv1 import blueprint
+from routes.route_user import blacklist
 from settings import config
 import os
 import logging.config
+
 # from source.utils.util_request_filter import *
 # from flask import request, redirect, session
 
@@ -19,8 +21,16 @@ jwt = JWTManager(app)
 with open('logging.yml', 'r') as f:
     conf = yaml.safe_load(f.read())
     logging.config.dictConfig(conf)
+
+
 # CORS(app, resources={r'/*': {'origins': config['test'].FRONTEND}},
 #      supports_credentials=True)
+@jwt.token_in_blacklist_loader
+def check_if_token_in_blacklist(decrypted_token):
+    jti = decrypted_token['jti']
+    return jti in blacklist
+
+
 """
 @app.before_request
 def before_request():

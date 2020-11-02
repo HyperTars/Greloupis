@@ -51,3 +51,13 @@ class ProdConfig(BaseConfig):
         'http://127.0.0.1:3000',
         'http://0.0.0.0:3000'
     ]
+
+    # jwt
+    JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY') or 'jwt-key'
+    JWT_COOKIE_CSRF_PROTECT = True
+    JWT_CSRF_CHECK_FORM = True
+    JWT_ACCESS_TOKEN_EXPIRES = \
+        os.environ.get('JWT_ACCESS_TOKEN_EXPIRES') or 10
+    PROPAGATE_EXCEPTIONS = True
+    JWT_BLACKLIST_ENABLED = True
+    JWT_BLACKLIST_TOKEN_CHECKS = ['access', "refresh"]
