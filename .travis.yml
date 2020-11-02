@@ -1,7 +1,6 @@
 language: python
 python:
   - "3.8"
-  - "3.7"
 dist: bionic
 env:
   global:
@@ -9,7 +8,8 @@ env:
 
 jobs:
   include:
-    - stage: tests
+    - stage: test
+      install: true
       script:
         - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.36.0/install.sh | bash
         - nvm install 14.15.0
@@ -28,7 +28,7 @@ jobs:
         - test $TRAVIS_PULL_REQUEST = "false" && make heroku
 
 stages:
-  - tests
+  - test
   - dockerize
   - deploy
 #deploy:
