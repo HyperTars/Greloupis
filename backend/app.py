@@ -49,8 +49,6 @@ def add_cors_headers(response):
 
 
 if __name__ == '__main__':
-    app.config.from_object(config['test'])
-    app.register_blueprint(blueprint)
     with open('logging.yml', 'r') as f:
         conf = yaml.safe_load(f.read())
         logging.config.dictConfig(conf)
