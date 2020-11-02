@@ -13,6 +13,9 @@ import logging.config
 app = Flask(__name__)
 app.config.from_object(config['test'])
 app.register_blueprint(blueprint)
+with open('logging.yml', 'r') as f:
+    conf = yaml.safe_load(f.read())
+    logging.config.dictConfig(conf)
 # CORS(app, resources={r'/*': {'origins': config['test'].FRONTEND}},
 #      supports_credentials=True)
 """
@@ -49,7 +52,7 @@ def add_cors_headers(response):
 
 
 if __name__ == '__main__':
-    with open('logging.yml', 'r') as f:
-        conf = yaml.safe_load(f.read())
-        logging.config.dictConfig(conf)
+    # with open('logging.yml', 'r') as f:
+    #     conf = yaml.safe_load(f.read())
+    #     logging.config.dictConfig(conf)
     app.run(debug=True, host='0.0.0.0', port=os.environ.get('PORT', '5000'))
