@@ -29,10 +29,6 @@ report:
 coverage:
 	cd $(BACKEND_DIR); make coverage
 
-connect:
-	- chmod 400 documents/DevOps.pem
-	- ssh -i "documents/DevOps.pem" $(EC2_SERVER)
-
 # For both frontend and backend
 docker_build:
 	docker-compose build
