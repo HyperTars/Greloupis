@@ -157,7 +157,7 @@ class User(Resource):
 @user.response(404, 'User not found', general_response)
 @user.response(500, 'Internal server error', general_response)
 class UserUserId(Resource):
-    @jwt_required
+    # @jwt_required
     def get(self, user_id, conf=config["default"]):
         """
             Get user information by id
