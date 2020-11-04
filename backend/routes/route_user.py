@@ -10,7 +10,7 @@ from flask_restx import Resource, fields, Namespace
 from service.service_user import service_user_get_comment, \
     service_user_get_dislike, service_user_get_info, service_user_get_like, \
     service_user_get_process, service_user_get_star
-from utils.uitl_jwt import blacklist
+from utils.util_jwt import blacklist
 from utils.util_error_handler import util_error_handler
 from settings import config
 from utils.util_serializer import util_serializer_api_response

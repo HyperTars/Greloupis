@@ -12,6 +12,7 @@ from utils.util_pattern import util_pattern_format_param, \
 from models.model_errors import ErrorCode, ServiceError, UtilError, \
     RouteError, MongoError
 from utils.util_serializer import util_serializer_dict_to_json
+from utils.util_jwt import util_show_blacklist
 
 
 class TestUtilErrorHandler(unittest.TestCase):
@@ -181,6 +182,11 @@ class TestValidator(unittest.TestCase):
         self.assertEqual(is_valid_id(test_id_1), True)
         self.assertEqual(is_valid_id(test_id_2), False)
 
+
+class TestJWT(unittest.TestCase):
+
+    def test_util_show_blacklist(self):
+        self.assertEqual(util_show_blacklist(), True)
 
 """
 if __name__ == '__main__':
