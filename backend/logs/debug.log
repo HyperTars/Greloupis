@@ -1,0 +1,443 @@
+2020-11-01 00:31:46,938 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+2020-11-01 00:31:46,939 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-01 00:31:47,493 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-01 00:31:47,576 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-01 00:32:10,934 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/admin/python_work/Online-Video-Platform/backend/app.py', reloading
+2020-11-01 00:32:11,018 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-01 00:32:11,599 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-01 00:32:11,678 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-01 00:33:07,456 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/admin/python_work/Online-Video-Platform/backend/app.py', reloading
+2020-11-01 00:33:07,530 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-01 00:33:08,180 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-01 00:33:08,258 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-01 00:33:41,720 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/admin/python_work/Online-Video-Platform/backend/utils/util_logger.py', reloading
+2020-11-01 00:33:41,806 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-01 00:33:51,111 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+2020-11-01 00:33:51,112 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-01 00:33:51,681 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-01 00:33:51,764 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 16:23:04,729 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+2020-11-02 16:23:04,731 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 16:23:05,635 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 16:23:05,748 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 16:24:13,773 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+2020-11-02 16:24:13,775 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 16:24:14,293 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 16:24:14,733 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 16:24:21,750 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 16:24:21] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 16:25:31,721 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/admin/python_work/Online-Video-Platform/backend/routes/route_user.py', reloading
+2020-11-02 16:25:31,787 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 16:25:33,074 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 16:25:33,670 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 16:25:38,886 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 16:25:38] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 16:26:01,186 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+2020-11-02 16:26:01,187 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 16:26:01,704 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 16:26:02,205 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 16:26:06,087 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 16:26:06] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 16:26:14,261 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+2020-11-02 16:26:14,261 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 16:26:14,772 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 16:26:15,239 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 16:26:48,729 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/admin/python_work/Online-Video-Platform/backend/routes/route_user.py', reloading
+2020-11-02 16:26:48,782 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 16:26:49,912 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 16:26:50,374 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 16:26:53,650 - route_user - route_user.py - post - 141 - root - INFO - tesfas
+2020-11-02 16:26:53,651 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 16:26:53] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 16:27:18,757 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/admin/python_work/Online-Video-Platform/backend/app.py', reloading
+2020-11-02 16:27:18,813 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 16:27:19,706 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 16:27:20,188 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 16:27:34,393 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/admin/python_work/Online-Video-Platform/backend/routes/route_user.py', reloading
+2020-11-02 16:27:34,471 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 16:27:35,097 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 16:27:35,198 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 16:31:00,032 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+2020-11-02 16:31:00,033 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 16:31:00,515 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 16:31:01,022 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 16:37:24,232 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+2020-11-02 16:37:24,234 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 16:37:24,736 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 16:37:24,806 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 18:50:47,863 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+2020-11-02 18:50:47,866 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 18:50:48,371 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 18:50:48,707 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 18:50:55,921 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 18:50:55] "[37mGET / HTTP/1.1[0m" 200 -
+2020-11-02 18:50:55,975 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 18:50:55] "[37mGET /swaggerui/droid-sans.css HTTP/1.1[0m" 200 -
+2020-11-02 18:50:55,980 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 18:50:55] "[37mGET /swaggerui/swagger-ui.css HTTP/1.1[0m" 200 -
+2020-11-02 18:50:56,010 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 18:50:56] "[37mGET /swaggerui/swagger-ui-bundle.js HTTP/1.1[0m" 200 -
+2020-11-02 18:50:56,010 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 18:50:56] "[37mGET /swaggerui/swagger-ui-standalone-preset.js HTTP/1.1[0m" 200 -
+2020-11-02 18:50:56,273 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 18:50:56] "[37mGET /swagger.json HTTP/1.1[0m" 200 -
+2020-11-02 18:51:00,626 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 18:51:00] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 18:51:08,967 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 18:51:08] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 18:51:10,010 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 18:51:10] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 18:51:11,244 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 18:51:11] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 18:52:21,630 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+2020-11-02 18:52:21,632 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 18:52:22,122 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 18:52:22,190 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 18:52:26,532 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 18:52:26] "[35m[1mPOST /user HTTP/1.1[0m" 500 -
+2020-11-02 18:52:32,672 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 18:52:32] "[35m[1mPOST /user HTTP/1.1[0m" 500 -
+2020-11-02 18:52:43,391 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 18:52:43] "[35m[1mPOST /user/login HTTP/1.1[0m" 500 -
+2020-11-02 18:54:25,850 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/admin/python_work/Online-Video-Platform/backend/app.py', reloading
+2020-11-02 18:54:25,943 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 18:54:26,468 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 18:54:27,937 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+2020-11-02 18:54:27,938 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 18:54:28,455 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 18:54:28,528 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 18:54:34,828 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 18:54:34] "[37mPOST /user/login HTTP/1.1[0m" 200 -
+2020-11-02 18:54:39,952 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 18:54:39] "[37mPOST /user/login HTTP/1.1[0m" 200 -
+2020-11-02 18:54:46,161 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 18:54:46] "[37mGET /swaggerui/swagger-ui-bundle.js.map HTTP/1.1[0m" 200 -
+2020-11-02 18:54:46,161 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 18:54:46] "[37mGET /swaggerui/swagger-ui-standalone-preset.js.map HTTP/1.1[0m" 200 -
+2020-11-02 18:54:46,232 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 18:54:46] "[37mGET /swaggerui/swagger-ui.css.map HTTP/1.1[0m" 200 -
+2020-11-02 18:54:49,525 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 18:54:49] "[37mPOST /user/login HTTP/1.1[0m" 200 -
+2020-11-02 18:56:48,492 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 18:56:48] "[37mPOST /user/login HTTP/1.1[0m" 200 -
+2020-11-02 18:57:12,156 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 18:57:12] "[31m[1mPOST /user HTTP/1.1[0m" 401 -
+2020-11-02 18:57:27,817 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 18:57:27] "[31m[1mPOST /user HTTP/1.1[0m" 401 -
+2020-11-02 18:57:52,934 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 18:57:52] "[31m[1mPOST /user HTTP/1.1[0m" 422 -
+2020-11-02 18:58:02,244 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 18:58:02] "[31m[1mPOST /user HTTP/1.1[0m" 422 -
+2020-11-02 18:58:14,035 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 18:58:14] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 20:37:22,297 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+2020-11-02 20:37:22,299 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 20:37:22,846 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 20:37:22,922 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 20:37:56,708 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 20:37:56] "[33mPOST /logout HTTP/1.1[0m" 404 -
+2020-11-02 20:38:01,431 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 20:38:01] "[31m[1mPOST /user/logout HTTP/1.1[0m" 401 -
+2020-11-02 20:38:05,850 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 20:38:05] "[35m[1mPOST /user/login HTTP/1.1[0m" 500 -
+2020-11-02 20:38:30,805 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/admin/python_work/Online-Video-Platform/backend/utils/util_jwt.py', reloading
+2020-11-02 20:38:30,900 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 20:38:31,495 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 20:38:31,570 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 20:39:23,284 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/admin/python_work/Online-Video-Platform/backend/routes/route_user.py', reloading
+2020-11-02 20:39:23,355 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 20:39:23,930 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 20:39:24,006 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 20:39:31,273 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 20:39:31] "[37mPOST /user/login HTTP/1.1[0m" 200 -
+2020-11-02 20:39:53,130 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 20:39:53] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 20:40:10,406 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 20:40:10] "[35m[1mPOST /user/logout HTTP/1.1[0m" 500 -
+2020-11-02 20:40:32,868 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/admin/python_work/Online-Video-Platform/backend/routes/route_user.py', reloading
+2020-11-02 20:40:32,931 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 20:40:33,502 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 20:40:33,580 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 20:40:36,557 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 20:40:36] "[37mPOST /user/logout HTTP/1.1[0m" 200 -
+2020-11-02 20:40:40,447 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 20:40:40] "[37mPOST /user/logout HTTP/1.1[0m" 200 -
+2020-11-02 20:40:44,386 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 20:40:44] "[37mPOST /user/login HTTP/1.1[0m" 200 -
+2020-11-02 20:40:48,440 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 20:40:48] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 20:40:51,699 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 20:40:51] "[37mPOST /user/logout HTTP/1.1[0m" 200 -
+2020-11-02 20:40:54,613 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 20:40:54] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 20:42:12,870 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/admin/python_work/Online-Video-Platform/backend/routes/route_user.py', reloading
+2020-11-02 20:42:12,925 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 20:42:13,528 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 20:42:13,605 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 20:42:17,729 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 20:42:17] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 20:42:22,620 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 20:42:22] "[37mPOST /user/login HTTP/1.1[0m" 200 -
+2020-11-02 20:42:36,354 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 20:42:36] "[37mPOST /user/logout HTTP/1.1[0m" 200 -
+2020-11-02 20:44:15,219 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/admin/python_work/Online-Video-Platform/backend/app.py', reloading
+2020-11-02 20:44:15,274 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 20:44:15,759 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 20:44:15,828 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 20:45:13,593 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/admin/python_work/Online-Video-Platform/backend/utils/util_jwt.py', reloading
+2020-11-02 20:45:13,665 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 20:46:39,249 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+2020-11-02 20:46:39,250 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 20:46:39,757 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 20:46:40,173 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 20:48:36,577 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+2020-11-02 20:48:36,578 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 20:48:37,130 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 20:48:37,204 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 20:48:44,129 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 20:48:44] "[37mPOST /user/login HTTP/1.1[0m" 200 -
+2020-11-02 20:48:51,598 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 20:48:51] "[37mPOST /user/logout HTTP/1.1[0m" 200 -
+2020-11-02 20:48:55,497 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 20:48:55] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 20:50:29,708 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/admin/python_work/Online-Video-Platform/backend/routes/route_user.py', reloading
+2020-11-02 20:50:29,786 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 20:50:43,795 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+2020-11-02 20:50:43,797 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 20:50:44,314 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 20:50:44,387 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 20:51:07,500 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 20:51:07] "[31m[1mPOST /user HTTP/1.1[0m" 401 -
+2020-11-02 20:51:11,072 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 20:51:11] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 20:51:55,929 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 20:51:55] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 20:52:02,195 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 20:52:02] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 20:52:12,314 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 20:52:12] "[37mPOST /user/logout HTTP/1.1[0m" 200 -
+2020-11-02 20:52:14,767 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 20:52:14] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 20:53:58,880 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/admin/python_work/Online-Video-Platform/backend/routes/route_user.py', reloading
+2020-11-02 20:53:58,974 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 20:53:59,514 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 20:53:59,585 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 20:54:17,852 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/admin/python_work/Online-Video-Platform/backend/routes/route_user.py', reloading
+2020-11-02 20:54:17,912 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 20:54:18,462 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 20:54:18,533 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 20:54:21,361 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 20:54:21] "[35m[1mPOST /user HTTP/1.1[0m" 500 -
+2020-11-02 20:54:48,024 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/admin/python_work/Online-Video-Platform/backend/routes/route_user.py', reloading
+2020-11-02 20:54:48,122 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 20:54:48,744 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 20:54:49,121 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 20:54:54,303 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 20:54:54] "[35m[1mPOST /user HTTP/1.1[0m" 500 -
+2020-11-02 20:55:08,383 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/admin/python_work/Online-Video-Platform/backend/routes/route_user.py', reloading
+2020-11-02 20:55:08,457 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 20:55:08,994 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 20:55:09,091 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 20:55:12,755 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 20:55:12] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 20:56:21,029 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/admin/python_work/Online-Video-Platform/backend/routes/route_user.py', reloading
+2020-11-02 20:56:21,117 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 20:56:21,799 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 20:56:21,915 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 20:56:21,956 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 20:56:21] "[35m[1mPOST /user HTTP/1.1[0m" 500 -
+2020-11-02 20:56:32,081 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/admin/python_work/Online-Video-Platform/backend/routes/route_user.py', reloading
+2020-11-02 20:56:32,185 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 20:56:32,769 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 20:56:32,845 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 20:56:37,939 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/admin/python_work/Online-Video-Platform/backend/routes/route_user.py', reloading
+2020-11-02 20:56:38,060 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 20:56:38,613 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 20:56:38,695 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 20:56:38,807 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 20:56:38] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 20:57:17,289 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/admin/python_work/Online-Video-Platform/backend/routes/route_user.py', reloading
+2020-11-02 20:57:17,379 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 20:57:18,000 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 20:57:18,091 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 20:57:18,990 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 20:57:18] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 20:57:30,742 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 20:57:30] "[37mPOST /user/logout HTTP/1.1[0m" 200 -
+2020-11-02 21:00:27,516 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/admin/python_work/Online-Video-Platform/backend/routes/route_user.py', reloading
+2020-11-02 21:00:27,589 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 21:00:28,577 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 21:00:29,083 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 21:00:36,438 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:00:36] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:05:14,677 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/admin/python_work/Online-Video-Platform/backend/routes/route_user.py', reloading
+2020-11-02 21:05:14,736 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 21:10:20,088 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+2020-11-02 21:10:20,092 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 21:10:20,611 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 21:10:21,040 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 21:10:26,244 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:10:26] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:11:55,325 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/admin/python_work/Online-Video-Platform/backend/routes/route_user.py', reloading
+2020-11-02 21:11:55,380 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 21:14:04,469 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+2020-11-02 21:14:04,471 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 21:14:05,005 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 21:14:05,523 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 21:14:21,994 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:14:21] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:14:50,967 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:14:50] "[37mPOST /user/logout HTTP/1.1[0m" 200 -
+2020-11-02 21:14:54,964 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:14:54] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:16:43,686 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/admin/python_work/Online-Video-Platform/backend/routes/route_user.py', reloading
+2020-11-02 21:16:43,785 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 21:16:44,433 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 21:16:44,841 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 21:17:10,221 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/admin/python_work/Online-Video-Platform/backend/routes/route_user.py', reloading
+2020-11-02 21:17:10,309 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 21:17:10,950 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 21:17:11,025 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 21:17:14,562 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:17:14] "[35m[1mPOST /user HTTP/1.1[0m" 500 -
+2020-11-02 21:17:42,481 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/admin/python_work/Online-Video-Platform/backend/routes/route_user.py', reloading
+2020-11-02 21:17:42,560 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 21:17:43,184 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 21:17:43,285 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 21:17:43,372 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:17:43] "[35m[1mPOST /user HTTP/1.1[0m" 500 -
+2020-11-02 21:18:58,313 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/admin/python_work/Online-Video-Platform/backend/routes/route_user.py', reloading
+2020-11-02 21:18:58,402 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 21:18:59,493 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 21:18:59,959 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 21:19:43,565 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/admin/python_work/Online-Video-Platform/backend/routes/route_user.py', reloading
+2020-11-02 21:19:43,642 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 21:19:44,185 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 21:19:44,255 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 21:19:56,155 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:19:56] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:20:33,893 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/admin/python_work/Online-Video-Platform/backend/app.py', reloading
+2020-11-02 21:20:33,983 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 21:20:34,580 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 21:20:34,653 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 21:20:38,395 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:20:38] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:21:45,539 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/admin/python_work/Online-Video-Platform/backend/configs/config_dev.py', reloading
+2020-11-02 21:21:45,597 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 21:22:17,545 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+2020-11-02 21:22:17,545 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 21:22:18,061 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 21:22:18,143 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 21:22:22,597 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:22:22] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:22:30,574 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:22:30] "[37mPOST /user/logout HTTP/1.1[0m" 200 -
+2020-11-02 21:22:34,146 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:22:34] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:23:25,006 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/admin/python_work/Online-Video-Platform/backend/app.py', reloading
+2020-11-02 21:23:25,108 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 21:23:26,072 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 21:23:26,498 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 21:23:31,670 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:23:31] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:23:41,752 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:23:41] "[31m[1mPOST /user HTTP/1.1[0m" 422 -
+2020-11-02 21:23:49,189 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:23:49] "[31m[1mPOST /user HTTP/1.1[0m" 422 -
+2020-11-02 21:23:58,511 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:23:58] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:24:10,542 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:24:10] "[31m[1mPOST /user HTTP/1.1[0m" 422 -
+2020-11-02 21:24:16,321 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:24:16] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:24:37,043 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:24:37] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:24:43,711 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:24:43] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:29:14,838 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/admin/python_work/Online-Video-Platform/backend/app.py', reloading
+2020-11-02 21:29:14,931 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 21:29:16,213 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 21:29:16,702 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 21:29:26,860 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/admin/python_work/Online-Video-Platform/backend/app.py', reloading
+2020-11-02 21:29:26,924 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 21:29:27,845 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 21:29:28,332 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 21:34:54,813 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:34:54] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:35:14,753 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:35:14] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:35:28,817 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:35:28] "[37mPOST /user/logout HTTP/1.1[0m" 200 -
+2020-11-02 21:35:41,710 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:35:41] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:36:18,891 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:36:18] "[37mPOST /user/logout HTTP/1.1[0m" 200 -
+2020-11-02 21:36:25,170 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:36:25] "[31m[1mPOST /user HTTP/1.1[0m" 401 -
+2020-11-02 21:36:48,958 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/admin/python_work/Online-Video-Platform/backend/app.py', reloading
+2020-11-02 21:36:49,066 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 21:36:49,997 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 21:36:50,384 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 21:37:00,519 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/admin/python_work/Online-Video-Platform/backend/app.py', reloading
+2020-11-02 21:37:00,609 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 21:37:01,106 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 21:37:01,181 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 21:37:09,313 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:37:09] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:37:14,997 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:37:14] "[37mPOST /user/logout HTTP/1.1[0m" 200 -
+2020-11-02 21:37:17,239 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:37:17] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:37:21,419 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:37:21] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:38:47,626 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/admin/python_work/Online-Video-Platform/backend/app.py', reloading
+2020-11-02 21:38:47,699 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 21:38:48,224 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 21:38:48,296 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 21:39:02,500 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/admin/python_work/Online-Video-Platform/backend/configs/config_prod.py', reloading
+2020-11-02 21:39:02,587 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 21:39:03,089 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 21:39:03,160 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 21:39:07,164 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:39:07] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:39:10,422 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:39:10] "[37mPOST /user/logout HTTP/1.1[0m" 200 -
+2020-11-02 21:39:13,418 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:39:13] "[31m[1mPOST /user HTTP/1.1[0m" 401 -
+2020-11-02 21:39:52,809 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/admin/python_work/Online-Video-Platform/backend/configs/config_prod.py', reloading
+2020-11-02 21:39:52,884 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 21:39:53,412 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 21:39:53,489 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 21:39:57,551 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/admin/python_work/Online-Video-Platform/backend/configs/config_dev.py', reloading
+2020-11-02 21:39:57,641 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 21:39:58,221 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 21:39:58,294 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 21:40:00,329 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/admin/python_work/Online-Video-Platform/backend/configs/config_test.py', reloading
+2020-11-02 21:40:00,411 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 21:40:00,945 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 21:40:01,019 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 21:40:05,069 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:40:05] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:40:06,000 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:40:06] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:40:06,656 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:40:06] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:40:07,276 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:40:07] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:40:07,927 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:40:07] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:40:08,500 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:40:08] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:40:08,979 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:40:08] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:40:09,417 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:40:09] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:40:09,842 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:40:09] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:40:10,290 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:40:10] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:40:10,691 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:40:10] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:40:11,249 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:40:11] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:40:11,495 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:40:11] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:40:11,851 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:40:11] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:40:12,396 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:40:12] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:40:12,679 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:40:12] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:40:12,986 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:40:12] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:40:14,113 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:40:14] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:40:14,678 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:40:14] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:40:15,122 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:40:15] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:40:15,567 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:40:15] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:40:16,051 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:40:16] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:40:16,500 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:40:16] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:40:17,004 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:40:17] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:40:17,414 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:40:17] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:40:17,845 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:40:17] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:40:18,177 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:40:18] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:40:18,535 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:40:18] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:40:18,847 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:40:18] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:40:19,495 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:40:19] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:40:20,167 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:40:20] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:40:20,613 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:40:20] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:40:21,016 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:40:21] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:40:21,469 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:40:21] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:40:21,920 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:40:21] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:40:22,287 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:40:22] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:40:23,123 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:40:23] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:40:24,799 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:40:24] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:40:25,140 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:40:25] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:40:25,547 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:40:25] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:40:26,236 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:40:26] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:40:26,756 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:40:26] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:40:27,203 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:40:27] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:40:27,694 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:40:27] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:40:28,164 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:40:28] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:40:28,587 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:40:28] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:40:29,055 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:40:29] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:41:28,191 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/admin/python_work/Online-Video-Platform/backend/routes/route_user.py', reloading
+2020-11-02 21:41:28,263 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 21:41:28,820 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 21:41:28,897 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 21:41:52,227 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/admin/python_work/Online-Video-Platform/backend/routes/route_user.py', reloading
+2020-11-02 21:41:52,289 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 21:41:52,820 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 21:41:52,893 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 21:41:59,161 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:41:59] "[37mPOST /user/login HTTP/1.1[0m" 200 -
+2020-11-02 21:42:07,889 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:42:07] "[31m[1mPOST /user HTTP/1.1[0m" 401 -
+2020-11-02 21:42:39,506 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/admin/python_work/Online-Video-Platform/backend/routes/route_user.py', reloading
+2020-11-02 21:42:39,643 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 21:42:40,280 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 21:42:40,355 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 21:42:45,159 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:42:45] "[37mPOST /user/login HTTP/1.1[0m" 200 -
+2020-11-02 21:42:57,425 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:42:57] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:42:58,293 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:42:58] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:42:58,849 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:42:58] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:42:59,278 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:42:59] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:42:59,808 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:42:59] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:43:00,227 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:43:00] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:43:00,709 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:43:00] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:43:01,293 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:43:01] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:43:01,661 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:43:01] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:43:02,276 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:43:02] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:43:02,581 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:43:02] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:43:02,963 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:43:02] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:43:03,966 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:43:03] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:43:04,661 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:43:04] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:43:05,164 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:43:05] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:43:05,627 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:43:05] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:43:06,017 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:43:06] "[31m[1mPOST /user HTTP/1.1[0m" 401 -
+2020-11-02 21:43:06,409 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:43:06] "[31m[1mPOST /user HTTP/1.1[0m" 401 -
+2020-11-02 21:43:07,071 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:43:07] "[31m[1mPOST /user HTTP/1.1[0m" 401 -
+2020-11-02 21:43:16,859 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/admin/python_work/Online-Video-Platform/backend/routes/route_user.py', reloading
+2020-11-02 21:43:16,931 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 21:43:17,586 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 21:43:18,012 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 21:43:22,812 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:43:22] "[37mPOST /user/login HTTP/1.1[0m" 200 -
+2020-11-02 21:43:46,094 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:43:46] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 21:43:53,159 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:43:53] "[37mPOST /user/logout HTTP/1.1[0m" 200 -
+2020-11-02 21:43:55,988 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 21:43:55] "[31m[1mPOST /user HTTP/1.1[0m" 401 -
+2020-11-02 21:44:09,663 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/admin/python_work/Online-Video-Platform/backend/routes/route_user.py', reloading
+2020-11-02 21:44:09,726 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 21:44:10,767 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 21:44:11,212 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 23:21:51,891 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+2020-11-02 23:21:51,894 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 23:21:52,600 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 23:21:52,699 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 23:26:26,381 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/admin/python_work/Online-Video-Platform/backend/service/service_search.py', reloading
+2020-11-02 23:26:26,440 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 23:26:27,060 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 23:26:27,155 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-02 23:26:44,720 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 23:26:44] "[37mPOST /user/login HTTP/1.1[0m" 200 -
+2020-11-02 23:26:59,501 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 23:26:59] "[31m[1mPOST /user HTTP/1.1[0m" 401 -
+2020-11-02 23:27:04,475 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 23:27:04] "[37mPOST /user HTTP/1.1[0m" 200 -
+2020-11-02 23:27:55,067 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 23:27:55] "[37mGET / HTTP/1.1[0m" 200 -
+2020-11-02 23:27:55,122 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 23:27:55] "[37mGET /swaggerui/swagger-ui-bundle.js HTTP/1.1[0m" 200 -
+2020-11-02 23:27:55,123 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 23:27:55] "[37mGET /swaggerui/swagger-ui-standalone-preset.js HTTP/1.1[0m" 200 -
+2020-11-02 23:27:55,491 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 23:27:55] "[37mGET /swagger.json HTTP/1.1[0m" 200 -
+2020-11-02 23:28:46,317 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 23:28:46] "[37mPOST /user/logout HTTP/1.1[0m" 200 -
+2020-11-02 23:28:49,107 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [02/Nov/2020 23:28:49] "[31m[1mPOST /user HTTP/1.1[0m" 401 -
+2020-11-02 23:36:22,076 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/admin/python_work/Online-Video-Platform/backend/routes/route_user.py', reloading
+2020-11-02 23:36:22,137 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-02 23:36:23,042 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-02 23:36:23,134 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870
+2020-11-03 22:39:41,840 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+2020-11-03 22:39:41,842 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-03 22:39:42,370 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-03 22:39:42,446 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 159-628-870

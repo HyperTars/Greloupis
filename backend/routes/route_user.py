@@ -1,14 +1,21 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, print_function
-from flask import request
+
+import datetime
+
+from flask import request, jsonify
+from flask_jwt_extended import create_access_token, jwt_required, get_raw_jwt
 from flask_restx import Resource, fields, Namespace
+
 from service.service_user import service_user_get_comment, \
     service_user_get_dislike, service_user_get_info, service_user_get_like, \
     service_user_get_process, service_user_get_star
+from utils.util_jwt import blacklist
 from utils.util_error_handler import util_error_handler
 from settings import config
 from utils.util_serializer import util_serializer_api_response
 from models.model_errors import MongoError, RouteError, ServiceError
+
 # from source.utils.util_validator import *
 # from flask import Flask, g, Blueprint
 # from flask_restx import Api, marshal_with, reqparse
@@ -134,13 +141,13 @@ process_response_list = user.model(name='ApiResponseWithProcessList', model={
 @user.response(405, 'Method not allowed', general_response)
 @user.response(500, 'Internal server error', general_response)
 class User(Resource):
-
+    @jwt_required
     def post(self):
         """
             User sign up
         """
-        pass
-        # return {}, 200, None
+        print("sign up", get_raw_jwt(), blacklist)
+        return ""
 
 
 @user.route('/<string:user_id>', methods=['DELETE', 'GET', 'PUT'])
@@ -150,7 +157,8 @@ class User(Resource):
 @user.response(404, 'User not found', general_response)
 @user.response(500, 'Internal server error', general_response)
 class UserUserId(Resource):
-
+    #TODO: implemented the test case
+    # @jwt_required
     def get(self, user_id, conf=config["default"]):
         """
             Get user information by id
@@ -192,8 +200,14 @@ class UserLogin(Resource):
         """
             User sign in
         """
-        pass
-        # return {}, 200, None
+        expires = datetime.timedelta(hours=1)
+        token = create_access_token(identity="hello",
+                                    expires_delta=expires, fresh=True)
+        return jsonify({
+            "code": 200,
+            "message": "login succeeded",
+            "token": token
+        })
 
 
 @user.route('/logout', methods=['POST'])
@@ -201,13 +215,14 @@ class UserLogin(Resource):
 @user.response(400, 'Bad request', general_response)
 @user.response(500, 'Internal server error', general_response)
 class UserLogout(Resource):
-
+    @jwt_required
     def post(self):
         """
             User log out
         """
-        pass
-        # return {}, 200, None
+        jti = get_raw_jwt()['jti']
+        blacklist.add(jti)
+        return "logout succeed"
 
 
 @user.route('/<string:user_id>/like', methods=['GET'])
