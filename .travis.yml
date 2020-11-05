@@ -21,18 +21,18 @@ jobs:
     - stage: dockerize
       install: skip
       script:
-        - test $TRAVIS_PULL_REQUEST = "false" && make docker_push
+        - make docker_push
     - stage: deploy
       install: skip
       script:
-        - test $TRAVIS_PULL_REQUEST = "false" && make heroku
+        - make heroku
 
 stages:
   - test
   - name: dockerize
-    if: branch = master
+    if: branch = master AND type = push AND fork = false
   - name: deploy
-    if: branch = master
+    if: branch = master AND type = push AND fork = false
 #deploy:
 #  provider: releases
 #  api_key: $GITHUB_TOKEN
