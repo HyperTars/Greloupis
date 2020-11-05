@@ -48,6 +48,7 @@ class TestConfig(BaseConfig):
         'http://greloupis-backend.herokuapp.com',
         'http://greloupis-frontend.herokuapp.com',
         'https://greloupis-frontend.herokuapp.com',
+        'https://greloupis.postman.co/',
         'http://localhost:8081',
         'http://localhost:8080',
         'http://localhost:8000',

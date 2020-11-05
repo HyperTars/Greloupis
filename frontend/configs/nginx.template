@@ -7,6 +7,6 @@ server {
     }
 
     location /api {
-        return 301 http://greloupis-backend.herokuapp.com$request_uri;
+        proxy_pass https://greloupis-backend.herokuapp.com/;
     }
 }
