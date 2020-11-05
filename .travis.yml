@@ -19,9 +19,11 @@ jobs:
       after_success:
         - make coverage
     - stage: dockerize
+      install: true
       script:
         - test $TRAVIS_PULL_REQUEST = "false" && make docker_push
     - stage: deploy
+      install: true
       script:
         - test $TRAVIS_PULL_REQUEST = "false" && make heroku
 
