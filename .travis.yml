@@ -9,7 +9,7 @@ env:
 jobs:
   include:
     - stage: test
-      install: true
+      install: skip
       script:
         - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.36.0/install.sh | bash
         - nvm install 14.15.0
@@ -19,16 +19,20 @@ jobs:
       after_success:
         - make coverage
     - stage: dockerize
+      install: skip
       script:
-        - test $TRAVIS_PULL_REQUEST = "false" && make docker_push
+        - make docker_push
     - stage: deploy
+      install: skip
       script:
-        - test $TRAVIS_PULL_REQUEST = "false" && make heroku
+        - make heroku
 
 stages:
   - test
-  - dockerize
-  - deploy
+  - name: dockerize
+    if: branch = master AND type = push AND fork = false
+  - name: deploy
+    if: branch = master AND type = push AND fork = false
 #deploy:
 #  provider: releases
 #  api_key: $GITHUB_TOKEN
