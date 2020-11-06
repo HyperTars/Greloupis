@@ -1,4 +1,7 @@
-# DevOps-Project
+# ![logo](frontend/public/Assets/logo/png/horizontal/greloupis-horizontal-blue-fill-b-360.png)
+
+## Greloupis - An online video sharing platform
+
 - Integration
 
     [![build](https://travis-ci.com/HyperTars/Online-Video-Platform.svg?token=btA3ungCKHqWzLxCoxT7&branch=master)](https://travis-ci.com/HyperTars/Online-Video-Platform)
