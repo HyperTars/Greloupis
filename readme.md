@@ -1,6 +1,6 @@
-# ![logo](frontend/public/Assets/logo/png/horizontal/greloupis-horizontal-blue-fill-b-360.png)
+[![logo](frontend/public/Assets/logo/svg/greloupis-horizontal-blue-fill-b.svg)](https://greloupis-frontend.herokuapp.com/)
 
-## Greloupis - An online video sharing platform
+# Greloupis - An online video sharing platform
 
 - Integration
 
