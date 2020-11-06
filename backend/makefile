@@ -25,7 +25,7 @@ coverage:
 	- codecov -t $(CODECOV_TOKEN)
 
 lint:
-	$(LINTER) --exit-zero ./
+	$(LINTER) --config configs/flake8 --exit-zero ./
 
 document:
 	pydoc -w ./
