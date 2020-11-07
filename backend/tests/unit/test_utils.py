@@ -188,6 +188,7 @@ class TestJWT(unittest.TestCase):
     def test_util_show_blacklist(self):
         self.assertEqual(util_show_blacklist(), True)
 
+
 """
 if __name__ == '__main__':
     unittest.main()
