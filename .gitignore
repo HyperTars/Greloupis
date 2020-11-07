@@ -1,9 +1,9 @@
 pytvenv/
 log.txt
 logs.txt
-*debug*.txt*
-*info*.txt*
-*error*.txt*
+*debug*.log*
+*info*.log*
+*error*.log*
 node_module/
 *node_module*
 frontend/coverage/
