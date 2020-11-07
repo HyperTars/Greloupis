@@ -202,12 +202,10 @@ class UserLogin(Resource):
         """
             User sign in
         """
-        expires = datetime.timedelta(seconds=20)
-        token = create_access_token(identity={
-            "name": "hello",
-            "status": False,
-        },
-            expires_delta=expires, fresh=True)
+
+        expires = datetime.timedelta(seconds=10)
+        token = create_access_token(identity="hello",
+                                    expires_delta=expires, fresh=True)
         return jsonify({
             "code": 200,
             "message": "login succeeded",
