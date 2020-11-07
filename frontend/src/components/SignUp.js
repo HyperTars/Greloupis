@@ -17,8 +17,8 @@ function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
+      <Link color="inherit" target="_blank" href="https://github.com/HyperTars/Online-Video-Platform/">
+        Greloupis
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -110,7 +110,7 @@ export default function SignUp() {
             <Grid item xs={12}>
               <FormControlLabel
                 control={<Checkbox value="allowExtraEmails" color="primary" />}
-                label="I want to receive inspiration, marketing promotions and updates via email."
+                label="I want to receive news and updates via email."
               />
             </Grid>
           </Grid>
@@ -125,7 +125,7 @@ export default function SignUp() {
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link href="/login" variant="body2">
                 Already have an account? Sign in
               </Link>
             </Grid>

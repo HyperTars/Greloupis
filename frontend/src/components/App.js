@@ -4,6 +4,8 @@ import { TEST_ENDPOINT /*, LOCAL_ENDPOINT*/ } from "./Endpoint";
 import Dashboard from "./Dashboard";
 import Header from "./Header";
 import SearchResult from "./SearchResult";
+import SignIn from "./SignIn";
+import SignUp from "./SignUp";
 
 const CURRENT_ENDPOINT = TEST_ENDPOINT;
 
@@ -21,6 +23,14 @@ class App extends Component {
             <Route
               path="/search"
               render={(props) => <SearchResult endpoint={CURRENT_ENDPOINT} />}
+            />
+            <Route
+              path="/login"
+              render={(props) => <SignIn endpoint={CURRENT_ENDPOINT} />}
+            />
+            <Route
+              path="/register"
+              render={(props) => <SignUp endpoint={CURRENT_ENDPOINT} />}
             />
           </Switch>
         </div>
