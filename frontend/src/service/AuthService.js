@@ -1,19 +1,25 @@
 import axios from "axios";
+import { userLogin } from "../components/FetchData";
 
 class AuthService {
     login(username, password) {
-        return axios
-            .post("https://greloupis-backend.herokuapp.com/user/login", {
-                username,
-                password
-            })
-            .then(response => {
-                if (response.data.accessToken) {
-                    localStorage.setItem("user", JSON.stringify(response.data));
-                }
+        return userLogin("https://greloupis-backend.herokuapp.com/user/login", {
+            username,
+            password
+        })
+        
+        // return axios
+        //     .post("https://greloupis-backend.herokuapp.com/user/login", {
+        //         username,
+        //         password
+        //     })
+        //     .then(response => {
+        //         if (response.data.accessToken) {
+        //             localStorage.setItem("user", JSON.stringify(response.data));
+        //         }
 
-                return response.data;
-            });
+        //         return response.data;
+        //     });
     }
 
     logout() {
