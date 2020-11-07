@@ -97,7 +97,6 @@ class Login extends React.Component {
     if (true) { // validate here
       AuthService.login(this.state.username, this.state.password).then(
         () => {
-          // Can't use it here: https://bezkoder.com/react-jwt-auth/#Add_React_Router
           this.props.history.push("/home");
           window.location.reload();
         },

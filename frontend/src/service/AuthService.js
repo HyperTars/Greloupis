@@ -3,7 +3,7 @@ import { userLogin } from "../components/FetchData";
 
 class AuthService {
     login(username, password) {
-        return userLogin("https://greloupis-backend.herokuapp.com/user/login", {
+        return userLogin("https://greloupis-frontend.herokuapp.com/api/user/login", {
             username,
             password
         })
