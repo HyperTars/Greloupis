@@ -187,7 +187,10 @@ class TestValidator(unittest.TestCase):
 #
 #     def test_util_get_formated_response(self):
 # }))
+<<<<<<< HEAD
 
+=======
+>>>>>>> d62d39db... add router test case
 
 
 """
