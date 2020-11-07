@@ -3,23 +3,15 @@ import { userLogin } from "../components/FetchData";
 
 class AuthService {
     login(username, password) {
-        return userLogin("https://greloupis-frontend.herokuapp.com/api/user/login", {
+        return userLogin(endpoint, {
             username,
             password
-        })
-        
-        // return axios
-        //     .post("https://greloupis-backend.herokuapp.com/user/login", {
-        //         username,
-        //         password
-        //     })
-        //     .then(response => {
-        //         if (response.data.accessToken) {
-        //             localStorage.setItem("user", JSON.stringify(response.data));
-        //         }
-
-        //         return response.data;
-        //     });
+        }).then(response => {
+            if (response.data.accessToken) {
+                localStorage.setItem("user", JSON.stringify(response.data));
+            }
+            return response.data;
+        });
     }
 
     logout() {

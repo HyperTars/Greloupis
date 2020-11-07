@@ -112,6 +112,8 @@ class Login extends React.Component {
             loading: false,
             message: resMessage
           });
+
+          console.log(this.state);
         }
       );
     } else {      
