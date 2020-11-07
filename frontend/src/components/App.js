@@ -1,5 +1,10 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
 import { TEST_ENDPOINT /*, LOCAL_ENDPOINT*/ } from "./Endpoint";
 import Dashboard from "./Dashboard";
 import Header from "./Header";
@@ -14,15 +19,24 @@ class App extends Component {
     return (
       <Router>
         <div className="App">
-          <Header />
           <Switch>
             <Route
               path="/home"
-              render={() => <Dashboard endpoint={CURRENT_ENDPOINT} />}
+              render={() => (
+                <div>
+                  <Header />
+                  <Dashboard endpoint={CURRENT_ENDPOINT} />
+                </div>
+              )}
             />
             <Route
               path="/search"
-              render={(props) => <SearchResult endpoint={CURRENT_ENDPOINT} />}
+              render={(props) => (
+                <div>
+                  <Header />
+                  <SearchResult endpoint={CURRENT_ENDPOINT} />
+                </div>
+              )}
             />
             <Route
               path="/login"
@@ -32,6 +46,7 @@ class App extends Component {
               path="/register"
               render={(props) => <SignUp endpoint={CURRENT_ENDPOINT} />}
             />
+            <Route path="/" render={() => <Redirect to="/login"></Redirect>} />
           </Switch>
         </div>
       </Router>
