@@ -46,7 +46,7 @@ class App extends Component {
               path="/register"
               render={(props) => <SignUp endpoint={CURRENT_ENDPOINT} />}
             />
-            <Route path="/" render={() => <Redirect to="/login"></Redirect>} />
+            <Route path="/" render={() => <Redirect to="/home"></Redirect>} />
           </Switch>
         </div>
       </Router>
