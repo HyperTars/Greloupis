@@ -2,7 +2,7 @@
 from __future__ import absolute_import, print_function
 
 import yaml
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from flask_jwt_extended import JWTManager
 
 from apiv1 import blueprint
@@ -13,6 +13,7 @@ import logging.config
 
 # from source.utils.util_request_filter import *
 # from flask import request, redirect, session
+from utils.util_jwt import util_get_formated_response
 
 app = Flask(__name__)
 app.config.from_object(config['test'])
@@ -30,6 +31,15 @@ def check_if_token_in_blacklist(decrypted_token):
     jti = decrypted_token['jti']
     return jti in blacklist
 
+@jwt.expired_token_loader
+def expired_token_callback():
+    return util_get_formated_response(code=-10000,
+                                      msg ='The token has expired')
+
+@jwt.revoked_token_loader
+def revoked_token_callback():
+    return util_get_formated_response(code=-10000,
+                                      msg ='The token has been revoked')
 
 """
 @app.before_request

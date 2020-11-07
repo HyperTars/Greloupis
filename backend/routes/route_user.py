@@ -200,7 +200,7 @@ class UserLogin(Resource):
         """
             User sign in
         """
-        expires = datetime.timedelta(hours=1)
+        expires = datetime.timedelta(seconds=10)
         token = create_access_token(identity="hello",
                                     expires_delta=expires, fresh=True)
         return jsonify({
