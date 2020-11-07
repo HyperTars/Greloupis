@@ -4,7 +4,8 @@ from __future__ import absolute_import, print_function
 import datetime
 
 from flask import request, jsonify
-from flask_jwt_extended import create_access_token, jwt_required, get_raw_jwt
+from flask_jwt_extended import create_access_token,\
+    jwt_required, get_raw_jwt, get_jwt_identity, jwt_optional
 from flask_restx import Resource, fields, Namespace
 
 from service.service_user import service_user_get_comment, \
@@ -141,11 +142,12 @@ process_response_list = user.model(name='ApiResponseWithProcessList', model={
 @user.response(405, 'Method not allowed', general_response)
 @user.response(500, 'Internal server error', general_response)
 class User(Resource):
-    @jwt_required
+    @jwt_optional
     def post(self):
         """
             User sign up
         """
+        print("sign up1", get_jwt_identity())
         print("sign up", get_raw_jwt(), blacklist)
         return ""
 
@@ -200,9 +202,12 @@ class UserLogin(Resource):
         """
             User sign in
         """
-        expires = datetime.timedelta(seconds=10)
-        token = create_access_token(identity="hello",
-                                    expires_delta=expires, fresh=True)
+        expires = datetime.timedelta(seconds=20)
+        token = create_access_token(identity={
+            "name": "hello",
+            "status": False,
+        },
+            expires_delta=expires, fresh=True)
         return jsonify({
             "code": 200,
             "message": "login succeeded",

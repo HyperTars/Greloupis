@@ -18,14 +18,16 @@ from utils.util_jwt import util_get_formated_response
 app = Flask(__name__)
 app.config.from_object(config['test'])
 app.register_blueprint(blueprint)
-jwt = JWTManager(app)
+
 with open('logging.yml', 'r') as f:
     conf = yaml.safe_load(f.read())
     logging.config.dictConfig(conf)
 
-
 # CORS(app, resources={r'/*': {'origins': config['test'].FRONTEND}},
 #      supports_credentials=True)
+jwt = JWTManager(app)
+
+
 @jwt.token_in_blacklist_loader
 def check_if_token_in_blacklist(decrypted_token):
     jti = decrypted_token['jti']

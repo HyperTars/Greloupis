@@ -1,5 +1,6 @@
 import unittest
 import re
+
 from utils.util_hash import util_hash_sha512, util_hash_encode, \
     util_hash_create_salt, util_hash_md5_with_salt
 from utils.util_validator import is_valid_id
@@ -12,7 +13,6 @@ from utils.util_pattern import util_pattern_format_param, \
 from models.model_errors import ErrorCode, ServiceError, UtilError, \
     RouteError, MongoError
 from utils.util_serializer import util_serializer_dict_to_json
-from utils.util_jwt import util_show_blacklist
 
 
 class TestUtilErrorHandler(unittest.TestCase):
@@ -183,10 +183,10 @@ class TestValidator(unittest.TestCase):
         self.assertEqual(is_valid_id(test_id_2), False)
 
 
-class TestJWT(unittest.TestCase):
-
-    def test_util_show_blacklist(self):
-        self.assertEqual(util_show_blacklist(), True)
+# class TestJWT(unittest.TestCase):
+#
+#     def test_util_get_formated_response(self):
+# }))
 
 
 """
