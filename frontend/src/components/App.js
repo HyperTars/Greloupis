@@ -5,12 +5,13 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css"
 import { TEST_ENDPOINT /*, LOCAL_ENDPOINT*/ } from "./Endpoint";
 import Dashboard from "./Dashboard";
 import Header from "./Header";
 import SearchResult from "./SearchResult";
-import SignIn from "./SignIn";
-import SignUp from "./SignUp";
+import Login from "./Login";
+import Register from "./Register";
 
 const CURRENT_ENDPOINT = TEST_ENDPOINT;
 
@@ -21,7 +22,7 @@ class App extends Component {
         <div className="App">
           <Switch>
             <Route
-              path="/home"
+              path="/home"              
               render={() => (
                 <div>
                   <Header />
@@ -39,12 +40,14 @@ class App extends Component {
               )}
             />
             <Route
-              path="/login"
-              render={(props) => <SignIn endpoint={CURRENT_ENDPOINT} />}
+              exact path="/login"
+              component={Login}
+              render={(props) => <Login endpoint={CURRENT_ENDPOINT} />}
             />
             <Route
               path="/register"
-              render={(props) => <SignUp endpoint={CURRENT_ENDPOINT} />}
+              component={Register}
+              render={(props) => <Register endpoint={CURRENT_ENDPOINT} />}
             />
             <Route path="/" render={() => <Redirect to="/home"></Redirect>} />
           </Switch>
