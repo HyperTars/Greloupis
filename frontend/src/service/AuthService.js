@@ -3,8 +3,8 @@ import { createUser, userLogin } from "../components/FetchData";
 class AuthService {
   login(username, password) {
     return userLogin({
-      name: username,
-      password: password,
+      user_name: username,
+      user_password: password,
     }).then((response) => {
       if (response.token) {
         localStorage.setItem("user", JSON.stringify(response.token));
@@ -19,9 +19,9 @@ class AuthService {
 
   register(username, email, password) {
     return createUser({
-        username: username,
-        email: email,
-        password: password
+        user_name: username,
+        user_email: email,
+        user_password: password
     });
   }
 
