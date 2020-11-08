@@ -91,7 +91,7 @@ class Register extends  React.Component {
             message: response.message,
             success: true
           });
-          this.props.history.push("/login");
+          this.props.history.push("/home");
           window.location.reload();
         },
         error => {

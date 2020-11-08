@@ -163,9 +163,20 @@ class User(Resource):
                 kw = ast.literal_eval(raw_data)
                 print(kw)
 
-            result = service_user_reg(conf=config["default"], **kw)
-            return util_serializer_api_response(
-                200, body=result, msg="user registered successfully.")
+            user = service_user_reg(conf=config["default"], **kw)
+            print(user)
+            # default: login
+            expires = datetime.timedelta(seconds=20)
+            # expires = datetime.timedelta(hours=20)
+            token = create_access_token(identity=user['user_id'],
+                                        expires_delta=expires, fresh=True)
+            return jsonify({
+                "code": 200,
+                "message": "register succeeded",
+                "user_token": token,
+                "user_id": user['user_id'],
+                "user_name": user['user_name'],
+            })
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
@@ -237,7 +248,8 @@ class UserLogin(Resource):
                 "code": 200,
                 "message": "login succeeded",
                 "user_token": token,
-                "user_id": user['user_id']
+                "user_id": user['user_id'],
+                "user_name": user['user_name'],
             })
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
