@@ -11,6 +11,7 @@ import Header from "./Header";
 import SearchResult from "./SearchResult";
 import Login from "./Login";
 import Register from "./Register";
+import EmptyPage from "./EmptyPage";
 
 class App extends Component {
   render() {
@@ -19,6 +20,7 @@ class App extends Component {
         <div className="App">
           <Switch>
             <Route
+              exact
               path="/home"
               render={() => (
                 <div>
@@ -28,6 +30,7 @@ class App extends Component {
               )}
             />
             <Route
+              exact
               path="/search"
               render={(props) => (
                 <div>
@@ -43,11 +46,13 @@ class App extends Component {
               render={(props) => <Login />}
             />
             <Route
+              exact
               path="/register"
               component={Register}
               render={(props) => <Register />}
             />
-            <Route path="/" render={() => <Redirect to="/home"></Redirect>} />
+            <Route exact path="/404" render={() => <EmptyPage />} />
+            <Route path="*" render={() => <Redirect to="/404"></Redirect>} />
           </Switch>
         </div>
       </Router>

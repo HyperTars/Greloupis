@@ -1,3 +1,5 @@
+@import 'antd/dist/antd.css';
+
 @font-face {
     font-family: 'Roboto';
     src: url("../fonts/Roboto-Thin.ttf") format("truetype");
@@ -367,5 +369,30 @@
   }
 
   .topMargin {
-    margin: 50px 42% 0 42%;
+    margin: 50px;
+    text-align: center;
   }
+  
+  .searchLoading {
+    margin: 100px;
+    text-align: center;
+    border-radius: 4px;
+  }
+
+ .EmptyData {
+    margin-top: 15%;
+    text-align: center;
+  }
+
+.EmptyData h1 {
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: rgba(51, 51, 51, 0.7);
+}
+
+h3 {
+  text-align: left;
+}
