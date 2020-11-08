@@ -7,17 +7,17 @@ import datetime
 from flask import request, jsonify
 
 from flask_jwt_extended import create_access_token, \
-    jwt_required, get_raw_jwt, get_jwt_identity, jwt_optional
+    jwt_required, get_raw_jwt, jwt_optional
 from flask_restx import Resource, fields, Namespace
 
 from service.service_user import service_user_get_comment, \
     service_user_get_dislike, service_user_get_info, service_user_get_like, \
-    service_user_get_process, service_user_get_star, service_user_check_password, service_user_reg
-from service.service_video import service_video_upload
+    service_user_get_process, service_user_get_star, \
+    service_user_check_password, service_user_reg
 from utils.util_jwt import blacklist, util_get_formated_response
 from utils.util_error_handler import util_error_handler
 from settings import config
-from utils.util_serializer import util_serializer_api_response, util_serializer_mongo_results_to_array
+from utils.util_serializer import util_serializer_api_response
 from models.model_errors import MongoError, RouteError, ServiceError
 
 # from source.utils.util_validator import *
@@ -163,7 +163,7 @@ class User(Resource):
                 kw = ast.literal_eval(raw_data)
                 print(kw)
 
-            user = service_user_reg(conf = config["default"], **kw)
+            user = service_user_reg(conf=config["default"], **kw)
             return user
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
@@ -232,8 +232,8 @@ class UserLogin(Resource):
             if is_valid:
                 expires = datetime.timedelta(seconds=20)
                 # expires = datetime.timedelta(hours=20)
-                token = create_access_token(identity=kw['user_name']
-                                            , expires_delta=expires, fresh=True)
+                token = create_access_token(identity=kw['user_name'],
+                                            expires_delta=expires, fresh=True)
                 return jsonify({
                     "code": 200,
                     "message": "login succeeded",

@@ -46,18 +46,6 @@ def revoked_token_callback():
                                       msg='The token has been revoked')
 
 
-@jwt.expired_token_loader
-def expired_token_callback():
-    return util_get_formated_response(code=-10000,
-                                      msg='The token has expired')
-
-
-@jwt.revoked_token_loader
-def revoked_token_callback():
-    return util_get_formated_response(code=-10000,
-                                      msg='The token has been revoked')
-
-
 """
 @app.before_request
 def before_request():
