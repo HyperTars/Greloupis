@@ -2,34 +2,33 @@ import axios from "axios";
 import { userLogin } from "../components/FetchData";
 
 class AuthService {
-    login(username, password) {
-        return userLogin(endpoint, {
-            username,
-            password
-        }).then(response => {
-            if (response.data.accessToken) {
-                localStorage.setItem("user", JSON.stringify(response.data));
-            }
-            return response.data;
-        });
-    }
+  login(username, password) {
+    return userLogin({
+      name: username,
+      password: password,
+    }).then((response) => {
+      if (response.data.accessToken) {
+        localStorage.setItem("user", JSON.stringify(response.data));
+      }
+      return response.data;
+    });
+  }
 
-    logout() {
-        localStorage.removeItem("user");
-    }
+  logout() {
+    localStorage.removeItem("user");
+  }
 
-    register(username, email, password) {
-        return axios
-            .post("https://greloupis-backend.herokuapp.com/user", {
-                username,
-                email,
-                password
-            });
-    }
+  register(username, email, password) {
+    return axios.post("https://greloupis-backend.herokuapp.com/user", {
+      username,
+      email,
+      password,
+    });
+  }
 
-    getCurrentUser() {
-        return JSON.parse(localStorage.getItem('user'));
-    }
+  getCurrentUser() {
+    return JSON.parse(localStorage.getItem("user"));
+  }
 }
 
 export default new AuthService();

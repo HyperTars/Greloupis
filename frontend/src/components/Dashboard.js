@@ -5,7 +5,7 @@ import {
   updateUserVideoProcess,
 } from "./FetchData";
 
-function Dashboard({ endpoint }) {
+function Dashboard() {
   let test_user_id = "5f88f883e6ac4f89900ac983";
   let test_video_id = "5f8da0af45a235561c15910c";
 
@@ -18,7 +18,7 @@ function Dashboard({ endpoint }) {
   const [updateProcess, setUpdateProcess] = useState(null);
 
   useEffect(() => {
-    getUserInfo(endpoint, test_user_id)
+    getUserInfo(test_user_id)
       .then((res) => {
         if (res == null) {
           return;
@@ -31,10 +31,10 @@ function Dashboard({ endpoint }) {
         setLoading(false);
         setErrorMsg(e.message);
       });
-  }, [endpoint, test_user_id]);
+  }, [test_user_id]);
 
   useEffect(() => {
-    updateVideoViews(endpoint, test_video_id)
+    updateVideoViews(test_video_id)
       .then((res) => {
         if (res == null) {
           return;
@@ -46,10 +46,10 @@ function Dashboard({ endpoint }) {
         setLoading(false);
         setErrorMsg(e.message);
       });
-  }, [endpoint, test_video_id]);
+  }, [test_video_id]);
 
   useEffect(() => {
-    updateUserVideoProcess(endpoint, test_video_id, test_user_id, {
+    updateUserVideoProcess(test_video_id, test_user_id, {
       process: parseInt(Math.random() * 1000 + 1, 10),
     })
       .then((res) => {
@@ -63,7 +63,7 @@ function Dashboard({ endpoint }) {
         setLoading(false);
         setErrorMsg(e.message);
       });
-  }, [endpoint, test_video_id, test_user_id]);
+  }, [test_video_id, test_user_id]);
 
   const loadingFormat = (
     <div className="topMargin">

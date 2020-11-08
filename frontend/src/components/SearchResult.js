@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { searchUser, searchVideo } from "./FetchData";
 
-function SearchResult({ endpoint }) {
+function SearchResult() {
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState(null);
   const [userResult, setUserResult] = useState(null);
@@ -14,7 +14,7 @@ function SearchResult({ endpoint }) {
       : "";
 
   useEffect(() => {
-    searchUser(endpoint, keyword)
+    searchUser(keyword)
       .then((res) => {
         if (res == null) {
           return;
@@ -26,10 +26,10 @@ function SearchResult({ endpoint }) {
         setLoading(false);
         setErrorMsg(e.message);
       });
-  }, [endpoint, keyword]);
+  }, [keyword]);
 
   useEffect(() => {
-    searchVideo(endpoint, keyword)
+    searchVideo(keyword)
       .then((res) => {
         if (res == null) {
           return;
@@ -41,7 +41,7 @@ function SearchResult({ endpoint }) {
         setLoading(false);
         setErrorMsg(e.message);
       });
-  }, [endpoint, keyword]);
+  }, [keyword]);
 
   const loadingFormat = (
     <div className="topMargin">
