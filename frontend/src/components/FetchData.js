@@ -10,7 +10,7 @@ const CURRENT_ENDPOINT = TEST_ENDPOINT;
 function fetchWithErrorHandling(url, method, data) {
   let retryCount = 3;
 
-  function handleErrors(response, method, data) {
+  async function handleErrors(response, method, data) {
     if (
       response == null ||
       response.status == null ||
@@ -44,16 +44,21 @@ function fetchWithErrorHandling(url, method, data) {
             });
         }
       } else {
-        throw new GatewayTimeout(response.statusText);
+        let responseJson = await response.json();
+        throw new GatewayTimeout(responseJson["message"]);
       }
     } else if (response.status >= 500) {
-      throw new ServerError(response.statusText);
+      let responseJson = await response.json();
+      throw new ServerError(responseJson["message"]);
     } else if (response.status === 404) {
-      throw new NotFoundError(response.statusText);
+      let responseJson = await response.json();
+      throw new NotFoundError(responseJson["message"]);
     } else if (response.status >= 400) {
-      throw new ClientError(response.statusText);
+      let responseJson = await response.json();
+      throw new ClientError(responseJson["message"]);
     } else if (!response.ok) {
-      throw Error(response.statusText);
+      let responseJson = await response.json();
+      throw Error(responseJson["message"]);
     } else {
       return response;
     }
