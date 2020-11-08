@@ -1,14 +1,21 @@
+import json
 import unittest
+
+from flask_jwt_extended import JWTManager
+from flask_restx import Api
 from mongoengine.connection import disconnect
+
 from routes.route_search import RouteSearchUser, RouteSearchVideo
 from routes.route_user import UserUserId, UserUserIdStar, \
-    UserUserIdComment, UserUserIdDislike, UserUserIdLike, UserUserIdProcess
+    UserUserIdComment, UserUserIdDislike, UserUserIdLike, \
+    UserUserIdProcess, user
 from routes.route_video import Video, VideoVideoId, \
     VideoVideoIdComment, VideoVideoIdCommentUserId, VideoVideoIdDislike, \
     VideoVideoIdDislikeUserId, VideoVideoIdLike, VideoVideoIdLikeUserId, \
     VideoVideoIdProcessUserId, VideoVideoIdStar, VideoVideoIdStarUserId, \
     VideoVideoIdView
 from settings import config
+from utils.util_jwt import blacklist, util_get_formated_response
 from utils.util_serializer import util_serializer_mongo_results_to_array
 from utils.util_tests import util_tests_load_data, \
     util_tests_python_version
@@ -19,10 +26,47 @@ from utils.util_error_handler import util_error_handler
 from db.query_video import query_video_get_by_video_id, \
     query_video_get_by_title
 from models.model_errors import ErrorCode, ServiceError
-from flask import Flask
+from flask import Flask, Blueprint
 import copy
 
 app = Flask(__name__)
+blueprint = Blueprint('api', __name__, url_prefix='/')
+api = Api(blueprint)
+api.add_namespace(user)
+app.register_blueprint(blueprint)
+jwt = JWTManager(app)
+
+
+@jwt.token_in_blacklist_loader
+def check_if_token_in_blacklist(decrypted_token):
+    jti = decrypted_token['jti']
+    return jti in blacklist
+
+
+@jwt.expired_token_loader
+def expired_token_callback():
+    return util_get_formated_response(code=-10000,
+                                      msg='The token has expired')
+
+
+@jwt.revoked_token_loader
+def revoked_token_callback():
+    return util_get_formated_response(code=-10000,
+                                      msg='The token has been revoked')
+
+
+class TestUserRoute(unittest.TestCase):
+    def setUp(self):
+        self.app = app
+        app.config['TESTING'] = True
+        self.client = app.test_client()
+
+    def test_route_login(self):
+        response = self.client.post('/user', data={})
+
+        json_data = response.data
+        json_dict = json.loads(json_data)
+        print(json_dict)
 
 
 class TestRouteSearch(unittest.TestCase):

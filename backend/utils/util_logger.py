@@ -24,4 +24,3 @@ def util_logger_handler(file_name):
 #         logger.debug(data)
 #     elif level == 'warning':
 #         logger.warning(data)
-
