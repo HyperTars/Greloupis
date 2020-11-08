@@ -104,8 +104,8 @@ class Register extends  React.Component {
             message: resMessage
           });
 
-          console.log(this.state);
-          alert("register failed");
+          console.log(this.state.message);
+          alert(this.state.message);
         }
       );      
     } else {

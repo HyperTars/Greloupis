@@ -1,4 +1,3 @@
-import axios from "axios";
 import { createUser, userLogin } from "../components/FetchData";
 
 class AuthService {
