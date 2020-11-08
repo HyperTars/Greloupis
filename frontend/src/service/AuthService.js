@@ -1,5 +1,5 @@
 import axios from "axios";
-import { userLogin } from "../components/FetchData";
+import { createUser, userLogin } from "../components/FetchData";
 
 class AuthService {
   login(username, password) {
@@ -7,10 +7,10 @@ class AuthService {
       name: username,
       password: password,
     }).then((response) => {
-      if (response.data.accessToken) {
-        localStorage.setItem("user", JSON.stringify(response.data));
+      if (response.token) {
+        localStorage.setItem("user", JSON.stringify(response.token));
       }
-      return response.data;
+      return response.token;
     });
   }
 
@@ -19,10 +19,10 @@ class AuthService {
   }
 
   register(username, email, password) {
-    return axios.post("https://greloupis-backend.herokuapp.com/user", {
-      username,
-      email,
-      password,
+    return createUser({
+        username: username,
+        email: email,
+        password: password
     });
   }
 
