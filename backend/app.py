@@ -13,22 +13,37 @@ import logging.config
 
 # from source.utils.util_request_filter import *
 # from flask import request, redirect, session
+from utils.util_jwt import util_get_formated_response
 
 app = Flask(__name__)
 app.config.from_object(config['test'])
 app.register_blueprint(blueprint)
-jwt = JWTManager(app)
+
 with open('logging.yml', 'r') as f:
     conf = yaml.safe_load(f.read())
     logging.config.dictConfig(conf)
 
-
 # CORS(app, resources={r'/*': {'origins': config['test'].FRONTEND}},
 #      supports_credentials=True)
+jwt = JWTManager(app)
+
+
 @jwt.token_in_blacklist_loader
 def check_if_token_in_blacklist(decrypted_token):
     jti = decrypted_token['jti']
     return jti in blacklist
+
+
+@jwt.expired_token_loader
+def expired_token_callback():
+    return util_get_formated_response(code=-10000,
+                                      msg='The token has expired')
+
+
+@jwt.revoked_token_loader
+def revoked_token_callback():
+    return util_get_formated_response(code=-10000,
+                                      msg='The token has been revoked')
 
 
 """
