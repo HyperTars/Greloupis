@@ -1,7 +1,11 @@
+import { TEST_ENDPOINT /*, LOCAL_ENDPOINT*/ } from "./Endpoint";
+
 export class GatewayTimeout extends Error {}
 export class NotFoundError extends Error {}
 export class ServerError extends Error {}
 export class ClientError extends Error {}
+
+const CURRENT_ENDPOINT = TEST_ENDPOINT;
 
 function fetchWithErrorHandling(url, method, data) {
   let retryCount = 3;
@@ -90,190 +94,190 @@ function fetchJsonWithErrorHandling(url, method, data) {
 }
 
 // user related APIs
-export function createUser(endpoint, data = {}) {
-  const url = `${endpoint}/user`;
+export function createUser(data = {}) {
+  const url = `${CURRENT_ENDPOINT}/user`;
   return fetchJsonWithErrorHandling(url, "POST", data);
 }
 
-export function userLogin(endpoint, data = {}) {
-  const url = `${endpoint}/user/login`;
+export function userLogin(data = {}) {
+  const url = `${CURRENT_ENDPOINT}/user/login`;
   return fetchJsonWithErrorHandling(url, "POST", data);
 }
 
-export function userLogout(endpoint, data = {}) {
-  const url = `${endpoint}/user/logout`;
+export function userLogout(data = {}) {
+  const url = `${CURRENT_ENDPOINT}/user/logout`;
   return fetchJsonWithErrorHandling(url, "POST", data);
 }
 
-export function updateUserInfo(endpoint, id, data = {}) {
-  const url = `${endpoint}/user/${id}`;
+export function updateUserInfo(id, data = {}) {
+  const url = `${CURRENT_ENDPOINT}/user/${id}`;
   return fetchJsonWithErrorHandling(url, "PUT", data);
 }
 
-export function getUserInfo(endpoint, id, data = {}) {
-  const url = `${endpoint}/user/${id}`;
+export function getUserInfo(id, data = {}) {
+  const url = `${CURRENT_ENDPOINT}/user/${id}`;
   return fetchJsonWithErrorHandling(url, "GET", data);
 }
 
-export function deleteUser(endpoint, id, data = {}) {
-  const url = `${endpoint}/user/${id}`;
+export function deleteUser(id, data = {}) {
+  const url = `${CURRENT_ENDPOINT}/user/${id}`;
   return fetchJsonWithErrorHandling(url, "DELETE", data);
 }
 
-export function getUserComments(endpoint, id, data = {}) {
-  const url = `${endpoint}/user/${id}/comment`;
+export function getUserComments(id, data = {}) {
+  const url = `${CURRENT_ENDPOINT}/user/${id}/comment`;
   return fetchJsonWithErrorHandling(url, "GET", data);
 }
 
-export function getUserDislikes(endpoint, id, data = {}) {
-  const url = `${endpoint}/user/${id}/dislike`;
+export function getUserDislikes(id, data = {}) {
+  const url = `${CURRENT_ENDPOINT}/user/${id}/dislike`;
   return fetchJsonWithErrorHandling(url, "GET", data);
 }
 
-export function getUserLikes(endpoint, id, data = {}) {
-  const url = `${endpoint}/user/${id}/like`;
+export function getUserLikes(id, data = {}) {
+  const url = `${CURRENT_ENDPOINT}/user/${id}/like`;
   return fetchJsonWithErrorHandling(url, "GET", data);
 }
 
-export function getUserProcesses(endpoint, id, data = {}) {
-  const url = `${endpoint}/user/${id}/process`;
+export function getUserProcesses(id, data = {}) {
+  const url = `${CURRENT_ENDPOINT}/user/${id}/process`;
   return fetchJsonWithErrorHandling(url, "GET", data);
 }
 
-export function getUserStars(endpoint, id, data = {}) {
-  const url = `${endpoint}/user/${id}/star`;
+export function getUserStars(id, data = {}) {
+  const url = `${CURRENT_ENDPOINT}/user/${id}/star`;
   return fetchJsonWithErrorHandling(url, "GET", data);
 }
 
 // video related APIs
-export function createVideo(endpoint, data = {}) {
-  const url = `${endpoint}/video`;
+export function createVideo(data = {}) {
+  const url = `${CURRENT_ENDPOINT}/video`;
   return fetchJsonWithErrorHandling(url, "POST", data);
 }
 
-export function updateVideoInfo(endpoint, id, data = {}) {
-  const url = `${endpoint}/video/${id}`;
+export function updateVideoInfo(id, data = {}) {
+  const url = `${CURRENT_ENDPOINT}/video/${id}`;
   return fetchJsonWithErrorHandling(url, "PUT", data);
 }
 
-export function getVideoInfo(endpoint, id, data = {}) {
-  const url = `${endpoint}/video/${id}`;
+export function getVideoInfo(id, data = {}) {
+  const url = `${CURRENT_ENDPOINT}/video/${id}`;
   return fetchJsonWithErrorHandling(url, "GET", data);
 }
 
-export function deleteVideo(endpoint, id, data = {}) {
-  const url = `${endpoint}/video/${id}`;
+export function deleteVideo(id, data = {}) {
+  const url = `${CURRENT_ENDPOINT}/video/${id}`;
   return fetchJsonWithErrorHandling(url, "DELETE", data);
 }
 
-export function getVideoComments(endpoint, id, data = {}) {
-  const url = `${endpoint}/video/${id}/comment`;
+export function getVideoComments(id, data = {}) {
+  const url = `${CURRENT_ENDPOINT}/video/${id}/comment`;
   return fetchJsonWithErrorHandling(url, "GET", data);
 }
 
-export function getVideoDislikes(endpoint, id, data = {}) {
-  const url = `${endpoint}/video/${id}/dislike`;
+export function getVideoDislikes(id, data = {}) {
+  const url = `${CURRENT_ENDPOINT}/video/${id}/dislike`;
   return fetchJsonWithErrorHandling(url, "GET", data);
 }
 
-export function getVideoLikes(endpoint, id, data = {}) {
-  const url = `${endpoint}/video/${id}/like`;
+export function getVideoLikes(id, data = {}) {
+  const url = `${CURRENT_ENDPOINT}/video/${id}/like`;
   return fetchJsonWithErrorHandling(url, "GET", data);
 }
 
-export function getVideoStars(endpoint, id, data = {}) {
-  const url = `${endpoint}/video/${id}/star`;
+export function getVideoStars(id, data = {}) {
+  const url = `${CURRENT_ENDPOINT}/video/${id}/star`;
   return fetchJsonWithErrorHandling(url, "GET", data);
 }
 
-export function getVideoViews(endpoint, id, data = {}) {
-  const url = `${endpoint}/video/${id}/view`;
+export function getVideoViews(id, data = {}) {
+  const url = `${CURRENT_ENDPOINT}/video/${id}/view`;
   return fetchJsonWithErrorHandling(url, "GET", data);
 }
 
-export function updateVideoViews(endpoint, id, data = {}) {
-  const url = `${endpoint}/video/${id}/view`;
+export function updateVideoViews(id, data = {}) {
+  const url = `${CURRENT_ENDPOINT}/video/${id}/view`;
   return fetchJsonWithErrorHandling(url, "PUT", data);
 }
 
 // video & user related APIs
-export function updateUserVideoComment(endpoint, videoId, userId, data = {}) {
-  const url = `${endpoint}/video/${videoId}/comment/${userId}`;
+export function updateUserVideoComment(videoId, userId, data = {}) {
+  const url = `${CURRENT_ENDPOINT}/video/${videoId}/comment/${userId}`;
   return fetchJsonWithErrorHandling(url, "PUT", data);
 }
 
-export function getUserVideoComment(endpoint, videoId, userId, data = {}) {
-  const url = `${endpoint}/video/${videoId}/comment/${userId}`;
+export function getUserVideoComment(videoId, userId, data = {}) {
+  const url = `${CURRENT_ENDPOINT}/video/${videoId}/comment/${userId}`;
   return fetchJsonWithErrorHandling(url, "GET", data);
 }
 
-export function createUserVideoComment(endpoint, videoId, userId, data = {}) {
-  const url = `${endpoint}/video/${videoId}/comment/${userId}`;
+export function createUserVideoComment(videoId, userId, data = {}) {
+  const url = `${CURRENT_ENDPOINT}/video/${videoId}/comment/${userId}`;
   return fetchJsonWithErrorHandling(url, "POST", data);
 }
 
-export function deleteUserVideoComment(endpoint, videoId, userId, data = {}) {
-  const url = `${endpoint}/video/${videoId}/comment/${userId}`;
+export function deleteUserVideoComment(videoId, userId, data = {}) {
+  const url = `${CURRENT_ENDPOINT}/video/${videoId}/comment/${userId}`;
   return fetchJsonWithErrorHandling(url, "DELETE", data);
 }
 
-export function createUserVideoDislike(endpoint, videoId, userId, data = {}) {
-  const url = `${endpoint}/video/${videoId}/dislike/${userId}`;
+export function createUserVideoDislike(videoId, userId, data = {}) {
+  const url = `${CURRENT_ENDPOINT}/video/${videoId}/dislike/${userId}`;
   return fetchJsonWithErrorHandling(url, "POST", data);
 }
 
-export function deleteUserVideoDislike(endpoint, videoId, userId, data = {}) {
-  const url = `${endpoint}/video/${videoId}/dislike/${userId}`;
+export function deleteUserVideoDislike(videoId, userId, data = {}) {
+  const url = `${CURRENT_ENDPOINT}/video/${videoId}/dislike/${userId}`;
   return fetchJsonWithErrorHandling(url, "DELETE", data);
 }
 
-export function createUserVideoLike(endpoint, videoId, userId, data = {}) {
-  const url = `${endpoint}/video/${videoId}/like/${userId}`;
+export function createUserVideoLike(videoId, userId, data = {}) {
+  const url = `${CURRENT_ENDPOINT}/video/${videoId}/like/${userId}`;
   return fetchJsonWithErrorHandling(url, "POST", data);
 }
 
-export function deleteUserVideoLike(endpoint, videoId, userId, data = {}) {
-  const url = `${endpoint}/video/${videoId}/like/${userId}`;
+export function deleteUserVideoLike(videoId, userId, data = {}) {
+  const url = `${CURRENT_ENDPOINT}/video/${videoId}/like/${userId}`;
   return fetchJsonWithErrorHandling(url, "DELETE", data);
 }
 
-export function createUserVideoProcess(endpoint, videoId, userId, data = {}) {
-  const url = `${endpoint}/video/${videoId}/process/${userId}`;
+export function createUserVideoProcess(videoId, userId, data = {}) {
+  const url = `${CURRENT_ENDPOINT}/video/${videoId}/process/${userId}`;
   return fetchJsonWithErrorHandling(url, "POST", data);
 }
 
-export function deleteUserVideoProcess(endpoint, videoId, userId, data = {}) {
-  const url = `${endpoint}/video/${videoId}/process/${userId}`;
+export function deleteUserVideoProcess(videoId, userId, data = {}) {
+  const url = `${CURRENT_ENDPOINT}/video/${videoId}/process/${userId}`;
   return fetchJsonWithErrorHandling(url, "DELETE", data);
 }
 
-export function getUserVideoProcess(endpoint, videoId, userId, data = {}) {
-  const url = `${endpoint}/video/${videoId}/process/${userId}`;
+export function getUserVideoProcess(videoId, userId, data = {}) {
+  const url = `${CURRENT_ENDPOINT}/video/${videoId}/process/${userId}`;
   return fetchJsonWithErrorHandling(url, "GET", data);
 }
 
-export function updateUserVideoProcess(endpoint, videoId, userId, data = {}) {
-  const url = `${endpoint}/video/${videoId}/process/${userId}`;
+export function updateUserVideoProcess(videoId, userId, data = {}) {
+  const url = `${CURRENT_ENDPOINT}/video/${videoId}/process/${userId}`;
   return fetchJsonWithErrorHandling(url, "PUT", data);
 }
 
-export function createUserVideoStar(endpoint, videoId, userId, data = {}) {
-  const url = `${endpoint}/video/${videoId}/star/${userId}`;
+export function createUserVideoStar(videoId, userId, data = {}) {
+  const url = `${CURRENT_ENDPOINT}/video/${videoId}/star/${userId}`;
   return fetchJsonWithErrorHandling(url, "POST", data);
 }
 
-export function deleteUserVideoStar(endpoint, videoId, userId, data = {}) {
-  const url = `${endpoint}/video/${videoId}/star/${userId}`;
+export function deleteUserVideoStar(videoId, userId, data = {}) {
+  const url = `${CURRENT_ENDPOINT}/video/${videoId}/star/${userId}`;
   return fetchJsonWithErrorHandling(url, "DELETE", data);
 }
 
 // search related APIs
-export function searchUser(endpoint, keyword, data = {}) {
-  const url = `${endpoint}/search/user?keyword=${keyword}`;
+export function searchUser(keyword, data = {}) {
+  const url = `${CURRENT_ENDPOINT}/search/user?keyword=${keyword}`;
   return fetchJsonWithErrorHandling(url, "GET", data);
 }
 
-export function searchVideo(endpoint, keyword, data = {}) {
-  const url = `${endpoint}/search/video?keyword=${keyword}`;
+export function searchVideo(keyword, data = {}) {
+  const url = `${CURRENT_ENDPOINT}/search/video?keyword=${keyword}`;
   return fetchJsonWithErrorHandling(url, "GET", data);
 }

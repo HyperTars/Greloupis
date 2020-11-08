@@ -202,13 +202,12 @@
   
   .header {
     background-color: #FFFFFF;
-    position: fixed;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
     padding: 0px 7rem;
     height: 5rem;
-    width: 100%;
+    width: 100vw;
     -webkit-box-align: center;
         -ms-flex-align: center;
             align-items: center;
@@ -368,5 +367,5 @@
   }
 
   .topMargin {
-      margin-top: 100px;
+    margin: 50px 42% 0 42%;
   }
