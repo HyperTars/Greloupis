@@ -20,6 +20,7 @@ def service_user_reg(conf, **kw):
     :keyword:
         :key user_name: (required) str
         :key user_email: (required) str
+        :key user_password: (required) str
         :key user_ip: (optional) str
     :return user model:
     """
@@ -39,22 +40,38 @@ def service_user_reg(conf, **kw):
     return query_user_get_by_name(kw['user_name'])[0].to_dict()
 
 
-def service_user_check_password(conf, **kw):
+def service_user_login(conf, **kw):
     get_db(conf)
     kw['service'] = 'user'
     kw = util_pattern_format_param(**kw)
-
     if 'user_name' in kw and 'user_password' in kw:
         users = query_user_get_by_name(kw['user_name'])
+        if len(users) == 0:
+            raise ServiceError(ErrorCode.SERVICE_USER_NOT_FOUND)
+        user = users[0]
+        if util_hash_encode(kw['user_password']) != user.user_password:
+            raise ServiceError(ErrorCode.SERVICE_USER_PASS_WRONG)
     elif 'user_email' in kw and 'user_password' in kw:
         users = query_user_get_by_email(kw['user_email'])
+        if len(users) == 0:
+            raise ServiceError(ErrorCode.SERVICE_USER_NOT_FOUND)
+        user = users[0]
+        if util_hash_encode(kw['user_password']) != user.user_password:
+            raise ServiceError(ErrorCode.SERVICE_USER_PASS_WRONG)
+    elif 'user' in kw and 'user_password' in kw:
+        user_names = query_user_get_by_name(kw['user'])
+        user_emails = query_user_get_by_email(kw['user'])
+        if len(user_emails) == 0 and len(user_names) == 0:
+            raise ServiceError(ErrorCode.SERVICE_USER_NOT_FOUND)
+        elif len(user_emails) != 0:
+            user = user_emails[0]
+        elif len(user_names) != 0:
+            user = user_names[0]
+        if util_hash_encode(kw['user_password']) != user.user_password:
+            raise ServiceError(ErrorCode.SERVICE_USER_PASS_WRONG)
     else:
         raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
-
-    if len(users) == 0:
-        raise ServiceError(ErrorCode.SERVICE_USER_NOT_FOUND)
-
-    return util_hash_encode(kw['user_password']) == users[0].user_password
+    return user.to_dict()
 
 
 # def service_user_get_user(conf, **kw):

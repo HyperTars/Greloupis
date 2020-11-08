@@ -4,9 +4,11 @@ BACKEND_REPO = hypertars/greloupis-backend
 
 dev_env_backend:
 	pip3 install -r requirements.txt
-	
+
+run_python:
+	python3 app.py FLASK_APP=app flask run --host=0.0.0.0 --port=5000
+
 run_backend:	run_wsgi
-	# python3 app.py FLASK_APP=app flask run --host=0.0.0.0 --port=5000
 
 run_wsgi:
 	uwsgi --http localhost:5000 --wsgi-file  wsgi.py --callable app
