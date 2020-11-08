@@ -91,6 +91,8 @@ class Register extends  React.Component {
             message: response.message,
             success: true
           });
+          this.props.history.push("/login");
+          window.location.reload();
         },
         error => {
           const resMessage = 

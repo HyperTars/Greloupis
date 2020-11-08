@@ -124,7 +124,7 @@ class Login extends React.Component {
       this.setState({
         loading: false,
       });
-      alert("Invalid params");
+      alert("Incorrect Credentials!");
     }
   }
 
