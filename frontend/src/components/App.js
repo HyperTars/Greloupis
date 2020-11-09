@@ -24,7 +24,7 @@ class App extends Component {
           <Switch>
             <Route
               exact
-              path="/home"
+              path="/"
               render={() => (
                 <div>
                   <Header />
@@ -57,7 +57,12 @@ class App extends Component {
             <Route
               exact
               path="/video/upload"
-              render={(props) => <VideoUpload />}
+              render={(props) => (
+                <div>
+                  <Header />
+                  <VideoUpload />
+                </div>
+              )}
             />
             <Route
               exact

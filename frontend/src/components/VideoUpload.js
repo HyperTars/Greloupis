@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Header from "./Header";
 
 export default class VideoUpload extends Component {
   state = {
@@ -17,12 +16,8 @@ export default class VideoUpload extends Component {
   render() {
     const { file } = this.state;
     return (
-      <div>
-        <Header />
-
-        <div className="upload">
-          {!file ? <UploadInfo /> : this.renderUploadFile()}
-        </div>
+      <div className="upload">
+        {!file ? <UploadInfo /> : this.renderUploadFile()}
       </div>
     );
   }
