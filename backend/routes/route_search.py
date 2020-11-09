@@ -9,7 +9,8 @@ from service.service_search import service_search_user, \
 from settings import config
 from utils.util_serializer import util_serializer_request, \
     util_serializer_api_response
-from models.model_errors import ErrorCode
+from utils.util_error_handler import util_error_handler
+from models.model_errors import ErrorCode, RouteError, ServiceError, MongoError
 
 # from flask import Flask, g, Blueprint
 # from flask_restx import Api, marshal_with, reqparse
@@ -40,17 +41,18 @@ class RouteSearchVideo(Resource):
         """
             Search videos by keyword
         """
-        req_dict = util_serializer_request(request.args)
-        if 'keyword' not in req_dict:
-            return {ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_code():
-                    ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg()}, 200, None
+        try:
+            req_dict = util_serializer_request(request.args)
+            if 'keyword' not in req_dict:
+                raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
 
-        search_result_json = service_search_video(conf=conf,
-                                                  title=req_dict['keyword'],
-                                                  ignore_case=True,
-                                                  format="json", slice=True)
-        return util_serializer_api_response(200, body=search_result_json,
-                                            msg="Search user successfully")
+            search_result = service_search_video(
+                conf=conf, title=req_dict['keyword'], ignore_case=True,
+                slice=True)
+            return util_serializer_api_response(
+                200, body=search_result, msg="Search user successfully")
+        except (ServiceError, MongoError, RouteError, Exception) as e:
+            return util_error_handler(e)
 
 
 @search.route('/user', methods=['GET'])
@@ -65,16 +67,81 @@ class RouteSearchUser(Resource):
         """
             Search users by keyword
         """
-        req_dict = util_serializer_request(request.args)
+        try:
+            req_dict = util_serializer_request(request.args)
 
-        if 'keyword' not in req_dict:
-            return {ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_code():
-                    ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg()}, 200, None
+            if 'keyword' not in req_dict:
+                raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
 
-        search_result_json = service_search_user(conf=conf,
-                                                 name=req_dict['keyword'],
-                                                 ignore_case=True, exact=False,
-                                                 format="json")
+            search_result = service_search_user(
+                conf=conf, name=req_dict['keyword'], ignore_case=True,
+                exact=False)
 
-        return util_serializer_api_response(200, body=search_result_json,
-                                            msg="Search video successfully")
+            return util_serializer_api_response(
+                200, body=search_result, msg="Search video successfully")
+        except (ServiceError, MongoError, RouteError, Exception) as e:
+            return util_error_handler(e)
+
+
+@search.route('/video/top', methods=['GET'])
+@search.param('keyword', 'Searching keyword')
+@search.response(200, 'Successfully got video search results.',
+                 video_response_list)
+@search.response(400, 'Bad request.', general_response)
+@search.response(500, 'Internal server error.', general_response)
+class RouteSearchTopVideos(Resource):
+    @search.doc(responses={200: 'Successfully got video search results.'})
+    def get(self, conf=config["default"]):
+        try:
+            req_dict = util_serializer_request(request.args)
+            if 'keyword' not in req_dict:
+                raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+            if req_dict['keyword'] == 'video_upload_time' or \
+                    req_dict['keyword'] == 'upload_time' or \
+                    req_dict['keyword'] == 'time':
+                keyword = 'video_upload_time'
+            elif req_dict['keyword'] == 'video_like' or \
+                    req_dict['keyword'] == 'video_likes' or \
+                    req_dict['keyword'] == 'like' or \
+                    req_dict['keyword'] == 'likes':
+                keyword = 'video_like'
+            elif req_dict['keyword'] == 'video_share' or \
+                    req_dict['keyword'] == 'video_shares' or \
+                    req_dict['keyword'] == 'share' or \
+                    req_dict['keyword'] == 'shares':
+                keyword = 'video_share'
+            elif req_dict['keyword'] == 'video_star' or \
+                    req_dict['keyword'] == 'video_stars' or \
+                    req_dict['keyword'] == 'star' or \
+                    req_dict['keyword'] == 'stars':
+                keyword = 'video_star'
+            elif req_dict['keyword'] == 'video_view' or \
+                    req_dict['keyword'] == 'video_views' or \
+                    req_dict['keyword'] == 'view' or \
+                    req_dict['keyword'] == 'views':
+                keyword = 'video_view'
+            elif req_dict['keyword'] == 'video_duration' or \
+                    req_dict['keyword'] == 'duration':
+                keyword = 'video_duration'
+            else:
+                raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+            search_dict = [
+                {
+                    "$sort":
+                        {
+                            keyword: -1
+                        }
+                },
+                {
+                    "$limit": 100
+                }
+            ]
+            search_result = service_search_video(
+                conf=conf, aggregate=True, search_dict=search_dict)
+            if keyword == 'video_upload_time':
+                search_result.reverse()
+            print(search_result)
+            return util_serializer_api_response(200, body=search_result,
+                                                msg="Search user successfully")
+        except (ServiceError, MongoError, RouteError, Exception) as e:
+            return util_error_handler(e)
