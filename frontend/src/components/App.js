@@ -14,6 +14,7 @@ import Register from "./Register";
 import EmptyPage from "./EmptyPage";
 import UserProfile from "./UserProfile";
 import VideoPlay from "./VideoPlay";
+import VideoUpload from "./VideoUpload";
 
 class App extends Component {
   render() {
@@ -52,6 +53,11 @@ class App extends Component {
               path="/register"
               component={Register}
               render={(props) => <Register />}
+            />
+            <Route
+              exact
+              path="/video/upload"
+              render={(props) => <VideoUpload />}
             />
             <Route
               exact

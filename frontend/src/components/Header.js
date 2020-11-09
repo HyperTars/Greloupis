@@ -52,7 +52,7 @@ class Header extends Component {
         </form>
 
         <div className="header-profile">
-          <Link to="/home">
+          <Link to="/video/upload">
             <div className="header-profile__upload">
               <img
                 className="header-profile__upload-icon"
