@@ -393,7 +393,7 @@
   color: rgba(51, 51, 51, 0.7);
 }
 
-h4 {
+h3 {
   text-align: left;
 }
 
@@ -402,4 +402,8 @@ h4 {
   margin-top: 3%;
   margin-right: 480px;
   text-align: left;
+}
+
+.searchPart .ant-list-item-meta-title{
+  font-size: 20px;
 }

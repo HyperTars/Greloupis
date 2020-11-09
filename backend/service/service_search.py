@@ -89,12 +89,18 @@ def service_search_video(conf, **kw):
         for res in res_search:
             res['video_id'] = str(res['_id'])
             res.pop('_id')
+        
+        for res in res_search:
+            user = query_user_get_by_id(res['user_id'])[0]
+            res['user_name'] = user.user_name
+        
         return res_search
     else:
         # Contains keyword (single) search
         res_search = service_search_video_by_contains(**kw)
 
     res_array = util_serializer_mongo_results_to_array(res_search)
+
     for res in res_array:
         user = query_user_get_by_id(res['user_id'])[0]
         res['user_name'] = user.user_name

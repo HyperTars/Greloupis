@@ -286,3 +286,8 @@ export function searchVideo(keyword, data = {}) {
   const url = `${CURRENT_ENDPOINT}/search/video?keyword=${keyword}`;
   return fetchJsonWithErrorHandling(url, "GET", data);
 }
+
+export function searchTopVideo(keyword, data = {}) {
+  const url = `${CURRENT_ENDPOINT}/search/video/top?keyword=${keyword}`;
+  return fetchJsonWithErrorHandling(url, "GET", data);
+}
