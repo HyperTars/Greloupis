@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { searchUser, searchVideo } from "./FetchData";
 import { Spin, List, Avatar, Space } from "antd";
+import { Link } from "react-router-dom";
 import {
   EyeOutlined,
   LikeOutlined,
   StarOutlined,
   FieldTimeOutlined,
   CalendarOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
 import { secondTimeConvert, dateConvert } from "../util";
 
@@ -57,6 +59,8 @@ function SearchResult() {
         let videoArray = [];
         res.body.forEach((element) => {
           videoArray.push({
+            user_id: element.user_id,
+            user_name: element.user_name,
             video_id: element.video_id,
             video_title: element.video_title,
             video_raw_content: element.video_raw_content,
@@ -118,6 +122,13 @@ function SearchResult() {
               <List.Item
                 actions={[
                   <IconText
+                    icon={UserOutlined}
+                    text={
+                      <Link to={"/user/" + item.user_id}>{item.user_name}</Link>
+                    }
+                    key="list-vertical-user-o"
+                  />,
+                  <IconText
                     icon={EyeOutlined}
                     text={item.video_view}
                     key="list-vertical-view-o"
@@ -145,21 +156,29 @@ function SearchResult() {
                   />,
                 ]}
                 extra={
-                  <img
-                    width={150}
-                    alt="logo"
-                    src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
-                    // src={item.video_thumbnail}
-                  />
+                  <Link to={"/video/" + item.video_id}>
+                    <img
+                      width={160}
+                      alt="logo"
+                      src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
+                      // src={item.video_thumbnail}
+                    />
+                  </Link>
                 }
               >
                 <List.Item.Meta
-                  avatar={
-                    <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+                  title={
+                    <Link to={"/video/" + item.video_id}>
+                      {item.video_title}
+                    </Link>
                   }
-                  // avatar={<Avatar src={item.avatar} />}
-                  title={<a href={item.href}>{item.video_title}</a>}
-                  description={item.video_description}
+                  description={
+                    item.video_description !== "" ? (
+                      item.video_description
+                    ) : (
+                      <br />
+                    )
+                  }
                 />
                 {item.content}
               </List.Item>
@@ -169,23 +188,27 @@ function SearchResult() {
       </div>
 
       <div className="searchPart">
-        <h4>{"Matched Users: "}</h4>
+        <h3>{"Matched Users: "}</h3>
 
         {userResult == null ? (
           <Spin />
         ) : (
           <List
+            grid={{ gutter: 18, column: 2 }}
             itemLayout="horizontal"
             dataSource={userResult}
             renderItem={(item) => (
               <List.Item>
                 <List.Item.Meta
                   avatar={
-                    <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+                    <Link to={"/user/" + item.user_id}>
+                      <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+                    </Link>
                     // <Avatar src={item.user_thumbnail} />
                   }
-                  title={<a href="https://ant.design">{item.user_name}</a>}
-                  description="Nullam egestas, mauris ut auctor pretium, justo eros mollis nibh, eu vulputate felis turpis in lacus."
+                  title={
+                    <Link to={"/user/" + item.user_id}>{item.user_name}</Link>
+                  }
                 />
               </List.Item>
             )}
