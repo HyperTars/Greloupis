@@ -185,7 +185,7 @@ function SearchResult() {
                     // <Avatar src={item.user_thumbnail} />
                   }
                   title={<a href="https://ant.design">{item.user_name}</a>}
-                  description="Ant Design, a design language for background applications, is refined by Ant UED Team"
+                  description="Nullam egestas, mauris ut auctor pretium, justo eros mollis nibh, eu vulputate felis turpis in lacus."
                 />
               </List.Item>
             )}
