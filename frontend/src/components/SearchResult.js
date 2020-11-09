@@ -194,7 +194,7 @@ function SearchResult() {
           <Spin />
         ) : (
           <List
-            grid={{ gutter: 18, column: 2 }}
+            grid={{ gutter: 24, column: 3 }}
             itemLayout="horizontal"
             dataSource={userResult}
             renderItem={(item) => (

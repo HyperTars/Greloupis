@@ -1367,9 +1367,9 @@ h3 {
 }
 
 .searchPart {
-  margin-left: 480px;
+  margin-left: 12vw;
   margin-top: 3%;
-  margin-right: 480px;
+  margin-right: 12vw;
   text-align: left;
 }
 
@@ -1400,19 +1400,4 @@ h3 {
   line-height: normal;
   letter-spacing: normal;
   color: rgba(51, 51, 51, 0.7);
-}
-
-h3 {
-  text-align: left;
-}
-
-.searchPart {
-  margin-left: 480px;
-  margin-top: 3%;
-  margin-right: 480px;
-  text-align: left;
-}
-
-.searchPart .ant-list-item-meta-title{
-  font-size: 20px;
 }
