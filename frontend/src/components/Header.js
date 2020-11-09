@@ -17,7 +17,7 @@ class Header extends Component {
 
     return (
       <nav className="header">
-        <Link to="/home">
+        <Link to="/">
           <div className="header-logo">
             <img className="header-logo__img" src={logoPath} alt="Logo"></img>
             <span className="tooltip header-searchBar__button-tooltip">
@@ -52,7 +52,7 @@ class Header extends Component {
         </form>
 
         <div className="header-profile">
-          <Link to="/home">
+          <Link to="/video/upload">
             <div className="header-profile__upload">
               <img
                 className="header-profile__upload-icon"
@@ -65,7 +65,7 @@ class Header extends Component {
             </div>
           </Link>
 
-          <Link to="/home">
+          <Link to="/">
             <div className="header-profile__avatar">
               <img
                 className="header-profile__avatar-img"

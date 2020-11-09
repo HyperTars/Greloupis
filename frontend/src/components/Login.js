@@ -76,7 +76,7 @@ class Login extends React.Component {
       password: "",
       loading: false,
       message: "",
-      authflag: 1
+      authflag: 1,
     };
   }
 
@@ -97,10 +97,11 @@ class Login extends React.Component {
 
     // this.form.validateAll();
 
-    if (true) { // validate here
+    if (true) {
+      // validate here
       AuthService.login(this.state.username, this.state.password).then(
         () => {
-          this.props.history.push("/home");
+          this.props.history.push("/");
           window.location.reload();
         },
         (error) => {

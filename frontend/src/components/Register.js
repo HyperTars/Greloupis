@@ -1,29 +1,33 @@
 import React /*, {Component}*/ from "react";
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import AuthService from '../service/AuthService';
+import Avatar from "@material-ui/core/Avatar";
+import Button from "@material-ui/core/Button";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import TextField from "@material-ui/core/TextField";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
+import Link from "@material-ui/core/Link";
+import Grid from "@material-ui/core/Grid";
+import Box from "@material-ui/core/Box";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import Typography from "@material-ui/core/Typography";
+import { withStyles } from "@material-ui/core/styles";
+import Container from "@material-ui/core/Container";
+import AuthService from "../service/AuthService";
 import PropTypes from "prop-types";
 
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" target="_blank" href="https://github.com/HyperTars/Online-Video-Platform/">
+      {"Copyright © "}
+      <Link
+        color="inherit"
+        target="_blank"
+        href="https://github.com/HyperTars/Online-Video-Platform/"
+      >
         Greloupis
-      </Link>{' '}
+      </Link>{" "}
       {new Date().getFullYear()}
-      {'.'}
+      {"."}
     </Typography>
   );
 }
@@ -31,16 +35,16 @@ function Copyright() {
 const styles = (theme) => ({
   paper: {
     marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
   },
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(3),
   },
   submit: {
@@ -48,7 +52,7 @@ const styles = (theme) => ({
   },
 });
 
-class Register extends  React.Component {
+class Register extends React.Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
@@ -59,7 +63,7 @@ class Register extends  React.Component {
       email: "",
       password: "",
       success: false,
-      message: ""
+      message: "",
     };
   }
 
@@ -68,48 +72,49 @@ class Register extends  React.Component {
       username: event.state.username,
       email: event.state.email,
       password: event.state.password,
-    })
+    });
   }
 
   handleSubmit(event) {
     event.preventDefault();
     this.setState({
       message: "",
-      success: false
+      success: false,
     });
 
     // this.form.validateAll();
 
-    if (true) { // validate here
+    if (true) {
+      // validate here
       AuthService.register(
-        this.state.username, 
-        this.state.email, 
+        this.state.username,
+        this.state.email,
         this.state.password
       ).then(
-        response => {
+        (response) => {
           this.setState({
             message: response.message,
-            success: true
+            success: true,
           });
-          this.props.history.push("/home");
+          this.props.history.push("/");
           window.location.reload();
         },
-        error => {
-          const resMessage = 
+        (error) => {
+          const resMessage =
             (error.response &&
               error.response.date &&
               error.response.data.message) ||
-              error.message ||
-              error.toString();
+            error.message ||
+            error.toString();
           this.setState({
             success: false,
-            message: resMessage
+            message: resMessage,
           });
 
           console.log(this.state.message);
           alert(this.state.message);
         }
-      );      
+      );
     } else {
       this.setState({
         loading: false,
@@ -131,7 +136,11 @@ class Register extends  React.Component {
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          <form className={classes.form} noValidate onSubmit={this.handleSubmit}>
+          <form
+            className={classes.form}
+            noValidate
+            onSubmit={this.handleSubmit}
+          >
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
@@ -146,7 +155,7 @@ class Register extends  React.Component {
                   value={this.state.username}
                   onChange={(event) =>
                     this.setState({
-                      [event.target.name]: event.target.value
+                      [event.target.name]: event.target.value,
                     })
                   }
                 />
@@ -164,7 +173,7 @@ class Register extends  React.Component {
                   value={this.state.email}
                   onChange={(event) =>
                     this.setState({
-                      [event.target.name]: event.target.value
+                      [event.target.name]: event.target.value,
                     })
                   }
                 />
@@ -182,14 +191,16 @@ class Register extends  React.Component {
                   value={this.state.password}
                   onChange={(event) =>
                     this.setState({
-                      [event.target.name]: event.target.value
+                      [event.target.name]: event.target.value,
                     })
                   }
                 />
               </Grid>
               <Grid item xs={12}>
                 <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
+                  control={
+                    <Checkbox value="allowExtraEmails" color="primary" />
+                  }
                   label="I want to receive news and updates via email."
                 />
               </Grid>
@@ -221,7 +232,7 @@ class Register extends  React.Component {
 }
 
 Register.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
 };
 
 export default new withStyles(styles)(Register);
