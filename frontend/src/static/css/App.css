@@ -369,7 +369,7 @@
   }
 
   .topMargin {
-    margin: 50px;
+    margin: 30px;
     text-align: center;
   }
   
@@ -393,6 +393,13 @@
   color: rgba(51, 51, 51, 0.7);
 }
 
-h3 {
+h4 {
+  text-align: left;
+}
+
+.searchPart {
+  margin-left: 480px;
+  margin-top: 3%;
+  margin-right: 480px;
   text-align: left;
 }

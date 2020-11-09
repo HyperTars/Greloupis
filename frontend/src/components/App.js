@@ -3,7 +3,7 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Redirect,
+  // Redirect,
 } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Dashboard from "./Dashboard";
@@ -52,7 +52,7 @@ class App extends Component {
               render={(props) => <Register />}
             />
             <Route exact path="/404" render={() => <EmptyPage />} />
-            <Route path="*" render={() => <Redirect to="/404"></Redirect>} />
+            {/* <Route path="*" render={() => <Redirect to="/404"></Redirect>} /> */}
           </Switch>
         </div>
       </Router>
