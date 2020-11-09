@@ -1,69 +1,63 @@
 import React, { useState, useEffect } from "react";
+import { searchTopVideo } from "./FetchData";
+import { Spin, List, Space } from "antd";
+import { Link } from "react-router-dom";
 import {
-  getUserInfo,
-  updateVideoViews,
-  updateUserVideoProcess,
-} from "./FetchData";
+  EyeOutlined,
+  LikeOutlined,
+  StarOutlined,
+  FieldTimeOutlined,
+  CalendarOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
+import { secondTimeConvert, dateConvert } from "../util";
 
 function Dashboard() {
-  let test_user_id = "5f88f883e6ac4f89900ac983";
-  let test_video_id = "5f8da0af45a235561c15910c";
-
   const [loading, setLoading] = useState(true);
-
   const [errorMsg, setErrorMsg] = useState(null);
-
-  const [userData, setUserData] = useState(null);
-  const [updateResult, setUpdateResult] = useState(null);
-  const [updateProcess, setUpdateProcess] = useState(null);
+  const [videoResult, setVideoResult] = useState(null);
 
   useEffect(() => {
-    getUserInfo(test_user_id)
+    searchTopVideo("video_view")
       .then((res) => {
         if (res == null) {
           return;
         }
 
+        let videoArray = [];
+        res.body.forEach((element) => {
+          videoArray.push({
+            user_id: element.user_id,
+            user_name: element.user_name,
+            video_id: element.video_id,
+            video_title: element.video_title,
+            video_raw_content: element.video_raw_content,
+            video_thumbnail: element.video_thumbnail,
+            video_duration: element.video_duration,
+            video_description: element.video_description,
+            video_upload_date: element.video_upload_date,
+            video_view: element.video_view,
+            video_like: element.video_like,
+            video_star: element.video_star,
+            video_comment: element.video_comment,
+          });
+        });
+
         setLoading(false);
-        setUserData(res.body);
+        setVideoResult(videoArray);
       })
       .catch((e) => {
         setLoading(false);
         setErrorMsg(e.message);
       });
-  }, [test_user_id]);
+  }, []);
 
-  useEffect(() => {
-    updateVideoViews(test_video_id)
-      .then((res) => {
-        if (res == null) {
-          return;
-        }
-
-        setUpdateResult(res.body);
-      })
-      .catch((e) => {
-        setLoading(false);
-        setErrorMsg(e.message);
-      });
-  }, [test_video_id]);
-
-  useEffect(() => {
-    updateUserVideoProcess(test_video_id, test_user_id, {
-      process: parseInt(Math.random() * 1000 + 1, 10),
-    })
-      .then((res) => {
-        if (res == null) {
-          return;
-        }
-
-        setUpdateProcess(res.body);
-      })
-      .catch((e) => {
-        setLoading(false);
-        setErrorMsg(e.message);
-      });
-  }, [test_video_id, test_user_id]);
+  const IconText = ({ icon, text }) => (
+    <Space>
+      {React.createElement(icon)}
+      {text}
+    </Space>
+  );
 
   const loadingFormat = (
     <div className="topMargin">
@@ -79,22 +73,86 @@ function Dashboard() {
 
   const sampleFormat = (
     <div className="topMargin">
-      <div>
-        User name: {!userData ? "Loading" : userData["user"][0]["user_name"]}
-      </div>
+      <div className="searchPart">
+        <h4>{"Trending Videos: "}</h4>
 
-      <div>
-        User email: {!userData ? "Loading" : userData["user"][0]["user_email"]}
-      </div>
+        {videoResult == null ? (
+          <Spin />
+        ) : (
+          <List
+            itemLayout="vertical"
+            size="large"
+            pagination={{
+              pageSize: 5,
+            }}
+            dataSource={videoResult}
+            renderItem={(item) => (
+              <List.Item
+                actions={[
+                  <IconText
+                    icon={UserOutlined}
+                    text={
+                      <Link to={"/user/" + item.user_id}>{item.user_name}</Link>
+                    }
+                    key="list-vertical-user-o"
+                  />,
+                  <IconText
+                    icon={EyeOutlined}
+                    text={item.video_view}
+                    key="list-vertical-view-o"
+                  />,
+                  <IconText
+                    icon={StarOutlined}
+                    text={item.video_star}
+                    key="list-vertical-star-o"
+                  />,
+                  <IconText
+                    icon={LikeOutlined}
+                    text={item.video_like}
+                    key="list-vertical-like-o"
+                  />,
 
-      <div>
-        Update video view result:{" "}
-        {!updateResult ? "Loading" : updateResult["view_count"]}
-      </div>
-
-      <div>
-        Update video process result:{" "}
-        {!updateProcess ? "Loading" : updateProcess["process"]}
+                  <IconText
+                    icon={CalendarOutlined}
+                    text={dateConvert(item.video_upload_date)}
+                    key="list-vertical-date"
+                  />,
+                  <IconText
+                    icon={FieldTimeOutlined}
+                    text={secondTimeConvert(item.video_duration)}
+                    key="list-vertical-time"
+                  />,
+                ]}
+                extra={
+                  <Link to={"/video/" + item.video_id}>
+                    <img
+                      width={160}
+                      alt="logo"
+                      src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
+                      // src={item.video_thumbnail}
+                    />
+                  </Link>
+                }
+              >
+                <List.Item.Meta
+                  title={
+                    <Link to={"/video/" + item.video_id}>
+                      {item.video_title}
+                    </Link>
+                  }
+                  description={
+                    item.video_description !== "" ? (
+                      item.video_description
+                    ) : (
+                      <br />
+                    )
+                  }
+                />
+                {item.content}
+              </List.Item>
+            )}
+          />
+        )}
       </div>
     </div>
   );

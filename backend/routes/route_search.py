@@ -227,7 +227,7 @@ class RouteSearchTopVideos(Resource):
                 conf=conf, aggregate=True, search_dict=search_dict)
             if keyword == 'video_upload_time':
                 search_result.reverse()
-            print(search_result)
+
             return util_serializer_api_response(200, body=search_result,
                                                 msg="Search user successfully")
         except (ServiceError, MongoError, RouteError, Exception) as e:
