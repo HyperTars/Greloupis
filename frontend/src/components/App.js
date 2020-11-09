@@ -14,6 +14,8 @@ import Register from "./Register";
 import EmptyPage from "./EmptyPage";
 import UserProfile from "./UserProfile";
 import VideoPlay from "./VideoPlay";
+import VideoUpload from "./VideoUpload";
+import Main from "./Main";
 
 class App extends Component {
   render() {
@@ -23,7 +25,7 @@ class App extends Component {
           <Switch>
             <Route
               exact
-              path="/home"
+              path="/"
               render={() => (
                 <div>
                   <Header />
@@ -34,7 +36,7 @@ class App extends Component {
             <Route
               exact
               path="/search"
-              render={(props) => (
+              render={() => (
                 <div>
                   <Header />
                   <SearchResult />
@@ -55,6 +57,16 @@ class App extends Component {
             />
             <Route
               exact
+              path="/video/upload"
+              render={(props) => (
+                <div>
+                  <Header />
+                  <VideoUpload />
+                </div>
+              )}
+            />
+            <Route
+              exact
               path="/user/:userId"
               render={(props) => (
                 <UserProfile userId={props.match.params.userId} />
@@ -65,6 +77,15 @@ class App extends Component {
               path="/video/:videoId"
               render={(props) => (
                 <VideoPlay videoId={props.match.params.videoId} />
+              )}
+            />
+            <Route
+              path="/testvideo/:videoId"
+              render={(props) => (
+                <div>
+                  <Header />
+                  <Main {...props} />
+                </div>
               )}
             />
             <Route exact path="/404" render={() => <EmptyPage />} />
