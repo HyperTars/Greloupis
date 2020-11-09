@@ -3,18 +3,26 @@ import { createUser, userLogin } from "../components/FetchData";
 class AuthService {
   login(username, password) {
     return userLogin({
-      user_name: username,
+      // user_name: username,
+      user: username, // support both name and email
       user_password: password,
     }).then((response) => {
-      if (response.token) {
-        localStorage.setItem("user", JSON.stringify(response.token));
+      if (response.user_token) {
+        localStorage.setItem("user_token", JSON.stringify(response.user_token));
       }
-      return response.token;
+      if (response.user_id) {
+        localStorage.setItem("user_id", JSON.stringify(response.user_id));
+      }
+      if (response.user_name) {
+        localStorage.setItem("user_name", JSON.stringify(response.user_name));
+      }
+      return response.user_token;
     });
   }
 
   logout() {
-    localStorage.removeItem("user");
+    localStorage.removeItem("user_token");
+    localStorage.removeItem("user_id");
   }
 
   register(username, email, password) {
@@ -22,11 +30,22 @@ class AuthService {
         user_name: username,
         user_email: email,
         user_password: password
+    }).then((response) => {
+      if (response.user_token) {
+        localStorage.setItem("user_token", JSON.stringify(response.user_token));
+      }
+      if (response.user_id) {
+        localStorage.setItem("user_id", JSON.stringify(response.user_id));
+      }
+      if (response.user_name) {
+        localStorage.setItem("user_name", JSON.stringify(response.user_name));
+      }
+      return response.user_token;
     });
   }
 
   getCurrentUser() {
-    return JSON.parse(localStorage.getItem("user"));
+    return JSON.parse(localStorage.getItem("user_token"));
   }
 }
 

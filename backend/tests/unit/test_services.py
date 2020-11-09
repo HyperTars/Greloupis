@@ -7,7 +7,7 @@ from service.service_search import service_search_video, \
 from service.service_user import service_user_reg, \
     service_user_get_star, service_user_get_process, service_user_get_like, \
     service_user_get_info, service_user_get_dislike, \
-    service_user_get_comment, service_user_check_password, service_user_cancel
+    service_user_get_comment, service_user_login, service_user_cancel
 from service.service_video import service_video_info, \
     service_video_delete, service_video_comments, service_video_dislikes, \
     service_video_likes, service_video_stars, service_video_update, \
@@ -401,45 +401,45 @@ class TestServiceUser(unittest.TestCase):
         self.assertEqual(e.exception.error_code,
                          ErrorCode.SERVICE_MISSING_PARAM)
 
-    def test_b_service_user_check_password(self):
-        # Check successfully with user name
-        test_name = self.data['temp_user'][0]['user_name']
-        test_password = self.data['temp_user'][0]['user_password']
-        test_email = self.data['temp_user'][0]['user_email']
+    # def test_b_service_user_check_password(self):
+    #     # Check successfully with user name
+    #     test_name = self.data['temp_user'][0]['user_name']
+    #     test_password = self.data['temp_user'][0]['user_password']
+    #     test_email = self.data['temp_user'][0]['user_email']
 
-        self.assertTrue(
-            service_user_check_password(self.conf,
-                                        user_name=test_name,
-                                        user_password=test_password))
+    #     self.assertTrue(
+    #         service_user_check_password(self.conf,
+    #                                     user_name=test_name,
+    #                                     user_password=test_password))
 
-        # Check successfully with user email
-        self.assertTrue(
-            service_user_check_password(self.conf,
-                                        user_email=test_email,
-                                        user_password=test_password))
+    #     # Check successfully with user email
+    #     self.assertTrue(
+    #         service_user_check_password(self.conf,
+    #                                     user_email=test_email,
+    #                                     user_password=test_password))
 
-        # Password Wrong
-        self.assertFalse(
-            service_user_check_password(self.conf,
-                                        user_name=test_name,
-                                        user_password="xxx"))
+    #     # Password Wrong
+    #     self.assertFalse(
+    #         service_user_check_password(self.conf,
+    #                                     user_name=test_name,
+    #                                     user_password="xxx"))
 
-        # Raise Error: ErrorCode.SERVICE_MISSING_PARAM
-        with self.assertRaises(ServiceError) as e:
-            service_user_check_password(self.conf)
-        self.assertEqual(e.exception.error_code,
-                         ErrorCode.SERVICE_MISSING_PARAM)
+    #     # Raise Error: ErrorCode.SERVICE_MISSING_PARAM
+    #     with self.assertRaises(ServiceError) as e:
+    #         service_user_check_password(self.conf)
+    #     self.assertEqual(e.exception.error_code,
+    #                      ErrorCode.SERVICE_MISSING_PARAM)
 
-        test2_name = self.data['temp_user'][1]['user_name']
-        test2_password = self.data['temp_user'][1]['user_password']
+    #     test2_name = self.data['temp_user'][1]['user_name']
+    #     test2_password = self.data['temp_user'][1]['user_password']
 
-        # Raise Error: ErrorCode.SERVICE_USER_NOT_FOUND
-        with self.assertRaises(ServiceError) as e:
-            service_user_check_password(self.conf,
-                                        user_name=test2_name,
-                                        user_password=test2_password)
-        self.assertEqual(e.exception.error_code,
-                         ErrorCode.SERVICE_USER_NOT_FOUND)
+    #     # Raise Error: ErrorCode.SERVICE_USER_NOT_FOUND
+    #     with self.assertRaises(ServiceError) as e:
+    #         service_user_check_password(self.conf,
+    #                                     user_name=test2_name,
+    #                                     user_password=test2_password)
+    #     self.assertEqual(e.exception.error_code,
+    #                      ErrorCode.SERVICE_USER_NOT_FOUND)
 
     def test_c_service_user_get_info(self):
         # Get successfully
