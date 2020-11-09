@@ -84,6 +84,9 @@ def service_search_video(conf, **kw):
     elif 'aggregate' in kw and kw['aggregate'] is True:
         # Aggregate search
         res_search = service_search_video_by_aggregation(**kw)
+        for res in res_search:
+            res['video_id'] = str(res['_id'])
+            res.pop('_id')
         return res_search
     else:
         # Contains keyword (single) search

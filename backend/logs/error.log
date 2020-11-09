@@ -1,0 +1,2 @@
+2020-11-08 23:21:51,226 - _internal - _internal.py - _log - 113 - werkzeug - ERROR - 127.0.0.1 - - [08/Nov/2020 23:21:51] code 400, message Bad request version ('À\x13À')
+2020-11-08 23:25:05,644 - _internal - _internal.py - _log - 113 - werkzeug - ERROR - 127.0.0.1 - - [08/Nov/2020 23:25:05] code 400, message Bad request version ('À\x13À')
