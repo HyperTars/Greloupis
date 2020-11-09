@@ -3,12 +3,12 @@ import { searchUser, searchVideo } from "./FetchData";
 import { Spin, List, Avatar, Space } from "antd";
 import {
   EyeOutlined,
-  MessageOutlined,
   LikeOutlined,
   StarOutlined,
   FieldTimeOutlined,
+  CalendarOutlined,
 } from "@ant-design/icons";
-import { secondTimeConvert } from "../util";
+import { secondTimeConvert, dateConvert } from "../util";
 
 function SearchResult() {
   const [loading, setLoading] = useState(true);
@@ -116,7 +116,6 @@ function SearchResult() {
             dataSource={videoResult}
             renderItem={(item) => (
               <List.Item
-                key={<a href={item.href}>{item.video_title}</a>}
                 actions={[
                   <IconText
                     icon={EyeOutlined}
@@ -133,10 +132,11 @@ function SearchResult() {
                     text={item.video_like}
                     key="list-vertical-like-o"
                   />,
+
                   <IconText
-                    icon={MessageOutlined}
-                    text={item.video_comment}
-                    key="list-vertical-message"
+                    icon={CalendarOutlined}
+                    text={dateConvert(item.video_upload_date)}
+                    key="list-vertical-date"
                   />,
                   <IconText
                     icon={FieldTimeOutlined}
@@ -146,7 +146,7 @@ function SearchResult() {
                 ]}
                 extra={
                   <img
-                    width={180}
+                    width={150}
                     alt="logo"
                     src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
                     // src={item.video_thumbnail}
