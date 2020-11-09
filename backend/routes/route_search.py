@@ -97,31 +97,31 @@ class RouteSearchTopVideos(Resource):
             if 'keyword' not in req_dict:
                 raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
             if req_dict['keyword'] == 'video_upload_time' or \
-              req_dict['keyword'] == 'upload_time' or \
-              req_dict['keyword'] == 'time':
+                    req_dict['keyword'] == 'upload_time' or \
+                    req_dict['keyword'] == 'time':
                 keyword = 'video_upload_time'
             elif req_dict['keyword'] == 'video_like' or \
-              req_dict['keyword'] == 'video_likes' or \
-              req_dict['keyword'] == 'like' or \
-              req_dict['keyword'] == 'likes':
+                    req_dict['keyword'] == 'video_likes' or \
+                    req_dict['keyword'] == 'like' or \
+                    req_dict['keyword'] == 'likes':
                 keyword = 'video_like'
             elif req_dict['keyword'] == 'video_share' or \
-              req_dict['keyword'] == 'video_shares' or \
-              req_dict['keyword'] == 'share' or \
-              req_dict['keyword'] == 'shares':
+                    req_dict['keyword'] == 'video_shares' or \
+                    req_dict['keyword'] == 'share' or \
+                    req_dict['keyword'] == 'shares':
                 keyword = 'video_share'
             elif req_dict['keyword'] == 'video_star' or \
-              req_dict['keyword'] == 'video_stars' or \
-              req_dict['keyword'] == 'star' or \
-              req_dict['keyword'] == 'stars':
+                    req_dict['keyword'] == 'video_stars' or \
+                    req_dict['keyword'] == 'star' or \
+                    req_dict['keyword'] == 'stars':
                 keyword = 'video_star'
             elif req_dict['keyword'] == 'video_view' or \
-              req_dict['keyword'] == 'video_views' or \
-              req_dict['keyword'] == 'view' or \
-              req_dict['keyword'] == 'views':
+                    req_dict['keyword'] == 'video_views' or \
+                    req_dict['keyword'] == 'view' or \
+                    req_dict['keyword'] == 'views':
                 keyword = 'video_view'
             elif req_dict['keyword'] == 'video_duration' or \
-              req_dict['keyword'] == 'duration':
+                    req_dict['keyword'] == 'duration':
                 keyword = 'video_duration'
             else:
                 raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)

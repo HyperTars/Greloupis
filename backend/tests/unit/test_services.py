@@ -258,8 +258,8 @@ class TestServiceSearchVideo(unittest.TestCase):
             msg="Test Search Video: Title (not found)")
 
         self.assertEqual(
-            len(service_search_video(self.conf, title="E", format="json")), 0,
-            msg="Test Search Video: Title, json")
+            len(service_search_video(self.conf, title="E")), 0,
+            msg="Test Search Video: Title")
 
         self.assertEqual(
             service_search_video(self.conf, video_category="A")[0][
