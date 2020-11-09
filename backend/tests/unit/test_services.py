@@ -7,7 +7,7 @@ from service.service_search import service_search_video, \
 from service.service_user import service_user_reg, \
     service_user_get_star, service_user_get_process, service_user_get_like, \
     service_user_get_info, service_user_get_dislike, \
-    service_user_get_comment, service_user_login, service_user_cancel
+    service_user_get_comment, service_user_cancel  # , service_user_login
 from service.service_video import service_video_info, \
     service_video_delete, service_video_comments, service_video_dislikes, \
     service_video_likes, service_video_stars, service_video_update, \

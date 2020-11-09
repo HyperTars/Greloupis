@@ -37,8 +37,8 @@ def util_serializer_api_response(code, body=[{}], error_code=None, msg=""):
             response = {"code": code, "error_code": error_code,
                         "message": str(msg)}
 
-    result = json.dumps(response, cls=JSONDateEncoder, indent=4, sort_keys=True,
-                        separators=(',', ': ')) \
+    result = json.dumps(response, cls=JSONDateEncoder, indent=4,
+                        sort_keys=True, separators=(',', ': ')) \
         .replace("'", "/^").replace('\\"', "'").replace('"{', '{') \
         .replace('}"', '}').replace("'", '"').replace("'", '"').replace("/^",
                                                                         "'")

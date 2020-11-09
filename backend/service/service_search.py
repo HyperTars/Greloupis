@@ -1,11 +1,13 @@
 from db.mongo import get_db
 from db.query_user import query_user_search_by_aggregate, \
-    query_user_search_by_pattern, query_user_search_by_contains
+    query_user_search_by_pattern, query_user_search_by_contains, \
+    query_user_get_by_id
 from db.query_video import query_video_search_by_contains, \
     query_video_search_by_aggregate, query_video_search_by_pattern
 from utils.util_pattern import util_pattern_build, \
     util_pattern_format_param, util_pattern_slice
-from utils.util_serializer import util_serializer_mongo_results_to_array
+from utils.util_serializer import util_serializer_mongo_results_to_array, \
+    util_serializer_dict_to_json
 from models.model_errors import ServiceError, ErrorCode
 
 
@@ -92,15 +94,18 @@ def service_search_video(conf, **kw):
         # Contains keyword (single) search
         res_search = service_search_video_by_contains(**kw)
 
+    res_array = util_serializer_mongo_results_to_array(res_search)
+    for res in res_array:
+        user = query_user_get_by_id(res['user_id'])[0]
+        res['user_name'] = user.user_name
     # Convert to json (if format="json")
     if 'json' in kw and kw['json'] is True \
             or 'dict' in kw and kw['dict'] is False \
             or 'format' in kw and kw['format'] == "json":
-        return util_serializer_mongo_results_to_array(res_search,
-                                                      format="json")
+        return util_serializer_dict_to_json(res_array)
 
     # default format="dict"
-    return util_serializer_mongo_results_to_array(res_search)
+    return res_array
 
 
 ###########

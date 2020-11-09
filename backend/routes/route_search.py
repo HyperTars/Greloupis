@@ -41,17 +41,18 @@ class RouteSearchVideo(Resource):
         """
             Search videos by keyword
         """
-        req_dict = util_serializer_request(request.args)
-        if 'keyword' not in req_dict:
-            return {ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_code():
-                    ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg()}, 200, None
+        try:
+            req_dict = util_serializer_request(request.args)
+            if 'keyword' not in req_dict:
+                raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
 
-        search_result_json = service_search_video(conf=conf,
-                                                  title=req_dict['keyword'],
-                                                  ignore_case=True,
-                                                  format="json", slice=True)
-        return util_serializer_api_response(200, body=search_result_json,
-                                            msg="Search user successfully")
+            search_result = service_search_video(
+                conf=conf, title=req_dict['keyword'], ignore_case=True,
+                slice=True)
+            return util_serializer_api_response(
+                200, body=search_result, msg="Search user successfully")
+        except (ServiceError, MongoError, RouteError, Exception) as e:
+            return util_error_handler(e)
 
 
 @search.route('/user', methods=['GET'])
@@ -66,19 +67,20 @@ class RouteSearchUser(Resource):
         """
             Search users by keyword
         """
-        req_dict = util_serializer_request(request.args)
+        try:
+            req_dict = util_serializer_request(request.args)
 
-        if 'keyword' not in req_dict:
-            return {ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_code():
-                    ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg()}, 200, None
+            if 'keyword' not in req_dict:
+                raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
 
-        search_result_json = service_search_user(conf=conf,
-                                                 name=req_dict['keyword'],
-                                                 ignore_case=True, exact=False,
-                                                 format="json")
+            search_result = service_search_user(
+                conf=conf, name=req_dict['keyword'], ignore_case=True,
+                exact=False)
 
-        return util_serializer_api_response(200, body=search_result_json,
-                                            msg="Search video successfully")
+            return util_serializer_api_response(
+                200, body=search_result, msg="Search video successfully")
+        except (ServiceError, MongoError, RouteError, Exception) as e:
+            return util_error_handler(e)
 
 
 @search.route('/video/top', methods=['GET'])
@@ -93,8 +95,7 @@ class RouteSearchTopVideos(Resource):
         try:
             req_dict = util_serializer_request(request.args)
             if 'keyword' not in req_dict:
-                return {ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_code():
-                        ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_msg()}, 200, None
+                raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
             if req_dict['keyword'] == 'video_upload_time' or \
               req_dict['keyword'] == 'upload_time' or \
               req_dict['keyword'] == 'time':
@@ -122,6 +123,8 @@ class RouteSearchTopVideos(Resource):
             elif req_dict['keyword'] == 'video_duration' or \
               req_dict['keyword'] == 'duration':
                 keyword = 'video_duration'
+            else:
+                raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
             search_dict = [
                 {
                     "$sort":
