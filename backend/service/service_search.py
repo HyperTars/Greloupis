@@ -50,11 +50,11 @@ def service_search_user(conf, **kw):
     if 'json' in kw and kw['json'] is True \
             or 'dict' in kw and kw['dict'] is False \
             or 'format' in kw and kw['format'] == "json":
-        return util_serializer_mongo_results_to_array(res_search,
-                                                      format="json")
-
-    # default format="dict"
-    return util_serializer_mongo_results_to_array(res_search)
+        res_array = util_serializer_mongo_results_to_array(
+            res_search, format="json")
+    else:
+        res_array = util_serializer_mongo_results_to_array(res_search)
+    return res_array
 
 
 # Search Video Caller
@@ -89,11 +89,11 @@ def service_search_video(conf, **kw):
         for res in res_search:
             res['video_id'] = str(res['_id'])
             res.pop('_id')
-        
+
         for res in res_search:
             user = query_user_get_by_id(res['user_id'])[0]
             res['user_name'] = user.user_name
-        
+
         return res_search
     else:
         # Contains keyword (single) search
