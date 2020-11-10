@@ -135,7 +135,7 @@ def service_video_comments(conf, **kw):
     # perform db operations and get result
     search_mongo = query_video_op_get_by_video_id(kw["video_id"])
     if len(search_mongo) == 0:
-        raise ServiceError(ErrorCode.SERVICE_VIDEO_NOT_FOUND)
+        return []
 
     search_result = util_serializer_mongo_results_to_array(search_mongo)
 
@@ -167,7 +167,7 @@ def service_video_likes(conf, **kw):
     # perform db operations and get result
     search_mongo = query_video_op_get_by_video_id(kw["video_id"])
     if len(search_mongo) == 0:
-        raise ServiceError(ErrorCode.SERVICE_VIDEO_NOT_FOUND)
+        return []
 
     search_result = util_serializer_mongo_results_to_array(search_mongo)
 
@@ -198,7 +198,7 @@ def service_video_dislikes(conf, **kw):
     # perform db operations and get result
     search_mongo = query_video_op_get_by_video_id(kw["video_id"])
     if len(search_mongo) == 0:
-        raise ServiceError(ErrorCode.SERVICE_VIDEO_NOT_FOUND)
+        return []
 
     search_result = util_serializer_mongo_results_to_array(search_mongo)
 
@@ -229,7 +229,7 @@ def service_video_stars(conf, **kw):
     # perform db operations and get result
     search_mongo = query_video_op_get_by_video_id(kw["video_id"])
     if len(search_mongo) == 0:
-        raise ServiceError(ErrorCode.SERVICE_VIDEO_NOT_FOUND)
+        return []
 
     search_result = util_serializer_mongo_results_to_array(search_mongo)
 

@@ -60,8 +60,8 @@ function Dashboard() {
   );
 
   const loadingFormat = (
-    <div className="topMargin">
-      <div>Loading......</div>
+    <div className="searchLoading">
+      <Spin size="large" />
     </div>
   );
 

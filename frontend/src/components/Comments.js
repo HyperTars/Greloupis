@@ -11,13 +11,18 @@ export default class Comments extends Component {
     isAddingComment: false,
   };
 
-  componentDidUpdate() {
-    if (this.state.mainVideoId !== this.props.mainVideoId) {
-      this.setState({
-        mainVideoId: this.props.mainVideoId,
-        comments: this.props.comments,
-      });
+  static getDerivedStateFromProps(props, state) {
+    if (
+      props.mainVideoId !== state.mainVideoId ||
+      props.comments !== state.comments
+    ) {
+      return {
+        mainVideoId: props.mainVideoId,
+        comments: props.comments,
+      };
     }
+
+    return null;
   }
 
   deleteCommentHandler = (childId) => {
@@ -107,17 +112,18 @@ export default class Comments extends Component {
   render() {
     const comments = this.state.comments;
     const commentsJSX = [];
+
     if (comments) {
       for (let i = comments.length - 1, index = 0; i >= 0; i--) {
         commentsJSX.push(
           <CommentBlock
             deleteCommentHandler={this.deleteCommentHandler}
-            commentId={comments[i].id}
-            key={comments[i].id}
-            id={comments[i].id}
+            commentId={i}
+            key={i}
+            id={i}
             index={index}
-            userName={comments[i].name}
-            timestamp={comments[i].timestamp}
+            userName={comments[i].user_id}
+            timestamp={comments[i].comment_date}
             comment={comments[i].comment}
           />
         );

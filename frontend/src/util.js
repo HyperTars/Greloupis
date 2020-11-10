@@ -1,42 +1,4 @@
 import moment from "moment";
-const numeral = require("numeral");
-
-// function to convert numbers
-// 1000 -> 1k && 1100 -> 1.1k and so on
-// abbreviate all nums in an array
-export function abbreviateAllNumsInArr(arr) {
-  arr.forEach((obj) => {
-    abbreviateAllNumsInObj(obj);
-  });
-}
-
-// abbreviate all nums in an obj
-export function abbreviateAllNumsInObj(obj, exception) {
-  for (let prop in obj) {
-    if (prop === exception) {
-      obj[prop] = numeral(obj[prop]).format("0,0");
-    }
-    if (typeof obj[prop] == "number") {
-      obj[prop] = abbreviateNum(obj[prop]);
-    }
-  }
-}
-
-// abbreviate nums individually
-export function abbreviateNum(num) {
-  if (
-    (num >= 1000 && num < 1100) ||
-    (num >= 10000 && num < 10100) ||
-    (num >= 100000 && num < 100100) ||
-    (num >= 1000000 && num < 1100000) ||
-    (num >= 10000000 && num < 10100000)
-  ) {
-    return numeral(num).format("0a");
-  } else if (num < 1000) {
-    return num;
-  }
-  return numeral(num).format("0.0a");
-}
 
 // fetch request
 export function fetchRequest(methodType, url, func = console.log, body = null) {

@@ -13,9 +13,8 @@ import Login from "./Login";
 import Register from "./Register";
 import EmptyPage from "./EmptyPage";
 import UserProfile from "./UserProfile";
-import VideoPlay from "./VideoPlay";
 import VideoUpload from "./VideoUpload";
-import Main from "./Main";
+import VideoPlay from "./VideoPlay";
 
 class App extends Component {
   render() {
@@ -76,15 +75,9 @@ class App extends Component {
               exact
               path="/video/:videoId"
               render={(props) => (
-                <VideoPlay videoId={props.match.params.videoId} />
-              )}
-            />
-            <Route
-              path="/testvideo/:videoId"
-              render={(props) => (
                 <div>
                   <Header />
-                  <Main {...props} />
+                  <VideoPlay videoId={props.match.params.videoId} />
                 </div>
               )}
             />
