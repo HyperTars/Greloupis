@@ -50,91 +50,42 @@ class RouteSearchVideo(Resource):
                 param = 'all'
             else:
                 param = req_dict['param']
+
             if param == 'all':
                 search_result = service_search_video(
                     conf=conf, title=req_dict['keyword'], ignore_case=True,
                     slice=True)
-                search_result = search_result.append(service_search_video(
-                    conf=conf, email=req_dict['keyword'], ignore_case=True,
+                search_result.extend(service_search_video(
+                    conf=conf, channel=req_dict['keyword'], ignore_case=True,
                     slice=True))
-                search_result = search_result.append(service_search_video(
-                    conf=conf, first_name=req_dict['keyword'], ignore_case=True,
-                    slice=True))
-                search_result = search_result.append(service_search_video(
-                    conf=conf, last_name=req_dict['keyword'], ignore_case=True,
-                    slice=True))
-                search_result = search_result.append(service_search_video(
-                    conf=conf, phone=req_dict['keyword'], ignore_case=True,
-                    slice=True))
-                search_result = search_result.append(service_search_video(
-                    conf=conf, street1=req_dict['keyword'], ignore_case=True,
-                    slice=True))
-                search_result = search_result.append(service_search_video(
-                    conf=conf, street2=req_dict['keyword'], ignore_case=True,
-                    slice=True))
-                search_result = search_result.append(service_search_video(
-                    conf=conf, city=req_dict['keyword'], ignore_case=True,
-                    slice=True))
-                search_result = search_result.append(service_search_video(
-                    conf=conf, state=req_dict['keyword'], ignore_case=True,
-                    slice=True))
-                search_result = search_result.append(service_search_video(
-                    conf=conf, country=req_dict['keyword'], ignore_case=True,
-                    slice=True))
-                search_result = search_result.append(service_search_video(
-                    conf=conf, zip=req_dict['keyword'], ignore_case=True,
-                    slice=True))
-                search_result = search_result.append(service_search_video(
-                    conf=conf, status=req_dict['keyword'], ignore_case=True,
-                    slice=True))
-            elif param == 'title' or param == 'user_title':
+                search_result.extend(service_search_video(
+                    conf=conf, description=req_dict['keyword'],
+                    ignore_case=True, slice=True))
+                search_result.extend(service_search_video(
+                    conf=conf, category=req_dict['keyword'], ignore_case=True))
+                search_result.extend(service_search_video(
+                    conf=conf, tag=req_dict['keyword'], ignore_case=True))
+                search_result = list({v['video_id']: v for v in search_result}.values())
+            elif param == 'title' or param == 'video_title':
                 search_result = service_search_video(
                     conf=conf, title=req_dict['keyword'], ignore_case=True,
                     slice=True)
-            elif param == 'email' or param == 'user_email':
+            elif param == 'channel' or param == 'video_channel':
                 search_result = service_search_video(
-                    conf=conf, email=req_dict['keyword'], ignore_case=True,
+                    conf=conf, channel=req_dict['keyword'], ignore_case=True,
                     slice=True)
-            elif param == 'first_name' or param == 'user_first_name':
+            elif param == 'description' or param == 'video_descripton':
                 search_result = service_search_video(
-                    conf=conf, first_name=req_dict['keyword'], ignore_case=True,
-                    slice=True)
-            elif param == 'last_name' or param == 'user_last_name':
+                    conf=conf, description=req_dict['keyword'],
+                    ignore_case=True, slice=True)
+            elif param == 'category' or param == 'video_category':
                 search_result = service_search_video(
-                    conf=conf, last_name=req_dict['keyword'], ignore_case=True,
-                    slice=True)
-            elif param == 'phone' or param == 'user_phone':
+                    conf=conf, category=req_dict['keyword'], ignore_case=True)
+            elif param == 'tag' or param == 'video_tag':
                 search_result = service_search_video(
-                    conf=conf, phone=req_dict['keyword'], ignore_case=True,
-                    slice=True)
-            elif param == 'street1' or param == 'user_street1':
-                search_result = service_search_video(
-                    conf=conf, street1=req_dict['keyword'], ignore_case=True,
-                    slice=True)
-            elif param == 'street2' or param == 'user_street2':
-                search_result = service_search_video(
-                    conf=conf, street2=req_dict['keyword'], ignore_case=True,
-                    slice=True)
-            elif param == 'city' or param == 'user_city':
-                search_result = service_search_video(
-                    conf=conf, city=req_dict['keyword'], ignore_case=True,
-                    slice=True)
-            elif param == 'state' or param == 'user_state':
-                search_result = service_search_video(
-                    conf=conf, state=req_dict['keyword'], ignore_case=True,
-                    slice=True)
-            elif param == 'country' or param == 'user_country':
-                search_result = service_search_video(
-                    conf=conf, country=req_dict['keyword'], ignore_case=True,
-                    slice=True)
-            elif param == 'zip' or param == 'user_zip':
-                search_result = service_search_video(
-                    conf=conf, zip=req_dict['keyword'], ignore_case=True,
-                    slice=True)
-            elif param == 'status' or param == 'user_status':
-                search_result = service_search_video(
-                    conf=conf, status=req_dict['keyword'], ignore_case=True,
-                    slice=True)
+                    conf=conf, tag=req_dict['keyword'], ignore_case=True)
+            else:
+                raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
 
             return util_serializer_api_response(
                 200, body=search_result, msg="Search user successfully")
@@ -159,13 +110,78 @@ class RouteSearchUser(Resource):
 
             if 'keyword' not in req_dict:
                 raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
+            if 'param' not in req_dict:
+                param = 'all'
+            else:
+                param = req_dict['param']
 
-            search_result = service_search_user(
-                conf=conf, name=req_dict['keyword'], ignore_case=True,
-                exact=False)
+            if param == 'all':
+                search_result = service_search_user(
+                    conf=conf, name=req_dict['keyword'], ignore_case=True)
+                search_result.extend(service_search_user(
+                    conf=conf, email=req_dict['keyword'], ignore_case=True))
+                search_result.extend(service_search_user(
+                    conf=conf, first_name=req_dict['keyword'], ignore_case=True))
+                search_result.extend(service_search_user(
+                    conf=conf, last_name=req_dict['keyword'], ignore_case=True))
+                search_result.extend(service_search_user(
+                    conf=conf, phone=req_dict['keyword'], ignore_case=True))
+                search_result.extend(service_search_user(
+                    conf=conf, street1=req_dict['keyword'], ignore_case=True))
+                search_result.extend(service_search_user(
+                    conf=conf, street2=req_dict['keyword'], ignore_case=True))
+                search_result.extend(service_search_user(
+                    conf=conf, city=req_dict['keyword'], ignore_case=True))
+                search_result.extend(service_search_user(
+                    conf=conf, state=req_dict['keyword'], ignore_case=True))
+                search_result.extend(service_search_user(
+                    conf=conf, country=req_dict['keyword'], ignore_case=True))
+                search_result.extend(service_search_user(
+                    conf=conf, zip=req_dict['keyword'], ignore_case=True))
+                search_result.extend(service_search_user(
+                    conf=conf, status=req_dict['keyword'], ignore_case=True))
+                search_result = list({v['user_id']: v for v in search_result}.values())
+            elif param == 'name' or param == 'user_name':
+                search_result = service_search_user(
+                    conf=conf, name=req_dict['keyword'], ignore_case=True)
+            elif param == 'email' or param == 'user_email':
+                search_result = service_search_user(
+                    conf=conf, email=req_dict['keyword'], ignore_case=True)
+            elif param == 'first_name' or param == 'user_first_name':
+                search_result = service_search_user(
+                    conf=conf, first_name=req_dict['keyword'], ignore_case=True)
+            elif param == 'last_name' or param == 'user_last_name':
+                search_result = service_search_user(
+                    conf=conf, last_name=req_dict['keyword'], ignore_case=True)
+            elif param == 'phone' or param == 'user_phone':
+                search_result = service_search_user(
+                    conf=conf, phone=req_dict['keyword'], ignore_case=True)
+            elif param == 'street1' or param == 'user_street1':
+                search_result = service_search_user(
+                    conf=conf, street1=req_dict['keyword'], ignore_case=True)
+            elif param == 'street2' or param == 'user_street2':
+                search_result = service_search_user(
+                    conf=conf, street2=req_dict['keyword'], ignore_case=True)
+            elif param == 'city' or param == 'user_city':
+                search_result = service_search_user(
+                    conf=conf, city=req_dict['keyword'], ignore_case=True)
+            elif param == 'state' or param == 'user_state':
+                search_result = service_search_user(
+                    conf=conf, state=req_dict['keyword'], ignore_case=True)
+            elif param == 'country' or param == 'user_country':
+                search_result = service_search_user(
+                    conf=conf, country=req_dict['keyword'], ignore_case=True)
+            elif param == 'zip' or param == 'user_zip':
+                search_result = service_search_user(
+                    conf=conf, zip=req_dict['keyword'], ignore_case=True)
+            elif param == 'status' or param == 'user_status':
+                search_result = service_search_user(
+                    conf=conf, status=req_dict['keyword'], ignore_case=True)
+            else:
+                raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
 
             return util_serializer_api_response(
-                200, body=search_result, msg="Search video successfully")
+                200, body=search_result, msg="Search user successfully")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
