@@ -65,7 +65,8 @@ class RouteSearchVideo(Resource):
                     conf=conf, category=req_dict['keyword'], ignore_case=True))
                 search_result.extend(service_search_video(
                     conf=conf, tag=req_dict['keyword'], ignore_case=True))
-                search_result = list({v['video_id']: v for v in search_result}.values())
+                search_result = list(
+                    {v['video_id']: v for v in search_result}.values())
             elif param == 'title' or param == 'video_title':
                 search_result = service_search_video(
                     conf=conf, title=req_dict['keyword'], ignore_case=True,
@@ -121,9 +122,11 @@ class RouteSearchUser(Resource):
                 search_result.extend(service_search_user(
                     conf=conf, email=req_dict['keyword'], ignore_case=True))
                 search_result.extend(service_search_user(
-                    conf=conf, first_name=req_dict['keyword'], ignore_case=True))
+                    conf=conf, first_name=req_dict['keyword'],
+                    ignore_case=True))
                 search_result.extend(service_search_user(
-                    conf=conf, last_name=req_dict['keyword'], ignore_case=True))
+                    conf=conf, last_name=req_dict['keyword'],
+                    ignore_case=True))
                 search_result.extend(service_search_user(
                     conf=conf, phone=req_dict['keyword'], ignore_case=True))
                 search_result.extend(service_search_user(
@@ -135,12 +138,14 @@ class RouteSearchUser(Resource):
                 search_result.extend(service_search_user(
                     conf=conf, state=req_dict['keyword'], ignore_case=True))
                 search_result.extend(service_search_user(
-                    conf=conf, country=req_dict['keyword'], ignore_case=True))
+                    conf=conf, country=req_dict['keyword'],
+                    ignore_case=True))
                 search_result.extend(service_search_user(
                     conf=conf, zip=req_dict['keyword'], ignore_case=True))
                 search_result.extend(service_search_user(
                     conf=conf, status=req_dict['keyword'], ignore_case=True))
-                search_result = list({v['user_id']: v for v in search_result}.values())
+                search_result = list(
+                    {v['user_id']: v for v in search_result}.values())
             elif param == 'name' or param == 'user_name':
                 search_result = service_search_user(
                     conf=conf, name=req_dict['keyword'], ignore_case=True)
@@ -149,7 +154,8 @@ class RouteSearchUser(Resource):
                     conf=conf, email=req_dict['keyword'], ignore_case=True)
             elif param == 'first_name' or param == 'user_first_name':
                 search_result = service_search_user(
-                    conf=conf, first_name=req_dict['keyword'], ignore_case=True)
+                    conf=conf, first_name=req_dict['keyword'],
+                    ignore_case=True)
             elif param == 'last_name' or param == 'user_last_name':
                 search_result = service_search_user(
                     conf=conf, last_name=req_dict['keyword'], ignore_case=True)
