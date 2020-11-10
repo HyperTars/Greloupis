@@ -22,8 +22,9 @@ class TestConfig(BaseConfig):
     #                  "=true&w=majority"
     # MONGO_DATABASE = "online_video_platform_test"
     MONGO_ENDPOINT = "mongodb+srv://greloupis:greloupis@cluster-greloupis" \
-                     ".8gpx5.mongodb.net/greloupis?retryWrites=true&w=majority"
-    MONGO_DATABASE = "greloupis"
+                     ".8gpx5.mongodb.net/greloupis-test?retryWrites=true&w" \
+                     "=majority"
+    MONGO_DATABASE = "greloupis-test"
     MONGODB_SETTINGS = {
         'db': MONGO_DATABASE,
         'host': MONGO_ENDPOINT
