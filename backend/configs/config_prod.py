@@ -22,11 +22,13 @@ class ProdConfig(BaseConfig):
     DEBUG = False
 
     # DB URI
-    MONGO_ENDPOINT = "mongodb+srv://devops:DevOps@mongodbcluster.v4vtj" \
-                     ".mongodb.net/online_video_platform?retryWrites=true&w" \
-                     "=majority"
-    MONGO_DATABASE = "online_video_platform"
-
+    # MONGO_ENDPOINT = "mongodb+srv://devops:DevOps@mongodbcluster.v4vtj" \
+    #                  ".mongodb.net/online_video_platform?retryWrites=true&w"\
+    #                  "=majority"
+    # MONGO_DATABASE = "online_video_platform"
+    MONGO_ENDPOINT = "mongodb+srv://greloupis:greloupis@cluster-greloupis" \
+                     ".8gpx5.mongodb.net/greloupis?retryWrites=true&w=majority"
+    MONGO_DATABASE = "greloupis"
     # Config Flask
     FLASK_SERVER_NAME = 'localhost:8888'
     FLASK_DEBUG = False
