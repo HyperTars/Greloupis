@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import * as func from "../util";
-
-const baseURL = "http://localhost:8080";
-const API_KEY = "?api_key=12345678";
+import { createUserVideoComment, deleteUserVideoComment } from "./FetchData";
 
 export default class Comments extends Component {
   state = {
@@ -25,14 +23,12 @@ export default class Comments extends Component {
     return null;
   }
 
-  deleteCommentHandler = (childId) => {
-    const deleteURL = `${baseURL}/videos/${this.state.mainVideoId}/comment/${childId}${API_KEY}`;
-    func.fetchRequest("DELETE", deleteURL, (data) => {
-      this.setState({
-        comments: this.state.comments.filter(
-          (comment) => comment.id !== data.id
-        ),
-      });
+  deleteCommentHandler = () => {
+    deleteUserVideoComment(
+      this.props.mainVideoId,
+      func.getSubstr(localStorage.getItem("user_id"))
+    ).then(() => {
+      window.location.reload();
     });
   };
 
@@ -42,25 +38,29 @@ export default class Comments extends Component {
   };
 
   submitCommentHandler = () => {
-    const commentURL = `${baseURL}/videos/${this.props.mainVideoId}/comment${API_KEY}`;
+    if (
+      !localStorage.getItem("user_name") ||
+      !localStorage.getItem("user_id") ||
+      !localStorage.getItem("user_token")
+    ) {
+      alert("You need to sign in to comment!");
+    }
+
     if (this.commentInput.value) {
-      const comment = {
-        name: "John Dillon",
+      const data = {
         comment: this.commentInput.value,
       };
-      func.fetchRequest(
-        "POST",
-        commentURL,
-        (data) => {
-          this.setState({
-            comments: this.state.comments.concat(data),
-          });
-        },
-        comment
+
+      createUserVideoComment(
+        this.props.mainVideoId,
+        func.getSubstr(localStorage.getItem("user_id")),
+        data
       );
+
       this.commentInput.value = "";
     }
     this.toggleCommentForm();
+    window.location.reload();
   };
 
   renderCommentForm() {
@@ -71,7 +71,7 @@ export default class Comments extends Component {
           type="text"
           name="commentInput"
           ref={(input) => (this.commentInput = input)}
-          placeholder="Add a public comment..."
+          placeholder="Add a public comment, or update your existed comment on this video..."
           required
         />
         <div className="comments-form__input-buttons">
@@ -103,7 +103,7 @@ export default class Comments extends Component {
           onClick={this.toggleCommentForm}
           type="text"
           name="commentInput"
-          placeholder="Add a public comment..."
+          placeholder="Add a public comment, or update your existed comment on this video..."
         />
       </form>
     );
@@ -114,20 +114,18 @@ export default class Comments extends Component {
     const commentsJSX = [];
 
     if (comments) {
-      for (let i = comments.length - 1, index = 0; i >= 0; i--) {
+      for (let i = comments.length - 1; i >= 0; i--) {
         commentsJSX.push(
           <CommentBlock
             deleteCommentHandler={this.deleteCommentHandler}
             commentId={i}
             key={i}
             id={i}
-            index={index}
-            userName={comments[i].user_id}
+            userName={comments[i].user_name}
             timestamp={comments[i].comment_date}
             comment={comments[i].comment}
           />
         );
-        index++;
       }
     }
 
@@ -215,7 +213,14 @@ class CommentBlock extends Component {
         ref={(li) => (this.commentBlock = li)}
         id={id}
         className="comment-block"
-        onMouseOver={() => this.displayDeleteButton(true)}
+        onMouseOver={() => {
+          if (
+            localStorage.getItem("user_name") &&
+            this.props.userName ===
+              func.getSubstr(localStorage.getItem("user_name"))
+          )
+            this.displayDeleteButton(true);
+        }}
         onMouseLeave={() => this.displayDeleteButton(false)}
       >
         {this.state.showConfirmationWindow

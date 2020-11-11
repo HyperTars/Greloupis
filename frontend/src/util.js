@@ -76,3 +76,12 @@ export function dateConvert(time) {
 
   return [year, month, day].join("-");
 }
+
+export function getSubstr(rawStr) {
+  return rawStr.slice(1, -1);
+}
+
+export function ellipsifyStr(rawStr) {
+  if (rawStr.length <= 150) return rawStr;
+  return rawStr.slice(0, 150) + "...";
+}

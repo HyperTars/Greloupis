@@ -3,20 +3,28 @@ import { Redirect } from "react-router-dom";
 import MainVideo from "./MainVideo";
 import Comments from "./Comments";
 import * as func from "../util";
-import { getVideoInfo, getVideoComments } from "./FetchData";
+import {
+  getVideoInfo,
+  getVideoComments,
+  getVideoLikes,
+  getVideoDislikes,
+  getVideoStars,
+  updateVideoViews,
+} from "./FetchData";
 import { Spin } from "antd";
-
-const API_KEY = "?api_key=12345678";
-const baseURL = "http://localhost:8080";
 
 function VideoPlay({ videoId }) {
   const [mainVideo, setMainVideo] = useState({});
   const [videoComments, setVideoComments] = useState([]);
+  const [videoLikes, setVideoLikes] = useState(false);
+  const [videoDisLikes, setVideoDisLikes] = useState(false);
+  const [videoStars, setVideoStars] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    console.log(videoId);
+    updateVideoViews(videoId);
+
     getVideoInfo(videoId)
       .then((res) => {
         if (res == null) return;
@@ -28,6 +36,8 @@ function VideoPlay({ videoId }) {
         setIsLoading(false);
         setErrorMsg(e.message);
       });
+
+    // TODO: watching history
   }, [videoId]);
 
   useEffect(() => {
@@ -35,39 +45,43 @@ function VideoPlay({ videoId }) {
       if (res == null) return;
       setVideoComments(res.body);
     });
+
+    getVideoLikes(videoId).then((res) => {
+      if (res == null) return;
+      res.body.forEach((element) => {
+        if (
+          element.user_id === func.getSubstr(localStorage.getItem("user_id"))
+        ) {
+          setVideoLikes(true);
+        }
+      });
+    });
+
+    getVideoDislikes(videoId).then((res) => {
+      if (res == null) return;
+      res.body.forEach((element) => {
+        if (
+          element.user_id === func.getSubstr(localStorage.getItem("user_id"))
+        ) {
+          setVideoDisLikes(true);
+        }
+      });
+    });
+
+    getVideoStars(videoId).then((res) => {
+      if (res == null) return;
+      res.body.forEach((element) => {
+        if (
+          element.user_id === func.getSubstr(localStorage.getItem("user_id"))
+        ) {
+          setVideoStars(true);
+        }
+      });
+    });
   }, [videoId]);
 
   const errorFormat = <Redirect to="/404"></Redirect>;
   if (errorMsg) return errorFormat;
-
-  const likeHandler = () => {
-    func.fetchRequest(
-      "PUT",
-      `${baseURL}/videos/${this.state.mainVideo.id}/likes${API_KEY}`
-    );
-    this.setState({
-      mainVideo: {
-        ...this.state.mainVideo,
-        thumbsUp: this.state.mainVideo.thumbsUp + 1,
-      },
-    });
-  };
-
-  const dislikeHandler = () => {
-    func.fetchRequest(
-      "PUT",
-      `${baseURL}/videos/${this.state.mainVideo.id}/dislikes${API_KEY}`,
-      (data) => {
-        console.log(data);
-      }
-    );
-    this.setState({
-      mainVideo: {
-        ...this.state.mainVideo,
-        thumbsDown: this.state.mainVideo.thumbsDown + 1,
-      },
-    });
-  };
 
   return (
     <main>
@@ -80,8 +94,9 @@ function VideoPlay({ videoId }) {
         <section id="main-video-content">
           <MainVideo
             mainVideo={mainVideo}
-            likeHandler={likeHandler}
-            dislikeHandler={dislikeHandler}
+            videoLike={videoLikes}
+            videoDisLike={videoDisLikes}
+            videoStar={videoStars}
             description={mainVideo.video_description}
             id={mainVideo.video_id}
           />
