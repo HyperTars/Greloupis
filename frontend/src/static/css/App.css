@@ -783,8 +783,6 @@
     outline: none;
     background-color: #f1f1f1;
     border-bottom: #D4D4D4 2px solid;
-    -webkit-animation: color-change 1s;
-            animation: color-change 1s;
   }
   
   @-webkit-keyframes color-change {
@@ -919,7 +917,7 @@
   main #main-video-content .comments-list .comment-block__confirmation div button {
     font-size: small;
     width: 3rem;
-    height: 1.25rem;
+    height: 1.5rem;
     background-color: #0095FF;
     border: #0095FF 1px solid;
     color: white;

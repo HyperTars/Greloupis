@@ -3,6 +3,7 @@ from db.query_video import query_video_update, query_video_delete, \
     query_video_create, query_video_get_by_title, query_video_get_by_video_id
 from db.query_video_op import query_video_op_get_by_video_id, \
     query_video_op_delete
+from db.query_user import query_user_get_by_id
 from utils.util_pattern import util_pattern_format_param
 from utils.util_serializer import util_serializer_mongo_results_to_array
 from utils.util_validator import is_valid_id
@@ -142,9 +143,11 @@ def service_video_comments(conf, **kw):
     comments_result = []
     for each in search_result:
         if each["comment"] != "":
+            user_obj = query_user_get_by_id(each["user_id"])[0].to_dict()
             comments_result.append({
                 "video_id": each["video_id"],
                 "user_id": each["user_id"],
+                "user_name": user_obj["user_name"],
                 "comment": each["comment"],
                 "comment_date": str(each["comment_date"])
             })
@@ -174,9 +177,11 @@ def service_video_likes(conf, **kw):
     like_result = []
     for each in search_result:
         if each["like"]:
+            user_obj = query_user_get_by_id(each["user_id"])[0].to_dict()
             like_result.append({
                 "video_id": each["video_id"],
                 "user_id": each["user_id"],
+                "user_name": user_obj["user_name"],
                 "like_date": str(each["like_date"])
             })
 
@@ -205,9 +210,11 @@ def service_video_dislikes(conf, **kw):
     dislike_result = []
     for each in search_result:
         if each["dislike"]:
+            user_obj = query_user_get_by_id(each["user_id"])[0].to_dict()
             dislike_result.append({
                 "video_id": each["video_id"],
                 "user_id": each["user_id"],
+                "user_name": user_obj["user_name"],
                 "dislike_date": str(each["dislike_date"])
             })
 
@@ -236,9 +243,11 @@ def service_video_stars(conf, **kw):
     star_result = []
     for each in search_result:
         if each["star"]:
+            user_obj = query_user_get_by_id(each["user_id"])[0].to_dict()
             star_result.append({
                 "video_id": each["video_id"],
                 "user_id": each["user_id"],
+                "user_name": user_obj["user_name"],
                 "star_date": str(each["star_date"])
             })
 
