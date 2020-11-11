@@ -93,16 +93,22 @@ class MainVideo extends Component {
   }
 
   likeHandler = () => {
+    func.loginCheck();
+
     // like a video
     if (!this.props.videoLike && this.props.mainVideo.video_id) {
       createUserVideoLike(
         this.props.mainVideo.video_id,
         func.getSubstr(localStorage.getItem("user_id"))
-      );
-
-      this.setState({
-        isLike: true,
-      });
+      )
+        .then(() => {
+          this.setState({
+            isLike: true,
+          });
+        })
+        .then(() => {
+          window.location.reload();
+        });
     }
 
     // undo a like
@@ -110,27 +116,35 @@ class MainVideo extends Component {
       deleteUserVideoLike(
         this.props.mainVideo.video_id,
         func.getSubstr(localStorage.getItem("user_id"))
-      );
-
-      this.setState({
-        isLike: false,
-      });
+      )
+        .then(() => {
+          this.setState({
+            isLike: false,
+          });
+        })
+        .then(() => {
+          window.location.reload();
+        });
     }
-
-    window.location.reload();
   };
 
   dislikeHandler = () => {
+    func.loginCheck();
+
     // dislike a video
     if (!this.props.videoDisLike && this.props.mainVideo.video_id) {
       createUserVideoDislike(
         this.props.mainVideo.video_id,
         func.getSubstr(localStorage.getItem("user_id"))
-      );
-
-      this.setState({
-        isDislike: true,
-      });
+      )
+        .then(() => {
+          this.setState({
+            isDislike: true,
+          });
+        })
+        .then(() => {
+          window.location.reload();
+        });
     }
 
     // undo a dislike
@@ -138,27 +152,35 @@ class MainVideo extends Component {
       deleteUserVideoDislike(
         this.props.mainVideo.video_id,
         func.getSubstr(localStorage.getItem("user_id"))
-      );
-
-      this.setState({
-        isDislike: false,
-      });
+      )
+        .then(() => {
+          this.setState({
+            isDislike: false,
+          });
+        })
+        .then(() => {
+          window.location.reload();
+        });
     }
-
-    window.location.reload();
   };
 
   starHandler = () => {
+    func.loginCheck();
+
     // star a video
     if (!this.props.videoStar && this.props.mainVideo.video_id) {
       createUserVideoStar(
         this.props.mainVideo.video_id,
         func.getSubstr(localStorage.getItem("user_id"))
-      );
-
-      this.setState({
-        isStar: true,
-      });
+      )
+        .then(() => {
+          this.setState({
+            isStar: true,
+          });
+        })
+        .then(() => {
+          window.location.reload();
+        });
     }
 
     // undo a star
@@ -166,14 +188,16 @@ class MainVideo extends Component {
       deleteUserVideoStar(
         this.props.mainVideo.video_id,
         func.getSubstr(localStorage.getItem("user_id"))
-      );
-
-      this.setState({
-        isStar: false,
-      });
+      )
+        .then(() => {
+          this.setState({
+            isStar: false,
+          });
+        })
+        .then(() => {
+          window.location.reload();
+        });
     }
-
-    window.location.reload();
   };
 
   render() {

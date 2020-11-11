@@ -85,3 +85,18 @@ export function ellipsifyStr(rawStr) {
   if (rawStr.length <= 150) return rawStr;
   return rawStr.slice(0, 150) + "...";
 }
+
+export function isStorageEmpty() {
+  return (
+    !localStorage.getItem("user_name") ||
+    !localStorage.getItem("user_id") ||
+    !localStorage.getItem("user_token")
+  );
+}
+
+export function loginCheck() {
+  if (isStorageEmpty()) {
+    alert("You have not signed in!");
+    window.location.replace("/login");
+  }
+}

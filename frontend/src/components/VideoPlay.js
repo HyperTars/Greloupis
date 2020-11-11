@@ -48,6 +48,11 @@ function VideoPlay({ videoId }) {
 
     getVideoLikes(videoId).then((res) => {
       if (res == null) return;
+      if (func.isStorageEmpty()) {
+        setVideoLikes(false);
+        return false;
+      }
+
       res.body.forEach((element) => {
         if (
           element.user_id === func.getSubstr(localStorage.getItem("user_id"))
@@ -59,6 +64,11 @@ function VideoPlay({ videoId }) {
 
     getVideoDislikes(videoId).then((res) => {
       if (res == null) return;
+      if (func.isStorageEmpty()) {
+        setVideoDisLikes(false);
+        return false;
+      }
+
       res.body.forEach((element) => {
         if (
           element.user_id === func.getSubstr(localStorage.getItem("user_id"))
@@ -70,6 +80,11 @@ function VideoPlay({ videoId }) {
 
     getVideoStars(videoId).then((res) => {
       if (res == null) return;
+      if (func.isStorageEmpty()) {
+        setVideoStars(false);
+        return false;
+      }
+
       res.body.forEach((element) => {
         if (
           element.user_id === func.getSubstr(localStorage.getItem("user_id"))
