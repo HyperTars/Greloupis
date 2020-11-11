@@ -1,31 +1,56 @@
 import React, { Component } from "react";
 import { dateConvert } from "../util";
+import {
+  createUserVideoLike,
+  deleteUserVideoLike,
+  createUserVideoDislike,
+  deleteUserVideoDislike,
+  createUserVideoStar,
+  deleteUserVideoStar,
+} from "./FetchData";
+import * as func from "../util";
 
-const VIDEO_INFO_LIMIT = 150;
+const VIDEO_INFO_LIMIT = 1000;
 
 class MainVideo extends Component {
   state = {
     isLike: false,
     isDislike: false,
-    descPlus: false,
+    isStar: false,
     showMore: false,
     showLess: false,
   };
 
+  static getDerivedStateFromProps(props, state) {
+    if (
+      state.isLike !== props.videoLike ||
+      state.isDislike !== props.videoDislike ||
+      state.isStar !== props.videoStar
+    ) {
+      return {
+        isLike: props.videoLike,
+        isDislike: props.videoDislike,
+        isStar: props.videoStar,
+      };
+    }
+
+    return null;
+  }
+
   componentDidUpdate() {
     const description = this.props.description;
-    const { showMore, showLess, descPlus } = this.state;
+    const { showMore, showLess } = this.state;
     if (description) {
-      if (description.length > VIDEO_INFO_LIMIT && !descPlus) {
-        this.setState({
-          descPlus: true,
-          showMore: true,
-          showLess: false,
-        });
+      if (description.length > VIDEO_INFO_LIMIT) {
+        if (!showMore || showLess) {
+          this.setState({
+            showMore: true,
+            showLess: false,
+          });
+        }
       } else if (description.length < VIDEO_INFO_LIMIT) {
         if ((showMore && showLess) || showMore || showLess) {
           this.setState({
-            descPlus: false,
             showMore: false,
             showLess: false,
           });
@@ -68,21 +93,87 @@ class MainVideo extends Component {
   }
 
   likeHandler = () => {
-    if (!this.state.isLike) {
-      this.props.likeHandler();
+    // like a video
+    if (!this.props.videoLike && this.props.mainVideo.video_id) {
+      createUserVideoLike(
+        this.props.mainVideo.video_id,
+        func.getSubstr(localStorage.getItem("user_id"))
+      );
+
       this.setState({
         isLike: true,
       });
     }
+
+    // undo a like
+    else if (this.props.videoLike && this.props.mainVideo.video_id) {
+      deleteUserVideoLike(
+        this.props.mainVideo.video_id,
+        func.getSubstr(localStorage.getItem("user_id"))
+      );
+
+      this.setState({
+        isLike: false,
+      });
+    }
+
+    window.location.reload();
   };
 
   dislikeHandler = () => {
-    if (!this.state.isDislike) {
-      this.props.dislikeHandler();
+    // dislike a video
+    if (!this.props.videoDisLike && this.props.mainVideo.video_id) {
+      createUserVideoDislike(
+        this.props.mainVideo.video_id,
+        func.getSubstr(localStorage.getItem("user_id"))
+      );
+
       this.setState({
         isDislike: true,
       });
     }
+
+    // undo a dislike
+    else if (this.props.videoDisLike && this.props.mainVideo.video_id) {
+      deleteUserVideoDislike(
+        this.props.mainVideo.video_id,
+        func.getSubstr(localStorage.getItem("user_id"))
+      );
+
+      this.setState({
+        isDislike: false,
+      });
+    }
+
+    window.location.reload();
+  };
+
+  starHandler = () => {
+    // star a video
+    if (!this.props.videoStar && this.props.mainVideo.video_id) {
+      createUserVideoStar(
+        this.props.mainVideo.video_id,
+        func.getSubstr(localStorage.getItem("user_id"))
+      );
+
+      this.setState({
+        isStar: true,
+      });
+    }
+
+    // undo a star
+    else if (this.props.videoStar && this.props.mainVideo.video_id) {
+      deleteUserVideoStar(
+        this.props.mainVideo.video_id,
+        func.getSubstr(localStorage.getItem("user_id"))
+      );
+
+      this.setState({
+        isStar: false,
+      });
+    }
+
+    window.location.reload();
   };
 
   render() {
@@ -118,21 +209,42 @@ class MainVideo extends Component {
             <div className="description-reaction__icons">
               <div className="likes">
                 <button onClick={this.likeHandler} className="likes-btn">
-                  <img src="/Assets/like.svg" alt="Icon" />
+                  <img
+                    src={
+                      this.props.videoLike
+                        ? "/Assets/like-black.svg"
+                        : "/Assets/like.svg"
+                    }
+                    alt="Icon"
+                  />
                   <span>{video_like}</span>
                 </button>
-                <span className="tooltip likes__tooltip">Love this</span>
+                <span className="tooltip likes__tooltip">Like this</span>
               </div>
               <div className="dislikes">
                 <button onClick={this.dislikeHandler} className="dislikes-btn">
-                  <img src="/Assets/dislike.svg" alt="Icon" />
+                  <img
+                    src={
+                      this.props.videoDisLike
+                        ? "/Assets/dislike-black.svg"
+                        : "/Assets/dislike.svg"
+                    }
+                    alt="Icon"
+                  />
                   <span>{video_dislike}</span>
                 </button>
                 <span className="tooltip dislikes__tooltip">Dislike this</span>
               </div>
               <div className="star">
-                <button className="star-btn">
-                  <img src="/Assets/star.svg" alt="Icon" />
+                <button onClick={this.starHandler} className="star-btn">
+                  <img
+                    src={
+                      this.props.videoStar
+                        ? "/Assets/star-black.svg"
+                        : "/Assets/star.svg"
+                    }
+                    alt="Icon"
+                  />
                   <span>Star</span>
                 </button>
                 <span className="tooltip star__tooltip">Star this</span>
@@ -158,16 +270,16 @@ class MainVideo extends Component {
           </div>
           <div className="main-video__details-info">
             {this.props.description
-              ? this.state.descPlus && this.state.showMore
+              ? this.state.showMore
                 ? this.renderDescription()
-                : this.state.descPlus && !this.state.showMore
+                : !this.state.showMore
                 ? this.renderFullDescription()
                 : this.renderFullDescription()
               : null}
             {this.props.description
-              ? this.state.descPlus && this.state.showMore
+              ? this.state.showMore
                 ? this.renderShowMoreToggle()
-                : this.state.descPlus && this.state.showLess
+                : this.state.showLess
                 ? this.renderShowLessToggle()
                 : null
               : null}

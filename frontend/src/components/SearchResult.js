@@ -10,7 +10,7 @@ import {
   CalendarOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { secondTimeConvert, dateConvert } from "../util";
+import { secondTimeConvert, dateConvert, ellipsifyStr } from "../util";
 
 function SearchResult() {
   const [loading, setLoading] = useState(true);
@@ -174,7 +174,7 @@ function SearchResult() {
                   }
                   description={
                     item.video_description !== "" ? (
-                      item.video_description
+                      ellipsifyStr(item.video_description)
                     ) : (
                       <br />
                     )
