@@ -471,12 +471,10 @@ class TestServiceUser(unittest.TestCase):
                                     self.data['const_user'][0]['_id']['$oid'])
         self.assertEqual(len(res), 0)
 
-        # Raise Error: ErrorCode.SERVICE_INVALID_ID_OBJ
-        with self.assertRaises(ServiceError) as e:
-            service_user_get_like(self.conf,
-                                  self.data['const_user'][1]['_id']['$oid'])
-        self.assertEqual(e.exception.error_code,
-                         ErrorCode.SERVICE_USER_NO_VIDEO_OP)
+        # no video op
+        res = service_user_get_like(self.conf,
+                                    self.data['const_user'][1]['_id']['$oid'])
+        self.assertEqual(len(res), 0)
 
         # Raise Error: ErrorCode.SERVICE_INVALID_ID_OBJ
         with self.assertRaises(ServiceError) as e:
@@ -497,12 +495,10 @@ class TestServiceUser(unittest.TestCase):
         self.assertEqual(res[0]['user_id'],
                          self.data['const_user'][0]['_id']['$oid'])
 
-        # Raise Error: ErrorCode.SERVICE_INVALID_ID_OBJ
-        with self.assertRaises(ServiceError) as e:
-            service_user_get_dislike(self.conf,
-                                     self.data['const_user'][1]['_id']['$oid'])
-        self.assertEqual(e.exception.error_code,
-                         ErrorCode.SERVICE_USER_NO_VIDEO_OP)
+        # no video op
+        temp_id = self.data['const_user'][1]['_id']['$oid']
+        res = service_user_get_dislike(self.conf, temp_id)
+        self.assertEqual(len(res), 0)
 
         # Raise Error: ErrorCode.SERVICE_INVALID_ID_OBJ
         with self.assertRaises(ServiceError) as e:
@@ -523,12 +519,10 @@ class TestServiceUser(unittest.TestCase):
         self.assertEqual(res[0]['user_id'],
                          self.data['const_user'][0]['_id']['$oid'])
 
-        # Raise Error: ErrorCode.SERVICE_INVALID_ID_OBJ
-        with self.assertRaises(ServiceError) as e:
-            service_user_get_comment(self.conf,
-                                     self.data['const_user'][1]['_id']['$oid'])
-        self.assertEqual(e.exception.error_code,
-                         ErrorCode.SERVICE_USER_NO_VIDEO_OP)
+        # no video op
+        temp_id = self.data['const_user'][1]['_id']['$oid']
+        res = service_user_get_comment(self.conf, temp_id)
+        self.assertEqual(len(res), 0)
 
         # Raise Error: ErrorCode.SERVICE_INVALID_ID_OBJ
         with self.assertRaises(ServiceError) as e:
@@ -548,12 +542,10 @@ class TestServiceUser(unittest.TestCase):
                                     self.data['const_user'][0]['_id']['$oid'])
         self.assertEqual(len(res), 1)
 
-        # Raise Error: ErrorCode.SERVICE_INVALID_ID_OBJ
-        with self.assertRaises(ServiceError) as e:
-            service_user_get_star(self.conf,
-                                  self.data['const_user'][1]['_id']['$oid'])
-        self.assertEqual(e.exception.error_code,
-                         ErrorCode.SERVICE_USER_NO_VIDEO_OP)
+        # no video op
+        res = service_user_get_star(self.conf,
+                                    self.data['const_user'][1]['_id']['$oid'])
+        self.assertEqual(len(res), 0)
 
         # Raise Error: ErrorCode.SERVICE_INVALID_ID_OBJ
         with self.assertRaises(ServiceError) as e:
@@ -573,12 +565,10 @@ class TestServiceUser(unittest.TestCase):
         res = service_user_get_process(self.conf, oid)
         self.assertEqual(len(res), 0)
 
-        # Raise Error: ErrorCode.SERVICE_INVALID_ID_OBJ
-        with self.assertRaises(ServiceError) as e:
-            service_user_get_process(self.conf,
-                                     self.data['const_user'][1]['_id']['$oid'])
-        self.assertEqual(e.exception.error_code,
-                         ErrorCode.SERVICE_USER_NO_VIDEO_OP)
+        # no video op
+        temp_id = self.data['const_user'][1]['_id']['$oid']
+        res = service_user_get_process(self.conf, temp_id)
+        self.assertEqual(len(res), 0)
 
         # Raise Error: ErrorCode.SERVICE_INVALID_ID_OBJ
         with self.assertRaises(ServiceError) as e:

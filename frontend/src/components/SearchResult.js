@@ -188,7 +188,7 @@ function SearchResult() {
       </div>
 
       <div className="searchPart">
-        <h3>{"Matched Users: "}</h3>
+        <h4>{"Matched Users: "}</h4>
 
         {userResult == null ? (
           <Spin />
