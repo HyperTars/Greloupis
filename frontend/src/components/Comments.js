@@ -24,6 +24,8 @@ export default class Comments extends Component {
   }
 
   deleteCommentHandler = () => {
+    func.loginCheck();
+
     deleteUserVideoComment(
       this.props.mainVideoId,
       func.getSubstr(localStorage.getItem("user_id"))
@@ -38,13 +40,7 @@ export default class Comments extends Component {
   };
 
   submitCommentHandler = () => {
-    if (
-      !localStorage.getItem("user_name") ||
-      !localStorage.getItem("user_id") ||
-      !localStorage.getItem("user_token")
-    ) {
-      alert("You need to sign in to comment!");
-    }
+    func.loginCheck();
 
     if (this.commentInput.value) {
       const data = {
@@ -55,12 +51,12 @@ export default class Comments extends Component {
         this.props.mainVideoId,
         func.getSubstr(localStorage.getItem("user_id")),
         data
-      );
-
-      this.commentInput.value = "";
+      ).then(() => {
+        this.commentInput.value = "";
+        this.toggleCommentForm();
+        window.location.reload();
+      });
     }
-    this.toggleCommentForm();
-    window.location.reload();
   };
 
   renderCommentForm() {
@@ -165,6 +161,8 @@ class CommentBlock extends Component {
   }
 
   deleteCommentHandler = () => {
+    func.loginCheck();
+
     this.props.deleteCommentHandler(String(this.state.commentId));
     this.displayConfirmWindow(false);
   };
