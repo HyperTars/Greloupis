@@ -196,7 +196,7 @@ def service_user_get_like(conf, user_id):
     # perform db operations and get result
     search_mongo = query_video_op_get_by_user_id(user_id)
     if len(search_mongo) == 0:
-        raise ServiceError(ErrorCode.SERVICE_USER_NO_VIDEO_OP)
+        return []
 
     search_result = util_serializer_mongo_results_to_array(search_mongo)
 
@@ -225,7 +225,7 @@ def service_user_get_dislike(conf, user_id):
     # perform db operations and get result
     search_mongo = query_video_op_get_by_user_id(user_id)
     if len(search_mongo) == 0:
-        raise ServiceError(ErrorCode.SERVICE_USER_NO_VIDEO_OP)
+        return []
 
     search_result = util_serializer_mongo_results_to_array(search_mongo)
 
@@ -254,7 +254,7 @@ def service_user_get_comment(conf, user_id):
     # perform db operations and get result
     search_mongo = query_video_op_get_by_user_id(user_id)
     if len(search_mongo) == 0:
-        raise ServiceError(ErrorCode.SERVICE_USER_NO_VIDEO_OP)
+        return []
 
     search_result = util_serializer_mongo_results_to_array(search_mongo)
 
@@ -284,7 +284,7 @@ def service_user_get_star(conf, user_id):
     # perform db operations and get result
     search_mongo = query_video_op_get_by_user_id(user_id)
     if len(search_mongo) == 0:
-        raise ServiceError(ErrorCode.SERVICE_USER_NO_VIDEO_OP)
+        return []
 
     search_result = util_serializer_mongo_results_to_array(search_mongo)
 
@@ -313,7 +313,7 @@ def service_user_get_process(conf, user_id):
     # perform db operations and get result
     search_mongo = query_video_op_get_by_user_id(user_id)
     if len(search_mongo) == 0:
-        raise ServiceError(ErrorCode.SERVICE_USER_NO_VIDEO_OP)
+        return []
 
     search_result = util_serializer_mongo_results_to_array(search_mongo)
 

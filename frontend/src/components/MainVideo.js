@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import * as func from "../util";
+import { dateConvert } from "../util";
 
-const limit = 150;
+const VIDEO_INFO_LIMIT = 150;
 
 class MainVideo extends Component {
   state = {
@@ -16,13 +16,13 @@ class MainVideo extends Component {
     const description = this.props.description;
     const { showMore, showLess, descPlus } = this.state;
     if (description) {
-      if (description.length > limit && !descPlus) {
+      if (description.length > VIDEO_INFO_LIMIT && !descPlus) {
         this.setState({
           descPlus: true,
           showMore: true,
           showLess: false,
         });
-      } else if (description.length < limit) {
+      } else if (description.length < VIDEO_INFO_LIMIT) {
         if ((showMore && showLess) || showMore || showLess) {
           this.setState({
             descPlus: false,
@@ -43,7 +43,7 @@ class MainVideo extends Component {
   renderDescription() {
     return (
       <p className="main-video__info">
-        {this.props.description.slice(0, limit) + "...."}
+        {this.props.description.slice(0, VIDEO_INFO_LIMIT) + "...."}
       </p>
     );
   }
@@ -87,48 +87,46 @@ class MainVideo extends Component {
 
   render() {
     const { mainVideo } = this.props;
-    // have to make a copy of the mainVideoObject, when I call abbreviateAllNums, it modifies the original data of the state of Main.js
     const mainVideoCopy = { ...mainVideo };
-    func.abbreviateAllNumsInObj(mainVideoCopy, "views");
+
     const {
-      id,
-      video,
-      image,
-      title,
-      views,
-      thumbsUp,
-      thumbsDown,
-      channel,
-      /* publishDate, */
+      video_id,
+      video_raw_content,
+      video_thumbnail,
+      video_title,
+      video_view,
+      video_like,
+      video_dislike,
+      video_upload_date,
     } = mainVideoCopy;
 
     return (
-      <section id={id} className="main-video">
+      <section id={video_id} className="main-video">
         <div className="main-video__content">
-          <video /* className="main-video__content" */
+          <video
             controls
-            src={video + "?api_key=" + id}
+            src={video_raw_content}
             type="mp4/video"
-            poster={image}
+            poster={video_thumbnail}
           ></video>
         </div>
 
         <div className="main-video__description">
-          <div className="description-title">{title}</div>
+          <div className="description-title">{video_title}</div>
           <div className="description-reaction">
-            <p className="description-reaction__views">{views} views</p>
+            <p className="description-reaction__views">{video_view} views</p>
             <div className="description-reaction__icons">
               <div className="likes">
                 <button onClick={this.likeHandler} className="likes-btn">
                   <img src="/Assets/like.svg" alt="Icon" />
-                  <span>{thumbsUp}</span>
+                  <span>{video_like}</span>
                 </button>
                 <span className="tooltip likes__tooltip">Love this</span>
               </div>
               <div className="dislikes">
                 <button onClick={this.dislikeHandler} className="dislikes-btn">
                   <img src="/Assets/dislike.svg" alt="Icon" />
-                  <span>{thumbsDown}</span>
+                  <span>{video_dislike}</span>
                 </button>
                 <span className="tooltip dislikes__tooltip">Dislike this</span>
               </div>
@@ -152,9 +150,8 @@ class MainVideo extends Component {
                 alt="Avatar"
               />
               <div className="author-details__info">
-                <p className="author-details__info-name">{channel}</p>
                 <p className="author-details__info-date">
-                  Published on Nov 9, 2020
+                  Published on {dateConvert(video_upload_date)}
                 </p>
               </div>
             </div>
