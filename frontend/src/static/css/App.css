@@ -124,6 +124,10 @@
   body {
     font-family: 'Roboto', sans-serif;
   }
+
+  html, body {
+    width: 99%;
+  }
   
   * {
     margin: 0px;
