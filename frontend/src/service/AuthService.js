@@ -20,6 +20,11 @@ class AuthService {
     });
   }
 
+  isAuth() {
+    return !!localStorage.getItem("user_token") 
+      && !!localStorage.getItem("user_id");
+  }
+
   logout() {
     localStorage.removeItem("user_token");
     localStorage.removeItem("user_id");

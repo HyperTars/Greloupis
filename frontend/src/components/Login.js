@@ -66,6 +66,7 @@ const styles = (theme) => ({
 // };
 
 class Login extends React.Component {
+
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
@@ -76,8 +77,16 @@ class Login extends React.Component {
       password: "",
       loading: false,
       message: "",
-      authflag: 1,
+      authFlag: 1,
+      urlTo: "/",
     };
+
+    if (this.props.location.state != null 
+      && this.props.location.state.from !== "/login") {
+        this.urlTo = this.props.location.state.from;
+    } else {
+      this.urlTo = "/";
+    }
   }
 
   handleChange(event) {
@@ -101,7 +110,7 @@ class Login extends React.Component {
       // validate here
       AuthService.login(this.state.username, this.state.password).then(
         () => {
-          this.props.history.push("/");
+          this.props.history.push(this.urlTo);
           window.location.reload();
         },
         (error) => {
