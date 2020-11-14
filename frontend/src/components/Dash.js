@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -14,22 +15,25 @@ import Badge from '@material-ui/core/Badge';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import Link from '@material-ui/core/Link';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import { spacing } from '@material-ui/system';
+import AppsIcon from '@material-ui/icons/Apps';
 import { mainListItems } from './listItems';
 import Chart from './Chart';
 import Deposits from './Deposits';
 import Orders from './Orders';
+import { TextField } from '@material-ui/core';
 
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
+      <Typography color="inherit" component={Link} to="https://material-ui.com/">
         Your Website
-      </Link>{' '}
+      </Typography>
       {new Date().getFullYear()}
       {'.'}
     </Typography>
@@ -75,6 +79,10 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
+  },
+  greetings: {
+    flexGrow: 1,
+    marginLeft: 10,
   },
   drawerPaper: {
     position: 'relative',
@@ -144,11 +152,14 @@ export default function Dashboard() {
           </IconButton>
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
             Dashboard
-          </Typography>
+          </Typography>          
           <IconButton color="inherit">
             <Badge badgeContent={4} color="secondary">
               <NotificationsIcon />
             </Badge>
+          </IconButton>
+          <IconButton color="inherit" component={Link} to="/logout">
+              <ExitToAppIcon />
           </IconButton>
         </Toolbar>
       </AppBar>
@@ -158,8 +169,11 @@ export default function Dashboard() {
           paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
         }}
         open={open}
-      >
+      >          
         <div className={classes.toolbarIcon}>
+          <Typography component="h1" variant="h6" className={classes.greetings}>
+              Hi,  {JSON.parse(localStorage.getItem("user_name"))}
+          </Typography>
           <IconButton onClick={handleDrawerClose}>
             <ChevronLeftIcon />
           </IconButton>

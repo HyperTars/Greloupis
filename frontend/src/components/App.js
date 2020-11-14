@@ -10,6 +10,7 @@ import Dashboard from "./Dashboard";
 import Header from "./Header";
 import SearchResult from "./SearchResult";
 import Login from "./Login";
+import Logout from "./Logout";
 import Register from "./Register";
 import EmptyPage from "./EmptyPage";
 import UserProfile from "./UserProfile";
@@ -52,6 +53,12 @@ class App extends Component {
             />
             <Route
               exact
+              path="/logout"
+              component={Logout}
+              render={(props) => <Logout />}
+            />
+            <Route
+              exact
               path="/register"
               component={Register}
               render={(props) => <Register />}
@@ -80,14 +87,11 @@ class App extends Component {
               )}
             />
             <Route exact path="/404" render={() => <EmptyPage />} />
-            <Route
+            <PrivateRoute
               exact
               path="/dashboard"
-              render={() => (
-                <div>
-                  <Dash />
-                </div>
-              )}
+              component={Dash}
+              render={(props) => <Dash />}
             />
             {/* <Route path="*" render={() => <Redirect to="/404"></Redirect>} /> */}
           </Switch>
