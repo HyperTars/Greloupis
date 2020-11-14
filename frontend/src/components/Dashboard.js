@@ -1,163 +1,230 @@
-import React, { useState, useEffect } from "react";
-import { searchTopVideo } from "./FetchData";
-import { Spin, List, Space } from "antd";
+import React from "react";
 import { Link } from "react-router-dom";
-import {
-  EyeOutlined,
-  LikeOutlined,
-  StarOutlined,
-  FieldTimeOutlined,
-  CalendarOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
-import { secondTimeConvert, dateConvert, ellipsifyStr } from "../util";
+import clsx from "clsx";
+import { makeStyles } from "@material-ui/core/styles";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Drawer from "@material-ui/core/Drawer";
+import Box from "@material-ui/core/Box";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import List from "@material-ui/core/List";
+import Typography from "@material-ui/core/Typography";
+import Divider from "@material-ui/core/Divider";
+import IconButton from "@material-ui/core/IconButton";
+import Badge from "@material-ui/core/Badge";
+import Container from "@material-ui/core/Container";
+import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
+import MenuIcon from "@material-ui/icons/Menu";
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import NotificationsIcon from "@material-ui/icons/Notifications";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+// import { spacing } from '@material-ui/system';
+// import AppsIcon from '@material-ui/icons/Apps';
+import { mainListItems } from "./listItems";
+import Chart from "./Chart";
+import Deposits from "./Deposits";
+import Orders from "./Orders";
+// import { TextField } from '@material-ui/core';
 
-function Dashboard() {
-  const [loading, setLoading] = useState(true);
-  const [errorMsg, setErrorMsg] = useState(null);
-  const [videoResult, setVideoResult] = useState(null);
-
-  useEffect(() => {
-    searchTopVideo("video_view")
-      .then((res) => {
-        if (res == null) {
-          return;
-        }
-
-        let videoArray = [];
-        res.body.forEach((element) => {
-          videoArray.push({
-            user_id: element.user_id,
-            user_name: element.user_name,
-            video_id: element.video_id,
-            video_title: element.video_title,
-            video_raw_content: element.video_raw_content,
-            video_thumbnail: element.video_thumbnail,
-            video_duration: element.video_duration,
-            video_description: element.video_description,
-            video_upload_date: element.video_upload_date,
-            video_view: element.video_view,
-            video_like: element.video_like,
-            video_star: element.video_star,
-            video_comment: element.video_comment,
-          });
-        });
-
-        setLoading(false);
-        setVideoResult(videoArray);
-      })
-      .catch((e) => {
-        setLoading(false);
-        setErrorMsg(e.message);
-      });
-  }, []);
-
-  const IconText = ({ icon, text }) => (
-    <Space>
-      {React.createElement(icon)}
-      {text}
-    </Space>
+function Copyright() {
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      {"Copyright © "}
+      <Typography
+        color="inherit"
+        component={Link}
+        to="https://github.com/HyperTars/Online-Video-Platform/"
+      >
+        Greloupis
+      </Typography>
+      {new Date().getFullYear()}
+      {"."}
+    </Typography>
   );
-
-  const loadingFormat = (
-    <div className="searchLoading">
-      <Spin size="large" />
-    </div>
-  );
-
-  const errorFormat = (
-    <div className="topMargin">
-      <div>Error: {errorMsg}</div>
-    </div>
-  );
-
-  const sampleFormat = (
-    <div className="topMargin">
-      <div className="searchPart">
-        <h4>{"Trending Videos: "}</h4>
-
-        {videoResult == null ? (
-          <Spin />
-        ) : (
-          <List
-            itemLayout="vertical"
-            size="large"
-            pagination={{
-              pageSize: 5,
-            }}
-            dataSource={videoResult}
-            renderItem={(item) => (
-              <List.Item
-                actions={[
-                  <IconText
-                    icon={UserOutlined}
-                    text={
-                      <Link to={"/user/" + item.user_id}>{item.user_name}</Link>
-                    }
-                    key="list-vertical-user-o"
-                  />,
-                  <IconText
-                    icon={EyeOutlined}
-                    text={item.video_view}
-                    key="list-vertical-view-o"
-                  />,
-                  <IconText
-                    icon={StarOutlined}
-                    text={item.video_star}
-                    key="list-vertical-star-o"
-                  />,
-                  <IconText
-                    icon={LikeOutlined}
-                    text={item.video_like}
-                    key="list-vertical-like-o"
-                  />,
-
-                  <IconText
-                    icon={CalendarOutlined}
-                    text={dateConvert(item.video_upload_date)}
-                    key="list-vertical-date"
-                  />,
-                  <IconText
-                    icon={FieldTimeOutlined}
-                    text={secondTimeConvert(item.video_duration)}
-                    key="list-vertical-time"
-                  />,
-                ]}
-                extra={
-                  <Link to={"/video/" + item.video_id}>
-                    <img
-                      width={160}
-                      alt="logo"
-                      src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
-                      // src={item.video_thumbnail}
-                    />
-                  </Link>
-                }
-              >
-                <List.Item.Meta
-                  title={
-                    <Link to={"/video/" + item.video_id}>
-                      {item.video_title}
-                    </Link>
-                  }
-                  description={
-                    item.video_description !== "" ? (
-                      ellipsifyStr(item.video_description)
-                    ) : (
-                      <br />
-                    )
-                  }
-                />
-                {item.content}
-              </List.Item>
-            )}
-          />
-        )}
-      </div>
-    </div>
-  );
-
-  return loading ? loadingFormat : errorMsg ? errorFormat : sampleFormat;
 }
 
-export default Dashboard;
+const drawerWidth = 240;
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+  },
+  toolbar: {
+    paddingRight: 24, // keep right padding when drawer closed
+  },
+  toolbarIcon: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    padding: "0 8px",
+    ...theme.mixins.toolbar,
+  },
+  appBar: {
+    zIndex: theme.zIndex.drawer + 1,
+    transition: theme.transitions.create(["width", "margin"], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+  },
+  appBarShift: {
+    marginLeft: drawerWidth,
+    width: `calc(100% - ${drawerWidth}px)`,
+    transition: theme.transitions.create(["width", "margin"], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  menuButton: {
+    marginRight: 36,
+  },
+  menuButtonHidden: {
+    display: "none",
+  },
+  title: {
+    flexGrow: 1,
+  },
+  greetings: {
+    flexGrow: 1,
+    marginLeft: 10,
+  },
+  drawerPaper: {
+    position: "relative",
+    whiteSpace: "nowrap",
+    width: drawerWidth,
+    transition: theme.transitions.create("width", {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  drawerPaperClose: {
+    overflowX: "hidden",
+    transition: theme.transitions.create("width", {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    width: theme.spacing(7),
+    [theme.breakpoints.up("sm")]: {
+      width: theme.spacing(9),
+    },
+  },
+  appBarSpacer: theme.mixins.toolbar,
+  content: {
+    flexGrow: 1,
+    height: "100vh",
+    overflow: "auto",
+  },
+  container: {
+    paddingTop: theme.spacing(4),
+    paddingBottom: theme.spacing(4),
+  },
+  paper: {
+    padding: theme.spacing(2),
+    display: "flex",
+    overflow: "auto",
+    flexDirection: "column",
+  },
+  fixedHeight: {
+    height: 240,
+  },
+}));
+
+export default function Dashboard() {
+  const classes = useStyles();
+  const [open, setOpen] = React.useState(true);
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
+  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+
+  return (
+    <div className={classes.root}>
+      <CssBaseline />
+      <AppBar
+        position="absolute"
+        className={clsx(classes.appBar, open && classes.appBarShift)}
+      >
+        <Toolbar className={classes.toolbar}>
+          <IconButton
+            edge="start"
+            color="inherit"
+            aria-label="open drawer"
+            onClick={handleDrawerOpen}
+            className={clsx(
+              classes.menuButton,
+              open && classes.menuButtonHidden
+            )}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography
+            component="h1"
+            variant="h6"
+            color="inherit"
+            noWrap
+            className={classes.title}
+          >
+            Dashboard
+          </Typography>
+          <IconButton color="inherit">
+            <Badge badgeContent={4} color="secondary">
+              <NotificationsIcon />
+            </Badge>
+          </IconButton>
+          <IconButton color="inherit" component={Link} to="/logout">
+            <ExitToAppIcon />
+          </IconButton>
+        </Toolbar>
+      </AppBar>
+      <Drawer
+        variant="permanent"
+        classes={{
+          paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
+        }}
+        open={open}
+      >
+        <div className={classes.toolbarIcon}>
+          <Typography component="h1" variant="h6" className={classes.greetings}>
+            Hi, {JSON.parse(localStorage.getItem("user_name"))}
+          </Typography>
+          <IconButton onClick={handleDrawerClose}>
+            <ChevronLeftIcon />
+          </IconButton>
+        </div>
+        <Divider />
+        <List>{mainListItems}</List>
+      </Drawer>
+      <main className={classes.content}>
+        <div className={classes.appBarSpacer} />
+        <Container maxWidth="lg" className={classes.container}>
+          <Grid container spacing={3}>
+            {/* Chart */}
+            <Grid item xs={12} md={8} lg={9}>
+              <Paper className={fixedHeightPaper}>
+                <Chart />
+              </Paper>
+            </Grid>
+            {/* Recent Deposits */}
+            <Grid item xs={12} md={4} lg={3}>
+              <Paper className={fixedHeightPaper}>
+                <Deposits />
+              </Paper>
+            </Grid>
+            {/* Recent Orders */}
+            <Grid item xs={12}>
+              <Paper className={classes.paper}>
+                <Orders />
+              </Paper>
+            </Grid>
+          </Grid>
+          <Box pt={4}>
+            <Copyright />
+          </Box>
+        </Container>
+      </main>
+    </div>
+  );
+}

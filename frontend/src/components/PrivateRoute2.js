@@ -24,7 +24,7 @@ class PrivateRoute2 extends React.Component{
         /> ;
     }
 }
-PrivateRoute2.propTypes  ={
+PrivateRoute2.propTypes = {
     path:PropTypes.string.isRequired,
     exact:PropTypes.bool,
     strict:PropTypes.bool,

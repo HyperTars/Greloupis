@@ -65,7 +65,7 @@ class Header extends Component {
             </div>
           </Link>
 
-          <Link to="/">
+          <Link to="/dashboard">
             <div className="header-profile__avatar">
               <img
                 className="header-profile__avatar-img"

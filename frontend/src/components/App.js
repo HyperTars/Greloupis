@@ -6,16 +6,18 @@ import {
   // Redirect,
 } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Dashboard from "./Dashboard";
+import Home from "./Home";
 import Header from "./Header";
 import SearchResult from "./SearchResult";
 import Login from "./Login";
+import Logout from "./Logout";
 import Register from "./Register";
 import EmptyPage from "./EmptyPage";
 import UserProfile from "./UserProfile";
 import VideoUpload from "./VideoUpload";
 import VideoPlay from "./VideoPlay";
 import PrivateRoute from "./PrivateRoute";
+import Dashboard from "./Dashboard";
 
 class App extends Component {
   render() {
@@ -29,7 +31,7 @@ class App extends Component {
               render={() => (
                 <div>
                   <Header />
-                  <Dashboard />
+                  <Home />
                 </div>
               )}
             />
@@ -48,6 +50,12 @@ class App extends Component {
               path="/login"
               component={Login}
               render={(props) => <Login />}
+            />
+            <Route
+              exact
+              path="/logout"
+              component={Logout}
+              render={(props) => <Logout />}
             />
             <Route
               exact
@@ -79,6 +87,12 @@ class App extends Component {
               )}
             />
             <Route exact path="/404" render={() => <EmptyPage />} />
+            <PrivateRoute
+              exact
+              path="/dashboard"
+              component={Dashboard}
+              render={(props) => <Dashboard />}
+            />
             {/* <Route path="*" render={() => <Redirect to="/404"></Redirect>} /> */}
           </Switch>
         </div>
