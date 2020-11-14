@@ -59,12 +59,7 @@ class App extends Component {
               exact
               path="/video/upload"
               component={VideoUpload}
-              render={(props) => (
-                <div>
-                  <Header />
-                  <VideoUpload />
-                </div>
-              )}
+              render={(props) => <VideoUpload />}
             />
             <Route
               exact
