@@ -16,6 +16,7 @@ import UserProfile from "./UserProfile";
 import VideoUpload from "./VideoUpload";
 import VideoPlay from "./VideoPlay";
 import PrivateRoute from "./PrivateRoute";
+import Dash from "./Dash";
 
 class App extends Component {
   render() {
@@ -84,6 +85,15 @@ class App extends Component {
               )}
             />
             <Route exact path="/404" render={() => <EmptyPage />} />
+            <Route
+              exact
+              path="/dashboard"
+              render={() => (
+                <div>
+                  <Dash />
+                </div>
+              )}
+            />
             {/* <Route path="*" render={() => <Redirect to="/404"></Redirect>} /> */}
           </Switch>
         </div>
