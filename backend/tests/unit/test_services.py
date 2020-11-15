@@ -586,7 +586,7 @@ class TestServiceUser(unittest.TestCase):
         user_id = query_user_get_by_name(
             user_name=self.data['temp_user'][0]['user_name'])[0].to_dict()[
             'user_id']
-        self.assertEqual(service_user_cancel(self.conf, user_id), 1)
+        self.assertEqual(service_user_cancel(self.conf, user_id=user_id), 1)
 
 
 class TestServiceVideo(unittest.TestCase):

@@ -346,7 +346,7 @@ class TestQueryUser(unittest.TestCase):
         new_user_state = "new state"
         new_user_country = "new country"
         new_user_zip = "46961"
-        query_user_update_details(temp_user_id,
+        query_user_update_details(user_id=temp_user_id,
                                   user_first_name=new_user_first_name,
                                   user_last_name=new_user_last_name,
                                   user_phone=new_user_phone,
@@ -377,19 +377,19 @@ class TestQueryUser(unittest.TestCase):
 
         # Raise Error: ErrorCode.MONGODB_STR_EXPECTED
         with self.assertRaises(MongoError) as e:
-            query_user_update_details(123)
+            query_user_update_details(user_id=123)
         self.assertEqual(e.exception.error_code,
                          ErrorCode.MONGODB_STR_EXPECTED)
 
         # Raise Error: ErrorCode.MONGODB_STR_EXPECTED
         with self.assertRaises(MongoError) as e:
-            query_user_update_details(temp_user_id, user_city=123)
+            query_user_update_details(user_id=temp_user_id, user_city=123)
         self.assertEqual(e.exception.error_code,
                          ErrorCode.MONGODB_STR_EXPECTED)
 
         # Raise Error: ErrorCode.MONGODB_USER_NOT_FOUND
         with self.assertRaises(MongoError) as e:
-            query_user_update_details("123456781234567812345678")
+            query_user_update_details(user_id="123456781234567812345678")
         self.assertEqual(e.exception.error_code,
                          ErrorCode.MONGODB_USER_NOT_FOUND)
 
