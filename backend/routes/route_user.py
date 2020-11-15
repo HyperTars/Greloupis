@@ -13,11 +13,12 @@ from service.service_user import service_user_get_comment, \
     service_user_get_dislike, service_user_get_info, service_user_get_like, \
     service_user_get_process, service_user_get_star, service_user_cancel, \
     service_user_login, service_user_reg, service_user_update_info
+
 from utils.util_jwt import blacklist, util_get_formated_response
 from utils.util_error_handler import util_error_handler
 from settings import config
 from utils.util_serializer import util_serializer_api_response
-from models.model_errors import MongoError, RouteError, ServiceError
+from models.model_errors import MongoError, RouteError, ServiceError, ErrorCode
 
 # from source.utils.util_validator import *
 # from flask import Flask, g, Blueprint
@@ -191,11 +192,15 @@ class UserUserId(Resource):
         """
             Get user information by id
         """
-        # TODO
-        print("get user name", get_jwt_identity())
         try:
             user_id = request.url.split('/')[-1]
             result = service_user_get_info(conf=conf, user_id=user_id)
+            # print(result)
+            if result['user'][0]['user_status'] != 'public' and\
+                    get_jwt_identity() != result['user'][0]['user_id']:
+                return util_serializer_api_response(200, body={},
+                                                    msg="Get user info "
+                                                        "successfully")
             return util_serializer_api_response(200, body=result,
                                                 msg="Get user info "
                                                     "successfully")
@@ -245,6 +250,7 @@ class UserUserId(Resource):
             result = service_user_cancel(config['default'], kw)
             return util_serializer_api_response(
                 200, body=result, msg="Delete user successfully")
+
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
@@ -258,7 +264,6 @@ class UserLogin(Resource):
         """
             User sign in
         """
-
         try:
             if request.form != {}:
                 kw = dict(request.form)
@@ -323,7 +328,12 @@ class UserUserIdLike(Resource):
 
         try:
             user_id = request.url.split('/')[-2]
-
+            result = service_user_get_info(conf=conf, user_id=user_id)
+            if result['user'][0]['user_status'] != 'public' and\
+                    get_jwt_identity() != result['user'][0]['user_id']:
+                return util_serializer_api_response(200, body={},
+                                                    msg="Get user likes "
+                                                        "successfully")
             like_result = service_user_get_like(conf=conf, user_id=user_id)
             return util_serializer_api_response(200, body=like_result,
                                                 msg="Get user likes "
@@ -348,7 +358,12 @@ class UserUserIdDislike(Resource):
 
         try:
             user_id = request.url.split('/')[-2]
-
+            user_result = service_user_get_info(conf=conf, user_id=user_id)
+            if user_result['user'][0]['user_status'] != 'public' and\
+                    get_jwt_identity() != user_result['user'][0]['user_id']:
+                return util_serializer_api_response(200, body={},
+                                                    msg="Get user dislikes "
+                                                        "successfully")
             dislike_result = service_user_get_dislike(conf=conf,
                                                       user_id=user_id)
             return util_serializer_api_response(200, body=dislike_result,
@@ -374,7 +389,12 @@ class UserUserIdStar(Resource):
 
         try:
             user_id = request.url.split('/')[-2]
-
+            user_result = service_user_get_info(conf=conf, user_id=user_id)
+            if user_result['user'][0]['user_status'] != 'public' and\
+                    get_jwt_identity() != user_result['user'][0]['user_id']:
+                return util_serializer_api_response(200, body={},
+                                                    msg="Get user comments "
+                                                        "successfully")
             star_result = service_user_get_star(conf=conf, user_id=user_id)
             return util_serializer_api_response(200, body=star_result,
                                                 msg="Get user comments "
@@ -399,7 +419,12 @@ class UserUserIdComment(Resource):
 
         try:
             user_id = request.url.split('/')[-2]
-
+            user_result = service_user_get_info(conf=conf, user_id=user_id)
+            if user_result['user'][0]['user_status'] != 'public' and\
+                    get_jwt_identity() != user_result['user'][0]['user_id']:
+                return util_serializer_api_response(200, body={},
+                                                    msg="Get user comments "
+                                                        "successfully")
             comment_result = service_user_get_comment(conf=conf,
                                                       user_id=user_id)
             return util_serializer_api_response(200, body=comment_result,
@@ -425,7 +450,12 @@ class UserUserIdProcess(Resource):
 
         try:
             user_id = request.url.split('/')[-2]
-
+            user_result = service_user_get_info(conf=conf, user_id=user_id)
+            if user_result['user'][0]['user_status'] != 'public' and\
+                    get_jwt_identity() != user_result['user'][0]['user_id']:
+                return util_serializer_api_response(200, body={},
+                                                    msg="Get user processes "
+                                                        "successfully")
             process_result = service_user_get_process(conf=conf,
                                                       user_id=user_id)
             return util_serializer_api_response(200, body=process_result,
