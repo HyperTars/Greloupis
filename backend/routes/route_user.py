@@ -7,7 +7,7 @@ import datetime
 from flask import request, jsonify
 
 from flask_jwt_extended import create_access_token, \
-    jwt_required, get_raw_jwt, jwt_optional
+    jwt_required, get_raw_jwt, jwt_optional, get_jwt_identity
 from flask_restx import Resource, fields, Namespace
 from service.service_user import service_user_get_comment, \
     service_user_get_dislike, service_user_get_info, service_user_get_like, \
@@ -144,7 +144,7 @@ process_response_list = user.model(name='ApiResponseWithProcessList', model={
 @user.response(405, 'Method not allowed', general_response)
 @user.response(500, 'Internal server error', general_response)
 class User(Resource):
-    @jwt_optional
+
     def post(self):
         """
             User sign up
@@ -164,8 +164,8 @@ class User(Resource):
             user = service_user_reg(conf=config["default"], **kw)
             print(user)
             # default: login
-            expires = datetime.timedelta(seconds=20)
-            # expires = datetime.timedelta(hours=20)
+            # expires = datetime.timedelta(seconds=20)
+            expires = datetime.timedelta(hours=20)
             token = create_access_token(identity=user['user_id'],
                                         expires_delta=expires, fresh=True)
             return jsonify({
@@ -186,16 +186,15 @@ class User(Resource):
 @user.response(404, 'User not found', general_response)
 @user.response(500, 'Internal server error', general_response)
 class UserUserId(Resource):
-    # TODO: implemented the test case
-    # @jwt_required
+    @jwt_optional
     def get(self, user_id, conf=config["default"]):
         """
             Get user information by id
         """
-
+        # TODO
+        print("get user name", get_jwt_identity())
         try:
             user_id = request.url.split('/')[-1]
-
             result = service_user_get_info(conf=conf, user_id=user_id)
             return util_serializer_api_response(200, body=result,
                                                 msg="Get user info "
@@ -203,6 +202,7 @@ class UserUserId(Resource):
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
+    @jwt_required
     @user.response(405, 'Method not allowed')
     def put(self, user_id):
         """
@@ -226,6 +226,7 @@ class UserUserId(Resource):
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
+    @jwt_required
     @user.response(405, 'Method not allowed')
     def delete(self, user_id):
         """
@@ -272,11 +273,12 @@ class UserLogin(Resource):
             print(ip)
             user = service_user_login(conf=conf, ip=ip, **kw)
             print(user)
-            expires = datetime.timedelta(seconds=20)
-            # expires = datetime.timedelta(hours=20)
+            # expires = datetime.timedelta(seconds=20)
+            expires = datetime.timedelta(hours=20)
             token = create_access_token(identity=user['user_id'],
                                         expires_delta=expires, fresh=True)
             res = jsonify({
+
                 "code": 200,
                 "message": "login succeeded",
                 "user_token": token,
@@ -313,6 +315,7 @@ class UserLogout(Resource):
 @user.response(500, 'Internal server error', general_response)
 class UserUserIdLike(Resource):
 
+    @jwt_optional
     def get(self, user_id, conf=config["default"]):
         """
             Get a list of like by user id
@@ -337,6 +340,7 @@ class UserUserIdLike(Resource):
 @user.response(500, 'Internal server error', general_response)
 class UserUserIdDislike(Resource):
 
+    @jwt_optional
     def get(self, user_id, conf=config["default"]):
         """
             Get a list of dislike by user id
@@ -362,6 +366,7 @@ class UserUserIdDislike(Resource):
 @user.response(500, 'Internal server error', general_response)
 class UserUserIdStar(Resource):
 
+    @jwt_optional
     def get(self, user_id, conf=config["default"]):
         """
             Get a list of star by user id
@@ -386,6 +391,7 @@ class UserUserIdStar(Resource):
 @user.response(500, 'Internal server error', general_response)
 class UserUserIdComment(Resource):
 
+    @jwt_optional
     def get(self, user_id, conf=config["default"]):
         """
             Get a list of comments by user id
@@ -411,6 +417,7 @@ class UserUserIdComment(Resource):
 @user.response(500, 'Internal server error', general_response)
 class UserUserIdProcess(Resource):
 
+    @jwt_optional
     def get(self, user_id, conf=config["default"]):
         """
             Get a list of comments by user id

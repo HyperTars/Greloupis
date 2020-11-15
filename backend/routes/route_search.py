@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, print_function
 from flask import request
+from flask_jwt_extended import jwt_optional, get_jwt_identity
 from flask_restx import Resource, fields, Namespace
 from .route_user import user_info, general_response
 from .route_video import video_info
@@ -37,11 +38,14 @@ video_response_list = search.model(name='ApiResponseWithVideoList', model={
 @search.response(400, 'Bad request.', general_response)
 @search.response(500, 'Internal server error.', general_response)
 class RouteSearchVideo(Resource):
+    @jwt_optional
     @search.doc(responses={200: 'Successfully got video search results.'})
     def get(self, conf=config["default"]):
         """
             Search videos by keyword
         """
+        # TODO
+        print("get user name", get_jwt_identity())
         try:
             req_dict = util_serializer_request(request.args)
             if 'keyword' not in req_dict:
@@ -101,11 +105,14 @@ class RouteSearchVideo(Resource):
 @search.response(400, 'Bad request.', general_response)
 @search.response(500, 'Internal server error.', general_response)
 class RouteSearchUser(Resource):
+    @jwt_optional
     @search.doc(responses={200: 'Successfully got user search results.'})
     def get(self, conf=config["default"]):
         """
             Search users by keyword
         """
+        # TODO
+        print("get user name", get_jwt_identity())
         try:
             req_dict = util_serializer_request(request.args)
 
@@ -201,6 +208,7 @@ class RouteSearchUser(Resource):
 class RouteSearchTopVideos(Resource):
     @search.doc(responses={200: 'Successfully got video search results.'})
     def get(self, conf=config["default"]):
+
         try:
             req_dict = util_serializer_request(request.args)
             if 'keyword' not in req_dict:

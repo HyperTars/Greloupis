@@ -1,9 +1,11 @@
+import datetime
 import json
 import unittest
 
-from flask_jwt_extended import JWTManager
+from flask_jwt_extended import JWTManager, create_access_token
 from flask_restx import Api
 from mongoengine.connection import disconnect
+from werkzeug.datastructures import Headers
 
 from routes.route_search import RouteSearchUser, RouteSearchVideo
 from routes.route_user import UserUserId, UserUserIdStar, \
@@ -59,14 +61,35 @@ class TestUserRoute(unittest.TestCase):
     def setUp(self):
         self.app = app
         app.config['TESTING'] = True
+        app.config.from_object(config['test'])
         self.client = app.test_client()
 
     def test_route_login(self):
-        response = self.client.post('/user', data={})
+        response = self.client.post('/user/login', data={
+            'user_name': 'fatbin',
+            'user_password': 'fatbin_pass'
+        })
 
         json_data = response.data
         json_dict = json.loads(json_data)
-        print(json_dict)
+        # print("test", json_dict)
+        self.assertEqual('fatbin', json_dict['user_name'],
+                         "login succeed, user name matched")
+
+    def test_route_logout(self):
+        with self.app.app_context():
+            expires = datetime.timedelta(hours=20)
+            token = create_access_token(identity='fatbin',
+                                        expires_delta=expires, fresh=True)
+            headers = Headers({'Authorization': 'Bearer ' + token})
+            response = self.client.post('/user/logout', data={
+                'user_name': 'fatbin',
+                'user_password': 'fatbin_pass'
+            }, headers=headers)
+            json_data = response.data
+            json_dict = json.loads(json_data)
+            # print("test", json_dict)
+            self.assertEqual(200, json_dict['code'], json_dict['message'])
 
 
 class TestRouteSearch(unittest.TestCase):

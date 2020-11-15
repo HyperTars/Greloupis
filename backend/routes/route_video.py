@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, print_function
 from flask import request
+# from flask_jwt_extended import jwt_required, jwt_optional, get_jwt_identity
 from flask_restx import Resource, fields, Namespace
 from .route_user import thumbnail, general_response, star, comment, like, \
     dislike, star_response_list, comment_response_list, like_response_list, \
@@ -25,6 +26,7 @@ from settings import config
 from models.model_errors import ServiceError, RouteError, MongoError
 
 import ast
+
 # from flask import Flask, g, Blueprint
 # from flask_restx import Api, marshal_with, reqparse
 # from source.utils.util_serializer import *
@@ -100,6 +102,7 @@ comment_response = video.model(name='ApiResponseWithComment', model={
 @video.response(500, 'Internal server error', general_response)
 class Video(Resource):
 
+    # @jwt_required
     def post(self, conf=config["default"]):
         """
             User upload a video
@@ -133,11 +136,13 @@ class Video(Resource):
 @video.response(500, 'Internal server error', general_response)
 class VideoVideoId(Resource):
 
+    # @jwt_optional
     def get(self, video_id, conf=config["default"]):
         """
             Get video information by video ID
         """
-
+        # TODO
+        # print("get user name", get_jwt_identity())
         try:
             video_id = request.url.split('/')[-1]
             kw = {
@@ -154,6 +159,7 @@ class VideoVideoId(Resource):
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
+    # @jwt_required
     @video.response(405, 'Method not allowed')
     def put(self, video_id, conf=config["default"]):
         """
@@ -187,6 +193,7 @@ class VideoVideoId(Resource):
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
+    # @jwt_required
     def delete(self, video_id, conf=config["default"]):
         """
             Delete video information by video ID
@@ -217,11 +224,13 @@ class VideoVideoId(Resource):
 @video.response(500, 'Internal server error', general_response)
 class VideoVideoIdView(Resource):
 
+    # @jwt_optional
     def get(self, video_id, conf=config["default"]):
         """
             Get video view count by video ID
         """
-
+        # TODO
+        # print("get user name", get_jwt_identity())
         try:
             video_id = request.url.split('/')[-2]
             kw = {
@@ -234,6 +243,7 @@ class VideoVideoIdView(Resource):
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
+    # @jwt_required
     @video.response(405, 'Method not allowed')
     def put(self, video_id, conf=config["default"]):
         """
@@ -262,11 +272,13 @@ class VideoVideoIdView(Resource):
 @video.response(500, 'Internal server error', general_response)
 class VideoVideoIdComment(Resource):
 
+    # @jwt_optional
     def get(self, video_id, conf=config['default']):
         """
             Get video view comments list by video ID
         """
-
+        # TODO
+        # print("get user name", get_jwt_identity())
         try:
             video_id = request.url.split('/')[-2]
             kw = {
@@ -291,11 +303,13 @@ class VideoVideoIdComment(Resource):
 @video.response(500, 'Internal server error', general_response)
 class VideoVideoIdCommentUserId(Resource):
 
+    # @jwt_optional
     def get(self, video_id, user_id, conf=config['default']):
         """
             Get a comment by specified video id and user id
         """
-
+        # TODO
+        # print("get user name", get_jwt_identity())
         try:
             video_id = request.url.split('/')[-3]
             user_id = request.url.split('/')[-1]
@@ -312,6 +326,7 @@ class VideoVideoIdCommentUserId(Resource):
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
+    # @jwt_required
     @video.response(405, 'Method not allowed')
     def post(self, video_id, user_id, conf=config['default']):
         """
@@ -336,6 +351,7 @@ class VideoVideoIdCommentUserId(Resource):
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
+    # @jwt_required
     @video.response(405, 'Method not allowed')
     def put(self, video_id, user_id, conf=config['default']):
         """
@@ -360,6 +376,7 @@ class VideoVideoIdCommentUserId(Resource):
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
+    # @jwt_required
     @video.response(405, 'Method not allowed')
     def delete(self, video_id, user_id, conf=config['default']):
         """
@@ -390,11 +407,13 @@ class VideoVideoIdCommentUserId(Resource):
 @video.response(500, 'Internal server error', general_response)
 class VideoVideoIdDislike(Resource):
 
+    # @jwt_optional
     def get(self, video_id, conf=config['default']):
         """
             Get a list of dislike by video id
         """
-
+        # TODO
+        # print("get user name", get_jwt_identity())
         try:
             video_id = request.url.split('/')[-2]
             kw = {
@@ -420,6 +439,7 @@ class VideoVideoIdDislike(Resource):
 @video.response(500, 'Internal server error', general_response)
 class VideoVideoIdDislikeUserId(Resource):
 
+    # @jwt_required
     def post(self, video_id, user_id, conf=config['default']):
         """
             Post a dislike by specified user and video
@@ -440,6 +460,7 @@ class VideoVideoIdDislikeUserId(Resource):
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
+    # @jwt_required
     def delete(self, video_id, user_id, conf=config['default']):
         """
             Undo a dislike by specified user and video
@@ -472,6 +493,7 @@ class VideoVideoIdDislikeUserId(Resource):
 @video.response(500, 'Internal server error', general_response)
 class VideoVideoIdProcessUserId(Resource):
 
+    # @jwt_required
     def post(self, video_id, user_id, conf=config['default']):
         """
             Post a new video watching process
@@ -495,11 +517,13 @@ class VideoVideoIdProcessUserId(Resource):
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
+    # @jwt_optional
     def get(self, video_id, user_id, conf=config['default']):
         """
             Get a new video watching process
         """
-
+        # TODO
+        # print("get user name", get_jwt_identity())
         try:
             video_id = request.url.split('/')[-3]
             user_id = request.url.split('/')[-1]
@@ -515,6 +539,7 @@ class VideoVideoIdProcessUserId(Resource):
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
+    # @jwt_required
     def put(self, video_id, user_id, conf=config['default']):
         """
             Update a video watching process
@@ -538,6 +563,7 @@ class VideoVideoIdProcessUserId(Resource):
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
+    # @jwt_required
     def delete(self, video_id, user_id, conf=config['default']):
         """
             Delete a video watching process
@@ -568,11 +594,13 @@ class VideoVideoIdProcessUserId(Resource):
 @video.response(500, 'Internal server error', general_response)
 class VideoVideoIdLike(Resource):
 
+    # @jwt_optional
     def get(self, video_id, conf=config['default']):
         """
             Get a list of like by video id
         """
-
+        # TODO
+        # print("get user name", get_jwt_identity())
         try:
             video_id = request.url.split('/')[-2]
             kw = {
@@ -597,6 +625,7 @@ class VideoVideoIdLike(Resource):
 @video.response(500, 'Internal server error', general_response)
 class VideoVideoIdLikeUserId(Resource):
 
+    # @jwt_required
     def post(self, video_id, user_id, conf=config['default']):
         """
             Post a like by specified user and video
@@ -617,6 +646,7 @@ class VideoVideoIdLikeUserId(Resource):
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
+    # @jwt_required
     def delete(self, video_id, user_id, conf=config['default']):
         """
             Undo a like by specified user and video
@@ -646,11 +676,13 @@ class VideoVideoIdLikeUserId(Resource):
 @video.response(500, 'Internal server error', general_response)
 class VideoVideoIdStar(Resource):
 
+    # @jwt_optional
     def get(self, video_id, conf=config['default']):
         """
             Get a list of star by video id
         """
-
+        # TODO
+        # print("get user name", get_jwt_identity())
         try:
             video_id = request.url.split('/')[-2]
             kw = {
@@ -675,6 +707,7 @@ class VideoVideoIdStar(Resource):
 @video.response(500, 'Internal server error', general_response)
 class VideoVideoIdStarUserId(Resource):
 
+    # @jwt_required
     def post(self, video_id, user_id, conf=config['default']):
         """
             Post a star by specified user and video
@@ -695,6 +728,7 @@ class VideoVideoIdStarUserId(Resource):
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
+    # @jwt_required
     def delete(self, video_id, user_id, conf=config['default']):
         """
             Undo a star by specified user and video
