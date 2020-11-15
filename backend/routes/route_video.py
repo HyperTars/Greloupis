@@ -2,6 +2,7 @@
 from __future__ import absolute_import, print_function
 from flask import request
 # from flask_jwt_extended import jwt_required, jwt_optional, get_jwt_identity
+from flask_jwt_extended import jwt_required, jwt_optional
 from flask_restx import Resource, fields, Namespace
 from .route_user import thumbnail, general_response, star, comment, like, \
     dislike, star_response_list, comment_response_list, like_response_list, \
@@ -102,7 +103,7 @@ comment_response = video.model(name='ApiResponseWithComment', model={
 @video.response(500, 'Internal server error', general_response)
 class Video(Resource):
 
-    # @jwt_required
+    @jwt_required
     def post(self, conf=config["default"]):
         """
             User upload a video
@@ -136,7 +137,7 @@ class Video(Resource):
 @video.response(500, 'Internal server error', general_response)
 class VideoVideoId(Resource):
 
-    # @jwt_optional
+    @jwt_optional
     def get(self, video_id, conf=config["default"]):
         """
             Get video information by video ID
