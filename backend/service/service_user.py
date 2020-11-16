@@ -9,7 +9,8 @@ from db.query_user import query_user_create, query_user_get_by_name, \
     query_user_add_login, query_user_update_name, \
     query_user_update_password, query_user_update_thumbnail, \
     query_user_update_details
-from db.query_video import query_video_get_by_user_id
+from db.query_video import query_video_get_by_user_id,\
+    query_video_get_by_video_id
 from db.query_video_op import query_video_op_get_by_user_id
 from models.model_errors import ServiceError, ErrorCode
 import datetime
@@ -187,7 +188,14 @@ def service_user_get_info(conf, user_id):
             util_serializer_mongo_results_to_array(video_op_result)
 
         # convert datetime format to str
+        # get video name and video thumbnail for each op video
         for each_result in video_op_result_dict_array:
+            raw_result = query_video_get_by_video_id(each_result["video_id"])
+            video_result = \
+                util_serializer_mongo_results_to_array(raw_result)[0]
+
+            each_result["video_title"] = video_result["video_title"]
+            each_result["video_thumbnail"] = video_result["video_thumbnail"]
             for key, value in each_result.items():
                 if isinstance(value, datetime.datetime):
                     each_result[key] = str(value)

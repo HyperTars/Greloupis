@@ -1,6 +1,36 @@
 import React, { Component } from "react";
 import "../static/css/App.css";
 import { Link } from "react-router-dom";
+import { getSubstr } from "../util";
+
+import { Menu, Dropdown } from "antd";
+
+const isLoggedIn = localStorage.getItem("user_id") != null;
+const currentUserId = getSubstr(localStorage.getItem("user_id"));
+
+const menu1 = (
+  <Menu>
+    <Menu.Item key="Profile">
+      <a href={`/user/${currentUserId}`}>View Profile</a>
+    </Menu.Item>
+    <Menu.Item key="Logout">
+      <a href="/logout" className="logout-alert">
+        Logout
+      </a>
+    </Menu.Item>
+  </Menu>
+);
+
+const menu2 = (
+  <Menu>
+    <Menu.Item key="Login">
+      <a href="/login">Login</a>
+    </Menu.Item>
+    <Menu.Item key="Register">
+      <a href="/register">Register</a>
+    </Menu.Item>
+  </Menu>
+);
 
 class Header extends Component {
   constructor(props) {
@@ -13,7 +43,9 @@ class Header extends Component {
   render() {
     const logoPath = "/Assets/logo/svg/greloupis-horizontal-blue-fill-b.svg";
     const uploadPath = "/Assets/upload.svg";
-    const avatarPath = "/Assets/avatar.jpg";
+    const avatarPath = isLoggedIn
+      ? "/Assets/avatar.jpg"
+      : "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png";
 
     return (
       <nav className="header">
@@ -65,16 +97,26 @@ class Header extends Component {
             </div>
           </Link>
 
-          <Link to="/dashboard">
-            <div className="header-profile__avatar">
-              <img
-                className="header-profile__avatar-img"
-                src={avatarPath}
-                alt="Profile Avatar"
-              ></img>
-              <span className="tooltip header-tooltip-text">View Profile</span>
-            </div>
-          </Link>
+          {/* <Link to={`/user/${currentUserId}`}> */}
+          <div className="header-profile__avatar">
+            <Dropdown overlay={isLoggedIn ? menu1 : menu2} trigger={["click"]}>
+              <a
+                className="ant-dropdown-link"
+                onClick={(e) => e.preventDefault()}
+                href="./"
+              >
+                <img
+                  className="header-profile__avatar-img"
+                  src={avatarPath}
+                  alt="Profile Avatar"
+                ></img>
+                <span className="tooltip header-tooltip-text">
+                  View Profile
+                </span>
+              </a>
+            </Dropdown>
+          </div>
+          {/* </Link> */}
         </div>
       </nav>
     );

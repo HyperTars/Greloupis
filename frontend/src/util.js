@@ -1,49 +1,5 @@
 import moment from "moment";
 
-// fetch request
-export function fetchRequest(methodType, url, func = console.log, body = null) {
-  if (methodType === "GET") {
-    fetch(url)
-      .then((response) => response.json())
-      .then((data) => {
-        func(data);
-      })
-      .catch((err) => console.error("YOU GOT AN ERROR: ", err));
-  } else if (methodType === "POST") {
-    // debugger;
-    fetch(url, {
-      method: "POST",
-      body: JSON.stringify(body),
-      headers: {
-        "content-type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        func(data);
-      })
-      .catch((err) => console.error("YOU GOT AN ERROR: ", err));
-  } else if (methodType === "DELETE") {
-    fetch(url, {
-      method: "DELETE",
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        func(data);
-      })
-      .catch((err) => console.error("YOU GOT AN ERROR: ", err));
-  } else if (methodType === "PUT") {
-    fetch(url, {
-      method: "PUT",
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        func(data);
-      })
-      .catch((err) => console.error("YOU GOT AN ERROR: ", err));
-  }
-}
-
 // convert timestamp to relative time
 export function convertToRelativeTime(timestamp) {
   let t = moment(timestamp).format();
@@ -78,12 +34,14 @@ export function dateConvert(time) {
 }
 
 export function getSubstr(rawStr) {
+  if (rawStr == null) return rawStr;
+
   return rawStr.slice(1, -1);
 }
 
-export function ellipsifyStr(rawStr) {
-  if (rawStr.length <= 150) return rawStr;
-  return rawStr.slice(0, 150) + "...";
+export function ellipsifyStr(rawStr, maxLength = 150) {
+  if (rawStr.length <= maxLength) return rawStr;
+  return rawStr.slice(0, maxLength) + "...";
 }
 
 export function isStorageEmpty() {
