@@ -157,12 +157,7 @@ function SearchResult() {
                 ]}
                 extra={
                   <Link to={"/video/" + item.video_id}>
-                    <img
-                      width={160}
-                      alt="logo"
-                      src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
-                      // src={item.video_thumbnail}
-                    />
+                    <img width={160} alt="logo" src={item.video_thumbnail} />
                   </Link>
                 }
               >

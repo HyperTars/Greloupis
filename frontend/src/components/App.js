@@ -73,14 +73,17 @@ class App extends Component {
               exact
               path="/user/:userId"
               render={(props) => (
-                <UserProfile userId={props.match.params.userId} />
+                <div>
+                  <Header />
+                  <UserProfile userId={props.match.params.userId} />
+                </div>
               )}
             />
             <Route
               exact
               path="/video/:videoId"
               render={(props) => (
-                <div>
+                <div className="videoPlay">
                   <Header />
                   <VideoPlay videoId={props.match.params.videoId} />
                 </div>
