@@ -223,11 +223,11 @@ def query_user_update_thumbnail(user_id: str, user_thumbnail: str):
         user_thumbnail=user_thumbnail)
 
 
-def query_user_update_details(user_id: str, **kw):
+def query_user_update_details(**kw):
     """
     Update user details
-    :param user_id: user unique id
     :param kw:
+        :key "user_id": user unique id, required
         :key "user_first_name": (```str```, optional) new user first name
         :key "user_last_name": (```str```, optional) new user last name
         :key "user_phone": (```str```, optional) new user phone
@@ -240,18 +240,17 @@ def query_user_update_details(user_id: str, **kw):
     \nAt least one key must be provided
     :return: 1 if succeeded
     """
-    if type(user_id) != str:
-        raise MongoError(ErrorCode.MONGODB_STR_EXPECTED)
-
+    if 'user_id' not in kw:
+        raise MongoError(ErrorCode.MONGODB_MISSING_USER_ID)
     for arg in kw:
         if type(kw[arg]) != str:
             raise MongoError(ErrorCode.MONGODB_STR_EXPECTED)
 
-    users = query_user_get_by_id(user_id)
+    users = query_user_get_by_id(kw['user_id'])
     if len(users) == 0:
         raise MongoError(ErrorCode.MONGODB_USER_NOT_FOUND)
 
-    _id = bson.ObjectId(user_id)
+    _id = bson.ObjectId(kw['user_id'])
 
     if 'user_first_name' in kw:
         User.objects(_id=_id).update(

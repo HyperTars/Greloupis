@@ -4,7 +4,11 @@ from utils.util_validator import is_valid_id
 from utils.util_pattern import util_pattern_format_param
 from db.mongo import get_db
 from db.query_user import query_user_create, query_user_get_by_name, \
-    query_user_get_by_email, query_user_delete_by_id, query_user_get_by_id
+    query_user_get_by_email, query_user_delete_by_id, \
+    query_user_get_by_id, query_user_update_status, \
+    query_user_add_login, query_user_update_name, \
+    query_user_update_password, query_user_update_thumbnail, \
+    query_user_update_details
 from db.query_video import query_video_get_by_user_id
 from db.query_video_op import query_video_op_get_by_user_id
 from models.model_errors import ServiceError, ErrorCode
@@ -40,7 +44,7 @@ def service_user_reg(conf, **kw):
     return query_user_get_by_name(kw['user_name'])[0].to_dict()
 
 
-def service_user_login(conf, **kw):
+def service_user_login(conf, ip="0.0.0.0", **kw):
     get_db(conf)
     kw['service'] = 'user'
     kw = util_pattern_format_param(**kw)
@@ -71,7 +75,11 @@ def service_user_login(conf, **kw):
             raise ServiceError(ErrorCode.SERVICE_USER_PASS_WRONG)
     else:
         raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
-    return user.to_dict()
+
+    usr = user.to_dict()
+    if 'ip' in kw:
+        query_user_add_login(usr['user_id'], ip=ip)
+    return usr
 
 
 # def service_user_get_user(conf, **kw):
@@ -101,27 +109,35 @@ def service_user_login(conf, **kw):
 #     return ErrorCode.SERVICE_MISSING_PARAM
 #
 #
-# def service_user_login(conf, **kw):
-#     user = service_user_get_user(conf, **kw)
-#
-#     if type(user) == ErrorCode:
-#         return ErrorCode.SERVICE_USER_AUTH_FAILURE
-#
-#     return user
-#
-#
 # def service_user_logout():
 #     return
 #
 #
-# def service_user_update_info(conf, **kw):
-#     db = get_db(conf)
-#     return
-
-
-def service_user_cancel(conf, user_id):
+def service_user_update_info(conf, **kw):
     get_db(conf)
-    return query_user_delete_by_id(user_id)
+    kw['service'] = 'user'
+    kw = util_pattern_format_param(**kw)
+    if 'user_id' not in kw:
+        raise ServiceError(ErrorCode.SERVICE_MISSING_USER_ID)
+    if 'user_status' in kw:
+        query_user_update_status(kw['user_id'], kw['user_status'])
+    if 'user_name' in kw:
+        query_user_update_name(kw['user_id'], kw['user_name'])
+    if 'user_password' in kw:
+        query_user_update_password(kw['user_id'], kw['user_password'])
+    if 'user_thumbnail' in kw:
+        query_user_update_thumbnail(kw['user_id'], kw['user_thumbnail'])
+    query_user_update_details(**kw)
+    return query_user_get_by_id(kw['user_id'])[0].to_dict()
+
+
+def service_user_cancel(conf, **kw):
+    get_db(conf)
+    kw['service'] = 'user'
+    kw = util_pattern_format_param(**kw)
+    if 'user_id' not in kw:
+        raise ServiceError(ErrorCode.SERVICE_MISSING_USER_ID)
+    return query_user_delete_by_id(kw['user_id'])
 
 
 def service_user_get_info(conf, user_id):
