@@ -9,11 +9,10 @@ from flask import request, jsonify
 from flask_jwt_extended import create_access_token, \
     jwt_required, get_raw_jwt, jwt_optional
 from flask_restx import Resource, fields, Namespace
-
 from service.service_user import service_user_get_comment, \
     service_user_get_dislike, service_user_get_info, service_user_get_like, \
-    service_user_get_process, service_user_get_star, \
-    service_user_login, service_user_reg
+    service_user_get_process, service_user_get_star, service_user_cancel, \
+    service_user_login, service_user_reg, service_user_update_info
 from utils.util_jwt import blacklist, util_get_formated_response
 from utils.util_error_handler import util_error_handler
 from settings import config
@@ -154,7 +153,6 @@ class User(Resource):
         # print("sign up1", get_jwt_identity())
         # print("sign up", get_raw_jwt(), blacklist)
         try:
-            kw = ""
             if request.form != {}:
                 kw = dict(request.form)
                 print(kw)
@@ -210,16 +208,44 @@ class UserUserId(Resource):
         """
             Update user information by id
         """
-        pass
-        # return {}, 200, None
+        try:
+            kw = ""
+            print(request.form)
+            if request.form != {}:
+                kw = dict(request.form)
+                print(kw)
+            else:
+                raw_data = request.data.decode("utf-8")
+                kw = ast.literal_eval(raw_data)
+                print(kw)
+            kw['user_id'] = user_id
+            print(kw)
+            result = service_user_update_info(config['default'], **kw)
+            return util_serializer_api_response(
+                200, body=result, msg="Update user info successfully")
+        except (ServiceError, MongoError, RouteError, Exception) as e:
+            return util_error_handler(e)
 
     @user.response(405, 'Method not allowed')
     def delete(self, user_id):
         """
             Delete user by id
         """
-        pass
-        # return {}, 200, None
+        try:
+            kw = ""
+            if request.form != {}:
+                kw = dict(request.form)
+                print(kw)
+            else:
+                raw_data = request.data.decode("utf-8")
+                kw = ast.literal_eval(raw_data)
+                print(kw)
+
+            result = service_user_cancel(config['default'], kw)
+            return util_serializer_api_response(
+                200, body=result, msg="Delete user successfully")
+        except (ServiceError, MongoError, RouteError, Exception) as e:
+            return util_error_handler(e)
 
 
 @user.route('/login', methods=['POST'])
@@ -238,19 +264,26 @@ class UserLogin(Resource):
             else:
                 raw_data = request.data.decode("utf-8")
                 kw = ast.literal_eval(raw_data)
-            user = service_user_login(conf=conf, **kw)
+            print(kw)
+            if request.headers.getlist("X-Forwarded-For"):
+                ip = request.headers.getlist("X-Forwarded-For")[0]
+            else:
+                ip = request.environ.get('HTTP_X_REAL_IP', request.remote_addr)
+            print(ip)
+            user = service_user_login(conf=conf, ip=ip, **kw)
             print(user)
             expires = datetime.timedelta(seconds=20)
             # expires = datetime.timedelta(hours=20)
             token = create_access_token(identity=user['user_id'],
                                         expires_delta=expires, fresh=True)
-            return jsonify({
+            res = jsonify({
                 "code": 200,
                 "message": "login succeeded",
                 "user_token": token,
                 "user_id": user['user_id'],
                 "user_name": user['user_name'],
             })
+            return res
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 

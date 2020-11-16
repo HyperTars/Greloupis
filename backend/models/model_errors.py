@@ -33,6 +33,8 @@ class ErrorCode(Enum):
         3010: "Service Error: Invalid Video Status"}
     SERVICE_VIDEO_NOT_FOUND = {3011: "Service Error: Video Not Found"}
     SERVICE_USER_PASS_WRONG = {3012: "Service Error: User Password Wrong"}
+    SERVICE_MISSING_USER_ID = {3013: "Service Error: Missing user_id"}
+
     # Database 4 Series
     MONGODB_CONNECTION_FAILURE = {4000: "MongoDB Connection Failure"}
     MONGODB_USER_NOT_FOUND = {4101: "MongoDB Error: User Not Found"}
@@ -99,6 +101,7 @@ class ErrorCode(Enum):
         4137: "MongoDB Error: Video Dislike Update Failure"}
     MONGODB_VIDEO_STAR_UPDATE_FAILURE = {
         4138: "MongoDB Error: Video Star Update Failure"}
+    MONGODB_MISSING_USER_ID = {4139: "MongoDB Error: Missing user_id"}
 
     # Model Error 5 Series
     MODEL_PASS_NOT_READABLE = {5001: "Password Is Not Readable"}
