@@ -154,7 +154,16 @@ class VideoVideoId(Resource):
 
             get_result = service_video_info(conf=conf, **kw)
             if len(get_result) == 1:
-
+                video_result = get_result[0].to_dict()
+                # user_id = video_result['user_id']
+                # user_result = service_user_get_info(conf=conf, user_id=user_id)
+                # if user_result['user'][0]['user_status'] != 'public' and \
+                #         get_jwt_identity() != user_result['user'][0]['user_id']:
+                #     return util_serializer_api_response(200, body={},
+                #                                         msg="Get video by ID "
+                #                                             "successfully")
+                return_body = util_serializer_mongo_results_to_array(
+                    get_result, format="json")
                 return util_serializer_api_response(
                     200, body=get_result, msg="Successfully got video by ID")
             else:
