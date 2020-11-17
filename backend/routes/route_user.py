@@ -9,11 +9,13 @@ from flask import request, jsonify
 from flask_jwt_extended import create_access_token, \
     jwt_required, get_raw_jwt, jwt_optional, get_jwt_identity
 from flask_restx import Resource, fields, Namespace
-from service.service_user import service_user_get_comment, \
-    service_user_get_dislike, service_user_get_info, service_user_get_like, \
-    service_user_get_process, service_user_get_star, service_user_cancel, \
-    service_user_login, service_user_reg, service_user_update_info
-
+from service.service_user import service_user_login, service_user_reg, \
+    service_user_get_info, service_user_update_info, service_user_cancel
+'''
+    #service_user_get_comment, service_user_get_dislike, \
+    #, service_user_get_like, \
+    #service_user_get_process, service_user_get_star
+'''
 from utils.util_jwt import blacklist, util_get_formated_response
 from utils.util_error_handler import util_error_handler
 from settings import config
@@ -195,14 +197,13 @@ class UserUserId(Resource):
         try:
             user_id = request.url.split('/')[-1]
             result = service_user_get_info(conf=conf, user_id=user_id)
-            if result['user'][0]['user_status'] != 'public' and\
+            if result['user'][0]['user_status'] != 'public' and \
                     get_jwt_identity() != result['user'][0]['user_id']:
-                return util_serializer_api_response(200, body={},
-                                                    msg="Get user info "
-                                                        "successfully")
-            return util_serializer_api_response(200, body=result,
-                                                msg="Get user info "
-                                                    "successfully")
+                # TODO: Hide info
+                # service_user_hide_info(result)
+                pass
+            return util_serializer_api_response(
+                    200, body=result, msg="Get user info successfully")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
@@ -282,7 +283,6 @@ class UserLogin(Resource):
             token = create_access_token(identity=user['user_id'],
                                         expires_delta=expires, fresh=True)
             res = jsonify({
-
                 "code": 200,
                 "message": "login succeeded",
                 "user_token": token,
@@ -307,10 +307,11 @@ class UserLogout(Resource):
         """
         jti = get_raw_jwt()['jti']
         blacklist.add(jti)
-        return util_get_formated_response(code=200,
-                                          msg='logout succeeded')
+        return util_get_formated_response(
+            code=200, msg='logout succeeded')
 
 
+'''
 @user.route('/<string:user_id>/like', methods=['GET'])
 @user.param('user_id', 'User ID')
 @user.response(200, 'Successful operation', like_response_list)
@@ -328,15 +329,13 @@ class UserUserIdLike(Resource):
         try:
             user_id = request.url.split('/')[-2]
             result = service_user_get_info(conf=conf, user_id=user_id)
-            if result['user'][0]['user_status'] != 'public' and\
+            if result['user'][0]['user_status'] != 'public' and \
                     get_jwt_identity() != result['user'][0]['user_id']:
-                return util_serializer_api_response(200, body={},
-                                                    msg="Get user likes "
-                                                        "successfully")
+                return util_serializer_api_response(
+                    200, body={}, msg="Get user likes successfully")
             like_result = service_user_get_like(conf=conf, user_id=user_id)
-            return util_serializer_api_response(200, body=like_result,
-                                                msg="Get user likes "
-                                                    "successfully")
+            return util_serializer_api_response(
+                200, body=like_result, msg="Get user likes successfully")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
@@ -360,11 +359,10 @@ class UserUserIdDislike(Resource):
             user_result = service_user_get_info(conf=conf, user_id=user_id)
             if user_result['user'][0]['user_status'] != 'public' and\
                     get_jwt_identity() != user_result['user'][0]['user_id']:
-                return util_serializer_api_response(200, body={},
-                                                    msg="Get user dislikes "
-                                                        "successfully")
-            dislike_result = service_user_get_dislike(conf=conf,
-                                                      user_id=user_id)
+                return util_serializer_api_response(
+                    200, body={}, msg="Get user dislikes successfully")
+            dislike_result = service_user_get_dislike(
+                conf=conf, user_id=user_id)
             return util_serializer_api_response(200, body=dislike_result,
                                                 msg="Get user dislikes "
                                                     "successfully")
@@ -391,13 +389,11 @@ class UserUserIdStar(Resource):
             user_result = service_user_get_info(conf=conf, user_id=user_id)
             if user_result['user'][0]['user_status'] != 'public' and\
                     get_jwt_identity() != user_result['user'][0]['user_id']:
-                return util_serializer_api_response(200, body={},
-                                                    msg="Get user comments "
-                                                        "successfully")
+                return util_serializer_api_response(
+                    200, body={}, msg="Get user comments successfully")
             star_result = service_user_get_star(conf=conf, user_id=user_id)
-            return util_serializer_api_response(200, body=star_result,
-                                                msg="Get user comments "
-                                                    "successfully")
+            return util_serializer_api_response(
+                200, body=star_result, msg="Get user comments successfully")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
@@ -421,14 +417,12 @@ class UserUserIdComment(Resource):
             user_result = service_user_get_info(conf=conf, user_id=user_id)
             if user_result['user'][0]['user_status'] != 'public' and\
                     get_jwt_identity() != user_result['user'][0]['user_id']:
-                return util_serializer_api_response(200, body={},
-                                                    msg="Get user comments "
-                                                        "successfully")
-            comment_result = service_user_get_comment(conf=conf,
-                                                      user_id=user_id)
-            return util_serializer_api_response(200, body=comment_result,
-                                                msg="Get user comments "
-                                                    "successfully")
+                return util_serializer_api_response(
+                    200, body={}, msg="Get user comments successfully")
+            comment_result = service_user_get_comment(
+                conf=conf, user_id=user_id)
+            return util_serializer_api_response(
+                200, body=comment_result, msg="Get user comments successfully")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
@@ -452,13 +446,13 @@ class UserUserIdProcess(Resource):
             user_result = service_user_get_info(conf=conf, user_id=user_id)
             if user_result['user'][0]['user_status'] != 'public' and\
                     get_jwt_identity() != user_result['user'][0]['user_id']:
-                return util_serializer_api_response(200, body={},
-                                                    msg="Get user processes "
-                                                        "successfully")
-            process_result = service_user_get_process(conf=conf,
-                                                      user_id=user_id)
-            return util_serializer_api_response(200, body=process_result,
-                                                msg="Get user processes "
-                                                    "successfully")
+                return util_serializer_api_response(
+                    200, body={}, msg="Get user processes successfully")
+            process_result = service_user_get_process(
+                conf=conf, user_id=user_id)
+            return util_serializer_api_response(
+                200, body=process_result,
+                msg="Get user processes successfully")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
+'''

@@ -8,10 +8,9 @@ from flask_restx import Resource, fields, Namespace
 from .route_user import thumbnail, general_response, star, comment, like, \
     dislike, star_response_list, comment_response_list, like_response_list, \
     dislike_response_list
-from service.service_video import service_video_info, \
-    service_video_delete, service_video_comments, service_video_dislikes, \
-    service_video_likes, service_video_stars, service_video_update, \
-    service_video_upload
+from service.service_video import service_video_info, service_video_delete, \
+    service_video_comments, service_video_dislikes, service_video_likes, \
+    service_video_stars, service_video_update, service_video_upload
 from service.service_video_op import service_video_op_add_comment, \
     service_video_op_add_dislike, service_video_op_add_like, \
     service_video_op_add_process, service_video_op_add_star, \
