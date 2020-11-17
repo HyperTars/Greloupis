@@ -18,7 +18,7 @@ from utils.util_jwt import blacklist, util_get_formated_response
 from utils.util_error_handler import util_error_handler
 from settings import config
 from utils.util_serializer import util_serializer_api_response
-from models.model_errors import MongoError, RouteError, ServiceError, ErrorCode
+from models.model_errors import MongoError, RouteError, ServiceError
 
 # from source.utils.util_validator import *
 # from flask import Flask, g, Blueprint
