@@ -58,3 +58,10 @@ export function loginCheck() {
     window.location.replace("/login");
   }
 }
+
+export function generateAvatar() {
+  if (!localStorage.getItem("user_thumbnail"))
+    return "https://greloupis-images.s3.amazonaws.com/avatar-default-1.svg";
+
+  return getSubstr(localStorage.getItem("user_thumbnail"));
+}

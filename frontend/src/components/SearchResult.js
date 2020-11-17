@@ -197,9 +197,8 @@ function SearchResult() {
                 <List.Item.Meta
                   avatar={
                     <Link to={"/user/" + item.user_id}>
-                      <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+                      <Avatar src={item.user_thumbnail} />
                     </Link>
-                    // <Avatar src={item.user_thumbnail} />
                   }
                   title={
                     <Link to={"/user/" + item.user_id}>{item.user_name}</Link>

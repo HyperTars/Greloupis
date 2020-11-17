@@ -8,6 +8,7 @@ import {
   createUserVideoStar,
   deleteUserVideoStar,
 } from "./FetchData";
+import { Link } from "react-router-dom";
 import * as func from "../util";
 
 const VIDEO_INFO_LIMIT = 1000;
@@ -205,6 +206,9 @@ class MainVideo extends Component {
     const mainVideoCopy = { ...mainVideo };
 
     const {
+      user_id,
+      user_name,
+      user_thumbnail,
       video_id,
       video_raw_content,
       video_thumbnail,
@@ -280,14 +284,16 @@ class MainVideo extends Component {
         <div className="main-video__details">
           <div className="main-video__details-author">
             <div className="author-details">
-              <img
-                className="author-details__avatar"
-                src="/Assets/avatar.jpg"
-                alt="Avatar"
-              />
+              <Link to={`/user/${user_id}`}>
+                <img
+                  className="author-details__avatar"
+                  src={user_thumbnail}
+                  alt="Avatar"
+                />
+              </Link>
               <div className="author-details__info">
                 <p className="author-details__info-date">
-                  Published on {dateConvert(video_upload_date)}
+                  {user_name} Published on {dateConvert(video_upload_date)}
                 </p>
               </div>
             </div>
