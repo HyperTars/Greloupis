@@ -33,14 +33,6 @@ class AuthService {
     );
   }
 
-  logout() {
-    localStorage.removeItem("user_token");
-    localStorage.removeItem("user_id");
-    localStorage.removeItem("user_name");
-    localStorage.removeItem("user_thumbnail");
-    return true;
-  }
-
   register(username, email, password) {
     return createUser({
       user_name: username,
