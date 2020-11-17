@@ -167,8 +167,7 @@ function UserProfile({ userId }) {
               <Button icon={<UploadOutlined />}>Click to Upload</Button>
             </Upload>
           ) : (
-            // <Avatar src={userData[0] ? userData[0]["user_thumbnail"] : "./"} />
-            <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+            <Avatar src={userData[0] ? userData[0]["user_thumbnail"] : "/"} />
           )}
         </Form.Item>
 

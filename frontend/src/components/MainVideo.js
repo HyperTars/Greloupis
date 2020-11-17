@@ -293,7 +293,8 @@ class MainVideo extends Component {
               </Link>
               <div className="author-details__info">
                 <p className="author-details__info-date">
-                  {user_name} Published on {dateConvert(video_upload_date)}
+                  <Link to={`/user/${user_id}`}>{user_name + " "}</Link>
+                  Published on {dateConvert(video_upload_date)}
                 </p>
               </div>
             </div>

@@ -1,12 +1,11 @@
 import React, { Component } from "react";
 import "../static/css/App.css";
 import { Link } from "react-router-dom";
-import { getSubstr } from "../util";
+import { getSubstr, generateAvatar } from "../util";
 import { Menu, Dropdown } from "antd";
 
 const isLoggedIn = localStorage.getItem("user_id") != null;
 const currentUserId = getSubstr(localStorage.getItem("user_id"));
-const currentUserAvatar = getSubstr(localStorage.getItem("user_thumbnail"));
 
 const menu1 = (
   <Menu>
@@ -44,10 +43,7 @@ class Header extends Component {
   render() {
     const logoPath = "/Assets/logo/svg/greloupis-horizontal-blue-fill-b.svg";
     const uploadPath = "/Assets/upload.svg";
-
-    const avatarPath = isLoggedIn
-      ? currentUserAvatar
-      : "https://greloupis-images.s3.amazonaws.com/avatar-default-1.svg";
+    const avatarPath = generateAvatar();
 
     return (
       <nav className="header">
@@ -99,7 +95,6 @@ class Header extends Component {
             </div>
           </Link>
 
-          {/* <Link to={`/user/${currentUserId}`}> */}
           <div className="header-profile__avatar">
             <Dropdown overlay={isLoggedIn ? menu1 : menu2} trigger={["click"]}>
               <a
