@@ -195,7 +195,6 @@ class UserUserId(Resource):
         try:
             user_id = request.url.split('/')[-1]
             result = service_user_get_info(conf=conf, user_id=user_id)
-            # print(result)
             if result['user'][0]['user_status'] != 'public' and\
                     get_jwt_identity() != result['user'][0]['user_id']:
                 return util_serializer_api_response(200, body={},

@@ -2,8 +2,10 @@
 from __future__ import absolute_import, print_function
 from flask import request
 # from flask_jwt_extended import jwt_required, jwt_optional, get_jwt_identity
-from flask_jwt_extended import jwt_required, jwt_optional
+from flask_jwt_extended import jwt_required, jwt_optional, get_jwt_identity
 from flask_restx import Resource, fields, Namespace
+
+from service.service_user import service_user_get_info
 from .route_user import thumbnail, general_response, star, comment, like, \
     dislike, star_response_list, comment_response_list, like_response_list, \
     dislike_response_list
@@ -103,7 +105,7 @@ comment_response = video.model(name='ApiResponseWithComment', model={
 @video.response(500, 'Internal server error', general_response)
 class Video(Resource):
 
-    @jwt_required
+    # @jwt_required
     def post(self, conf=config["default"]):
         """
             User upload a video
@@ -152,6 +154,7 @@ class VideoVideoId(Resource):
 
             get_result = service_video_info(conf=conf, **kw)
             if len(get_result) == 1:
+
                 return util_serializer_api_response(
                     200, body=get_result, msg="Successfully got video by ID")
             else:
@@ -225,7 +228,7 @@ class VideoVideoId(Resource):
 @video.response(500, 'Internal server error', general_response)
 class VideoVideoIdView(Resource):
 
-    # @jwt_optional
+    @jwt_optional
     def get(self, video_id, conf=config["default"]):
         """
             Get video view count by video ID
@@ -239,6 +242,7 @@ class VideoVideoIdView(Resource):
             }
 
             view_result = service_video_op_get_view(conf=conf, **kw)
+            # print(view_result)
             return util_serializer_api_response(
                 200, body=view_result, msg="Successfully get video view count")
         except (ServiceError, MongoError, RouteError, Exception) as e:
