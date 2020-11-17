@@ -25,12 +25,6 @@ class AuthService {
       && !!localStorage.getItem("user_id");
   }
 
-  logout() {
-    localStorage.removeItem("user_token");
-    localStorage.removeItem("user_id");
-    localStorage.removeItem("user_name");
-  }
-
   register(username, email, password) {
     return createUser({
         user_name: username,
