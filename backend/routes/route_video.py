@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, print_function
 from flask import request
-# from flask_jwt_extended import jwt_required, jwt_optional, get_jwt_identity
-from flask_jwt_extended import jwt_required, jwt_optional, get_jwt_identity
+from flask_jwt_extended import jwt_optional
 from flask_restx import Resource, fields, Namespace
 
-from service.service_user import service_user_get_info
+# from service.service_user import service_user_get_info
 from .route_user import thumbnail, general_response, star, comment, like, \
     dislike, star_response_list, comment_response_list, like_response_list, \
     dislike_response_list
@@ -154,16 +153,18 @@ class VideoVideoId(Resource):
 
             get_result = service_video_info(conf=conf, **kw)
             if len(get_result) == 1:
-                video_result = get_result[0].to_dict()
+                # video_result = get_result[0].to_dict()
                 # user_id = video_result['user_id']
-                # user_result = service_user_get_info(conf=conf, user_id=user_id)
-                # if user_result['user'][0]['user_status'] != 'public' and \
-                #         get_jwt_identity() != user_result['user'][0]['user_id']:
-                #     return util_serializer_api_response(200, body={},
-                #                                         msg="Get video by ID "
-                #                                             "successfully")
-                return_body = util_serializer_mongo_results_to_array(
-                    get_result, format="json")
+                # user_result = service_user_get_info(
+                # conf=conf, user_id=user_id)
+                # if user_result['user'][0]['user_status'] != 'public' \
+                # and
+                # get_jwt_identity() != user_result['user'][0]['user_id']:
+                # return util_serializer_api_response(200, body={},
+                #                                    msg="Get video by ID "
+                #                                        "successfully")
+                # return_body = util_serializer_mongo_results_to_array(
+                #     get_result, format="json")
                 return util_serializer_api_response(
                     200, body=get_result, msg="Successfully got video by ID")
             else:
