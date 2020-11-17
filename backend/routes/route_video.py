@@ -146,10 +146,8 @@ class VideoVideoId(Resource):
 
             get_result = service_video_info(conf=conf, **kw)
             if len(get_result) == 1:
-                return_body = util_serializer_mongo_results_to_array(
-                    get_result, format="json")
                 return util_serializer_api_response(
-                    200, body=return_body, msg="Successfully got video by ID")
+                    200, body=get_result, msg="Successfully got video by ID")
             else:
                 return util_serializer_api_response(
                     500, msg="Failed to get video by ID")

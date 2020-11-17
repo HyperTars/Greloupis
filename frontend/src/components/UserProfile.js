@@ -59,20 +59,23 @@ function UserProfile({ userId }) {
 
         setLoading(false);
         setUserData(res.body["user"]);
-        setVideoData(res.body["video"]);
 
-        setUserLike(
-          res.body["video_op"].filter((element) => element.like === true)
-        );
-        setUserDislike(
-          res.body["video_op"].filter((element) => element.dislike === true)
-        );
-        setUserStar(
-          res.body["video_op"].filter((element) => element.star === true)
-        );
-        setUserComment(
-          res.body["video_op"].filter((element) => element.comment !== "")
-        );
+        if (JSON.stringify(res.body["video"]) !== "[{}]")
+          setVideoData(res.body["video"]);
+        if (JSON.stringify(res.body["video_op"]) !== "[{}]") {
+          setUserLike(
+            res.body["video_op"].filter((element) => element.like === true)
+          );
+          setUserDislike(
+            res.body["video_op"].filter((element) => element.dislike === true)
+          );
+          setUserStar(
+            res.body["video_op"].filter((element) => element.star === true)
+          );
+          setUserComment(
+            res.body["video_op"].filter((element) => element.comment !== "")
+          );
+        }
       })
       .catch((e) => {
         setLoading(false);
@@ -630,8 +633,7 @@ function UserProfile({ userId }) {
                         <img
                           width={160}
                           alt="logo"
-                          src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
-                          // src={item.video_thumbnail}
+                          src={item.video_thumbnail}
                         />
                       </Link>
                     }

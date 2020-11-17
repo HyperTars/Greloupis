@@ -282,6 +282,7 @@ class UserLogin(Resource):
                 "user_token": token,
                 "user_id": user['user_id'],
                 "user_name": user['user_name'],
+                "user_thumbnail": user['user_thumbnail'],
             })
             return res
         except (ServiceError, MongoError, RouteError, Exception) as e:

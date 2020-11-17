@@ -47,7 +47,17 @@ def service_video_info(conf, **kw):
     get_result = query_video_get_by_video_id(kw["video_id"])
     if len(get_result) == 0:
         raise ServiceError(ErrorCode.SERVICE_VIDEO_NOT_FOUND)
-    return get_result
+
+    final_result = []
+    for each in get_result:
+        temp = each.to_dict()
+        user_id = each.to_dict()["user_id"]
+        user_obj = query_user_get_by_id(user_id)[0].to_dict()
+
+        temp["user_name"] = user_obj["user_name"]
+        temp["user_thumbnail"] = user_obj["user_thumbnail"]
+        final_result.append(temp)
+    return final_result
 
 
 def service_video_update(conf, **kw):
@@ -148,6 +158,7 @@ def service_video_comments(conf, **kw):
                 "video_id": each["video_id"],
                 "user_id": each["user_id"],
                 "user_name": user_obj["user_name"],
+                "user_thumbnail": user_obj["user_thumbnail"],
                 "comment": each["comment"],
                 "comment_date": str(each["comment_date"])
             })
