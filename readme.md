@@ -41,6 +41,7 @@
 
 
 - Our [Heroku Frontend Site](https://greloupis-frontend.herokuapp.com/) and [Heroku Backend Site](https://greloupis-backend.herokuapp.com/)
+- Our [Heroku Frontend Metrics Monitor](https://metrics.librato.com/s/public/wxet4vyas) and [Heroku Backend Metrics Monitor](https://metrics.librato.com/s/public/reo8fj68x)
 
 ### Project Proposal
 - [Proposal](documents/Proposal.md)
@@ -151,10 +152,10 @@ make prod
 
 ### CI / CD 
 - We use `Travis-CI`, `Docker` and `Heroku` to do CI/CD works
-  - Our [Travis Conf](.travis.yml) and [Travis-CI Page](https://travis-ci.com/github/HyperTars/Online-Video-Platform)
-  - Our [Docker Conf](docker-compose.yml) and [Docker Frontend](https://hub.docker.com/r/hypertars/greloupis-frontend/tags) | [Docker Backend](https://hub.docker.com/r/hypertars/greloupis-backend/tags)
+  - Our [Travis Conf](.travis.yml) and [Travis-CI Status](https://travis-ci.com/github/HyperTars/Online-Video-Platform)
+  - Our [Docker Conf](docker-compose.yml) and [Docker Frontend Repo](https://hub.docker.com/r/hypertars/greloupis-frontend/tags) | [Docker Backend Repo](https://hub.docker.com/r/hypertars/greloupis-backend/tags)
   - Our [Heroku Frontend](https://greloupis-frontend.herokuapp.com/) and [Heroku Backend](https://greloupis-backend.herokuapp.com/)
-
+  - Our [Heroku Frontend Metrics Monitor](https://metrics.librato.com/s/public/wxet4vyas) and [Heroku Backend Metrics Monitor](https://metrics.librato.com/s/public/reo8fj68x)
 
 ### Contributors
   
