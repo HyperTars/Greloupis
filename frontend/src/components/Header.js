@@ -2,17 +2,18 @@ import React, { Component } from "react";
 import "../static/css/App.css";
 import { Link } from "react-router-dom";
 import { getSubstr } from "../util";
-
 import { Menu, Dropdown } from "antd";
 
 const isLoggedIn = localStorage.getItem("user_id") != null;
 const currentUserId = getSubstr(localStorage.getItem("user_id"));
+const currentUserAvatar = getSubstr(localStorage.getItem("user_thumbnail"));
 
 const menu1 = (
   <Menu>
     <Menu.Item key="Profile">
       <a href={`/user/${currentUserId}`}>View Profile</a>
     </Menu.Item>
+
     <Menu.Item key="Logout">
       <a href="/logout" className="logout-alert">
         Logout
@@ -43,9 +44,10 @@ class Header extends Component {
   render() {
     const logoPath = "/Assets/logo/svg/greloupis-horizontal-blue-fill-b.svg";
     const uploadPath = "/Assets/upload.svg";
+
     const avatarPath = isLoggedIn
-      ? "/Assets/avatar.jpg"
-      : "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png";
+      ? currentUserAvatar
+      : "https://greloupis-images.s3.amazonaws.com/avatar-default-1.svg";
 
     return (
       <nav className="header">

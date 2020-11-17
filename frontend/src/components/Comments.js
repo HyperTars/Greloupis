@@ -120,6 +120,7 @@ export default class Comments extends Component {
             userName={comments[i].user_name}
             timestamp={comments[i].comment_date}
             comment={comments[i].comment}
+            avatar={comments[i].user_thumbnail}
           />
         );
       }
@@ -130,7 +131,7 @@ export default class Comments extends Component {
         <div className="comments-form">
           <img
             className="comments-form__avatar"
-            src="/Assets/avatar.jpg"
+            src={func.generateAvatar()}
             alt="Profile Avatar"
           />
           {!this.state.isAddingComment
@@ -204,7 +205,7 @@ class CommentBlock extends Component {
   }
 
   render() {
-    const { id, userName, timestamp, comment } = this.props;
+    const { id, userName, timestamp, comment, avatar } = this.props;
 
     return (
       <li
@@ -227,7 +228,7 @@ class CommentBlock extends Component {
         {this.state.showDeleteBtn ? this.renderDeleteButton() : null}
         <img
           className="comment-block__avatar"
-          src={`https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png`}
+          src={avatar}
           alt="Profile Avatar"
         />
         <div className="comment-block__content">

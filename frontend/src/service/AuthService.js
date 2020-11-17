@@ -7,6 +7,7 @@ class AuthService {
       user: username, // support both name and email
       user_password: password,
     }).then((response) => {
+      console.log(response);
       if (response.user_token) {
         localStorage.setItem("user_token", JSON.stringify(response.user_token));
       }
@@ -16,26 +17,27 @@ class AuthService {
       if (response.user_name) {
         localStorage.setItem("user_name", JSON.stringify(response.user_name));
       }
+      if (response.user_thumbnail) {
+        localStorage.setItem(
+          "user_thumbnail",
+          JSON.stringify(response.user_thumbnail)
+        );
+      }
       return response.user_token;
     });
   }
 
   isAuth() {
-    return !!localStorage.getItem("user_token") 
-      && !!localStorage.getItem("user_id");
-  }
-
-  logout() {
-    localStorage.removeItem("user_token");
-    localStorage.removeItem("user_id");
-    localStorage.removeItem("user_name");
+    return (
+      !!localStorage.getItem("user_token") && !!localStorage.getItem("user_id")
+    );
   }
 
   register(username, email, password) {
     return createUser({
-        user_name: username,
-        user_email: email,
-        user_password: password
+      user_name: username,
+      user_email: email,
+      user_password: password,
     }).then((response) => {
       if (response.user_token) {
         localStorage.setItem("user_token", JSON.stringify(response.user_token));
@@ -45,6 +47,12 @@ class AuthService {
       }
       if (response.user_name) {
         localStorage.setItem("user_name", JSON.stringify(response.user_name));
+      }
+      if (response.user_thumbnail) {
+        localStorage.setItem(
+          "user_thumbnail",
+          JSON.stringify(response.user_thumbnail)
+        );
       }
       return response.user_token;
     });
