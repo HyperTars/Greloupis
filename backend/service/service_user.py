@@ -45,7 +45,7 @@ def service_user_reg(conf, **kw):
     return query_user_get_by_name(kw['user_name'])[0].to_dict()
 
 
-def service_user_login(conf, ip="0.0.0.0", **kw):
+def service_user_login(conf, **kw):
     get_db(conf)
     kw['service'] = 'user'
     kw = util_pattern_format_param(**kw)
@@ -77,10 +77,10 @@ def service_user_login(conf, ip="0.0.0.0", **kw):
     else:
         raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
 
-    usr = user.to_dict()
+    uid = user.to_dict()['user_id']
     if 'ip' in kw:
-        query_user_add_login(usr['user_id'], ip=ip)
-    return usr
+        query_user_add_login(uid, ip=kw['ip'])
+    return query_user_get_by_id(uid)[0].to_dict()
 
 
 # def service_user_get_user(conf, **kw):
