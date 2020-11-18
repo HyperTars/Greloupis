@@ -7,12 +7,16 @@ import datetime
 from flask import request, jsonify
 
 from flask_jwt_extended import create_access_token, \
-    jwt_required, get_raw_jwt, jwt_optional
+    jwt_required, get_raw_jwt, jwt_optional, get_jwt_identity
 from flask_restx import Resource, fields, Namespace
-from service.service_user import service_user_get_comment, \
-    service_user_get_dislike, service_user_get_info, service_user_get_like, \
-    service_user_get_process, service_user_get_star, service_user_cancel, \
-    service_user_login, service_user_reg, service_user_update_info
+from service.service_user import service_user_login, service_user_reg, \
+    service_user_get_info, service_user_update_info, \
+    service_user_cancel, service_user_hide_info
+'''
+    #service_user_get_comment, service_user_get_dislike, \
+    #, service_user_get_like, \
+    #service_user_get_process, service_user_get_star
+'''
 from utils.util_jwt import blacklist, util_get_formated_response
 from utils.util_error_handler import util_error_handler
 from settings import config
@@ -144,7 +148,7 @@ process_response_list = user.model(name='ApiResponseWithProcessList', model={
 @user.response(405, 'Method not allowed', general_response)
 @user.response(500, 'Internal server error', general_response)
 class User(Resource):
-    @jwt_optional
+
     def post(self):
         """
             User sign up
@@ -164,8 +168,8 @@ class User(Resource):
             user = service_user_reg(conf=config["default"], **kw)
             print(user)
             # default: login
-            expires = datetime.timedelta(seconds=20)
-            # expires = datetime.timedelta(hours=20)
+            # expires = datetime.timedelta(seconds=20)
+            expires = datetime.timedelta(hours=20)
             token = create_access_token(identity=user['user_id'],
                                         expires_delta=expires, fresh=True)
             return jsonify({
@@ -186,23 +190,23 @@ class User(Resource):
 @user.response(404, 'User not found', general_response)
 @user.response(500, 'Internal server error', general_response)
 class UserUserId(Resource):
-    # TODO: implemented the test case
-    # @jwt_required
+    @jwt_optional
     def get(self, user_id, conf=config["default"]):
         """
             Get user information by id
         """
-
         try:
             user_id = request.url.split('/')[-1]
-
             result = service_user_get_info(conf=conf, user_id=user_id)
-            return util_serializer_api_response(200, body=result,
-                                                msg="Get user info "
-                                                    "successfully")
+            if result['user']['user_status'] != 'public' and \
+               get_jwt_identity() != result['user']['user_id']:
+                result = service_user_hide_info(result)
+            return util_serializer_api_response(
+                    200, body=result, msg="Get user info successfully")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
+    @jwt_required
     @user.response(405, 'Method not allowed')
     def put(self, user_id):
         """
@@ -226,6 +230,7 @@ class UserUserId(Resource):
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
+    @jwt_required
     @user.response(405, 'Method not allowed')
     def delete(self, user_id):
         """
@@ -244,6 +249,7 @@ class UserUserId(Resource):
             result = service_user_cancel(config['default'], kw)
             return util_serializer_api_response(
                 200, body=result, msg="Delete user successfully")
+
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
@@ -257,7 +263,6 @@ class UserLogin(Resource):
         """
             User sign in
         """
-
         try:
             if request.form != {}:
                 kw = dict(request.form)
@@ -272,8 +277,8 @@ class UserLogin(Resource):
             print(ip)
             user = service_user_login(conf=conf, ip=ip, **kw)
             print(user)
-            expires = datetime.timedelta(seconds=20)
-            # expires = datetime.timedelta(hours=20)
+            # expires = datetime.timedelta(seconds=20)
+            expires = datetime.timedelta(hours=20)
             token = create_access_token(identity=user['user_id'],
                                         expires_delta=expires, fresh=True)
             res = jsonify({
@@ -301,10 +306,11 @@ class UserLogout(Resource):
         """
         jti = get_raw_jwt()['jti']
         blacklist.add(jti)
-        return util_get_formated_response(code=200,
-                                          msg='logout succeeded')
+        return util_get_formated_response(
+            code=200, msg='logout succeeded')
 
 
+'''
 @user.route('/<string:user_id>/like', methods=['GET'])
 @user.param('user_id', 'User ID')
 @user.response(200, 'Successful operation', like_response_list)
@@ -313,6 +319,7 @@ class UserLogout(Resource):
 @user.response(500, 'Internal server error', general_response)
 class UserUserIdLike(Resource):
 
+    @jwt_optional
     def get(self, user_id, conf=config["default"]):
         """
             Get a list of like by user id
@@ -320,11 +327,14 @@ class UserUserIdLike(Resource):
 
         try:
             user_id = request.url.split('/')[-2]
-
+            result = service_user_get_info(conf=conf, user_id=user_id)
+            if result['user'][0]['user_status'] != 'public' and \
+                    get_jwt_identity() != result['user'][0]['user_id']:
+                return util_serializer_api_response(
+                    200, body={}, msg="Get user likes successfully")
             like_result = service_user_get_like(conf=conf, user_id=user_id)
-            return util_serializer_api_response(200, body=like_result,
-                                                msg="Get user likes "
-                                                    "successfully")
+            return util_serializer_api_response(
+                200, body=like_result, msg="Get user likes successfully")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
@@ -337,6 +347,7 @@ class UserUserIdLike(Resource):
 @user.response(500, 'Internal server error', general_response)
 class UserUserIdDislike(Resource):
 
+    @jwt_optional
     def get(self, user_id, conf=config["default"]):
         """
             Get a list of dislike by user id
@@ -344,9 +355,13 @@ class UserUserIdDislike(Resource):
 
         try:
             user_id = request.url.split('/')[-2]
-
-            dislike_result = service_user_get_dislike(conf=conf,
-                                                      user_id=user_id)
+            user_result = service_user_get_info(conf=conf, user_id=user_id)
+            if user_result['user'][0]['user_status'] != 'public' and\
+                    get_jwt_identity() != user_result['user'][0]['user_id']:
+                return util_serializer_api_response(
+                    200, body={}, msg="Get user dislikes successfully")
+            dislike_result = service_user_get_dislike(
+                conf=conf, user_id=user_id)
             return util_serializer_api_response(200, body=dislike_result,
                                                 msg="Get user dislikes "
                                                     "successfully")
@@ -362,6 +377,7 @@ class UserUserIdDislike(Resource):
 @user.response(500, 'Internal server error', general_response)
 class UserUserIdStar(Resource):
 
+    @jwt_optional
     def get(self, user_id, conf=config["default"]):
         """
             Get a list of star by user id
@@ -369,11 +385,14 @@ class UserUserIdStar(Resource):
 
         try:
             user_id = request.url.split('/')[-2]
-
+            user_result = service_user_get_info(conf=conf, user_id=user_id)
+            if user_result['user'][0]['user_status'] != 'public' and\
+                    get_jwt_identity() != user_result['user'][0]['user_id']:
+                return util_serializer_api_response(
+                    200, body={}, msg="Get user comments successfully")
             star_result = service_user_get_star(conf=conf, user_id=user_id)
-            return util_serializer_api_response(200, body=star_result,
-                                                msg="Get user comments "
-                                                    "successfully")
+            return util_serializer_api_response(
+                200, body=star_result, msg="Get user comments successfully")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
@@ -386,6 +405,7 @@ class UserUserIdStar(Resource):
 @user.response(500, 'Internal server error', general_response)
 class UserUserIdComment(Resource):
 
+    @jwt_optional
     def get(self, user_id, conf=config["default"]):
         """
             Get a list of comments by user id
@@ -393,12 +413,15 @@ class UserUserIdComment(Resource):
 
         try:
             user_id = request.url.split('/')[-2]
-
-            comment_result = service_user_get_comment(conf=conf,
-                                                      user_id=user_id)
-            return util_serializer_api_response(200, body=comment_result,
-                                                msg="Get user comments "
-                                                    "successfully")
+            user_result = service_user_get_info(conf=conf, user_id=user_id)
+            if user_result['user'][0]['user_status'] != 'public' and\
+                    get_jwt_identity() != user_result['user'][0]['user_id']:
+                return util_serializer_api_response(
+                    200, body={}, msg="Get user comments successfully")
+            comment_result = service_user_get_comment(
+                conf=conf, user_id=user_id)
+            return util_serializer_api_response(
+                200, body=comment_result, msg="Get user comments successfully")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
@@ -411,6 +434,7 @@ class UserUserIdComment(Resource):
 @user.response(500, 'Internal server error', general_response)
 class UserUserIdProcess(Resource):
 
+    @jwt_optional
     def get(self, user_id, conf=config["default"]):
         """
             Get a list of comments by user id
@@ -418,11 +442,16 @@ class UserUserIdProcess(Resource):
 
         try:
             user_id = request.url.split('/')[-2]
-
-            process_result = service_user_get_process(conf=conf,
-                                                      user_id=user_id)
-            return util_serializer_api_response(200, body=process_result,
-                                                msg="Get user processes "
-                                                    "successfully")
+            user_result = service_user_get_info(conf=conf, user_id=user_id)
+            if user_result['user'][0]['user_status'] != 'public' and\
+                    get_jwt_identity() != user_result['user'][0]['user_id']:
+                return util_serializer_api_response(
+                    200, body={}, msg="Get user processes successfully")
+            process_result = service_user_get_process(
+                conf=conf, user_id=user_id)
+            return util_serializer_api_response(
+                200, body=process_result,
+                msg="Get user processes successfully")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
+'''

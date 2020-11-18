@@ -10,7 +10,7 @@ frontend/coverage/
 frontend/coverage/*
 site-packages/
 *.icloud
-
+*.log
 ### VS Code ###
 vs_code/
 .vscode

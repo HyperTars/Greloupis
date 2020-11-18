@@ -1,4 +1,5 @@
 import { TEST_ENDPOINT /*, LOCAL_ENDPOINT*/ } from "./Endpoint";
+import { authHeader } from "../service/AuthHeader";
 
 export class GatewayTimeout extends Error {}
 export class NotFoundError extends Error {}
@@ -24,6 +25,7 @@ function fetchWithErrorHandling(url, method, data) {
           return fetch(url, {
             method: method,
             credentials: "include",
+            headers: authHeader(),
           })
             .then(handleErrors)
             .catch((error) => {
@@ -32,9 +34,7 @@ function fetchWithErrorHandling(url, method, data) {
         } else if (method === "POST" || method === "PUT") {
           return fetch(url, {
             method: method,
-            headers: {
-              "Content-Type": "application/json",
-            },
+            headers: authHeader(),
             credentials: "include",
             body: data,
           })
@@ -66,9 +66,7 @@ function fetchWithErrorHandling(url, method, data) {
   if (method === "GET" || method === "DELETE") {
     return fetch(url, {
       method: method,
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: authHeader(),
       credentials: "include",
     })
       .then(handleErrors)
@@ -79,9 +77,7 @@ function fetchWithErrorHandling(url, method, data) {
     if (data === {}) return {};
     return fetch(url, {
       method: method,
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: authHeader(),
       credentials: "include",
       body: JSON.stringify(data),
     })
