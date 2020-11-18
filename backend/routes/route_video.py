@@ -10,7 +10,8 @@ from .route_user import thumbnail, general_response, star, comment, like, \
     dislike_response_list
 from service.service_video import service_video_info, service_video_delete, \
     service_video_comments, service_video_dislikes, service_video_likes, \
-    service_video_stars, service_video_update, service_video_upload
+    service_video_stars, service_video_update, service_video_upload, \
+    service_video_auth_get
 from service.service_video_op import service_video_op_add_comment, \
     service_video_op_add_dislike, service_video_op_add_like, \
     service_video_op_add_process, service_video_op_add_star, \
@@ -24,7 +25,8 @@ from utils.util_error_handler import util_error_handler
 from utils.util_serializer import util_serializer_api_response, \
     util_serializer_mongo_results_to_array
 from settings import config
-from models.model_errors import ServiceError, RouteError, MongoError
+from models.model_errors import ServiceError, RouteError, MongoError, \
+    ErrorCode
 
 import ast
 
@@ -143,20 +145,21 @@ class VideoVideoId(Resource):
             Get video information by video ID
         """
         try:
+            video_id = request.url.split('/')[-1]
+            token = get_jwt_identity()
+
+            if service_video_auth_get(token, video_id) is False:
+                raise RouteError(ErrorCode.ROUTE_PRIVATE_VIDEO)
+
             video = service_video_info(
                 conf=conf, video_id=request.url.split('/')[-1])
 
-            if video['video_status'] == 'public' or \
-               video['user_id'] == get_jwt_identity():
-                return util_serializer_api_response(
+            return util_serializer_api_response(
                     200, body=video, msg="Successfully got video by ID.")
-            else:
-                return util_serializer_api_response(
-                    200, body={}, msg="Private Video.")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
-    # @jwt_required
+    @jwt_required
     @video.response(405, 'Method not allowed')
     def put(self, video_id, conf=config["default"]):
         """
@@ -170,8 +173,12 @@ class VideoVideoId(Resource):
                 raw_data = request.data.decode("utf-8")
                 kw = ast.literal_eval(raw_data)
 
-            video_id = request.url.split('/')[-1]
-            kw["video_id"] = video_id
+            kw["video_id"] = request.url.split('/')[-1]
+
+            # check authority
+            video = service_video_info(conf=conf, video_id=kw["video_id"])
+            if video['user_id'] != get_jwt_identity():
+                raise RouteError(ErrorCode.ROUTE_TOKEN_NOT_PERMITTED)
 
             if "video_tag" in kw.keys():
                 kw["video_tag"] = request.form.getlist("video_tag")
@@ -190,19 +197,21 @@ class VideoVideoId(Resource):
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
-    # @jwt_required
+    @jwt_required
     def delete(self, video_id, conf=config["default"]):
         """
             Delete video information by video ID
         """
 
         try:
-            video_id = request.url.split('/')[-1]
-            kw = {
-                "video_id": video_id
-            }
+            # check authority
+            video = service_video_info(
+                conf=conf, video_id=request.url.split('/')[-1])
+            if video['user_id'] != get_jwt_identity():
+                raise RouteError(ErrorCode.ROUTE_TOKEN_NOT_PERMITTED)
 
-            delete_result = service_video_delete(conf=conf, **kw)
+            delete_result = service_video_delete(
+                conf=conf, video_id=request.url.split('/')[-1])
             if delete_result == 1:
                 return util_serializer_api_response(
                     200, msg="Successfully deleted video")
@@ -230,18 +239,21 @@ class VideoVideoIdView(Resource):
         # print("get user name", get_jwt_identity())
         try:
             video_id = request.url.split('/')[-2]
-            kw = {
-                "video_id": video_id
-            }
-
-            view_result = service_video_op_get_view(conf=conf, **kw)
-            # print(view_result)
+            token = get_jwt_identity()
+            # check authority
+            if service_video_auth_get(token, video_id) is False:
+                raise RouteError(ErrorCode.ROUTE_PRIVATE_VIDEO)
+            
+            view_result = service_video_op_get_view(
+                conf=conf, video_id=video_id)
+            
             return util_serializer_api_response(
-                200, body=view_result, msg="Successfully get video view count")
+                200, body=view_result, msg="Successfully get video view count")                
+
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
-    # @jwt_required
+
     @video.response(405, 'Method not allowed')
     def put(self, video_id, conf=config["default"]):
         """
@@ -270,7 +282,7 @@ class VideoVideoIdView(Resource):
 @video.response(500, 'Internal server error', general_response)
 class VideoVideoIdComment(Resource):
 
-    # @jwt_optional
+    @jwt_optional
     def get(self, video_id, conf=config['default']):
         """
             Get video view comments list by video ID
@@ -279,11 +291,15 @@ class VideoVideoIdComment(Resource):
         # print("get user name", get_jwt_identity())
         try:
             video_id = request.url.split('/')[-2]
-            kw = {
-                "video_id": video_id
-            }
+            token = get_jwt_identity()
 
-            comments_result = service_video_comments(conf=conf, **kw)
+            # check authority
+            if service_video_auth_get(token, video_id) is False:
+                raise RouteError(ErrorCode.ROUTE_PRIVATE_VIDEO)
+
+            comments_result = service_video_comments(
+                conf=conf, video_id=video_id)
+
             return util_serializer_api_response(
                 200, body=comments_result,
                 msg="Successfully got video comments")
@@ -301,23 +317,20 @@ class VideoVideoIdComment(Resource):
 @video.response(500, 'Internal server error', general_response)
 class VideoVideoIdCommentUserId(Resource):
 
-    # @jwt_optional
+    @jwt_optional
     def get(self, video_id, user_id, conf=config['default']):
         """
             Get a comment by specified video id and user id
         """
-        # TODO
-        # print("get user name", get_jwt_identity())
         try:
             video_id = request.url.split('/')[-3]
             user_id = request.url.split('/')[-1]
 
-            kw = {
-                "video_id": video_id,
-                "user_id": user_id
-            }
+            # TODO: video_op get
 
-            comments_result = service_video_op_get_comment(conf=conf, **kw)
+            comments_result = service_video_op_get_comment(
+                conf=conf, video_id=video_id, user_id=user_id)
+
             return util_serializer_api_response(
                 200, body=comments_result,
                 msg="Successfully get comments of the user")
@@ -405,20 +418,21 @@ class VideoVideoIdCommentUserId(Resource):
 @video.response(500, 'Internal server error', general_response)
 class VideoVideoIdDislike(Resource):
 
-    # @jwt_optional
+    @jwt_optional
     def get(self, video_id, conf=config['default']):
         """
             Get a list of dislike by video id
         """
-        # TODO
-        # print("get user name", get_jwt_identity())
         try:
             video_id = request.url.split('/')[-2]
-            kw = {
-                "video_id": video_id
-            }
+            token = get_jwt_identity()
 
-            dislike_result = service_video_dislikes(conf=conf, **kw)
+            if service_video_auth_get(token, video_id) is False:
+                raise RouteError(ErrorCode.ROUTE_PRIVATE_VIDEO)
+
+            dislike_result = service_video_dislikes(
+                conf=conf, video_id=video_id)
+
             return util_serializer_api_response(
                 200, body=dislike_result,
                 msg="Successfully got video dislikes")
@@ -515,13 +529,11 @@ class VideoVideoIdProcessUserId(Resource):
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
-    # @jwt_optional
+    @jwt_optional
     def get(self, video_id, user_id, conf=config['default']):
         """
             Get a new video watching process
         """
-        # TODO
-        # print("get user name", get_jwt_identity())
         try:
             video_id = request.url.split('/')[-3]
             user_id = request.url.split('/')[-1]
@@ -592,20 +604,19 @@ class VideoVideoIdProcessUserId(Resource):
 @video.response(500, 'Internal server error', general_response)
 class VideoVideoIdLike(Resource):
 
-    # @jwt_optional
+    @jwt_optional
     def get(self, video_id, conf=config['default']):
         """
             Get a list of like by video id
         """
-        # TODO
-        # print("get user name", get_jwt_identity())
         try:
             video_id = request.url.split('/')[-2]
-            kw = {
-                "video_id": video_id
-            }
+            token = get_jwt_identity()
 
-            like_result = service_video_likes(conf=conf, **kw)
+            if service_video_auth_get(token, video_id) is False:
+                raise RouteError(ErrorCode.ROUTE_PRIVATE_VIDEO)
+
+            like_result = service_video_likes(conf=conf, video_id=video_id)
             return util_serializer_api_response(
                 200, body=like_result, msg="Successfully got video likes")
         except (ServiceError, MongoError, RouteError, Exception) as e:
@@ -679,15 +690,15 @@ class VideoVideoIdStar(Resource):
         """
             Get a list of star by video id
         """
-        # TODO
-        # print("get user name", get_jwt_identity())
         try:
             video_id = request.url.split('/')[-2]
-            kw = {
-                "video_id": video_id
-            }
+            token = get_jwt_identity()
 
-            star_result = service_video_stars(conf=conf, **kw)
+            if service_video_auth_get(token, video_id) is False:
+                raise RouteError(ErrorCode.ROUTE_PRIVATE_VIDEO)
+
+            star_result = service_video_stars(conf=conf, video_id=video_id)
+            
             return util_serializer_api_response(
                 200, body=star_result, msg="Successfully got video stars")
         except (ServiceError, MongoError, RouteError, Exception) as e:

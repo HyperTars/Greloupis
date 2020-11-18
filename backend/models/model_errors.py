@@ -13,6 +13,10 @@ class ErrorCode(Enum):
     # Routes 2 Series
     ROUTE_INVALID_REQUEST_PARAM = {
         2001: "Route Error: Invalid Request Parameters"}
+    ROUTE_TOKEN_NOT_PERMITTED = {
+        2002: "Route Error: This token does not have such permission"}
+    ROUTE_PRIVATE_VIDEO = {
+        2003: "Route Error: This video is a private video"}
 
     # Service 3 Series
     SERVICE_PARAM_SLICE_NOT_SUPPORT = {
