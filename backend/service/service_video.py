@@ -35,29 +35,23 @@ def service_video_info(conf, **kw):
     get_db(conf)
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
-
     # keyword check and formatting
     if 'video_id' not in kw:
         raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
-
+    
     if not is_valid_id(kw["video_id"]):
         raise ServiceError(ErrorCode.SERVICE_INVALID_ID_OBJ)
-
     # perform db operations and get result
-    get_result = query_video_get_by_video_id(kw["video_id"])
-    if len(get_result) == 0:
+    video = query_video_get_by_video_id(kw["video_id"])
+    if len(video) == 0:
         raise ServiceError(ErrorCode.SERVICE_VIDEO_NOT_FOUND)
 
-    final_result = []
-    for each in get_result:
-        temp = each.to_dict()
-        user_id = each.to_dict()["user_id"]
-        user_obj = query_user_get_by_id(user_id)[0].to_dict()
-
-        temp["user_name"] = user_obj["user_name"]
-        temp["user_thumbnail"] = user_obj["user_thumbnail"]
-        final_result.append(temp)
-    return final_result
+    res = video[0].to_dict()
+    user_id = res["user_id"]
+    user_obj = query_user_get_by_id(user_id)[0].to_dict()
+    res["user_name"] = user_obj["user_name"]
+    res["user_thumbnail"] = user_obj["user_thumbnail"]
+    return res
 
 
 def service_video_update(conf, **kw):

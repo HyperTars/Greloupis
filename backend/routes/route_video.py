@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, print_function
 from flask import request
-from flask_jwt_extended import jwt_optional
+from flask_jwt_extended import jwt_required, jwt_optional, get_jwt_identity
 from flask_restx import Resource, fields, Namespace
 
 # from service.service_user import service_user_get_info
@@ -103,7 +103,7 @@ comment_response = video.model(name='ApiResponseWithComment', model={
 @video.response(500, 'Internal server error', general_response)
 class Video(Resource):
 
-    # @jwt_required
+    @jwt_required
     def post(self, conf=config["default"]):
         """
             User upload a video
@@ -115,7 +115,7 @@ class Video(Resource):
             else:
                 raw_data = request.data.decode("utf-8")
                 kw = ast.literal_eval(raw_data)
-
+            kw['user_id'] = get_jwt_identity()
             upload_result = service_video_upload(conf=conf, **kw)
             if upload_result is not None and upload_result != {}:
                 return_body = util_serializer_mongo_results_to_array(
@@ -142,33 +142,17 @@ class VideoVideoId(Resource):
         """
             Get video information by video ID
         """
-        # TODO
-        # print("get user name", get_jwt_identity())
         try:
-            video_id = request.url.split('/')[-1]
-            kw = {
-                "video_id": video_id
-            }
+            video = service_video_info(
+                conf=conf, video_id=request.url.split('/')[-1])
 
-            get_result = service_video_info(conf=conf, **kw)
-            if len(get_result) == 1:
-                # video_result = get_result[0].to_dict()
-                # user_id = video_result['user_id']
-                # user_result = service_user_get_info(
-                # conf=conf, user_id=user_id)
-                # if user_result['user'][0]['user_status'] != 'public' \
-                # and
-                # get_jwt_identity() != user_result['user'][0]['user_id']:
-                # return util_serializer_api_response(200, body={},
-                #                                    msg="Get video by ID "
-                #                                        "successfully")
-                # return_body = util_serializer_mongo_results_to_array(
-                #     get_result, format="json")
+            if video['video_status'] == 'public' or \
+               video['user_id'] == get_jwt_identity():
                 return util_serializer_api_response(
-                    200, body=get_result, msg="Successfully got video by ID")
+                    200, body=video, msg="Successfully got video by ID.")
             else:
                 return util_serializer_api_response(
-                    500, msg="Failed to get video by ID")
+                    200, body={}, msg="Private Video.")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
