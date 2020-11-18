@@ -169,7 +169,7 @@ class User(Resource):
             print(user)
             # default: login
             # expires = datetime.timedelta(seconds=20)
-            expires = datetime.timedelta(hours=20)
+            expires = datetime.timedelta(hours=24)
             token = create_access_token(identity=user['user_id'],
                                         expires_delta=expires, fresh=True)
             return jsonify({
@@ -278,7 +278,7 @@ class UserLogin(Resource):
                     'HTTP_X_REAL_IP', request.remote_addr)
             user = service_user_login(conf=conf, **kw)
             # expires = datetime.timedelta(seconds=20)
-            expires = datetime.timedelta(hours=48)
+            expires = datetime.timedelta(hours=24)
             token = create_access_token(identity=user['user_id'],
                                         expires_delta=expires, fresh=True)
             res = jsonify({
