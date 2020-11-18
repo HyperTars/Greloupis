@@ -5,7 +5,7 @@ export function authHeader() {
   const user_id = getSubstr(localStorage.getItem("user_id"));
 
   if (user_token && user_id) {
-    return user_token;
+    return "Bearer " + user_token;
   } else {
     return "";
   }
