@@ -6,7 +6,7 @@ from flask_restx import Resource, fields, Namespace
 from .route_user import user_info, general_response
 from .route_video import video_info
 from service.service_search import service_search_user, \
-    service_search_video
+    service_search_video, service_search_hide_video
 from settings import config
 from utils.util_serializer import util_serializer_request, \
     util_serializer_api_response
@@ -38,14 +38,12 @@ video_response_list = search.model(name='ApiResponseWithVideoList', model={
 @search.response(400, 'Bad request.', general_response)
 @search.response(500, 'Internal server error.', general_response)
 class RouteSearchVideo(Resource):
-    @jwt_optional
     @search.doc(responses={200: 'Successfully got video search results.'})
+    @jwt_optional
     def get(self, conf=config["default"]):
         """
             Search videos by keyword
         """
-        # TODO
-        print("get user name", get_jwt_identity())
         try:
             req_dict = util_serializer_request(request.args)
             if 'keyword' not in req_dict:
@@ -91,9 +89,11 @@ class RouteSearchVideo(Resource):
                     conf=conf, tag=req_dict['keyword'], ignore_case=True)
             else:
                 raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
-
             return util_serializer_api_response(
-                200, body=search_result, msg="Search user successfully")
+                200,
+                body=service_search_hide_video(
+                    get_jwt_identity(), search_result),
+                msg="Search video successfully")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
@@ -105,7 +105,6 @@ class RouteSearchVideo(Resource):
 @search.response(400, 'Bad request.', general_response)
 @search.response(500, 'Internal server error.', general_response)
 class RouteSearchUser(Resource):
-    @jwt_optional
     @search.doc(responses={200: 'Successfully got user search results.'})
     def get(self, conf=config["default"]):
         """
@@ -257,8 +256,10 @@ class RouteSearchTopVideos(Resource):
                 conf=conf, aggregate=True, search_dict=search_dict)
             if keyword == 'video_upload_time':
                 search_result.reverse()
-
-            return util_serializer_api_response(200, body=search_result,
-                                                msg="Search user successfully")
+            return util_serializer_api_response(
+                200,
+                body=service_search_hide_video(
+                    get_jwt_identity(), search_result),
+                msg="Search video successfully")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)

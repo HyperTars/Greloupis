@@ -1,4 +1,4 @@
-import { TEST_ENDPOINT /*, LOCAL_ENDPOINT*/ } from "./Endpoint";
+import { backendPoint } from "./Endpoint";
 import { authHeader } from "../service/AuthHeader";
 
 export class GatewayTimeout extends Error {}
@@ -6,7 +6,7 @@ export class NotFoundError extends Error {}
 export class ServerError extends Error {}
 export class ClientError extends Error {}
 
-const CURRENT_ENDPOINT = TEST_ENDPOINT;
+const CURRENT_ENDPOINT = backendPoint();
 
 function fetchWithErrorHandling(url, method, data) {
   let retryCount = 3;

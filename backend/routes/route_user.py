@@ -270,15 +270,15 @@ class UserLogin(Resource):
                 raw_data = request.data.decode("utf-8")
                 kw = ast.literal_eval(raw_data)
             print(kw)
+            kw['ip'] = "0.0.0.0"
             if request.headers.getlist("X-Forwarded-For"):
-                ip = request.headers.getlist("X-Forwarded-For")[0]
+                kw['ip'] = request.headers.getlist("X-Forwarded-For")[0]
             else:
-                ip = request.environ.get('HTTP_X_REAL_IP', request.remote_addr)
-            print(ip)
-            user = service_user_login(conf=conf, ip=ip, **kw)
-            print(user)
+                kw['ip'] = request.environ.get(
+                    'HTTP_X_REAL_IP', request.remote_addr)
+            user = service_user_login(conf=conf, **kw)
             # expires = datetime.timedelta(seconds=20)
-            expires = datetime.timedelta(hours=20)
+            expires = datetime.timedelta(hours=48)
             token = create_access_token(identity=user['user_id'],
                                         expires_delta=expires, fresh=True)
             res = jsonify({

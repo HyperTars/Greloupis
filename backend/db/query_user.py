@@ -293,31 +293,28 @@ def query_user_add_login(user_id: str, ip="0.0.0.0", time=get_time_now_utc()):
     if type(user_id) != str or type(ip) != str or type(
             time) != datetime.datetime:
         raise MongoError(ErrorCode.MONGODB_STR_EXPECTED)
-
     users = query_user_get_by_id(user_id)
     if len(users) == 0:
         raise MongoError(ErrorCode.MONGODB_USER_NOT_FOUND)
-
     # only keep 10 login info
     login_history = users[0].user_login
-    oldest_login_time = login_history[0].user_login_time
-    latest_login_time = login_history[-1].user_login_time
+    oldest = login_history[0]
+    latest = login_history[-1]
+    # TODO: update latest 10 login info method, some bugs for current version
     if len(login_history) >= 10:
         # Delete oldest history
+        clean = UserLogin(
+            user_login_ip=oldest.user_login_ip,
+            user_login_time=oldest.user_login_time)
+        print("to delete: " + clean.user_login_time)
+        print(User.objects(_id=bson.ObjectId(user_id)).update_one(
+            pull__user_login__user_login_time=clean.user_login_time))
+    if time == latest:
         User.objects(_id=bson.ObjectId(user_id)).update(
-            pull__user_login__user_login_time=oldest_login_time)
-
-    # TODO: update latest 10 login info method, some bugs for current version
-    # add new login info
-    # print(time)
-    # print(latest_login_time)
-    if time == latest_login_time:
-        raise MongoError(ErrorCode.MONGODB_LOGIN_INFO_EXISTS)
+            pull__user_login__user_login_time=latest)
     new_login = {'user_login_ip': ip, 'user_login_time': time}
-
     User.objects(_id=bson.ObjectId(user_id)).update(
         add_to_set__user_login=[new_login])
-
     return 1
 
 
