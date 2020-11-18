@@ -17,7 +17,8 @@ class ErrorCode(Enum):
         2002: "Route Error: This token does not have such permission"}
     ROUTE_PRIVATE_VIDEO = {
         2003: "Route Error: This video is a private video"}
-
+    ROUTE_TOKEN_REQUIRED = {
+        2004: "Route Error: Token required but None provided"}
     # Service 3 Series
     SERVICE_PARAM_SLICE_NOT_SUPPORT = {
         3001: "Service Error: Current Param Does Not Support Slice"}

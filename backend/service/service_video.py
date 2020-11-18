@@ -24,6 +24,15 @@ def service_video_auth_get(token, video_id):
     return true
 
 
+def service_video_auth_modify(token, video_id):
+    video = query_video_get_by_video_id(video_id)
+    if len(videos) == 0:
+        raise ServiceError(ErrorCode.SERVICE_VIDEO_NOT_FOUND)
+    v = video[0].to_dict()
+    if v['user_id'] == token:
+        return true
+    return false
+
 
 def service_video_upload(conf, **kw):
     get_db(conf)

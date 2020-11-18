@@ -11,7 +11,7 @@ from .route_user import thumbnail, general_response, star, comment, like, \
 from service.service_video import service_video_info, service_video_delete, \
     service_video_comments, service_video_dislikes, service_video_likes, \
     service_video_stars, service_video_update, service_video_upload, \
-    service_video_auth_get
+    service_video_auth_get, service_video_auth_modify
 from service.service_video_op import service_video_op_add_comment, \
     service_video_op_add_dislike, service_video_op_add_like, \
     service_video_op_add_process, service_video_op_add_star, \
@@ -98,6 +98,9 @@ comment_response = video.model(name='ApiResponseWithComment', model={
 })
 
 
+#########
+# Video #
+#########
 @video.route('', methods=['POST'])
 @video.response(200, 'Successful operation', video_info)
 @video.response(400, 'Invalid video information', general_response)
@@ -117,6 +120,11 @@ class Video(Resource):
             else:
                 raw_data = request.data.decode("utf-8")
                 kw = ast.literal_eval(raw_data)
+            
+            # check authority
+            if get_jwt_identity is None:
+                raise RouteError(ErrorCode.ROUTE_TOKEN_REQUIRED)
+
             kw['user_id'] = get_jwt_identity()
             upload_result = service_video_upload(conf=conf, **kw)
             if upload_result is not None and upload_result != {}:
@@ -148,6 +156,7 @@ class VideoVideoId(Resource):
             video_id = request.url.split('/')[-1]
             token = get_jwt_identity()
 
+            # check authority
             if service_video_auth_get(token, video_id) is False:
                 raise RouteError(ErrorCode.ROUTE_PRIVATE_VIDEO)
 
@@ -173,13 +182,14 @@ class VideoVideoId(Resource):
                 raw_data = request.data.decode("utf-8")
                 kw = ast.literal_eval(raw_data)
 
-            kw["video_id"] = request.url.split('/')[-1]
+            video_id = request.url.split('/')[-1]
+            token = get_jwt_identity()
 
             # check authority
-            video = service_video_info(conf=conf, video_id=kw["video_id"])
-            if video['user_id'] != get_jwt_identity():
+            if service_video_auth_modify(token, video_id) is False:
                 raise RouteError(ErrorCode.ROUTE_TOKEN_NOT_PERMITTED)
-
+            
+            kw["video_id"] = video_id
             if "video_tag" in kw.keys():
                 kw["video_tag"] = request.form.getlist("video_tag")
             if "video_category" in kw.keys():
@@ -204,10 +214,11 @@ class VideoVideoId(Resource):
         """
 
         try:
+            video_id = request.url.split('/')[-1]
+            token = get_jwt_identity()
+            
             # check authority
-            video = service_video_info(
-                conf=conf, video_id=request.url.split('/')[-1])
-            if video['user_id'] != get_jwt_identity():
+            if service_video_auth_modify(token, video_id) is False:
                 raise RouteError(ErrorCode.ROUTE_TOKEN_NOT_PERMITTED)
 
             delete_result = service_video_delete(
@@ -235,11 +246,10 @@ class VideoVideoIdView(Resource):
         """
             Get video view count by video ID
         """
-        # TODO
-        # print("get user name", get_jwt_identity())
         try:
             video_id = request.url.split('/')[-2]
             token = get_jwt_identity()
+
             # check authority
             if service_video_auth_get(token, video_id) is False:
                 raise RouteError(ErrorCode.ROUTE_PRIVATE_VIDEO)
@@ -307,6 +317,97 @@ class VideoVideoIdComment(Resource):
             return util_error_handler(e)
 
 
+@video.route('/<string:video_id>/dislike', methods=['GET'])
+@video.param('video_id', 'Video ID')
+@video.response(200, 'Successful operation', dislike_response_list)
+@video.response(400, 'Invalid video ID', general_response)
+@video.response(404, 'Video not found', general_response)
+@video.response(500, 'Internal server error', general_response)
+class VideoVideoIdDislike(Resource):
+
+    @jwt_optional
+    def get(self, video_id, conf=config['default']):
+        """
+            Get a list of dislike by video id
+        """
+        try:
+            video_id = request.url.split('/')[-2]
+            token = get_jwt_identity()
+
+            # check authority
+            if service_video_auth_get(token, video_id) is False:
+                raise RouteError(ErrorCode.ROUTE_PRIVATE_VIDEO)
+
+            dislike_result = service_video_dislikes(
+                conf=conf, video_id=video_id)
+
+            return util_serializer_api_response(
+                200, body=dislike_result,
+                msg="Successfully got video dislikes")
+        except (ServiceError, MongoError, RouteError, Exception) as e:
+            return util_error_handler(e)
+
+
+@video.route('/<string:video_id>/like', methods=['GET'])
+@video.param('video_id', 'Video ID')
+@video.response(200, 'Successful operation', like_response_list)
+@video.response(400, 'Invalid video ID', general_response)
+@video.response(404, 'Video not found', general_response)
+@video.response(500, 'Internal server error', general_response)
+class VideoVideoIdLike(Resource):
+
+    @jwt_optional
+    def get(self, video_id, conf=config['default']):
+        """
+            Get a list of like by video id
+        """
+        try:
+            video_id = request.url.split('/')[-2]
+            token = get_jwt_identity()
+
+            # check authority
+            if service_video_auth_get(token, video_id) is False:
+                raise RouteError(ErrorCode.ROUTE_PRIVATE_VIDEO)
+
+            like_result = service_video_likes(conf=conf, video_id=video_id)
+            return util_serializer_api_response(
+                200, body=like_result, msg="Successfully got video likes")
+        except (ServiceError, MongoError, RouteError, Exception) as e:
+            return util_error_handler(e)
+
+
+@video.route('/<string:video_id>/star', methods=['GET'])
+@video.param('video_id', 'Video ID')
+@video.response(200, 'Successful operation', star_response_list)
+@video.response(400, 'Invalid video ID', general_response)
+@video.response(404, 'Video not found', general_response)
+@video.response(500, 'Internal server error', general_response)
+class VideoVideoIdStar(Resource):
+
+    # @jwt_optional
+    def get(self, video_id, conf=config['default']):
+        """
+            Get a list of star by video id
+        """
+        try:
+            video_id = request.url.split('/')[-2]
+            token = get_jwt_identity()
+
+            # check authority
+            if service_video_auth_get(token, video_id) is False:
+                raise RouteError(ErrorCode.ROUTE_PRIVATE_VIDEO)
+
+            star_result = service_video_stars(conf=conf, video_id=video_id)
+
+            return util_serializer_api_response(
+                200, body=star_result, msg="Successfully got video stars")
+        except (ServiceError, MongoError, RouteError, Exception) as e:
+            return util_error_handler(e)
+
+
+###########
+# VideoOp #
+###########
 @video.route('/<string:video_id>/comment/<string:user_id>',
              methods=['DELETE', 'GET', 'PUT', 'POST'])
 @video.param('video_id', 'Video ID')
@@ -406,90 +507,6 @@ class VideoVideoIdCommentUserId(Resource):
             comments_result = service_video_op_cancel_comment(conf=conf, **kw)
             return util_serializer_api_response(
                 200, body=comments_result, msg="Successfully delete a comment")
-        except (ServiceError, MongoError, RouteError, Exception) as e:
-            return util_error_handler(e)
-
-
-@video.route('/<string:video_id>/dislike', methods=['GET'])
-@video.param('video_id', 'Video ID')
-@video.response(200, 'Successful operation', dislike_response_list)
-@video.response(400, 'Invalid video ID', general_response)
-@video.response(404, 'Video not found', general_response)
-@video.response(500, 'Internal server error', general_response)
-class VideoVideoIdDislike(Resource):
-
-    @jwt_optional
-    def get(self, video_id, conf=config['default']):
-        """
-            Get a list of dislike by video id
-        """
-        try:
-            video_id = request.url.split('/')[-2]
-            token = get_jwt_identity()
-
-            if service_video_auth_get(token, video_id) is False:
-                raise RouteError(ErrorCode.ROUTE_PRIVATE_VIDEO)
-
-            dislike_result = service_video_dislikes(
-                conf=conf, video_id=video_id)
-
-            return util_serializer_api_response(
-                200, body=dislike_result,
-                msg="Successfully got video dislikes")
-        except (ServiceError, MongoError, RouteError, Exception) as e:
-            return util_error_handler(e)
-
-
-@video.route('/<string:video_id>/dislike/<string:user_id>',
-             methods=['DELETE', 'POST'])
-@video.param('video_id', 'Video ID')
-@video.param('user_id', 'User ID')
-@video.response(200, 'Successful operation', dislike_response)
-@video.response(400, 'Invalid video ID or user ID', general_response)
-@video.response(404, 'Video or user not found', general_response)
-@video.response(405, 'Method not allowed', general_response)
-@video.response(500, 'Internal server error', general_response)
-class VideoVideoIdDislikeUserId(Resource):
-
-    # @jwt_required
-    def post(self, video_id, user_id, conf=config['default']):
-        """
-            Post a dislike by specified user and video
-        """
-
-        try:
-            video_id = request.url.split('/')[-3]
-            user_id = request.url.split('/')[-1]
-
-            kw = {
-                "video_id": video_id,
-                "user_id": user_id,
-            }
-
-            dislike_result = service_video_op_add_dislike(conf=conf, **kw)
-            return util_serializer_api_response(
-                200, body=dislike_result, msg="Successfully post a dislike")
-        except (ServiceError, MongoError, RouteError, Exception) as e:
-            return util_error_handler(e)
-
-    # @jwt_required
-    def delete(self, video_id, user_id, conf=config['default']):
-        """
-            Undo a dislike by specified user and video
-        """
-
-        try:
-            video_id = request.url.split('/')[-3]
-            user_id = request.url.split('/')[-1]
-
-            kw = {
-                "video_id": video_id,
-                "user_id": user_id,
-            }
-
-            dislike_result = service_video_op_cancel_dislike(conf=conf, **kw)
-            return util_serializer_api_response(
-                200, body=dislike_result, msg="Successfully cancel a dislike")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
@@ -596,33 +613,6 @@ class VideoVideoIdProcessUserId(Resource):
             return util_error_handler(e)
 
 
-@video.route('/<string:video_id>/like', methods=['GET'])
-@video.param('video_id', 'Video ID')
-@video.response(200, 'Successful operation', like_response_list)
-@video.response(400, 'Invalid video ID', general_response)
-@video.response(404, 'Video not found', general_response)
-@video.response(500, 'Internal server error', general_response)
-class VideoVideoIdLike(Resource):
-
-    @jwt_optional
-    def get(self, video_id, conf=config['default']):
-        """
-            Get a list of like by video id
-        """
-        try:
-            video_id = request.url.split('/')[-2]
-            token = get_jwt_identity()
-
-            if service_video_auth_get(token, video_id) is False:
-                raise RouteError(ErrorCode.ROUTE_PRIVATE_VIDEO)
-
-            like_result = service_video_likes(conf=conf, video_id=video_id)
-            return util_serializer_api_response(
-                200, body=like_result, msg="Successfully got video likes")
-        except (ServiceError, MongoError, RouteError, Exception) as e:
-            return util_error_handler(e)
-
-
 @video.route('/<string:video_id>/like/<string:user_id>',
              methods=['DELETE', 'POST'])
 @video.param('video_id', 'Video ID')
@@ -677,30 +667,56 @@ class VideoVideoIdLikeUserId(Resource):
             return util_error_handler(e)
 
 
-@video.route('/<string:video_id>/star', methods=['GET'])
+@video.route('/<string:video_id>/dislike/<string:user_id>',
+             methods=['DELETE', 'POST'])
 @video.param('video_id', 'Video ID')
-@video.response(200, 'Successful operation', star_response_list)
-@video.response(400, 'Invalid video ID', general_response)
-@video.response(404, 'Video not found', general_response)
+@video.param('user_id', 'User ID')
+@video.response(200, 'Successful operation', dislike_response)
+@video.response(400, 'Invalid video ID or user ID', general_response)
+@video.response(404, 'Video or user not found', general_response)
+@video.response(405, 'Method not allowed', general_response)
 @video.response(500, 'Internal server error', general_response)
-class VideoVideoIdStar(Resource):
+class VideoVideoIdDislikeUserId(Resource):
 
-    # @jwt_optional
-    def get(self, video_id, conf=config['default']):
+    # @jwt_required
+    def post(self, video_id, user_id, conf=config['default']):
         """
-            Get a list of star by video id
+            Post a dislike by specified user and video
         """
+
         try:
-            video_id = request.url.split('/')[-2]
-            token = get_jwt_identity()
+            video_id = request.url.split('/')[-3]
+            user_id = request.url.split('/')[-1]
 
-            if service_video_auth_get(token, video_id) is False:
-                raise RouteError(ErrorCode.ROUTE_PRIVATE_VIDEO)
+            kw = {
+                "video_id": video_id,
+                "user_id": user_id,
+            }
 
-            star_result = service_video_stars(conf=conf, video_id=video_id)
-            
+            dislike_result = service_video_op_add_dislike(conf=conf, **kw)
             return util_serializer_api_response(
-                200, body=star_result, msg="Successfully got video stars")
+                200, body=dislike_result, msg="Successfully post a dislike")
+        except (ServiceError, MongoError, RouteError, Exception) as e:
+            return util_error_handler(e)
+
+    # @jwt_required
+    def delete(self, video_id, user_id, conf=config['default']):
+        """
+            Undo a dislike by specified user and video
+        """
+
+        try:
+            video_id = request.url.split('/')[-3]
+            user_id = request.url.split('/')[-1]
+
+            kw = {
+                "video_id": video_id,
+                "user_id": user_id,
+            }
+
+            dislike_result = service_video_op_cancel_dislike(conf=conf, **kw)
+            return util_serializer_api_response(
+                200, body=dislike_result, msg="Successfully cancel a dislike")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
