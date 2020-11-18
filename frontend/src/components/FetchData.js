@@ -25,9 +25,7 @@ function fetchWithErrorHandling(url, method, data) {
           return fetch(url, {
             method: method,
             credentials: "include",
-            headers: {
-              Authorization: JSON.stringify(authHeader()),
-            },
+            headers: authHeader(),
           })
             .then(handleErrors)
             .catch((error) => {
@@ -36,10 +34,7 @@ function fetchWithErrorHandling(url, method, data) {
         } else if (method === "POST" || method === "PUT") {
           return fetch(url, {
             method: method,
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: JSON.stringify(authHeader()),
-            },
+            headers: authHeader(),
             credentials: "include",
             body: data,
           })
@@ -72,10 +67,7 @@ function fetchWithErrorHandling(url, method, data) {
     console.log(JSON.stringify(authHeader()));
     return fetch(url, {
       method: method,
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: JSON.stringify(authHeader()),
-      },
+      headers: authHeader(),
       credentials: "include",
     })
       .then(handleErrors)
@@ -86,10 +78,7 @@ function fetchWithErrorHandling(url, method, data) {
     if (data === {}) return {};
     return fetch(url, {
       method: method,
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: JSON.stringify(authHeader()),
-      },
+      headers: authHeader(),
       credentials: "include",
       body: JSON.stringify(data),
     })
