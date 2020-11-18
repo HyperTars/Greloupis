@@ -114,6 +114,16 @@ def service_search_video(conf, **kw):
     return res_array
 
 
+def service_search_hide_video(user, results):
+    ret = []
+    if user is None or user == None:
+        user = ""
+    for video in results:
+        if video['video_status'] == 'public' or video['user_id'] == user:
+            ret.append(video)
+    return ret
+
+
 ###########
 # Helpers #
 ###########
