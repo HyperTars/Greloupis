@@ -153,7 +153,6 @@ function UserProfile({ userId }) {
         labelAlign="left"
         initialValues={{
           prefix: "1",
-          stauts: "public",
         }}
         scrollToFirstError
       >
@@ -167,7 +166,7 @@ function UserProfile({ userId }) {
               <Button icon={<UploadOutlined />}>Click to Upload</Button>
             </Upload>
           ) : (
-            <Avatar src={userData[0] ? userData[0]["user_thumbnail"] : "/"} />
+            <Avatar src={userData ? userData["user_thumbnail"] : "/"} />
           )}
         </Form.Item>
 
@@ -191,11 +190,11 @@ function UserProfile({ userId }) {
           {isLocalUser ? (
             <Input
               placeholder="Input your nickname: "
-              defaultValue={userData[0] ? userData[0]["user_name"] : "..."}
+              defaultValue={userData ? userData["user_name"] : "..."}
             />
           ) : (
             <Input
-              defaultValue={userData[0] ? userData[0]["user_name"] : "..."}
+              defaultValue={userData ? userData["user_name"] : "..."}
               disabled
               bordered={false}
             />
@@ -215,11 +214,11 @@ function UserProfile({ userId }) {
           {isLocalUser ? (
             <Input
               placeholder="Input your email address: "
-              defaultValue={userData[0] ? userData[0]["user_email"] : "..."}
+              defaultValue={userData ? userData["user_email"] : "..."}
             />
           ) : (
             <Input
-              defaultValue={userData[0] ? userData[0]["user_email"] : "..."}
+              defaultValue={userData ? userData["user_email"] : "..."}
               disabled
               bordered={false}
             />
@@ -240,16 +239,16 @@ function UserProfile({ userId }) {
             <Input
               placeholder="Input your first name: "
               defaultValue={
-                userData[0]
-                  ? userData[0]["user_detail"]["user_first_name"]
+                userData["user_detail"]
+                  ? userData["user_detail"]["user_first_name"]
                   : "..."
               }
             />
           ) : (
             <Input
               defaultValue={
-                userData[0]
-                  ? userData[0]["user_detail"]["user_first_name"]
+                userData["user_detail"]
+                  ? userData["user_detail"]["user_first_name"]
                   : "..."
               }
               disabled
@@ -272,16 +271,16 @@ function UserProfile({ userId }) {
             <Input
               placeholder="Input your last name: "
               defaultValue={
-                userData[0]
-                  ? userData[0]["user_detail"]["user_last_name"]
+                userData["user_detail"]
+                  ? userData["user_detail"]["user_last_name"]
                   : "..."
               }
             />
           ) : (
             <Input
               defaultValue={
-                userData[0]
-                  ? userData[0]["user_detail"]["user_last_name"]
+                userData["user_detail"]
+                  ? userData["user_detail"]["user_last_name"]
                   : "..."
               }
               disabled
@@ -299,7 +298,9 @@ function UserProfile({ userId }) {
             <Input
               placeholder="Input your phone number: "
               defaultValue={
-                userData[0] ? userData[0]["user_detail"]["user_phone"] : "..."
+                userData["user_detail"]
+                  ? userData["user_detail"]["user_phone"]
+                  : "..."
               }
               addonBefore={prefixSelector}
               style={{ width: "100%" }}
@@ -307,7 +308,9 @@ function UserProfile({ userId }) {
           ) : (
             <Input
               defaultValue={
-                userData[0] ? userData[0]["user_detail"]["user_phone"] : "..."
+                userData["user_detail"]
+                  ? userData["user_detail"]["user_phone"]
+                  : "..."
               }
               style={{ width: "100%" }}
               disabled
@@ -330,13 +333,17 @@ function UserProfile({ userId }) {
             <Input
               placeholder="Input your Street address or P.O. Box: "
               defaultValue={
-                userData[0] ? userData[0]["user_detail"]["user_street1"] : "..."
+                userData["user_detail"]
+                  ? userData["user_detail"]["user_street1"]
+                  : "..."
               }
             />
           ) : (
             <Input
               defaultValue={
-                userData[0] ? userData[0]["user_detail"]["user_street1"] : "..."
+                userData["user_detail"]
+                  ? userData["user_detail"]["user_street1"]
+                  : "..."
               }
               disabled
               bordered={false}
@@ -358,13 +365,17 @@ function UserProfile({ userId }) {
             <Input
               placeholder="Input your Apt, suite, unit, building, floor, etc.: "
               defaultValue={
-                userData[0] ? userData[0]["user_detail"]["user_street2"] : "..."
+                userData["user_detail"]
+                  ? userData["user_detail"]["user_street2"]
+                  : "..."
               }
             />
           ) : (
             <Input
               defaultValue={
-                userData[0] ? userData[0]["user_detail"]["user_street2"] : "..."
+                userData["user_detail"]
+                  ? userData["user_detail"]["user_street2"]
+                  : "..."
               }
               disabled
               bordered={false}
@@ -386,13 +397,17 @@ function UserProfile({ userId }) {
             <Input
               placeholder="Input your city name: "
               defaultValue={
-                userData[0] ? userData[0]["user_detail"]["user_city"] : "..."
+                userData["user_detail"]
+                  ? userData["user_detail"]["user_city"]
+                  : "..."
               }
             />
           ) : (
             <Input
               defaultValue={
-                userData[0] ? userData[0]["user_detail"]["user_city"] : "..."
+                userData["user_detail"]
+                  ? userData["user_detail"]["user_city"]
+                  : "..."
               }
               disabled
               bordered={false}
@@ -414,13 +429,17 @@ function UserProfile({ userId }) {
             <Input
               placeholder="Input your state name: "
               defaultValue={
-                userData[0] ? userData[0]["user_detail"]["user_state"] : "..."
+                userData["user_detail"]
+                  ? userData["user_detail"]["user_state"]
+                  : "..."
               }
             />
           ) : (
             <Input
               defaultValue={
-                userData[0] ? userData[0]["user_detail"]["user_state"] : "..."
+                userData["user_detail"]
+                  ? userData["user_detail"]["user_state"]
+                  : "..."
               }
               disabled
               bordered={false}
@@ -442,13 +461,17 @@ function UserProfile({ userId }) {
             <Input
               placeholder="Input your country name: "
               defaultValue={
-                userData[0] ? userData[0]["user_detail"]["user_country"] : "..."
+                userData["user_detail"]
+                  ? userData["user_detail"]["user_country"]
+                  : "..."
               }
             />
           ) : (
             <Input
               defaultValue={
-                userData[0] ? userData[0]["user_detail"]["user_country"] : "..."
+                userData["user_detail"]
+                  ? userData["user_detail"]["user_country"]
+                  : "..."
               }
               disabled
               bordered={false}
@@ -470,13 +493,17 @@ function UserProfile({ userId }) {
             <Input
               placeholder="Input your zip code: "
               defaultValue={
-                userData[0] ? userData[0]["user_detail"]["user_zip"] : "..."
+                userData["user_detail"]
+                  ? userData["user_detail"]["user_zip"]
+                  : "..."
               }
             />
           ) : (
             <Input
               defaultValue={
-                userData[0] ? userData[0]["user_detail"]["user_zip"] : "..."
+                userData["user_detail"]
+                  ? userData["user_detail"]["user_zip"]
+                  : "..."
               }
               disabled
               bordered={false}
@@ -492,14 +519,14 @@ function UserProfile({ userId }) {
           {isLocalUser ? (
             <Select
               placeholder="Select your user status: "
-              defaultValue={userData[0] ? userData[0]["user_status"] : "public"}
+              defaultValue={userData ? userData["user_status"] : "..."}
             >
               <Option value="public">Public</Option>
               <Option value="private">Private</Option>
             </Select>
           ) : (
             <Input
-              defaultValue={userData[0] ? userData[0]["user_status"] : "..."}
+              defaultValue={userData ? userData["user_status"] : "..."}
               style={{ width: "100%" }}
               disabled
               bordered={false}

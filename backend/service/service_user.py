@@ -141,6 +141,27 @@ def service_user_cancel(conf, **kw):
     return query_user_delete_by_id(kw['user_id'])
 
 
+def service_user_hide_info(info):
+    if 'user' not in info or 'video' not in info or 'video_op' not in info:
+        raise ServiceError(ErrorCode.SERVICE_MISSING_USER_INFO)
+    hide = '[Private User]'
+    info['user']['user_detail']['user_city'] = hide
+    info['user']['user_detail']['user_country'] = hide
+    info['user']['user_detail']['user_first_name'] = hide
+    info['user']['user_detail']['user_last_name'] = hide
+    info['user']['user_detail']['user_phone'] = hide
+    info['user']['user_detail']['user_state'] = hide
+    info['user']['user_detail']['user_street1'] = hide
+    info['user']['user_detail']['user_street2'] = hide
+    info['user']['user_detail']['user_zip'] = hide
+    info['user']['user_email'] = hide
+    info['user']['user_following'] = []
+    info['user']['user_login'] = []
+    info['video'] = []
+    info['video_op'] = []
+    return info
+
+
 def service_user_get_info(conf, user_id):
     get_db(conf)
     final_result = {}
@@ -161,7 +182,7 @@ def service_user_get_info(conf, user_id):
                 if isinstance(value, datetime.datetime):
                     each_result[key] = str(value)
 
-        final_result["user"] = user_result_dict_array
+        final_result["user"] = user_result_dict_array[0]
     else:
         raise ServiceError(ErrorCode.SERVICE_USER_NOT_FOUND)
 

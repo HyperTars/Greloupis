@@ -34,6 +34,7 @@ class ErrorCode(Enum):
     SERVICE_VIDEO_NOT_FOUND = {3011: "Service Error: Video Not Found"}
     SERVICE_USER_PASS_WRONG = {3012: "Service Error: User Password Wrong"}
     SERVICE_MISSING_USER_ID = {3013: "Service Error: Missing user_id"}
+    SERVICE_MISSING_USER_INFO = {3014: "Service Error: Missing user info"}
 
     # Database 4 Series
     MONGODB_CONNECTION_FAILURE = {4000: "MongoDB Connection Failure"}
