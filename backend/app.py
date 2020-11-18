@@ -10,6 +10,7 @@ from routes.route_user import blacklist
 from settings import config
 import os
 import logging.config
+from pathlib import Path
 
 # from source.utils.util_request_filter import *
 # from flask import request, redirect, session
@@ -19,7 +20,8 @@ app = Flask(__name__)
 app.config.from_object(config['test'])
 app.register_blueprint(blueprint)
 
-with open('logging.yml', 'r') as f:
+with open('configs/logging.yml', 'r') as f:
+    Path("logs").mkdir(parents=True, exist_ok=True)
     conf = yaml.safe_load(f.read())
     logging.config.dictConfig(conf)
 
