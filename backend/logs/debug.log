@@ -1551,3 +1551,5 @@
 2020-11-18 09:16:02,799 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
 2020-11-18 09:16:03,707 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
 2020-11-18 09:16:03,714 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 286-169-467
+2020-11-18 09:18:53,631 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 09:18:53] "[37mOPTIONS /user/5f88f883e6ac4f89900ac983 HTTP/1.1[0m" 200 -
+2020-11-18 09:18:54,656 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 09:18:54] "[37mGET /user/5f88f883e6ac4f89900ac983 HTTP/1.1[0m" 200 -
