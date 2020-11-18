@@ -198,9 +198,12 @@ class UserUserId(Resource):
         try:
             user_id = request.url.split('/')[-1]
             result = service_user_get_info(conf=conf, user_id=user_id)
-            print(result)
             if result['user']['user_status'] != 'public' and \
                get_jwt_identity() != result['user']['user_id']:
+                print("\n====== PREPARE TO HIDE ===== \n")
+                print("jwt: ")
+                print(get_jwt_identity())
+                print("\nresult: " + result['user']['user_id'] + "\n")
                 result = service_user_hide_info(result)
             return util_serializer_api_response(
                     200, body=result, msg="Get user info successfully")

@@ -373,3 +373,183 @@
 2020-11-17 19:29:28,419 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:29:28] "[37mGET /user/5f89aeaa6e95124396ca11fe HTTP/1.1[0m" 200 -
 2020-11-17 19:29:38,000 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:29:38] "[37mOPTIONS /user/5f89aeaa6e95124396ca11fe HTTP/1.1[0m" 200 -
 2020-11-17 19:29:38,191 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:29:38] "[37mGET /user/5f89aeaa6e95124396ca11fe HTTP/1.1[0m" 200 -
+2020-11-17 19:42:24,899 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+2020-11-17 19:42:24,900 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-17 19:42:25,503 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-17 19:42:25,518 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 286-169-467
+2020-11-17 19:42:53,936 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:42:53] "[37mOPTIONS /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-17 19:42:54,880 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:42:54] "[37mGET /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-17 19:42:59,447 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:42:59] "[37mOPTIONS /video/5f88c0307a6eb86b0eccc8d2/view HTTP/1.1[0m" 200 -
+2020-11-17 19:42:59,449 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:42:59] "[37mOPTIONS /video/5f88c0307a6eb86b0eccc8d2 HTTP/1.1[0m" 200 -
+2020-11-17 19:42:59,450 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:42:59] "[37mOPTIONS /video/5f88c0307a6eb86b0eccc8d2/like HTTP/1.1[0m" 200 -
+2020-11-17 19:42:59,452 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:42:59] "[37mOPTIONS /video/5f88c0307a6eb86b0eccc8d2/comment HTTP/1.1[0m" 200 -
+2020-11-17 19:42:59,453 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:42:59] "[37mOPTIONS /video/5f88c0307a6eb86b0eccc8d2/dislike HTTP/1.1[0m" 200 -
+2020-11-17 19:42:59,456 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:42:59] "[37mOPTIONS /video/5f88c0307a6eb86b0eccc8d2/star HTTP/1.1[0m" 200 -
+2020-11-17 19:42:59,603 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:42:59] "[37mGET /video/5f88c0307a6eb86b0eccc8d2 HTTP/1.1[0m" 200 -
+2020-11-17 19:42:59,740 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:42:59] "[37mGET /video/5f88c0307a6eb86b0eccc8d2/dislike HTTP/1.1[0m" 200 -
+2020-11-17 19:42:59,761 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:42:59] "[37mGET /video/5f88c0307a6eb86b0eccc8d2/like HTTP/1.1[0m" 200 -
+2020-11-17 19:42:59,776 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:42:59] "[37mPUT /video/5f88c0307a6eb86b0eccc8d2/view HTTP/1.1[0m" 200 -
+2020-11-17 19:42:59,788 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:42:59] "[37mGET /video/5f88c0307a6eb86b0eccc8d2/comment HTTP/1.1[0m" 200 -
+2020-11-17 19:42:59,804 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:42:59] "[37mGET /video/5f88c0307a6eb86b0eccc8d2/star HTTP/1.1[0m" 200 -
+2020-11-17 19:43:11,113 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:43:11] "[37mOPTIONS /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-17 19:43:11,382 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:43:11] "[37mGET /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-17 19:43:13,421 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:43:13] "[37mOPTIONS /search/user?keyword= HTTP/1.1[0m" 200 -
+2020-11-17 19:43:13,422 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:43:13] "[37mOPTIONS /search/video?keyword= HTTP/1.1[0m" 200 -
+2020-11-17 19:43:14,372 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:43:14] "[37mGET /search/user?keyword= HTTP/1.1[0m" 200 -
+2020-11-17 19:43:14,857 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:43:14] "[37mGET /search/video?keyword= HTTP/1.1[0m" 200 -
+2020-11-17 19:43:29,928 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:43:29] "[37mOPTIONS /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-17 19:43:30,227 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:43:30] "[37mGET /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-17 19:43:31,519 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:43:31] "[37mOPTIONS /video/5f88c0307a6eb86b0eccc8d2/view HTTP/1.1[0m" 200 -
+2020-11-17 19:43:31,521 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:43:31] "[37mOPTIONS /video/5f88c0307a6eb86b0eccc8d2 HTTP/1.1[0m" 200 -
+2020-11-17 19:43:31,522 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:43:31] "[37mOPTIONS /video/5f88c0307a6eb86b0eccc8d2/comment HTTP/1.1[0m" 200 -
+2020-11-17 19:43:31,524 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:43:31] "[37mOPTIONS /video/5f88c0307a6eb86b0eccc8d2/like HTTP/1.1[0m" 200 -
+2020-11-17 19:43:31,526 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:43:31] "[37mOPTIONS /video/5f88c0307a6eb86b0eccc8d2/dislike HTTP/1.1[0m" 200 -
+2020-11-17 19:43:31,527 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:43:31] "[37mOPTIONS /video/5f88c0307a6eb86b0eccc8d2/star HTTP/1.1[0m" 200 -
+2020-11-17 19:43:31,636 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:43:31] "[37mGET /video/5f88c0307a6eb86b0eccc8d2/dislike HTTP/1.1[0m" 200 -
+2020-11-17 19:43:31,663 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:43:31] "[37mGET /video/5f88c0307a6eb86b0eccc8d2 HTTP/1.1[0m" 200 -
+2020-11-17 19:43:31,692 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:43:31] "[37mGET /video/5f88c0307a6eb86b0eccc8d2/comment HTTP/1.1[0m" 200 -
+2020-11-17 19:43:31,696 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:43:31] "[37mPUT /video/5f88c0307a6eb86b0eccc8d2/view HTTP/1.1[0m" 200 -
+2020-11-17 19:43:31,698 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:43:31] "[37mGET /video/5f88c0307a6eb86b0eccc8d2/like HTTP/1.1[0m" 200 -
+2020-11-17 19:43:31,716 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:43:31] "[37mGET /video/5f88c0307a6eb86b0eccc8d2/star HTTP/1.1[0m" 200 -
+2020-11-17 19:43:38,746 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:43:38] "[37mOPTIONS /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-17 19:43:39,031 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:43:39] "[37mGET /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-17 19:43:40,865 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:43:40] "[37mOPTIONS /video/5faaa578b2d477154bd76b28/view HTTP/1.1[0m" 200 -
+2020-11-17 19:43:40,906 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:43:40] "[37mOPTIONS /video/5faaa578b2d477154bd76b28 HTTP/1.1[0m" 200 -
+2020-11-17 19:43:40,910 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:43:40] "[37mOPTIONS /video/5faaa578b2d477154bd76b28/comment HTTP/1.1[0m" 200 -
+2020-11-17 19:43:40,913 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:43:40] "[37mOPTIONS /video/5faaa578b2d477154bd76b28/like HTTP/1.1[0m" 200 -
+2020-11-17 19:43:40,916 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:43:40] "[37mOPTIONS /video/5faaa578b2d477154bd76b28/dislike HTTP/1.1[0m" 200 -
+2020-11-17 19:43:40,919 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:43:40] "[37mOPTIONS /video/5faaa578b2d477154bd76b28/star HTTP/1.1[0m" 200 -
+2020-11-17 19:43:41,000 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:43:41] "[37mGET /video/5faaa578b2d477154bd76b28/comment HTTP/1.1[0m" 200 -
+2020-11-17 19:43:41,003 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:43:41] "[37mPUT /video/5faaa578b2d477154bd76b28/view HTTP/1.1[0m" 200 -
+2020-11-17 19:43:41,019 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:43:41] "[37mGET /video/5faaa578b2d477154bd76b28/dislike HTTP/1.1[0m" 200 -
+2020-11-17 19:43:41,027 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:43:41] "[37mGET /video/5faaa578b2d477154bd76b28/star HTTP/1.1[0m" 200 -
+2020-11-17 19:43:41,031 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:43:41] "[37mGET /video/5faaa578b2d477154bd76b28/like HTTP/1.1[0m" 200 -
+2020-11-17 19:43:41,036 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:43:41] "[37mGET /video/5faaa578b2d477154bd76b28 HTTP/1.1[0m" 200 -
+2020-11-17 19:43:44,141 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:43:44] "[37mOPTIONS /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-17 19:43:44,431 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:43:44] "[37mGET /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-17 19:43:46,325 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:43:46] "[37mOPTIONS /video/5faaa6e4b2d477154bd76b30/view HTTP/1.1[0m" 200 -
+2020-11-17 19:43:46,327 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:43:46] "[37mOPTIONS /video/5faaa6e4b2d477154bd76b30 HTTP/1.1[0m" 200 -
+2020-11-17 19:43:46,328 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:43:46] "[37mOPTIONS /video/5faaa6e4b2d477154bd76b30/comment HTTP/1.1[0m" 200 -
+2020-11-17 19:43:46,330 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:43:46] "[37mOPTIONS /video/5faaa6e4b2d477154bd76b30/like HTTP/1.1[0m" 200 -
+2020-11-17 19:43:46,332 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:43:46] "[37mOPTIONS /video/5faaa6e4b2d477154bd76b30/dislike HTTP/1.1[0m" 200 -
+2020-11-17 19:43:46,334 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:43:46] "[37mOPTIONS /video/5faaa6e4b2d477154bd76b30/star HTTP/1.1[0m" 200 -
+2020-11-17 19:43:46,429 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:43:46] "[37mGET /video/5faaa6e4b2d477154bd76b30/dislike HTTP/1.1[0m" 200 -
+2020-11-17 19:43:46,455 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:43:46] "[37mGET /video/5faaa6e4b2d477154bd76b30 HTTP/1.1[0m" 200 -
+2020-11-17 19:43:46,456 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:43:46] "[37mGET /video/5faaa6e4b2d477154bd76b30/like HTTP/1.1[0m" 200 -
+2020-11-17 19:43:46,458 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:43:46] "[37mGET /video/5faaa6e4b2d477154bd76b30/comment HTTP/1.1[0m" 200 -
+2020-11-17 19:43:46,463 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:43:46] "[37mGET /video/5faaa6e4b2d477154bd76b30/star HTTP/1.1[0m" 200 -
+2020-11-17 19:43:46,503 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:43:46] "[37mPUT /video/5faaa6e4b2d477154bd76b30/view HTTP/1.1[0m" 200 -
+2020-11-17 19:43:54,665 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:43:54] "[37mOPTIONS /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-17 19:43:54,966 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 19:43:54] "[37mGET /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-17 20:26:48,005 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 20:26:48] "[37mOPTIONS /user/5f89aeaa6e95124396ca11fe HTTP/1.1[0m" 200 -
+2020-11-17 20:26:48,246 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 20:26:48] "[37mGET /user/5f89aeaa6e95124396ca11fe HTTP/1.1[0m" 200 -
+2020-11-17 20:30:55,820 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 20:30:55] "[37mOPTIONS /user/5f89aeaa6e95124396ca11fe HTTP/1.1[0m" 200 -
+2020-11-17 20:30:56,110 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 20:30:56] "[37mGET /user/5f89aeaa6e95124396ca11fe HTTP/1.1[0m" 200 -
+2020-11-17 20:31:10,703 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+2020-11-17 20:31:10,704 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-17 20:31:11,221 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-17 20:31:11,236 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 286-169-467
+2020-11-17 20:31:23,763 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 20:31:23] "[37mOPTIONS /user/5f89aeaa6e95124396ca11fe HTTP/1.1[0m" 200 -
+2020-11-17 20:31:24,568 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 20:31:24] "[37mGET /user/5f89aeaa6e95124396ca11fe HTTP/1.1[0m" 200 -
+2020-11-17 20:32:17,680 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 20:32:17] "[37mOPTIONS /user/5f89aeaa6e95124396ca11fe HTTP/1.1[0m" 200 -
+2020-11-17 20:32:17,919 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 20:32:17] "[37mGET /user/5f89aeaa6e95124396ca11fe HTTP/1.1[0m" 200 -
+2020-11-17 20:32:34,687 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 20:32:34] "[37mOPTIONS /user/5f89aeaa6e95124396ca11fe HTTP/1.1[0m" 200 -
+2020-11-17 20:32:34,900 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 20:32:34] "[37mGET /user/5f89aeaa6e95124396ca11fe HTTP/1.1[0m" 200 -
+2020-11-17 20:33:19,387 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/hypertars/Documents/Codes/Online-Video-Platform/backend/routes/route_user.py', reloading
+2020-11-17 20:33:19,550 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-17 20:33:20,235 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-17 20:33:20,241 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 286-169-467
+2020-11-17 20:33:36,812 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/hypertars/Documents/Codes/Online-Video-Platform/backend/routes/route_user.py', reloading
+2020-11-17 20:33:36,880 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-17 20:33:37,528 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-17 20:33:37,534 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 286-169-467
+2020-11-17 20:33:41,132 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 20:33:41] "[37mOPTIONS /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-17 20:33:42,687 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 20:33:42] "[37mGET /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-17 20:33:46,563 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 20:33:46] "[37mOPTIONS /search/user?keyword= HTTP/1.1[0m" 200 -
+2020-11-17 20:33:46,566 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 20:33:46] "[37mOPTIONS /search/video?keyword= HTTP/1.1[0m" 200 -
+2020-11-17 20:33:48,177 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 20:33:48] "[37mGET /search/user?keyword= HTTP/1.1[0m" 200 -
+2020-11-17 20:33:48,619 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 20:33:48] "[37mGET /search/video?keyword= HTTP/1.1[0m" 200 -
+2020-11-17 20:33:49,894 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 20:33:49] "[37mOPTIONS /user/5fadfad8a1a9a4287a8b8628 HTTP/1.1[0m" 200 -
+2020-11-17 20:33:50,090 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 20:33:50] "[37mGET /user/5fadfad8a1a9a4287a8b8628 HTTP/1.1[0m" 200 -
+2020-11-17 20:33:54,462 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 20:33:54] "[37mOPTIONS /search/user?keyword= HTTP/1.1[0m" 200 -
+2020-11-17 20:33:54,465 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 20:33:54] "[37mOPTIONS /search/video?keyword= HTTP/1.1[0m" 200 -
+2020-11-17 20:33:55,753 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 20:33:55] "[37mGET /search/video?keyword= HTTP/1.1[0m" 200 -
+2020-11-17 20:33:57,441 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 20:33:57] "[37mGET /search/user?keyword= HTTP/1.1[0m" 200 -
+2020-11-17 20:33:58,838 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 20:33:58] "[37mOPTIONS /user/5fad316ae93d41203ff116a8 HTTP/1.1[0m" 200 -
+2020-11-17 20:33:58,958 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 20:33:58] "[37mGET /user/5fad316ae93d41203ff116a8 HTTP/1.1[0m" 200 -
+2020-11-17 20:34:02,506 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 20:34:02] "[37mOPTIONS /search/user?keyword= HTTP/1.1[0m" 200 -
+2020-11-17 20:34:02,509 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 20:34:02] "[37mOPTIONS /search/video?keyword= HTTP/1.1[0m" 200 -
+2020-11-17 20:34:04,883 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 20:34:04] "[37mGET /search/user?keyword= HTTP/1.1[0m" 200 -
+2020-11-17 20:34:05,265 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 20:34:05] "[37mGET /search/video?keyword= HTTP/1.1[0m" 200 -
+2020-11-17 20:34:13,992 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 20:34:13] "[37mOPTIONS /user/5faaa3864616c6a1e4efe61a HTTP/1.1[0m" 200 -
+2020-11-17 20:34:14,127 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 20:34:14] "[37mGET /user/5faaa3864616c6a1e4efe61a HTTP/1.1[0m" 200 -
+2020-11-17 20:34:27,740 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 20:34:27] "[37mOPTIONS /search/user?keyword= HTTP/1.1[0m" 200 -
+2020-11-17 20:34:27,742 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 20:34:27] "[37mOPTIONS /search/video?keyword= HTTP/1.1[0m" 200 -
+2020-11-17 20:34:28,728 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 20:34:28] "[37mGET /search/user?keyword= HTTP/1.1[0m" 200 -
+2020-11-17 20:34:29,063 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 20:34:29] "[37mGET /search/video?keyword= HTTP/1.1[0m" 200 -
+2020-11-17 20:34:34,725 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 20:34:34] "[37mOPTIONS /user/login HTTP/1.1[0m" 200 -
+2020-11-17 20:34:34,868 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 20:34:34] "[37mPOST /user/login HTTP/1.1[0m" 200 -
+2020-11-17 20:34:35,006 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 20:34:35] "[37mOPTIONS /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-17 20:34:35,280 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 20:34:35] "[37mGET /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-17 20:34:35,761 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 20:34:35] "[37mGET /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-17 20:34:39,807 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 20:34:39] "[37mOPTIONS /user/5f89ad4f02139585a94eaab2 HTTP/1.1[0m" 200 -
+2020-11-17 20:34:40,016 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 20:34:40] "[37mGET /user/5f89ad4f02139585a94eaab2 HTTP/1.1[0m" 200 -
+2020-11-17 20:35:16,574 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/hypertars/Documents/Codes/Online-Video-Platform/backend/routes/route_user.py', reloading
+2020-11-17 20:35:17,096 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-17 20:35:17,772 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-17 20:35:17,779 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 286-169-467
+2020-11-17 20:35:19,584 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 20:35:19] "[37mOPTIONS /user/5f89ad4f02139585a94eaab2 HTTP/1.1[0m" 200 -
+2020-11-17 20:35:20,342 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 20:35:20] "[37mGET /user/5f89ad4f02139585a94eaab2 HTTP/1.1[0m" 200 -
+2020-11-17 20:35:37,427 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/hypertars/Documents/Codes/Online-Video-Platform/backend/routes/route_user.py', reloading
+2020-11-17 20:35:37,917 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-17 20:35:38,537 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-17 20:35:38,542 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 286-169-467
+2020-11-17 20:35:41,671 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/hypertars/Documents/Codes/Online-Video-Platform/backend/routes/route_user.py', reloading
+2020-11-17 20:35:41,751 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-17 20:35:42,414 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-17 20:35:42,420 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 286-169-467
+2020-11-17 20:35:44,154 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 20:35:44] "[37mOPTIONS /user/5f89ad4f02139585a94eaab2 HTTP/1.1[0m" 200 -
+2020-11-17 20:35:45,146 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 20:35:45] "[35m[1mGET /user/5f89ad4f02139585a94eaab2 HTTP/1.1[0m" 503 -
+2020-11-17 20:35:57,938 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/hypertars/Documents/Codes/Online-Video-Platform/backend/routes/route_user.py', reloading
+2020-11-17 20:35:58,519 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-17 20:35:59,123 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-17 20:35:59,129 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 286-169-467
+2020-11-17 20:36:01,101 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 20:36:01] "[37mOPTIONS /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-17 20:36:03,410 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 20:36:03] "[37mOPTIONS /user/5f89ad4f02139585a94eaab2 HTTP/1.1[0m" 200 -
+2020-11-17 20:36:04,292 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 20:36:04] "[37mGET /user/5f89ad4f02139585a94eaab2 HTTP/1.1[0m" 200 -
+2020-11-17 20:36:17,701 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/hypertars/Documents/Codes/Online-Video-Platform/backend/routes/route_user.py', reloading
+2020-11-17 20:36:18,189 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-17 20:36:18,830 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-17 20:36:18,836 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 286-169-467
+2020-11-17 20:44:58,006 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/hypertars/Documents/Codes/Online-Video-Platform/backend/routes/route_user.py', reloading
+2020-11-17 20:44:58,080 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-17 20:44:58,747 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-17 20:44:58,753 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 286-169-467
+2020-11-17 20:46:21,360 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/hypertars/Documents/Codes/Online-Video-Platform/backend/routes/route_user.py', reloading
+2020-11-17 20:46:21,420 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-17 20:46:22,010 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-17 20:46:22,015 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 286-169-467
+2020-11-17 20:46:27,203 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/hypertars/Documents/Codes/Online-Video-Platform/backend/routes/route_user.py', reloading
+2020-11-17 20:46:27,284 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-17 20:46:27,874 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-17 20:46:27,880 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 286-169-467
+2020-11-17 20:46:34,099 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/hypertars/Documents/Codes/Online-Video-Platform/backend/routes/route_user.py', reloading
+2020-11-17 20:46:34,175 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-17 20:46:34,729 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-17 20:46:34,735 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 286-169-467
+2020-11-17 20:46:35,790 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/hypertars/Documents/Codes/Online-Video-Platform/backend/routes/route_user.py', reloading
+2020-11-17 20:46:35,873 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-17 20:46:36,403 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-17 20:46:36,407 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 286-169-467
+2020-11-17 20:46:42,259 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 20:46:42] "[37mOPTIONS /user/5f89ad4f02139585a94eaab2 HTTP/1.1[0m" 200 -
+2020-11-17 20:46:43,229 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 20:46:43] "[37mGET /user/5f89ad4f02139585a94eaab2 HTTP/1.1[0m" 200 -
+2020-11-17 21:21:48,880 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 21:21:48] "[37mPOST /user/login HTTP/1.1[0m" 200 -
+2020-11-17 21:22:43,511 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 21:22:43] "[31m[1mPOST /user/5f88f883e6ac4f89900ac983 HTTP/1.1[0m" 405 -
+2020-11-17 21:22:55,816 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 21:22:55] "[31m[1mPOST /user/5f88f883e6ac4f89900ac983 HTTP/1.1[0m" 405 -
+2020-11-17 21:23:00,821 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 21:23:00] "[31m[1mPOST /user/5f88f883e6ac4f89900ac983 HTTP/1.1[0m" 405 -
+2020-11-17 21:23:17,769 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 21:23:17] "[37mGET /user/5f88f883e6ac4f89900ac983 HTTP/1.1[0m" 200 -
+2020-11-17 21:23:47,801 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 21:23:47] "[37mPOST /user/login HTTP/1.1[0m" 200 -
+2020-11-17 21:24:12,307 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 21:24:12] "[37mPOST /user/login HTTP/1.1[0m" 200 -
+2020-11-17 21:24:41,082 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 21:24:41] "[37mGET /user/5f89ad4f02139585a94eaab2 HTTP/1.1[0m" 200 -
+2020-11-17 21:24:59,252 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 21:24:59] "[37mGET /user/5f89ad4f02139585a94eaab2 HTTP/1.1[0m" 200 -
+2020-11-17 21:25:24,175 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [17/Nov/2020 21:25:24] "[37mGET /user/5f89ad4f02139585a94eaab2 HTTP/1.1[0m" 200 -
