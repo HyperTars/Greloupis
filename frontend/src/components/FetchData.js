@@ -1,5 +1,6 @@
 import { TEST_ENDPOINT /*, LOCAL_ENDPOINT*/ } from "./Endpoint";
 import { authHeader } from "../service/AuthHeader";
+import { getSubstr } from "../util";
 
 export class GatewayTimeout extends Error {}
 export class NotFoundError extends Error {}
@@ -25,7 +26,13 @@ function fetchWithErrorHandling(url, method, data) {
           return fetch(url, {
             method: method,
             credentials: "include",
+<<<<<<< HEAD
             headers: authHeader(),
+=======
+            headers: {
+              Authorization: getSubstr(JSON.stringify(authHeader())),
+            },
+>>>>>>> 5f4c98979f0cc7029a5f7b1181d010918a90cfe4
           })
             .then(handleErrors)
             .catch((error) => {
@@ -64,10 +71,16 @@ function fetchWithErrorHandling(url, method, data) {
     }
   }
   if (method === "GET" || method === "DELETE") {
-    console.log(JSON.stringify(authHeader()));
     return fetch(url, {
       method: method,
+<<<<<<< HEAD
       headers: authHeader(),
+=======
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: getSubstr(JSON.stringify(authHeader())),
+      },
+>>>>>>> 5f4c98979f0cc7029a5f7b1181d010918a90cfe4
       credentials: "include",
     })
       .then(handleErrors)
@@ -78,7 +91,14 @@ function fetchWithErrorHandling(url, method, data) {
     if (data === {}) return {};
     return fetch(url, {
       method: method,
+<<<<<<< HEAD
       headers: authHeader(),
+=======
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: getSubstr(JSON.stringify(authHeader())),
+      },
+>>>>>>> 5f4c98979f0cc7029a5f7b1181d010918a90cfe4
       credentials: "include",
       body: JSON.stringify(data),
     })
