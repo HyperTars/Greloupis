@@ -89,8 +89,10 @@ class RouteSearchVideo(Resource):
                     conf=conf, tag=req_dict['keyword'], ignore_case=True)
             else:
                 raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
-            return util_serializer_api_response(200,
-                body=service_search_hide_video(get_jwt_identity(), search_result), 
+            return util_serializer_api_response(
+                200,
+                body=service_search_hide_video(
+                    get_jwt_identity(), search_result),
                 msg="Search video successfully")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
@@ -254,8 +256,10 @@ class RouteSearchTopVideos(Resource):
                 conf=conf, aggregate=True, search_dict=search_dict)
             if keyword == 'video_upload_time':
                 search_result.reverse()
-            return util_serializer_api_response(200,
-                body=service_search_hide_video(get_jwt_identity(), search_result), 
+            return util_serializer_api_response(
+                200,
+                body=service_search_hide_video(
+                    get_jwt_identity(), search_result),
                 msg="Search video successfully")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)

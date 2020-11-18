@@ -979,3 +979,263 @@
 2020-11-18 08:31:31,271 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:31:31] "[37mGET /user/5f89ad4f02139585a94eaab2 HTTP/1.1[0m" 200 -
 2020-11-18 08:31:35,972 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:31:35] "[37mOPTIONS /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
 2020-11-18 08:31:36,222 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:31:36] "[37mGET /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 08:35:06,831 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/hypertars/Documents/Codes/Online-Video-Platform/backend/service/service_user.py', reloading
+2020-11-18 08:35:07,377 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-18 08:35:08,026 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-18 08:35:08,031 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 286-169-467
+2020-11-18 08:35:13,767 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:35:13] "[37mGET /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 08:35:20,367 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:35:20] "[37mPOST /user/login HTTP/1.1[0m" 200 -
+2020-11-18 08:35:20,486 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:35:20] "[37mOPTIONS /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 08:35:21,485 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:35:21] "[37mGET /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 08:35:43,342 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/hypertars/Documents/Codes/Online-Video-Platform/backend/routes/route_user.py', reloading
+2020-11-18 08:35:43,901 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-18 08:35:44,653 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-18 08:35:44,660 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 286-169-467
+2020-11-18 08:36:09,438 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/hypertars/Documents/Codes/Online-Video-Platform/backend/service/service_user.py', reloading
+2020-11-18 08:36:09,503 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-18 08:36:10,155 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-18 08:36:10,161 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 286-169-467
+2020-11-18 08:36:12,266 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/hypertars/Documents/Codes/Online-Video-Platform/backend/service/service_user.py', reloading
+2020-11-18 08:36:12,360 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-18 08:36:13,168 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-18 08:36:13,174 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 286-169-467
+2020-11-18 08:36:17,811 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:36:17] "[37mGET /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 08:36:25,489 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:36:25] "[37mPOST /user/login HTTP/1.1[0m" 200 -
+2020-11-18 08:36:25,605 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:36:25] "[37mOPTIONS /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 08:36:26,349 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:36:26] "[37mGET /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 08:38:47,118 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/hypertars/Documents/Codes/Online-Video-Platform/backend/routes/route_user.py', reloading
+2020-11-18 08:38:47,500 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-18 08:38:48,035 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-18 08:38:48,040 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 286-169-467
+2020-11-18 08:39:19,095 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/hypertars/Documents/Codes/Online-Video-Platform/backend/routes/route_user.py', reloading
+2020-11-18 08:39:19,171 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-18 08:39:19,922 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-18 08:39:19,928 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 286-169-467
+2020-11-18 08:39:25,135 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/hypertars/Documents/Codes/Online-Video-Platform/backend/routes/route_user.py', reloading
+2020-11-18 08:39:25,201 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-18 08:39:25,765 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-18 08:39:25,771 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 286-169-467
+2020-11-18 08:39:58,846 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/hypertars/Documents/Codes/Online-Video-Platform/backend/service/service_user.py', reloading
+2020-11-18 08:39:58,924 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-18 08:39:59,677 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-18 08:39:59,684 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 286-169-467
+2020-11-18 08:40:28,630 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/hypertars/Documents/Codes/Online-Video-Platform/backend/service/service_search.py', reloading
+2020-11-18 08:40:28,700 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-18 08:40:29,283 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-18 08:40:29,288 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 286-169-467
+2020-11-18 08:40:56,223 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/hypertars/Documents/Codes/Online-Video-Platform/backend/routes/route_search.py', reloading
+2020-11-18 08:40:56,299 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-18 08:40:56,987 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-18 08:40:56,992 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 286-169-467
+2020-11-18 08:41:39,291 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/hypertars/Documents/Codes/Online-Video-Platform/backend/routes/route_search.py', reloading
+2020-11-18 08:41:39,356 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-18 08:41:39,930 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-18 08:41:39,936 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 286-169-467
+2020-11-18 08:41:53,382 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/hypertars/Documents/Codes/Online-Video-Platform/backend/routes/route_search.py', reloading
+2020-11-18 08:41:53,471 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-18 08:41:54,090 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-18 08:41:54,096 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 286-169-467
+2020-11-18 08:42:04,466 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/hypertars/Documents/Codes/Online-Video-Platform/backend/routes/route_search.py', reloading
+2020-11-18 08:42:04,550 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-18 08:42:05,221 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-18 08:42:05,227 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 286-169-467
+2020-11-18 08:42:20,724 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/hypertars/Documents/Codes/Online-Video-Platform/backend/routes/route_search.py', reloading
+2020-11-18 08:42:20,806 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-18 08:42:21,666 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-18 08:42:21,675 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 286-169-467
+2020-11-18 08:42:48,629 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/hypertars/Documents/Codes/Online-Video-Platform/backend/service/service_user.py', reloading
+2020-11-18 08:42:48,692 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-18 08:42:49,266 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-18 08:42:49,272 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 286-169-467
+2020-11-18 08:43:44,995 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/hypertars/Documents/Codes/Online-Video-Platform/backend/service/service_user.py', reloading
+2020-11-18 08:43:45,058 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-18 08:43:45,643 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-18 08:43:45,648 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 286-169-467
+2020-11-18 08:44:32,394 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:44:32] "[37mGET /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 08:44:41,104 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:44:41] "[35m[1mPOST /user/login HTTP/1.1[0m" 503 -
+2020-11-18 08:45:02,780 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:45:02] "[35m[1mPOST /user/login HTTP/1.1[0m" 500 -
+2020-11-18 08:45:27,121 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/hypertars/Documents/Codes/Online-Video-Platform/backend/service/service_user.py', reloading
+2020-11-18 08:45:27,700 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-18 08:45:28,466 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-18 08:45:28,476 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 286-169-467
+2020-11-18 08:45:29,867 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:45:29] "[35m[1mPOST /user/login HTTP/1.1[0m" 503 -
+2020-11-18 08:45:47,127 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/hypertars/Documents/Codes/Online-Video-Platform/backend/service/service_user.py', reloading
+2020-11-18 08:45:47,477 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-18 08:45:48,214 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-18 08:45:48,220 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 286-169-467
+2020-11-18 08:45:50,038 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:45:50] "[35m[1mPOST /user/login HTTP/1.1[0m" 503 -
+2020-11-18 08:45:59,661 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/hypertars/Documents/Codes/Online-Video-Platform/backend/service/service_user.py', reloading
+2020-11-18 08:46:00,072 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-18 08:46:00,770 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-18 08:46:00,775 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 286-169-467
+2020-11-18 08:46:01,817 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:46:01] "[37mPOST /user/login HTTP/1.1[0m" 200 -
+2020-11-18 08:46:02,047 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:46:02] "[37mOPTIONS /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 08:46:03,750 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:46:03] "[37mGET /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 08:46:16,793 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:46:16] "[37mOPTIONS /user/5f88f883e6ac4f89900ac983 HTTP/1.1[0m" 200 -
+2020-11-18 08:46:17,059 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:46:17] "[37mGET /user/5f88f883e6ac4f89900ac983 HTTP/1.1[0m" 200 -
+2020-11-18 08:46:53,821 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:46:53] "[37mGET /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 08:47:00,279 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:47:00] "[35m[1mPOST /user/login HTTP/1.1[0m" 500 -
+2020-11-18 08:47:04,997 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:47:04] "[35m[1mPOST /user/login HTTP/1.1[0m" 500 -
+2020-11-18 08:47:38,328 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/hypertars/Documents/Codes/Online-Video-Platform/backend/service/service_user.py', reloading
+2020-11-18 08:47:38,580 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-18 08:47:39,184 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-18 08:47:39,190 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 286-169-467
+2020-11-18 08:47:41,541 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:47:41] "[37mPOST /user/login HTTP/1.1[0m" 200 -
+2020-11-18 08:47:41,713 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:47:41] "[37mOPTIONS /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 08:47:42,071 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:47:42] "[37mGET /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 08:47:42,654 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:47:42] "[37mGET /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 08:47:50,235 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:47:50] "[37mGET /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 08:47:58,629 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:47:58] "[35m[1mPOST /user/login HTTP/1.1[0m" 500 -
+2020-11-18 08:48:04,492 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:48:04] "[35m[1mPOST /user/login HTTP/1.1[0m" 500 -
+2020-11-18 08:48:35,862 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:48:35] "[35m[1mPOST /user/login HTTP/1.1[0m" 500 -
+2020-11-18 08:48:39,226 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/hypertars/Documents/Codes/Online-Video-Platform/backend/service/service_user.py', reloading
+2020-11-18 08:48:39,641 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-18 08:48:40,311 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-18 08:48:40,319 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 286-169-467
+2020-11-18 08:49:05,793 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:49:05] "[37mPOST /user/login HTTP/1.1[0m" 200 -
+2020-11-18 08:49:05,980 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:49:05] "[37mOPTIONS /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 08:49:06,950 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:49:06] "[37mGET /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 08:49:37,197 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/hypertars/Documents/Codes/Online-Video-Platform/backend/db/query_user.py', reloading
+2020-11-18 08:49:37,556 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-18 08:49:38,316 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-18 08:49:38,324 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 286-169-467
+2020-11-18 08:49:43,452 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:49:43] "[37mGET /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 08:49:49,542 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:49:49] "[37mPOST /user/login HTTP/1.1[0m" 200 -
+2020-11-18 08:49:49,645 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:49:49] "[37mOPTIONS /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 08:49:50,405 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:49:50] "[37mGET /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 08:49:54,332 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:49:54] "[37mGET /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 08:50:00,088 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:50:00] "[35m[1mPOST /user/login HTTP/1.1[0m" 500 -
+2020-11-18 08:50:14,202 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:50:14] "[35m[1mPOST /user/login HTTP/1.1[0m" 500 -
+2020-11-18 08:50:47,684 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/hypertars/Documents/Codes/Online-Video-Platform/backend/db/query_user.py', reloading
+2020-11-18 08:50:48,078 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-18 08:50:48,659 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-18 08:50:48,665 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 286-169-467
+2020-11-18 08:50:53,783 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:50:53] "[37mPOST /user/login HTTP/1.1[0m" 200 -
+2020-11-18 08:50:54,009 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:50:54] "[37mOPTIONS /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 08:50:54,959 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:50:54] "[37mGET /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 08:50:58,319 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:50:58] "[37mGET /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 08:51:04,910 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:51:04] "[37mPOST /user/login HTTP/1.1[0m" 200 -
+2020-11-18 08:51:05,043 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:51:05] "[37mOPTIONS /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 08:51:05,797 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:51:05] "[37mGET /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 08:51:08,998 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:51:08] "[37mGET /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 08:51:14,599 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:51:14] "[37mPOST /user/login HTTP/1.1[0m" 200 -
+2020-11-18 08:51:14,801 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:51:14] "[37mOPTIONS /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 08:51:15,597 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:51:15] "[37mGET /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 08:51:16,927 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:51:16] "[37mOPTIONS /user/5f88f883e6ac4f89900ac983 HTTP/1.1[0m" 200 -
+2020-11-18 08:51:17,178 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:51:17] "[37mGET /user/5f88f883e6ac4f89900ac983 HTTP/1.1[0m" 200 -
+2020-11-18 08:51:25,298 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:51:25] "[37mOPTIONS /user/5f88f883e6ac4f89900ac983 HTTP/1.1[0m" 200 -
+2020-11-18 08:51:25,575 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:51:25] "[37mGET /user/5f88f883e6ac4f89900ac983 HTTP/1.1[0m" 200 -
+2020-11-18 08:51:58,013 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:51:58] "[37mGET /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 08:52:29,916 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:52:29] "[37mPOST /user/login HTTP/1.1[0m" 200 -
+2020-11-18 08:52:30,020 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:52:30] "[37mOPTIONS /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 08:52:30,315 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:52:30] "[37mGET /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 08:52:30,932 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:52:30] "[37mGET /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 08:52:33,425 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:52:33] "[37mOPTIONS /user/5f88f883e6ac4f89900ac983 HTTP/1.1[0m" 200 -
+2020-11-18 08:52:33,692 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:52:33] "[37mGET /user/5f88f883e6ac4f89900ac983 HTTP/1.1[0m" 200 -
+2020-11-18 08:52:38,548 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:52:38] "[37mOPTIONS /user/5f88f883e6ac4f89900ac983 HTTP/1.1[0m" 200 -
+2020-11-18 08:52:38,810 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:52:38] "[37mGET /user/5f88f883e6ac4f89900ac983 HTTP/1.1[0m" 200 -
+2020-11-18 08:53:23,249 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/hypertars/Documents/Codes/Online-Video-Platform/backend/db/query_user.py', reloading
+2020-11-18 08:53:23,634 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-18 08:53:24,386 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-18 08:53:24,393 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 286-169-467
+2020-11-18 08:53:30,018 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:53:30] "[37mGET /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 08:53:35,808 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/hypertars/Documents/Codes/Online-Video-Platform/backend/db/query_user.py', reloading
+2020-11-18 08:53:36,360 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-18 08:53:37,151 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-18 08:53:37,157 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 286-169-467
+2020-11-18 08:53:41,636 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:53:41] "[37mPOST /user/login HTTP/1.1[0m" 200 -
+2020-11-18 08:53:41,799 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:53:41] "[37mOPTIONS /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 08:53:42,651 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:53:42] "[37mGET /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 08:56:40,473 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/hypertars/Documents/Codes/Online-Video-Platform/backend/db/query_user.py', reloading
+2020-11-18 08:56:41,001 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-18 08:56:41,896 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-18 08:56:41,906 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 286-169-467
+2020-11-18 08:56:47,818 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:56:47] "[37mGET /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 08:56:55,157 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:56:55] "[37mPOST /user/login HTTP/1.1[0m" 200 -
+2020-11-18 08:56:55,300 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:56:55] "[37mOPTIONS /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 08:56:56,067 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:56:56] "[37mGET /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 08:57:46,368 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:57:46] "[37mGET /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 08:57:53,878 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:57:53] "[37mPOST /user/login HTTP/1.1[0m" 200 -
+2020-11-18 08:57:54,035 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:57:54] "[37mOPTIONS /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 08:57:54,704 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 08:57:54] "[37mGET /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 09:03:33,722 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/hypertars/Documents/Codes/Online-Video-Platform/backend/db/query_user.py', reloading
+2020-11-18 09:03:34,174 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-18 09:03:34,815 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-18 09:03:34,822 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 286-169-467
+2020-11-18 09:03:41,249 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 09:03:41] "[37mGET /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 09:03:48,238 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 09:03:48] "[37mPOST /user/login HTTP/1.1[0m" 200 -
+2020-11-18 09:03:48,403 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 09:03:48] "[37mOPTIONS /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 09:03:49,236 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 09:03:49] "[37mGET /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 09:04:17,396 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/hypertars/Documents/Codes/Online-Video-Platform/backend/db/query_user.py', reloading
+2020-11-18 09:04:17,923 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-18 09:04:18,523 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-18 09:04:18,528 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 286-169-467
+2020-11-18 09:04:38,882 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 09:04:38] "[37mGET /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 09:04:45,927 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 09:04:45] "[35m[1mPOST /user/login HTTP/1.1[0m" 503 -
+2020-11-18 09:05:13,483 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/hypertars/Documents/Codes/Online-Video-Platform/backend/db/query_user.py', reloading
+2020-11-18 09:05:13,854 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-18 09:05:14,440 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-18 09:05:14,445 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 286-169-467
+2020-11-18 09:05:18,847 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 09:05:18] "[35m[1mPOST /user/login HTTP/1.1[0m" 503 -
+2020-11-18 09:07:21,765 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/hypertars/Documents/Codes/Online-Video-Platform/backend/db/query_user.py', reloading
+2020-11-18 09:07:22,338 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-18 09:07:22,943 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-18 09:07:22,949 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 286-169-467
+2020-11-18 09:07:30,873 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 09:07:30] "[35m[1mPOST /user/login HTTP/1.1[0m" 503 -
+2020-11-18 09:07:51,934 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/hypertars/Documents/Codes/Online-Video-Platform/backend/db/query_user.py', reloading
+2020-11-18 09:07:52,397 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-18 09:07:53,206 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-18 09:07:53,214 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 286-169-467
+2020-11-18 09:07:54,353 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 09:07:54] "[35m[1mPOST /user/login HTTP/1.1[0m" 503 -
+2020-11-18 09:07:57,924 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 09:07:57] "[35m[1mPOST /user/login HTTP/1.1[0m" 503 -
+2020-11-18 09:08:07,834 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/hypertars/Documents/Codes/Online-Video-Platform/backend/db/query_user.py', reloading
+2020-11-18 09:08:08,353 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-18 09:08:09,055 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-18 09:08:09,064 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 286-169-467
+2020-11-18 09:08:13,066 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 09:08:13] "[37mPOST /user/login HTTP/1.1[0m" 200 -
+2020-11-18 09:08:13,249 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 09:08:13] "[37mOPTIONS /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 09:08:14,322 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 09:08:14] "[37mGET /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 09:08:47,464 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/hypertars/Documents/Codes/Online-Video-Platform/backend/db/query_user.py', reloading
+2020-11-18 09:08:47,924 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-18 09:08:48,711 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-18 09:08:48,718 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 286-169-467
+2020-11-18 09:08:53,887 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 09:08:53] "[37mGET /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 09:08:58,959 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 09:08:58] "[37mPOST /user/login HTTP/1.1[0m" 200 -
+2020-11-18 09:08:59,102 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 09:08:59] "[37mOPTIONS /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 09:09:00,087 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 09:09:00] "[37mGET /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 09:10:23,926 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/hypertars/Documents/Codes/Online-Video-Platform/backend/db/query_user.py', reloading
+2020-11-18 09:10:24,444 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-18 09:10:25,295 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-18 09:10:25,302 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 286-169-467
+2020-11-18 09:10:33,508 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 09:10:33] "[37mGET /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 09:10:40,692 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 09:10:40] "[37mPOST /user/login HTTP/1.1[0m" 200 -
+2020-11-18 09:10:40,802 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 09:10:40] "[37mOPTIONS /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 09:10:41,627 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 09:10:41] "[37mGET /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 09:11:21,382 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/hypertars/Documents/Codes/Online-Video-Platform/backend/db/query_user.py', reloading
+2020-11-18 09:11:21,829 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-18 09:11:22,503 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-18 09:11:22,509 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 286-169-467
+2020-11-18 09:11:29,347 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 09:11:29] "[37mGET /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 09:11:34,112 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 09:11:34] "[37mPOST /user/login HTTP/1.1[0m" 200 -
+2020-11-18 09:11:34,259 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 09:11:34] "[37mOPTIONS /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 09:11:34,521 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 09:11:34] "[37mGET /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 09:11:35,107 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 09:11:35] "[37mGET /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 09:11:36,400 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 09:11:36] "[37mOPTIONS /user/5f88f883e6ac4f89900ac983 HTTP/1.1[0m" 200 -
+2020-11-18 09:11:36,669 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 09:11:36] "[37mGET /user/5f88f883e6ac4f89900ac983 HTTP/1.1[0m" 200 -
+2020-11-18 09:14:17,576 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/hypertars/Documents/Codes/Online-Video-Platform/backend/db/query_user.py', reloading
+2020-11-18 09:14:18,091 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-18 09:14:18,847 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-18 09:14:18,855 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 286-169-467
+2020-11-18 09:14:25,086 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 09:14:25] "[37mGET /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 09:14:32,461 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 09:14:32] "[37mPOST /user/login HTTP/1.1[0m" 200 -
+2020-11-18 09:14:32,573 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 09:14:32] "[37mOPTIONS /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 09:14:32,851 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 09:14:32] "[37mGET /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 09:14:33,503 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 09:14:33] "[37mGET /search/video/top?keyword=video_view HTTP/1.1[0m" 200 -
+2020-11-18 09:14:35,392 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 09:14:35] "[37mOPTIONS /user/5f88f883e6ac4f89900ac983 HTTP/1.1[0m" 200 -
+2020-11-18 09:14:35,665 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 09:14:35] "[37mGET /user/5f88f883e6ac4f89900ac983 HTTP/1.1[0m" 200 -
+2020-11-18 09:14:46,463 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 09:14:46] "[37mOPTIONS /user/5f88f883e6ac4f89900ac983 HTTP/1.1[0m" 200 -
+2020-11-18 09:14:46,767 - _internal - _internal.py - _log - 113 - werkzeug - INFO - 127.0.0.1 - - [18/Nov/2020 09:14:46] "[37mGET /user/5f88f883e6ac4f89900ac983 HTTP/1.1[0m" 200 -
+2020-11-18 09:16:02,372 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Detected change in '/Users/hypertars/Documents/Codes/Online-Video-Platform/backend/db/query_user.py', reloading
+2020-11-18 09:16:02,799 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Restarting with stat
+2020-11-18 09:16:03,707 - _internal - _internal.py - _log - 113 - werkzeug - WARNING -  * Debugger is active!
+2020-11-18 09:16:03,714 - _internal - _internal.py - _log - 113 - werkzeug - INFO -  * Debugger PIN: 286-169-467
