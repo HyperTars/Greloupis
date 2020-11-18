@@ -1,6 +1,5 @@
 import { TEST_ENDPOINT /*, LOCAL_ENDPOINT*/ } from "./Endpoint";
 import { authHeader } from "../service/AuthHeader";
-import { getSubstr } from "../util";
 
 export class GatewayTimeout extends Error {}
 export class NotFoundError extends Error {}
