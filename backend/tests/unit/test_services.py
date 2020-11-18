@@ -445,12 +445,12 @@ class TestServiceUser(unittest.TestCase):
         # Get successfully
         res = service_user_get_info(self.conf,
                                     self.data['const_user'][0]['_id']['$oid'])
-        self.assertEqual(res['user'][0]['user_name'],
+        self.assertEqual(res['user']['user_name'],
                          self.data['const_user'][0]['user_name'])
 
         res = service_user_get_info(self.conf,
                                     self.data['const_user'][1]['_id']['$oid'])
-        self.assertEqual(res['user'][0]['user_name'],
+        self.assertEqual(res['user']['user_name'],
                          self.data['const_user'][1]['user_name'])
 
         # Raise Error: ErrorCode.SERVICE_INVALID_ID_OBJ

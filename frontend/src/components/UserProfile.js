@@ -167,7 +167,7 @@ function UserProfile({ userId }) {
               <Button icon={<UploadOutlined />}>Click to Upload</Button>
             </Upload>
           ) : (
-            <Avatar src={userData[0] ? userData[0]["user_thumbnail"] : "/"} />
+            <Avatar src={userData ? userData["user_thumbnail"] : "/"} />
           )}
         </Form.Item>
 
@@ -191,11 +191,11 @@ function UserProfile({ userId }) {
           {isLocalUser ? (
             <Input
               placeholder="Input your nickname: "
-              defaultValue={userData[0] ? userData[0]["user_name"] : "..."}
+              defaultValue={userData ? userData["user_name"] : "..."}
             />
           ) : (
             <Input
-              defaultValue={userData[0] ? userData[0]["user_name"] : "..."}
+              defaultValue={userData ? userData["user_name"] : "..."}
               disabled
               bordered={false}
             />
@@ -215,11 +215,11 @@ function UserProfile({ userId }) {
           {isLocalUser ? (
             <Input
               placeholder="Input your email address: "
-              defaultValue={userData[0] ? userData[0]["user_email"] : "..."}
+              defaultValue={userData ? userData["user_email"] : "..."}
             />
           ) : (
             <Input
-              defaultValue={userData[0] ? userData[0]["user_email"] : "..."}
+              defaultValue={userData ? userData["user_email"] : "..."}
               disabled
               bordered={false}
             />
@@ -492,14 +492,14 @@ function UserProfile({ userId }) {
           {isLocalUser ? (
             <Select
               placeholder="Select your user status: "
-              defaultValue={userData[0] ? userData[0]["user_status"] : "public"}
+              defaultValue={userData ? userData["user_status"] : "public"}
             >
               <Option value="public">Public</Option>
               <Option value="private">Private</Option>
             </Select>
           ) : (
             <Input
-              defaultValue={userData[0] ? userData[0]["user_status"] : "..."}
+              defaultValue={userData ? userData["user_status"] : "..."}
               style={{ width: "100%" }}
               disabled
               bordered={false}

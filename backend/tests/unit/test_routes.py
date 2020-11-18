@@ -83,8 +83,8 @@ class TestUserRoute(unittest.TestCase):
     def test_route_logout(self):
         with self.app.app_context():
             expires = datetime.timedelta(hours=20)
-            token = create_access_token(identity='fatbin',
-                                        expires_delta=expires, fresh=True)
+            token = create_access_token(
+                identity='fatbin', expires_delta=expires, fresh=True)
             headers = Headers({'Authorization': 'Bearer ' + token})
             response = self.client.post('/user/logout', data={
                 'user_name': 'fatbin',

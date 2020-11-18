@@ -10,7 +10,8 @@ from flask_jwt_extended import create_access_token, \
     jwt_required, get_raw_jwt, jwt_optional, get_jwt_identity
 from flask_restx import Resource, fields, Namespace
 from service.service_user import service_user_login, service_user_reg, \
-    service_user_get_info, service_user_update_info, service_user_cancel
+    service_user_get_info, service_user_update_info, \
+    service_user_cancel, service_user_hide_info
 '''
     #service_user_get_comment, service_user_get_dislike, \
     #, service_user_get_like, \
@@ -197,11 +198,10 @@ class UserUserId(Resource):
         try:
             user_id = request.url.split('/')[-1]
             result = service_user_get_info(conf=conf, user_id=user_id)
-            if result['user'][0]['user_status'] != 'public' and \
-                    get_jwt_identity() != result['user'][0]['user_id']:
-                # TODO: Hide info
-                # service_user_hide_info(result)
-                pass
+            print(result)
+            if result['user']['user_status'] != 'public' and \
+               get_jwt_identity() != result['user']['user_id']:
+                result = service_user_hide_info(result)
             return util_serializer_api_response(
                     200, body=result, msg="Get user info successfully")
         except (ServiceError, MongoError, RouteError, Exception) as e:
