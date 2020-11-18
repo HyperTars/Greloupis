@@ -153,7 +153,6 @@ function UserProfile({ userId }) {
         labelAlign="left"
         initialValues={{
           prefix: "1",
-          status: "public",
         }}
         scrollToFirstError
       >
@@ -520,7 +519,7 @@ function UserProfile({ userId }) {
           {isLocalUser ? (
             <Select
               placeholder="Select your user status: "
-              defaultValue={userData ? userData["user_status"] : "public"}
+              defaultValue={userData ? userData["user_status"] : "..."}
             >
               <Option value="public">Public</Option>
               <Option value="private">Private</Option>
