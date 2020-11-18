@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, print_function
 from flask import request
-from flask_jwt_extended import jwt_optional, get_jwt_identity
+from flask_jwt_extended import get_jwt_identity
 from flask_restx import Resource, fields, Namespace
 from .route_user import user_info, general_response
 from .route_video import video_info
@@ -39,7 +39,6 @@ video_response_list = search.model(name='ApiResponseWithVideoList', model={
 @search.response(500, 'Internal server error.', general_response)
 class RouteSearchVideo(Resource):
     @search.doc(responses={200: 'Successfully got video search results.'})
-    @jwt_optional
     def get(self, conf=config["default"]):
         """
             Search videos by keyword
