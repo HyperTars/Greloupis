@@ -211,7 +211,7 @@ class UserUserId(Resource):
             result['user'] = user
             result['video'] = video
             result['video_op'] = op
-            
+
             if not service_user_auth_get(token, user_id):
                 if user['user_status'] == 'closed':
                     raise RouteError(ErrorCode.ROUTE_DELETED_USER)
