@@ -11,7 +11,7 @@ from flask_jwt_extended import create_access_token, \
 from flask_restx import Resource, fields, Namespace
 from service.service_user import service_user_login, service_user_reg, \
     service_user_get_user, service_user_update_info, \
-    service_user_cancel, service_user_hide_info, \
+    service_user_cancel, service_user_hide_private, \
     service_user_auth_get, service_user_auth_modify
 '''
     #service_user_get_comment, service_user_get_dislike, \
@@ -205,7 +205,7 @@ class UserUserId(Resource):
             result = {}
             user = service_user_get_user(conf=conf, user_id=user_id)
             if not service_user_auth_get(token, user_id):
-                result['user'] = service_user_hide_info(user)
+                result['user'] = service_user_hide_private(user)
                 result['video'] = []
                 result['video_op'] = []
                 return util_serializer_api_response(

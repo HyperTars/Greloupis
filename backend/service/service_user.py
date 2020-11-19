@@ -121,7 +121,7 @@ def service_user_cancel(conf, **kw):
     return query_user_delete_by_id(kw['user_id'])
 
 
-def service_user_hide_info(user):
+def service_user_hide_private(user):
     hide = '[Private User]'
     user['user_detail']['user_city'] = hide
     user['user_detail']['user_country'] = hide
