@@ -32,13 +32,12 @@ def service_video_op_auth_post(token, user_id, video_id):
     if len(videos) == 0:
         raise ServiceError(ErrorCode.SERVICE_VIDEO_NOT_FOUND)
     video = videos[0].to_dict()
-
     if video['video_status'] != 'public' and \
        video['user_id'] != token:
         return False
-
     if token != user_id:
         return False
+    return True
 
 
 def service_video_op_auth_modify(token, user_id):

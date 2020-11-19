@@ -454,19 +454,15 @@ class VideoVideoIdCommentUserId(Resource):
             else:
                 raw_data = request.data.decode("utf-8")
                 kw = ast.literal_eval(raw_data)
-
             video_id = request.url.split('/')[-3]
             user_id = request.url.split('/')[-1]
             token = get_jwt_identity()
-
             # check authority
             if not service_video_op_auth_post(token, user_id, video_id):
                 raise RouteError(ErrorCode.ROUTE_TOKEN_REQUIRED)
-
             kw['video_id'] = video_id
             kw['user_id'] = user_id
             comments_result = service_video_op_add_comment(conf=conf, **kw)
-
             return util_serializer_api_response(
                 200, body=comments_result, msg="Successfully post a comment")
         except (ServiceError, MongoError, RouteError, Exception) as e:
