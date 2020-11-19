@@ -11,7 +11,8 @@ from flask_jwt_extended import create_access_token, \
 from flask_restx import Resource, fields, Namespace
 from service.service_user import service_user_login, service_user_reg, \
     service_user_get_info, service_user_update_info, \
-    service_user_cancel, service_user_hide_info
+    service_user_cancel, service_user_hide_info, \
+    service_user_auth_get, service_user_auth_modify
 '''
     #service_user_get_comment, service_user_get_dislike, \
     #, service_user_get_like, \
@@ -21,7 +22,8 @@ from utils.util_jwt import blacklist, util_get_formated_response
 from utils.util_error_handler import util_error_handler
 from settings import config
 from utils.util_serializer import util_serializer_api_response
-from models.model_errors import MongoError, RouteError, ServiceError
+from models.model_errors import MongoError, RouteError, ServiceError, \
+    ErrorCode
 
 # from source.utils.util_validator import *
 # from flask import Flask, g, Blueprint
@@ -249,6 +251,8 @@ def service_user_get_info(conf, user_id):
 
     return final_result
 '''
+
+
 @user.route('/<string:user_id>', methods=['DELETE', 'GET', 'PUT'])
 @user.param('user_id', 'User ID')
 @user.response(200, 'Successful operation', user_response)
@@ -263,10 +267,19 @@ class UserUserId(Resource):
         """
         try:
             user_id = request.url.split('/')[-1]
-            result = service_user_get_info(conf=conf, user_id=user_id)
-            if result['user']['user_status'] != 'public' and \
-               get_jwt_identity() != result['user']['user_id']:
-                result = service_user_hide_info(result)
+            token = get_jwt_identity()
+            result = {}
+
+            user = service_user_get_info(conf=conf, user_id=user_id)
+
+            if not service_user_auth_get(token, user_id):
+                result['user'] = service_user_hide_info(user)
+                result['video'] = []
+                result['video_op'] = []
+                return util_serializer_api_response(
+                    200, body=result, msg="Private User")
+
+            result['user'] = user
             return util_serializer_api_response(
                     200, body=result, msg="Get user info successfully")
         except (ServiceError, MongoError, RouteError, Exception) as e:
@@ -290,6 +303,9 @@ class UserUserId(Resource):
                 print(kw)
             kw['user_id'] = user_id
             print(kw)
+            if not service_user_auth_modify(get_jwt_identity(), kw['user_id']):
+                raise RouteError(ErrorCode.ROUTE_TOKEN_REQUIRED)
+
             result = service_user_update_info(config['default'], **kw)
             return util_serializer_api_response(
                 200, body=result, msg="Update user info successfully")
@@ -311,6 +327,11 @@ class UserUserId(Resource):
                 raw_data = request.data.decode("utf-8")
                 kw = ast.literal_eval(raw_data)
                 print(kw)
+
+            kw['user_id'] = user_id
+
+            if not service_user_auth_modify(get_jwt_identity(), kw['user_id']):
+                raise RouteError(ErrorCode.ROUTE_TOKEN_REQUIRED)
 
             result = service_user_cancel(config['default'], kw)
             return util_serializer_api_response(

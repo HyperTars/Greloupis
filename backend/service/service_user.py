@@ -9,11 +9,23 @@ from db.query_user import query_user_create, query_user_get_by_name, \
     query_user_add_login, query_user_update_name, \
     query_user_update_password, query_user_update_thumbnail, \
     query_user_update_details
-from db.query_video import query_video_get_by_user_id,\
-    query_video_get_by_video_id
 from db.query_video_op import query_video_op_get_by_user_id
 from models.model_errors import ServiceError, ErrorCode
 import datetime
+
+
+def service_user_auth_get(token, user_id):
+    users = query_user_get_by_id(user_id)
+    if len(users) == 0:
+        raise ServiceError(ErrorCode.SERVICE_USER_NOT_FOUND)
+    user = users[0].to_dict()
+    if user['user_status'] == 'public' or token == user_id:
+        return True
+    return False
+
+
+def service_user_auth_modify(token, user_id):
+    return token == user_id
 
 
 def service_user_reg(conf, **kw):
