@@ -13,7 +13,7 @@ from utils.util_error_handler import util_error_handler
 from utils.util_jwt import blacklist, util_get_formated_response
 from utils.util_serializer import util_serializer_mongo_results_to_array
 from utils.util_tests import util_tests_load_data, \
-    util_tests_python_version
+    util_tests_python_version, util_tests_clean_database
 from models.model_errors import ErrorCode, ServiceError
 from db.query_video import query_video_get_by_video_id, \
     query_video_get_by_title
@@ -104,6 +104,7 @@ class TestRouteSearch(unittest.TestCase):
             exit()
         cls.data = util_tests_load_data()
         cls.conf = config['test']
+        util_tests_clean_database()
 
     def test_route_search_user(self):
         # Test search user by keyword
@@ -144,6 +145,7 @@ class TestRouteUser(unittest.TestCase):
             exit()
         cls.data = util_tests_load_data()
         cls.conf = config['test']
+        util_tests_clean_database()
 
     def test_a_route_user_post(self):
         pass
@@ -367,6 +369,7 @@ class TestRouteVideo(unittest.TestCase):
             exit()
         cls.data = util_tests_load_data()
         cls.conf = config['test']
+        util_tests_clean_database()
         cls.final_video_name = "full info hh"
 
     def test_a_video_post(self):

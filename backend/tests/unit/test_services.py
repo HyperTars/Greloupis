@@ -24,7 +24,7 @@ from service.service_video_op import service_video_op_add_comment, \
     query_video_op_create
 from settings import config
 from utils.util_tests import util_tests_python_version, \
-    util_tests_load_data
+    util_tests_load_data, util_tests_clean_database
 from db.query_user import query_user_get_by_name
 from db.query_video import query_video_get_by_title, \
     query_video_get_by_video_id
@@ -41,6 +41,7 @@ class TestServiceSearchUser(unittest.TestCase):
             exit()
         cls.data = util_tests_load_data()
         cls.conf = config['test']
+        util_tests_clean_database()
 
     def test_search_user(self):
         # Search successfully with ignore_case
@@ -244,6 +245,7 @@ class TestServiceSearchVideo(unittest.TestCase):
             exit()
         cls.data = util_tests_load_data()
         cls.conf = config['test']
+        util_tests_clean_database()
 
     def test_search_video(self):
         self.assertEqual(
@@ -382,6 +384,7 @@ class TestServiceUser(unittest.TestCase):
             exit()
         cls.data = util_tests_load_data()
         cls.conf = config['test']
+        util_tests_clean_database()
 
     def test_a_service_user_reg(self):
         # Register successfully
@@ -443,15 +446,15 @@ class TestServiceUser(unittest.TestCase):
 
     def test_c_service_user_get_info(self):
         # Get successfully
-        res = service_user_get_info(self.conf,
-                                    self.data['const_user'][0]['_id']['$oid'])
-        self.assertEqual(res['user']['user_name'],
-                         self.data['const_user'][0]['user_name'])
+        res = service_user_get_info(
+            self.conf, self.data['const_user'][0]['_id']['$oid'])
+        self.assertEqual(
+            res['user']['user_name'], self.data['const_user'][0]['user_name'])
 
-        res = service_user_get_info(self.conf,
-                                    self.data['const_user'][1]['_id']['$oid'])
-        self.assertEqual(res['user']['user_name'],
-                         self.data['const_user'][1]['user_name'])
+        res = service_user_get_info(
+            self.conf, self.data['const_user'][1]['_id']['$oid'])
+        self.assertEqual(
+            res['user']['user_name'], self.data['const_user'][1]['user_name'])
 
         # Raise Error: ErrorCode.SERVICE_INVALID_ID_OBJ
         with self.assertRaises(ServiceError) as e:
@@ -597,6 +600,8 @@ class TestServiceVideo(unittest.TestCase):
             exit()
         cls.data = util_tests_load_data()
         cls.conf = config['test']
+        util_tests_clean_database()
+
         cls.temp_video_title = "test video title"
         cls.temp_video_raw_content = \
             "https://s3.amazon.com/test_video_content.avi"
@@ -757,9 +762,8 @@ class TestServiceVideo(unittest.TestCase):
             len(service_video_likes(self.conf, video_id=temp_video_id)), 0)
 
     def test_f_service_video_dislikes(self):
-        temp_video_id = \
-            query_video_get_by_title(self.temp_video_title_op)[0].to_dict()[
-                'video_id']
+        temp_video_id = query_video_get_by_title(
+            self.temp_video_title_op)[0].to_dict()['video_id']
 
         # Raise Error: ErrorCode.SERVICE_MISSING_PARAM
         with self.assertRaises(ServiceError) as e:
@@ -829,6 +833,7 @@ class TestServiceVideoOp(unittest.TestCase):
             exit()
         cls.data = util_tests_load_data()
         cls.conf = config['test']
+        util_tests_clean_database()
 
         # create a temp video
         cls.temp_video_title = "video op test"

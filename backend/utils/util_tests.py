@@ -2,8 +2,26 @@ import os
 import sys
 import json
 import platform as pf
-
+from db.mongo import get_db
+from settings import config
+from models.model_user import User
+from models.model_video_op import VideoOp
+from models.model_video import Video
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+
+def util_tests_clean_database():
+    get_db(config['test'])
+    data = util_tests_load_data()
+
+    for user in data['temp_user']:
+        User.objects(user_name=user['user_name']).delete()
+
+    for video in data['temp_video']:
+        Video.objects(video_title=video['video_title']).delete()
+
+    for video in data['const_video']:
+        VideoOp.objects(video_id=video['_id']['$oid']).delete()
 
 
 def util_tests_load_data():
