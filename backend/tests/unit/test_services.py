@@ -449,7 +449,7 @@ class TestServiceUser(unittest.TestCase):
         res = service_user_get_info(
             self.conf, self.data['const_user'][0]['_id']['$oid'])
         self.assertEqual(
-            res['user']['user_name'], self.data['const_user'][0]['user_name'])
+            res['user_name'], self.data['const_user'][0]['user_name'])
 
         # Raise Error: ErrorCode.SERVICE_INVALID_ID_OBJ
         with self.assertRaises(ServiceError) as e:
@@ -604,8 +604,7 @@ class TestServiceVideo(unittest.TestCase):
         cls.temp_video_title_updated = "test video title updated"
         cls.temp_video_status = "public"
         cls.temp_video_raw_size = 51.23
-
-        cls.temp_video_title_op = "XiXiHaHa"
+        cls.const_vid = cls.data['const_video'][0]['_id']['$oid'][:-1] + '0'
 
     def test_a_service_video_upload(self):
         test_user_id = self.data['const_user'][1]['_id']['$oid']
@@ -707,13 +706,6 @@ class TestServiceVideo(unittest.TestCase):
             self.temp_video_title)
 
     def test_d_service_video_comments(self):
-        temp_video_id = \
-            query_video_get_by_title(self.temp_video_title_op)[0].to_dict()[
-                'video_id']
-        temp_comment = \
-            query_video_op_get_by_video_id(temp_video_id)[0].to_dict()[
-                'comment']
-
         # Raise Error: ErrorCode.SERVICE_MISSING_PARAM
         with self.assertRaises(ServiceError) as e:
             service_video_comments(self.conf)
@@ -728,16 +720,9 @@ class TestServiceVideo(unittest.TestCase):
 
         # Successful case
         self.assertEqual(
-            len(service_video_comments(self.conf, video_id=temp_video_id)), 1)
-        self.assertEqual(
-            service_video_comments(self.conf, video_id=temp_video_id)[0][
-                'comment'], temp_comment)
+            len(service_video_comments(self.conf, video_id=self.const_vid)), 1)
 
     def test_e_service_video_likes(self):
-        temp_video_id = \
-            query_video_get_by_title(self.temp_video_title_op)[0].to_dict()[
-                'video_id']
-
         # Raise Error: ErrorCode.SERVICE_MISSING_PARAM
         with self.assertRaises(ServiceError) as e:
             service_video_likes(self.conf)
@@ -751,13 +736,10 @@ class TestServiceVideo(unittest.TestCase):
                          ErrorCode.SERVICE_INVALID_ID_OBJ)
 
         # Successful case
-        self.assertEqual(
-            len(service_video_likes(self.conf, video_id=temp_video_id)), 0)
+        self.assertEqual(len(service_video_likes(
+            self.conf, video_id=self.const_vid)), 0)
 
     def test_f_service_video_dislikes(self):
-        temp_video_id = query_video_get_by_title(
-            self.temp_video_title_op)[0].to_dict()['video_id']
-
         # Raise Error: ErrorCode.SERVICE_MISSING_PARAM
         with self.assertRaises(ServiceError) as e:
             service_video_dislikes(self.conf)
@@ -771,14 +753,10 @@ class TestServiceVideo(unittest.TestCase):
                          ErrorCode.SERVICE_INVALID_ID_OBJ)
 
         # Successful case
-        self.assertEqual(
-            len(service_video_dislikes(self.conf, video_id=temp_video_id)), 1)
+        self.assertEqual(len(service_video_dislikes(
+            self.conf, video_id=self.const_vid)), 1)
 
     def test_g_service_video_stars(self):
-        temp_video_id = \
-            query_video_get_by_title(self.temp_video_title_op)[0].to_dict()[
-                'video_id']
-
         # Raise Error: ErrorCode.SERVICE_MISSING_PARAM
         with self.assertRaises(ServiceError) as e:
             service_video_stars(self.conf)
@@ -792,8 +770,8 @@ class TestServiceVideo(unittest.TestCase):
                          ErrorCode.SERVICE_INVALID_ID_OBJ)
 
         # Successful case
-        self.assertEqual(
-            len(service_video_stars(self.conf, video_id=temp_video_id)), 1)
+        self.assertEqual(len(service_video_stars(
+            self.conf, video_id=self.const_vid)), 1)
 
     def test_h_service_video_delete(self):
         temp_video_id = \

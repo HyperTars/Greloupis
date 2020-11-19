@@ -164,68 +164,24 @@ def service_user_hide_info(info):
 
 def service_user_get_info(conf, user_id):
     get_db(conf)
-    final_result = {}
 
     # user_id check
     if not is_valid_id(user_id):
         raise ServiceError(ErrorCode.SERVICE_INVALID_ID_OBJ)
 
-    # table: user
-    user_result = query_user_get_by_id(user_id)
-    if len(user_result) == 1:
-        user_result_dict_array = \
-            util_serializer_mongo_results_to_array(user_result)
-
-        # convert datetime format to str
-        for each_result in user_result_dict_array:
-            for key, value in each_result.items():
-                if isinstance(value, datetime.datetime):
-                    each_result[key] = str(value)
-
-        final_result["user"] = user_result_dict_array[0]
-    else:
+    users = query_user_get_by_id(user_id)
+    if len(users) == 0:
         raise ServiceError(ErrorCode.SERVICE_USER_NOT_FOUND)
 
-    # table: video (belong to this user)
-    video_result = query_video_get_by_user_id(user_id)
-    if len(video_result) > 0:
-        video_result_dict_array = \
-            util_serializer_mongo_results_to_array(video_result)
+    user_array = util_serializer_mongo_results_to_array(users)
 
-        # convert datetime format to str
-        for each_result in video_result_dict_array:
-            for key, value in each_result.items():
-                if isinstance(value, datetime.datetime):
-                    each_result[key] = str(value)
+    # convert datetime format to str
+    for each_result in user_array:
+        for key, value in each_result.items():
+            if isinstance(value, datetime.datetime):
+                each_result[key] = str(value)
 
-        final_result["video"] = video_result_dict_array
-    else:
-        final_result["video"] = [{}]
-
-    # table: video op (belong to this user)
-    video_op_result = query_video_op_get_by_user_id(user_id)
-    if len(video_op_result) > 0:
-        video_op_result_dict_array = \
-            util_serializer_mongo_results_to_array(video_op_result)
-
-        # convert datetime format to str
-        # get video name and video thumbnail for each op video
-        for each_result in video_op_result_dict_array:
-            raw_result = query_video_get_by_video_id(each_result["video_id"])
-            video_result = \
-                util_serializer_mongo_results_to_array(raw_result)[0]
-
-            each_result["video_title"] = video_result["video_title"]
-            each_result["video_thumbnail"] = video_result["video_thumbnail"]
-            for key, value in each_result.items():
-                if isinstance(value, datetime.datetime):
-                    each_result[key] = str(value)
-
-        final_result["video_op"] = video_op_result_dict_array
-    else:
-        final_result["video_op"] = [{}]
-
-    return final_result
+    return user_array[0]
 
 
 def service_user_get_like(conf, user_id):
