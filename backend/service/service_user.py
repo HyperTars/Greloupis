@@ -9,7 +9,10 @@ from db.query_user import query_user_create, query_user_get_by_name, \
     query_user_add_login, query_user_update_name, \
     query_user_update_password, query_user_update_thumbnail, \
     query_user_update_details
-from db.query_video_op import query_video_op_get_by_user_id
+from db.query_video import query_video_get_by_user_id, \
+    query_video_update, query_video_delete
+from db.query_video_op import query_video_op_get_by_user_id, \
+    query_video_op_delete
 from models.model_errors import ServiceError, ErrorCode
 
 
@@ -112,13 +115,35 @@ def service_user_update_info(conf, **kw):
     return query_user_get_by_id(kw['user_id'])[0].to_dict()
 
 
-def service_user_cancel(conf, **kw):
+def service_user_close(conf, **kw):
     get_db(conf)
     kw['service'] = 'user'
     kw = util_pattern_format_param(**kw)
     if 'user_id' not in kw:
         raise ServiceError(ErrorCode.SERVICE_MISSING_USER_ID)
-    return query_user_delete_by_id(kw['user_id'])
+
+    videos = query_video_get_by_user_id(kw['user_id'])
+    ops = query_video_op_get_by_user_id(kw['user_id'])
+
+    # delete by updating status
+    if 'method' in kw and kw['method'] == 'status':
+        res = query_user_update_status(kw['user_id'], 'closed')
+
+        for video in videos:
+            vid = video.to_dict()['video_id']
+            query_video_update(vid, video_status='deleted')
+
+    # delete by removing from databse
+    else:
+        res = query_user_delete_by_id(kw['user_id'])
+        for video in videos:
+            vid = video.to_dict()['video_id']
+            query_video_delete(vid, silent=True)
+
+    for op in ops:
+        opid = op.to_dict()['video_op_id']
+        query_video_op_delete(opid, silent=True)
+    return res
 
 
 def service_user_hide_private(user):

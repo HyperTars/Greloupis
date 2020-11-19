@@ -28,7 +28,7 @@ from routes.route_user import UserUserId, user
     UserUserIdStar, UserUserIdComment, UserUserIdDislike, \
     UserUserIdLike, UserUserIdProcess
 '''
-from service.service_user import service_user_get_info
+from service.service_user import service_user_get_user
 '''
     service_user_get_comment, service_user_get_star, service_user_get_like, \
     service_user_get_process, service_user_get_dislike
@@ -160,15 +160,11 @@ class TestRouteUser(unittest.TestCase):
                                              conf=self.conf).get_json()
 
         disconnect(alias='default')
-        service_result = service_user_get_info(self.conf, temp_user_id)
+        service_result = service_user_get_user(self.conf, temp_user_id)
 
         # same result length
-        self.assertEqual(len(service_result["user"]),
+        self.assertEqual(len(service_result),
                          len(response_json["body"]["user"]))
-        self.assertEqual(len(service_result["video"]),
-                         len(response_json["body"]["video"]))
-        self.assertEqual(len(service_result["video_op"]),
-                         len(response_json["body"]["video_op"]))
 
         disconnect(alias='default')
         wrong_id = '12345678123456781234567'

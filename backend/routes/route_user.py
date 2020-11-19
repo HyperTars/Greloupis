@@ -11,7 +11,7 @@ from flask_jwt_extended import create_access_token, \
 from flask_restx import Resource, fields, Namespace
 from service.service_user import service_user_login, service_user_reg, \
     service_user_get_user, service_user_update_info, \
-    service_user_cancel, service_user_hide_private, \
+    service_user_close, service_user_hide_private, \
     service_user_auth_get, service_user_auth_modify
 '''
     #service_user_get_comment, service_user_get_dislike, \
@@ -257,21 +257,16 @@ class UserUserId(Resource):
             Delete user by id
         """
         try:
-            kw = ""
-            if request.form != {}:
-                kw = dict(request.form)
-                print(kw)
-            else:
-                raw_data = request.data.decode("utf-8")
-                kw = ast.literal_eval(raw_data)
-                print(kw)
-
-            kw['user_id'] = user_id
-
-            if not service_user_auth_modify(get_jwt_identity(), kw['user_id']):
+            token = get_jwt_identity()
+            print("checkpoint 01")
+            if not service_user_auth_modify(token, user_id=user_id):
                 raise RouteError(ErrorCode.ROUTE_TOKEN_REQUIRED)
-
-            result = service_user_cancel(config['default'], kw)
+            print("checkpoint 02")
+            result = service_user_close(
+                config['default'],
+                user_id=user_id,
+                method='status')
+            print("checkpoint 03")
             return util_serializer_api_response(
                 200, body=result, msg="Delete user successfully")
 

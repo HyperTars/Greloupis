@@ -116,7 +116,6 @@ def service_search_video(conf, **kw):
 
 # Search Hide Caller
 def service_search_hide_video(user, results):
-    print(results)
     ret = []
     if user is None:
         user = ""
