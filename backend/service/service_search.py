@@ -116,9 +116,12 @@ def service_search_video(conf, **kw):
 
 # Search Hide Caller
 def service_search_hide_video(user, results):
+    print(results)
     ret = []
     if user is None:
         user = ""
+    if len(results) == 0:
+        return []
     for video in results:
         if video['video_status'] == 'public' or video['user_id'] == user:
             ret.append(video)

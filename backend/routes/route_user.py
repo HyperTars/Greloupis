@@ -20,6 +20,7 @@ from service.service_user import service_user_login, service_user_reg, \
 '''
 from service.service_video import service_video_get_by_user
 from service.service_video_op import service_video_op_get_by_user
+from service.service_search import service_search_hide_video
 from utils.util_jwt import blacklist, util_get_formated_response
 from utils.util_error_handler import util_error_handler
 from settings import config
@@ -204,21 +205,21 @@ class UserUserId(Resource):
             token = get_jwt_identity()
             result = {}
             user = service_user_get_user(conf=conf, user_id=user_id)
-            if not service_user_auth_get(token, user_id):
-                result['user'] = service_user_hide_private(user)
-                result['video'] = []
-                result['video_op'] = []
-                return util_serializer_api_response(
-                    200, body=result, msg="Private User")
+            video = service_video_get_by_user(conf=conf, user_id=user_id)
+            op = service_video_op_get_by_user(conf=conf, user_id=user_id)
 
             result['user'] = user
-            result['video'] = service_video_get_by_user(
-                conf=conf, user_id=user_id)
-            result['video_op'] = service_video_op_get_by_user(
-                conf=conf, user_id=user_id)
-            print(result)
+            result['video'] = video
+            result['video_op'] = op
+
+            if not service_user_auth_get(token, user_id):
+                result['user'] = service_user_hide_private(user)
+                result['video'] = service_search_hide_video('', video)
+                result['video_op'] = []
+
             return util_serializer_api_response(
                     200, body=result, msg="Get user info successfully")
+
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 

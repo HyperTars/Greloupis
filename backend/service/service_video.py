@@ -86,7 +86,7 @@ def service_video_get_by_user(conf, **kw):
         raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
     videos = query_video_get_by_user_id(kw['user_id'])
     if len(videos) == 0:
-        return [{}]
+        return []
     video_array = util_serializer_mongo_results_to_array(videos)
     return video_array
 

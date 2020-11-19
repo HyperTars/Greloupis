@@ -54,7 +54,7 @@ def service_video_op_get_by_user(conf, **kw):
 
     ops = query_video_op_get_by_user_id(kw['user_id'])
     if len(ops) == 0:
-        return [{}]
+        return []
 
     op_array = util_serializer_mongo_results_to_array(ops)
 
