@@ -451,11 +451,6 @@ class TestServiceUser(unittest.TestCase):
         self.assertEqual(
             res['user']['user_name'], self.data['const_user'][0]['user_name'])
 
-        res = service_user_get_info(
-            self.conf, self.data['const_user'][1]['_id']['$oid'])
-        self.assertEqual(
-            res['user']['user_name'], self.data['const_user'][1]['user_name'])
-
         # Raise Error: ErrorCode.SERVICE_INVALID_ID_OBJ
         with self.assertRaises(ServiceError) as e:
             service_user_get_info(self.conf, 'some random user')
@@ -643,12 +638,10 @@ class TestServiceVideo(unittest.TestCase):
             init_time=get_time_now_utc())
 
     def test_b_service_video_info(self):
-        temp_video_id = \
-            query_video_get_by_title(self.temp_video_title)[0].to_dict()[
-                'video_id']
-        self.assertEqual(
-            service_video_info(self.conf, video_id=temp_video_id)[0][
-                'video_title'],
+        temp_video_id = query_video_get_by_title(
+            self.temp_video_title)[0].to_dict()['video_id']
+        self.assertEqual(service_video_info(
+            self.conf, video_id=temp_video_id)['video_title'],
             self.temp_video_title)
 
         # Raise Error: ErrorCode.SERVICE_VIDEO_NOT_FOUND
