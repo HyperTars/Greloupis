@@ -11,7 +11,6 @@ from db.query_user import query_user_create, query_user_get_by_name, \
     query_user_update_details
 from db.query_video_op import query_video_op_get_by_user_id
 from models.model_errors import ServiceError, ErrorCode
-import datetime
 
 
 def service_user_auth_get(token, user_id):
@@ -151,14 +150,7 @@ def service_user_get_user(conf, user_id):
         raise ServiceError(ErrorCode.SERVICE_USER_NOT_FOUND)
 
     user_array = util_serializer_mongo_results_to_array(users)
-
-    # convert datetime format to str
-    for each_result in user_array:
-        for key, value in each_result.items():
-            if isinstance(value, datetime.datetime):
-                each_result[key] = str(value)
-
-    return user_array[0]
+    return user_array[0]    
 
 
 def service_user_get_like(conf, user_id):

@@ -1,4 +1,3 @@
-import datetime
 from db.mongo import get_db
 from db.query_video import query_video_get_by_video_id, \
     query_video_cnt_decr_by_one, query_video_cnt_incr_by_one
@@ -60,7 +59,6 @@ def service_video_op_get_by_user(conf, **kw):
     
     op_array = util_serializer_mongo_results_to_array(ops)
 
-    # convert datetime format to str
     # get video name and video thumbnail for each op video
     for each_result in op_array:
         raw_result = query_video_get_by_video_id(each_result['video_id'])
@@ -68,11 +66,7 @@ def service_video_op_get_by_user(conf, **kw):
 
         each_result['video_title'] = video_result['video_title']
         each_result['video_thumbnail'] = video_result['video_thumbnail']
-        for key, value in each_result.items():
-            if isinstance(value, datetime.datetime):
-                each_result[key] = str(value)
-
-    return op_array
+    return op_array    
 
 
 def service_video_op_add_view(conf, **kw):

@@ -1,4 +1,3 @@
-import datetime
 from db.mongo import get_db
 from db.query_video import query_video_update, query_video_delete, \
     query_video_create, query_video_get_by_title, \
@@ -89,13 +88,7 @@ def service_video_get_by_user(conf, **kw):
     if len(videos) == 0:
         return [{}]
     video_array = util_serializer_mongo_results_to_array(videos)
-    # convert datetime format to str
-    for each_result in video_array:
-        for key, value in each_result.items():
-            if isinstance(value, datetime.datetime):
-                each_result[key] = str(value)
-    print("checkpoint 04")
-    return video_array
+    return video_array    
 
 
 def service_video_update(conf, **kw):
