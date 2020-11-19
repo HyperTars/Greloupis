@@ -150,7 +150,7 @@ def service_user_get_user(conf, user_id):
         raise ServiceError(ErrorCode.SERVICE_USER_NOT_FOUND)
 
     user_array = util_serializer_mongo_results_to_array(users)
-    return user_array[0]    
+    return user_array[0]
 
 
 def service_user_get_like(conf, user_id):

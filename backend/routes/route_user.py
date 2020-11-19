@@ -210,7 +210,7 @@ class UserUserId(Resource):
                 result['video_op'] = []
                 return util_serializer_api_response(
                     200, body=result, msg="Private User")
-            
+
             result['user'] = user
             result['video'] = service_video_get_by_user(
                 conf=conf, user_id=user_id)

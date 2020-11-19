@@ -88,7 +88,7 @@ def service_video_get_by_user(conf, **kw):
     if len(videos) == 0:
         return [{}]
     video_array = util_serializer_mongo_results_to_array(videos)
-    return video_array    
+    return video_array
 
 
 def service_video_update(conf, **kw):

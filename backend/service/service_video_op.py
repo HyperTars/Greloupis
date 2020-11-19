@@ -56,7 +56,7 @@ def service_video_op_get_by_user(conf, **kw):
     ops = query_video_op_get_by_user_id(kw['user_id'])
     if len(ops) == 0:
         return [{}]
-    
+
     op_array = util_serializer_mongo_results_to_array(ops)
 
     # get video name and video thumbnail for each op video
@@ -66,7 +66,7 @@ def service_video_op_get_by_user(conf, **kw):
 
         each_result['video_title'] = video_result['video_title']
         each_result['video_thumbnail'] = video_result['video_thumbnail']
-    return op_array    
+    return op_array
 
 
 def service_video_op_add_view(conf, **kw):
