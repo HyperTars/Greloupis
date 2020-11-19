@@ -12,6 +12,38 @@ from utils.util_time import get_time_now_utc
 from models.model_errors import ErrorCode, MongoError, ServiceError
 
 
+def service_video_op_auth_get(token, user_id, video_id):
+    videos = query_video_get_by_video_id(video_id)
+    if len(videos) == 0:
+        raise ServiceError(ErrorCode.SERVICE_VIDEO_NOT_FOUND)
+    video = videos[0].to_dict()
+
+    if video['video_status'] != 'public' and \
+       video['user_id'] != token and \
+       user_id != token:
+        return False
+
+    return True
+
+
+def service_video_op_auth_post(token, user_id, video_id):
+    videos = query_video_get_by_video_id(video_id)
+    if len(videos) == 0:
+        raise ServiceError(ErrorCode.SERVICE_VIDEO_NOT_FOUND)
+    video = videos[0].to_dict()
+
+    if video['video_status'] != 'public' and \
+       video['user_id'] != token:
+        return False
+
+    if token != user_id:
+        return False
+
+
+def service_video_op_auth_modify(token, user_id):
+    return token == user_id
+
+
 def service_video_op_add_view(conf, **kw):
     get_db(conf)
 

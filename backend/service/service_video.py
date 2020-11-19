@@ -13,25 +13,25 @@ VALID_VIDEO_STATUS = ['public', 'private', 'processing', 'deleted']
 
 
 def service_video_auth_get(token, video_id):
-    video = query_video_get_by_video_id(video_id)
+    videos = query_video_get_by_video_id(video_id)
     if len(videos) == 0:
         raise ServiceError(ErrorCode.SERVICE_VIDEO_NOT_FOUND)
-    v = video[0].to_dict()
-    user = v['user_id']
-    status = v['video_status']
+    video = videos[0].to_dict()
+    user = video['user_id']
+    status = video['video_status']
     if status != 'public' and user != token:
-        return false
-    return true
+        return False
+    return True
 
 
 def service_video_auth_modify(token, video_id):
-    video = query_video_get_by_video_id(video_id)
+    videos = query_video_get_by_video_id(video_id)
     if len(videos) == 0:
         raise ServiceError(ErrorCode.SERVICE_VIDEO_NOT_FOUND)
-    v = video[0].to_dict()
-    if v['user_id'] == token:
-        return true
-    return false
+    video = videos[0].to_dict()
+    if video['user_id'] == token:
+        return True
+    return False
 
 
 def service_video_upload(conf, **kw):
@@ -60,7 +60,7 @@ def service_video_info(conf, **kw):
     # keyword check and formatting
     if 'video_id' not in kw:
         raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
-    
+
     if not is_valid_id(kw["video_id"]):
         raise ServiceError(ErrorCode.SERVICE_INVALID_ID_OBJ)
     # perform db operations and get result
