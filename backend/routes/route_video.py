@@ -157,12 +157,14 @@ class VideoVideoId(Resource):
             video_id = request.url.split('/')[-1]
             token = get_jwt_identity()
 
-            # check authority
-            if service_video_auth_get(token, video_id) is False:
-                raise RouteError(ErrorCode.ROUTE_PRIVATE_VIDEO)
-
             video = service_video_info(
                 conf=conf, video_id=request.url.split('/')[-1])
+
+            # check authority
+            if service_video_auth_get(token, video_id) is False:
+                if video['video_status'] == 'deleted':
+                    raise RouteError(ErrorCode.ROUTE_DELETED_VIDEO)
+                raise RouteError(ErrorCode.ROUTE_PRIVATE_VIDEO)
 
             return util_serializer_api_response(
                     200, body=video, msg="Successfully got video by ID.")
@@ -222,14 +224,12 @@ class VideoVideoId(Resource):
             if service_video_auth_modify(token, video_id) is False:
                 raise RouteError(ErrorCode.ROUTE_TOKEN_NOT_PERMITTED)
 
-            delete_result = service_video_delete(
-                conf=conf, video_id=request.url.split('/')[-1])
-            if delete_result == 1:
-                return util_serializer_api_response(
-                    200, msg="Successfully deleted video")
-            else:
-                return util_serializer_api_response(
-                    500, msg="Failed to delete video")
+            service_video_delete(
+                conf=conf, method='status', video_id=video_id)
+
+            return util_serializer_api_response(
+                200, msg="Successfully deleted video")
+
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 

@@ -19,6 +19,9 @@ class ErrorCode(Enum):
         2003: "Route Error: This video is a private video"}
     ROUTE_TOKEN_REQUIRED = {
         2004: "Route Error: Token required but None provided"}
+    ROUTE_DELETED_USER = {
+        2005: "Route Error: This user acoount has been deleted"}
+    ROUTE_DELETED_VIDEO = {2006: "Route Error: This video has been deleted"}
     # Service 3 Series
     SERVICE_PARAM_SLICE_NOT_SUPPORT = {
         3001: "Service Error: Current Param Does Not Support Slice"}

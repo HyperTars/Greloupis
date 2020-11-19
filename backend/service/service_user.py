@@ -9,10 +9,10 @@ from db.query_user import query_user_create, query_user_get_by_name, \
     query_user_add_login, query_user_update_name, \
     query_user_update_password, query_user_update_thumbnail, \
     query_user_update_details
-from db.query_video import query_video_get_by_user_id, \
-    query_video_update, query_video_delete
+from db.query_video import query_video_get_by_user_id
 from db.query_video_op import query_video_op_get_by_user_id, \
     query_video_op_delete
+from service.service_video import service_video_delete
 from models.model_errors import ServiceError, ErrorCode
 
 
@@ -125,24 +125,25 @@ def service_user_close(conf, **kw):
     videos = query_video_get_by_user_id(kw['user_id'])
     ops = query_video_op_get_by_user_id(kw['user_id'])
 
-    # delete by updating status
+    # delete by setting status
     if 'method' in kw and kw['method'] == 'status':
         res = query_user_update_status(kw['user_id'], 'closed')
-
         for video in videos:
             vid = video.to_dict()['video_id']
-            query_video_update(vid, video_status='deleted')
+            service_video_delete(conf, video_id=vid, method='status')
 
     # delete by removing from databse
     else:
         res = query_user_delete_by_id(kw['user_id'])
         for video in videos:
             vid = video.to_dict()['video_id']
-            query_video_delete(vid, silent=True)
+            service_video_delete(conf, video_id=vid)
 
+    # delete all op created by this user immediately
     for op in ops:
         opid = op.to_dict()['video_op_id']
         query_video_op_delete(opid, silent=True)
+
     return res
 
 

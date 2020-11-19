@@ -8,7 +8,7 @@ from db.query_user import query_user_get_by_id
 from utils.util_pattern import util_pattern_format_param
 from utils.util_serializer import util_serializer_mongo_results_to_array
 from utils.util_validator import is_valid_id
-from models.model_errors import ServiceError, ErrorCode, MongoError
+from models.model_errors import ServiceError, ErrorCode
 
 VALID_VIDEO_STATUS = ['public', 'private', 'processing', 'deleted']
 
@@ -305,19 +305,19 @@ def service_video_delete(conf, **kw):
     if 'video_id' not in kw:
         raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
 
-    if not is_valid_id(kw["video_id"]):
+    if not is_valid_id(kw['video_id']):
         raise ServiceError(ErrorCode.SERVICE_INVALID_ID_OBJ)
 
-    # perform db operations and get result
-    delete_result = query_video_delete(kw["video_id"])
-    if delete_result == 1:
-        # delete all video_op related to this video
-        video_op_objects = query_video_op_get_by_video_id(kw["video_id"])
-        video_op_results = util_serializer_mongo_results_to_array(
-            video_op_objects)
-        for each in video_op_results:
-            query_video_op_delete(each["video_op_id"])
-
-        return delete_result
+    # delete by setting status
+    if 'method' in kw and kw['method'] == 'status':
+        res = query_video_update(kw['video_id'], video_status='deleted')
+    # delete by removing from database
     else:
-        raise MongoError(ErrorCode.MONGODB_VIDEO_DELETE_FAILURE)
+        res = query_video_delete(kw['video_id'], silent=True)
+
+    # delete all op in this video immediately
+    ops = query_video_op_get_by_video_id(kw['video_id'])
+    for op in ops:
+        opid = op.to_dict()['video_op_id']
+        query_video_op_delete(opid, silent=True)
+    return res

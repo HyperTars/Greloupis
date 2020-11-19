@@ -211,8 +211,10 @@ class UserUserId(Resource):
             result['user'] = user
             result['video'] = video
             result['video_op'] = op
-
+            
             if not service_user_auth_get(token, user_id):
+                if user['user_status'] == 'closed':
+                    raise RouteError(ErrorCode.ROUTE_DELETED_USER)
                 result['user'] = service_user_hide_private(user)
                 result['video'] = service_search_hide_video('', video)
                 result['video_op'] = []
@@ -258,15 +260,10 @@ class UserUserId(Resource):
         """
         try:
             token = get_jwt_identity()
-            print("checkpoint 01")
             if not service_user_auth_modify(token, user_id=user_id):
                 raise RouteError(ErrorCode.ROUTE_TOKEN_REQUIRED)
-            print("checkpoint 02")
             result = service_user_close(
-                config['default'],
-                user_id=user_id,
-                method='status')
-            print("checkpoint 03")
+                config['default'], method='status', user_id=user_id,)
             return util_serializer_api_response(
                 200, body=result, msg="Delete user successfully")
 
