@@ -1,5 +1,6 @@
 import { backendPoint } from "./Endpoint";
 import { authHeader } from "../service/AuthHeader";
+import logout from "./Logout";
 
 export class GatewayTimeout extends Error {}
 export class NotFoundError extends Error {}
@@ -12,6 +13,8 @@ function fetchWithErrorHandling(url, method, data) {
   let retryCount = 3;
 
   async function handleErrors(response, method, data) {
+    let responseJson = await response.clone().json();
+
     if (
       response == null ||
       response.status == null ||
@@ -44,22 +47,23 @@ function fetchWithErrorHandling(url, method, data) {
             });
         }
       } else {
-        let responseJson = await response.json();
         throw new GatewayTimeout(responseJson["message"]);
       }
     } else if (response.status >= 500) {
-      let responseJson = await response.json();
       throw new ServerError(responseJson["message"]);
     } else if (response.status === 404) {
-      let responseJson = await response.json();
       throw new NotFoundError(responseJson["message"]);
     } else if (response.status >= 400) {
-      let responseJson = await response.json();
       throw new ClientError(responseJson["message"]);
     } else if (!response.ok) {
-      let responseJson = await response.json();
       throw Error(responseJson["message"]);
     } else {
+      if (responseJson.code === -10000) {
+        alert("Local user token has expired!");
+        logout();
+        return;
+      }
+
       return response;
     }
   }
