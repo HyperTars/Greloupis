@@ -1,10 +1,12 @@
+import datetime
 from db.mongo import get_db
 from db.query_video import query_video_get_by_video_id, \
     query_video_cnt_decr_by_one, query_video_cnt_incr_by_one
 from db.query_video_op import query_video_op_update_star, \
     query_video_op_update_dislike, query_video_op_update_like, \
     query_video_op_update_comment, query_video_op_update_process, \
-    query_video_op_get_by_user_video, query_video_op_create
+    query_video_op_get_by_user_video, query_video_op_create, \
+    query_video_op_get_by_user_id
 from utils.util_validator import is_valid_id
 from utils.util_serializer import util_serializer_mongo_results_to_array
 from utils.util_pattern import util_pattern_format_param
@@ -42,6 +44,35 @@ def service_video_op_auth_post(token, user_id, video_id):
 
 def service_video_op_auth_modify(token, user_id):
     return token == user_id
+
+
+def service_video_op_get_by_user(conf, **kw):
+    get_db(conf)
+    kw['service'] = 'video_op'
+    kw = util_pattern_format_param(**kw)
+    # keyword check and formatting
+    if 'user_id' not in kw:
+        raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
+
+    ops = query_video_op_get_by_user_id(kw['user_id'])
+    if len(ops) == 0:
+        return [{}]
+    
+    op_array = util_serializer_mongo_results_to_array(ops)
+
+    # convert datetime format to str
+    # get video name and video thumbnail for each op video
+    for each_result in op_array:
+        raw_result = query_video_get_by_video_id(each_result['video_id'])
+        video_result = util_serializer_mongo_results_to_array(raw_result)[0]
+
+        each_result['video_title'] = video_result['video_title']
+        each_result['video_thumbnail'] = video_result['video_thumbnail']
+        for key, value in each_result.items():
+            if isinstance(value, datetime.datetime):
+                each_result[key] = str(value)
+
+    return op_array
 
 
 def service_video_op_add_view(conf, **kw):

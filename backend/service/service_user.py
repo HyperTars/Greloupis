@@ -95,37 +95,6 @@ def service_user_login(conf, **kw):
     return query_user_get_by_id(uid)[0].to_dict()
 
 
-# def service_user_get_user(conf, **kw):
-#     # service_user_get_user(config['default'], user_name="t",
-#                             user_password="lol")
-#
-#     get_db(conf)
-#
-#     # TODO: validate user by session
-#
-#     # Validate user by password
-#     if 'user_name' not in kw and 'user_email' not in kw:
-#         return ErrorCode.SERVICE_MISSING_PARAM
-#     if 'user_password' not in kw:
-#         return ErrorCode.SERVICE_MISSING_PARAM
-#
-#     auth = service_user_check_password(**kw)
-#
-#     if type(auth) == ErrorCode or auth is False:
-#         return ErrorCode.SERVICE_USER_NOT_FOUND
-#
-#     if 'user_name' in kw:
-#         return query_user_get_by_name(kw['user_name'])[0].to_dict()
-#     if 'user_email' in kw:
-#         return query_user_get_by_email(kw['user_email'])[0].to_dict()
-#
-#     return ErrorCode.SERVICE_MISSING_PARAM
-#
-#
-# def service_user_logout():
-#     return
-#
-#
 def service_user_update_info(conf, **kw):
     get_db(conf)
     kw['service'] = 'user'
@@ -153,28 +122,24 @@ def service_user_cancel(conf, **kw):
     return query_user_delete_by_id(kw['user_id'])
 
 
-def service_user_hide_info(info):
-    if 'user' not in info or 'video' not in info or 'video_op' not in info:
-        raise ServiceError(ErrorCode.SERVICE_MISSING_USER_INFO)
+def service_user_hide_info(user):
     hide = '[Private User]'
-    info['user']['user_detail']['user_city'] = hide
-    info['user']['user_detail']['user_country'] = hide
-    info['user']['user_detail']['user_first_name'] = hide
-    info['user']['user_detail']['user_last_name'] = hide
-    info['user']['user_detail']['user_phone'] = hide
-    info['user']['user_detail']['user_state'] = hide
-    info['user']['user_detail']['user_street1'] = hide
-    info['user']['user_detail']['user_street2'] = hide
-    info['user']['user_detail']['user_zip'] = hide
-    info['user']['user_email'] = hide
-    info['user']['user_following'] = []
-    info['user']['user_login'] = []
-    info['video'] = []
-    info['video_op'] = []
-    return info
+    user['user_detail']['user_city'] = hide
+    user['user_detail']['user_country'] = hide
+    user['user_detail']['user_first_name'] = hide
+    user['user_detail']['user_last_name'] = hide
+    user['user_detail']['user_phone'] = hide
+    user['user_detail']['user_state'] = hide
+    user['user_detail']['user_street1'] = hide
+    user['user_detail']['user_street2'] = hide
+    user['user_detail']['user_zip'] = hide
+    user['user_email'] = hide
+    user['user_following'] = []
+    user['user_login'] = []
+    return user
 
 
-def service_user_get_info(conf, user_id):
+def service_user_get_user(conf, user_id):
     get_db(conf)
 
     # user_id check

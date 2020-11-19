@@ -1,6 +1,8 @@
+import datetime
 from db.mongo import get_db
 from db.query_video import query_video_update, query_video_delete, \
-    query_video_create, query_video_get_by_title, query_video_get_by_video_id
+    query_video_create, query_video_get_by_title, \
+    query_video_get_by_user_id, query_video_get_by_video_id
 from db.query_video_op import query_video_op_get_by_video_id, \
     query_video_op_delete
 from db.query_user import query_user_get_by_id
@@ -74,6 +76,26 @@ def service_video_info(conf, **kw):
     res["user_name"] = user_obj["user_name"]
     res["user_thumbnail"] = user_obj["user_thumbnail"]
     return res
+
+
+def service_video_get_by_user(conf, **kw):
+    get_db(conf)
+    kw['service'] = 'video'
+    kw = util_pattern_format_param(**kw)
+    # keyword check and formatting
+    if 'user_id' not in kw:
+        raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
+    videos = query_video_get_by_user_id(kw['user_id'])
+    if len(videos) == 0:
+        return [{}]
+    video_array = util_serializer_mongo_results_to_array(videos)
+    # convert datetime format to str
+    for each_result in video_array:
+        for key, value in each_result.items():
+            if isinstance(value, datetime.datetime):
+                each_result[key] = str(value)
+    print("checkpoint 04")
+    return video_array
 
 
 def service_video_update(conf, **kw):
