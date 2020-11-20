@@ -11,7 +11,7 @@ from settings import config
 import os
 import logging.config
 from pathlib import Path
-from db.mongo import get_db
+from db.mongo import init_db
 # from source.utils.util_request_filter import *
 # from flask import request, redirect, session
 from utils.util_jwt import util_get_formated_response
@@ -19,7 +19,9 @@ from utils.util_jwt import util_get_formated_response
 app = Flask(__name__)
 app.config.from_object(config['default'])
 app.register_blueprint(blueprint)
-# db = get_db()
+with app.app_context():
+    init_db()
+
 with open('configs/logging.yml', 'r') as f:
     Path("logs").mkdir(parents=True, exist_ok=True)
     conf = yaml.safe_load(f.read())

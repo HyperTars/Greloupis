@@ -1,5 +1,4 @@
 from flask import current_app
-from db.mongo import get_db
 from db.query_user import query_user_search_by_aggregate, \
     query_user_search_by_pattern, query_user_search_by_contains, \
     query_user_get_by_id
@@ -21,7 +20,7 @@ from models.model_errors import ServiceError, ErrorCode
 # TODO: by uploader: search User.user_id -> user_id -> Video.user_id
 # Search User Caller
 def service_search_user(**kw):
-    get_db()
+    
     conf = current_app.config
     kw['service'] = 'user'
     kw = util_pattern_format_param(**kw)
@@ -61,7 +60,7 @@ def service_search_user(**kw):
 
 # Search Video Caller
 def service_search_video(**kw):
-    get_db()
+    
     conf = current_app.config
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)

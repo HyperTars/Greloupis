@@ -1,4 +1,3 @@
-from db.mongo import get_db
 from db.query_video import query_video_update, query_video_delete, \
     query_video_create, query_video_get_by_title, \
     query_video_get_by_user_id, query_video_get_by_video_id
@@ -36,7 +35,7 @@ def service_video_auth_modify(token, video_id):
 
 
 def service_video_upload( **kw):
-    get_db()
+    
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
 
@@ -55,7 +54,7 @@ def service_video_upload( **kw):
 
 
 def service_video_info( **kw):
-    get_db()
+    
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
     # keyword check and formatting
@@ -78,7 +77,7 @@ def service_video_info( **kw):
 
 
 def service_video_get_by_user( **kw):
-    get_db()
+    
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
     # keyword check and formatting
@@ -92,7 +91,7 @@ def service_video_get_by_user( **kw):
 
 
 def service_video_update( **kw):
-    get_db()
+    
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
 
@@ -163,7 +162,7 @@ def service_video_update( **kw):
 
 
 def service_video_comments( **kw):
-    get_db()
+    
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
 
@@ -198,7 +197,7 @@ def service_video_comments( **kw):
 
 
 def service_video_likes( **kw):
-    get_db()
+    
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
 
@@ -231,7 +230,7 @@ def service_video_likes( **kw):
 
 
 def service_video_dislikes( **kw):
-    get_db()
+    
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
 
@@ -264,7 +263,7 @@ def service_video_dislikes( **kw):
 
 
 def service_video_stars( **kw):
-    get_db()
+    
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
 
@@ -297,7 +296,7 @@ def service_video_stars( **kw):
 
 
 def service_video_delete( **kw):
-    get_db()
+    
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
 

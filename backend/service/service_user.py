@@ -2,7 +2,6 @@ from utils.util_hash import util_hash_encode
 from utils.util_serializer import util_serializer_mongo_results_to_array
 from utils.util_validator import is_valid_id
 from utils.util_pattern import util_pattern_format_param
-from db.mongo import get_db
 from db.query_user import query_user_create, query_user_get_by_name, \
     query_user_get_by_email, query_user_delete_by_id, \
     query_user_get_by_id, query_user_update_status, \
@@ -46,7 +45,7 @@ def service_user_reg(**kw):
     # user_name: str, user_email: str, user_password: str, user_ip = "0.0.0.0"
     # service_user_reg(conf, user_name="t", user_email="k",
     # user_password="lol")
-    get_db()
+    
     kw['service'] = 'user'
     kw = util_pattern_format_param(**kw)
     if 'user_name' not in kw or 'user_email' not in kw \
@@ -60,7 +59,7 @@ def service_user_reg(**kw):
 
 
 def service_user_login(**kw):
-    get_db()
+    
     kw['service'] = 'user'
     kw = util_pattern_format_param(**kw)
     if 'user_name' in kw and 'user_password' in kw:
@@ -98,7 +97,7 @@ def service_user_login(**kw):
 
 
 def service_user_update_info(**kw):
-    get_db()
+    
     kw['service'] = 'user'
     kw = util_pattern_format_param(**kw)
     if 'user_id' not in kw:
@@ -116,7 +115,7 @@ def service_user_update_info(**kw):
 
 
 def service_user_close(**kw):
-    get_db()
+    
     kw['service'] = 'user'
     kw = util_pattern_format_param(**kw)
     if 'user_id' not in kw:
@@ -165,7 +164,7 @@ def service_user_hide_private(user):
 
 
 def service_user_get_user(user_id):
-    get_db()
+    
 
     # user_id check
     if not is_valid_id(user_id):
@@ -180,7 +179,7 @@ def service_user_get_user(user_id):
 
 
 def service_user_get_like(user_id):
-    get_db()
+    
 
     # user_id check
     if not is_valid_id(user_id):
@@ -209,7 +208,7 @@ def service_user_get_like(user_id):
 
 
 def service_user_get_dislike(user_id):
-    get_db()
+    
 
     # user_id check
     if not is_valid_id(user_id):
@@ -238,7 +237,7 @@ def service_user_get_dislike(user_id):
 
 
 def service_user_get_comment(user_id):
-    get_db()
+    
 
     # user_id check
     if not is_valid_id(user_id):
@@ -268,7 +267,7 @@ def service_user_get_comment(user_id):
 
 
 def service_user_get_star(user_id):
-    get_db()
+    
 
     # user_id check
     if not is_valid_id(user_id):
@@ -297,7 +296,7 @@ def service_user_get_star(user_id):
 
 
 def service_user_get_process(user_id):
-    get_db()
+    
 
     # user_id check
     if not is_valid_id(user_id):
