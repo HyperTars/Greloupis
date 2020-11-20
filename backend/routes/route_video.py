@@ -110,7 +110,7 @@ comment_response = video.model(name='ApiResponseWithComment', model={
 class Video(Resource):
 
     @jwt_required
-    def post(self, conf=config["default"]):
+    def post(self):
         """
             User upload a video
         """
@@ -127,7 +127,7 @@ class Video(Resource):
                 raise RouteError(ErrorCode.ROUTE_TOKEN_REQUIRED)
 
             kw['user_id'] = get_jwt_identity()
-            upload_result = service_video_upload(conf=conf, **kw)
+            upload_result = service_video_upload(**kw)
             if upload_result is not None and upload_result != {}:
                 return_body = util_serializer_mongo_results_to_array(
                     upload_result, format="json")
@@ -149,7 +149,7 @@ class Video(Resource):
 class VideoVideoId(Resource):
 
     @jwt_optional
-    def get(self, video_id, conf=config["default"]):
+    def get(self, video_id):
         """
             Get video information by video ID
         """
@@ -158,7 +158,7 @@ class VideoVideoId(Resource):
             token = get_jwt_identity()
 
             video = service_video_info(
-                conf=conf, video_id=request.url.split('/')[-1])
+                video_id=request.url.split('/')[-1])
 
             # remove deleted video
             if video['video_status'] == 'deleted':
@@ -175,7 +175,7 @@ class VideoVideoId(Resource):
 
     @jwt_required
     @video.response(405, 'Method not allowed')
-    def put(self, video_id, conf=config["default"]):
+    def put(self, video_id):
         """
             Update video information by video ID
         """
@@ -200,7 +200,7 @@ class VideoVideoId(Resource):
             if "video_category" in kw.keys():
                 kw["video_category"] = request.form.getlist("video_category")
 
-            update_result = service_video_update(conf=conf, **kw)
+            update_result = service_video_update(**kw)
             if len(update_result) == 1:
                 return_body = util_serializer_mongo_results_to_array(
                     update_result, format="json")
@@ -213,7 +213,7 @@ class VideoVideoId(Resource):
             return util_error_handler(e)
 
     @jwt_required
-    def delete(self, video_id, conf=config["default"]):
+    def delete(self, video_id):
         """
             Delete video information by video ID
         """
@@ -227,7 +227,7 @@ class VideoVideoId(Resource):
                 raise RouteError(ErrorCode.ROUTE_TOKEN_NOT_PERMITTED)
 
             service_video_delete(
-                conf=conf, method='status', video_id=video_id)
+                method='status', video_id=video_id)
 
             return util_serializer_api_response(
                 200, msg="Successfully deleted video")
@@ -245,7 +245,7 @@ class VideoVideoId(Resource):
 class VideoVideoIdView(Resource):
 
     @jwt_optional
-    def get(self, video_id, conf=config["default"]):
+    def get(self, video_id):
         """
             Get video view count by video ID
         """
@@ -258,7 +258,7 @@ class VideoVideoIdView(Resource):
                 raise RouteError(ErrorCode.ROUTE_PRIVATE_VIDEO)
 
             view_result = service_video_op_get_view(
-                conf=conf, video_id=video_id)
+                video_id=video_id)
 
             return util_serializer_api_response(
                 200, body=view_result, msg="Successfully get video view count")
@@ -267,7 +267,7 @@ class VideoVideoIdView(Resource):
             return util_error_handler(e)
 
     @video.response(405, 'Method not allowed')
-    def put(self, video_id, conf=config["default"]):
+    def put(self, video_id):
         """
             Increment video view count by 1 by video ID
         """
@@ -276,7 +276,7 @@ class VideoVideoIdView(Resource):
             video_id = request.url.split('/')[-2]
 
             add_result = service_video_op_add_view(
-                conf=conf, video_id=video_id)
+                video_id=video_id)
 
             return util_serializer_api_response(
                 200, body=add_result,
@@ -294,7 +294,7 @@ class VideoVideoIdView(Resource):
 class VideoVideoIdComment(Resource):
 
     @jwt_optional
-    def get(self, video_id, conf=config['default']):
+    def get(self, video_id):
         """
             Get video view comments list by video ID
         """
@@ -309,7 +309,7 @@ class VideoVideoIdComment(Resource):
                 raise RouteError(ErrorCode.ROUTE_PRIVATE_VIDEO)
 
             comments_result = service_video_comments(
-                conf=conf, video_id=video_id)
+                video_id=video_id)
 
             return util_serializer_api_response(
                 200, body=comments_result,
@@ -327,7 +327,7 @@ class VideoVideoIdComment(Resource):
 class VideoVideoIdDislike(Resource):
 
     @jwt_optional
-    def get(self, video_id, conf=config['default']):
+    def get(self, video_id):
         """
             Get a list of dislike by video id
         """
@@ -340,7 +340,7 @@ class VideoVideoIdDislike(Resource):
                 raise RouteError(ErrorCode.ROUTE_PRIVATE_VIDEO)
 
             dislike_result = service_video_dislikes(
-                conf=conf, video_id=video_id)
+                video_id=video_id)
 
             return util_serializer_api_response(
                 200, body=dislike_result,
@@ -358,7 +358,7 @@ class VideoVideoIdDislike(Resource):
 class VideoVideoIdLike(Resource):
 
     @jwt_optional
-    def get(self, video_id, conf=config['default']):
+    def get(self, video_id):
         """
             Get a list of like by video id
         """
@@ -370,7 +370,7 @@ class VideoVideoIdLike(Resource):
             if service_video_auth_get(token, video_id) is False:
                 raise RouteError(ErrorCode.ROUTE_PRIVATE_VIDEO)
 
-            like_result = service_video_likes(conf=conf, video_id=video_id)
+            like_result = service_video_likes(video_id=video_id)
             return util_serializer_api_response(
                 200, body=like_result, msg="Successfully got video likes")
         except (ServiceError, MongoError, RouteError, Exception) as e:
@@ -386,7 +386,7 @@ class VideoVideoIdLike(Resource):
 class VideoVideoIdStar(Resource):
 
     @jwt_optional
-    def get(self, video_id, conf=config['default']):
+    def get(self, video_id):
         """
             Get a list of star by video id
         """
@@ -398,7 +398,7 @@ class VideoVideoIdStar(Resource):
             if service_video_auth_get(token, video_id) is False:
                 raise RouteError(ErrorCode.ROUTE_PRIVATE_VIDEO)
 
-            star_result = service_video_stars(conf=conf, video_id=video_id)
+            star_result = service_video_stars(video_id=video_id)
 
             return util_serializer_api_response(
                 200, body=star_result, msg="Successfully got video stars")
@@ -420,7 +420,7 @@ class VideoVideoIdStar(Resource):
 class VideoVideoIdCommentUserId(Resource):
 
     @jwt_optional
-    def get(self, video_id, user_id, conf=config['default']):
+    def get(self, video_id, user_id):
         """
             Get a comment by specified video id and user id
         """
@@ -434,7 +434,7 @@ class VideoVideoIdCommentUserId(Resource):
                 raise RouteError(ErrorCode.ROUTE_TOKEN_REQUIRED)
 
             comments_result = service_video_op_get_comment(
-                conf=conf, video_id=video_id, user_id=user_id)
+                video_id=video_id, user_id=user_id)
 
             return util_serializer_api_response(
                 200, body=comments_result,
@@ -445,7 +445,7 @@ class VideoVideoIdCommentUserId(Resource):
 
     @jwt_required
     @video.response(405, 'Method not allowed')
-    def post(self, video_id, user_id, conf=config['default']):
+    def post(self, video_id, user_id):
         """
             Post a comment by specified video id and user id
         """
@@ -464,7 +464,7 @@ class VideoVideoIdCommentUserId(Resource):
                 raise RouteError(ErrorCode.ROUTE_TOKEN_REQUIRED)
             kw['video_id'] = video_id
             kw['user_id'] = user_id
-            comments_result = service_video_op_add_comment(conf=conf, **kw)
+            comments_result = service_video_op_add_comment(**kw)
             return util_serializer_api_response(
                 200, body=comments_result, msg="Successfully post a comment")
         except (ServiceError, MongoError, RouteError, Exception) as e:
@@ -472,7 +472,7 @@ class VideoVideoIdCommentUserId(Resource):
 
     @jwt_required
     @video.response(405, 'Method not allowed')
-    def put(self, video_id, user_id, conf=config['default']):
+    def put(self, video_id, user_id):
         """
             Update a comment by specified video id and user id
         """
@@ -494,7 +494,7 @@ class VideoVideoIdCommentUserId(Resource):
 
             kw['video_id'] = video_id
             kw['user_id'] = user_id
-            comments_result = service_video_op_update_comment(conf=conf, **kw)
+            comments_result = service_video_op_update_comment(**kw)
 
             return util_serializer_api_response(
                 200, body=comments_result, msg="Successfully update a comment")
@@ -504,7 +504,7 @@ class VideoVideoIdCommentUserId(Resource):
 
     @jwt_required
     @video.response(405, 'Method not allowed')
-    def delete(self, video_id, user_id, conf=config['default']):
+    def delete(self, video_id, user_id):
         """
             Delete a comment by specified video id and user id
         """
@@ -519,7 +519,7 @@ class VideoVideoIdCommentUserId(Resource):
                 raise RouteError(ErrorCode.ROUTE_TOKEN_REQUIRED)
 
             comments_result = service_video_op_cancel_comment(
-                conf=conf, video_id=video_id, user_id=user_id)
+                video_id=video_id, user_id=user_id)
 
             return util_serializer_api_response(
                 200, body=comments_result, msg="Successfully delete a comment")
@@ -540,7 +540,7 @@ class VideoVideoIdCommentUserId(Resource):
 class VideoVideoIdProcessUserId(Resource):
 
     @jwt_optional
-    def get(self, video_id, user_id, conf=config['default']):
+    def get(self, video_id, user_id):
         """
             Get a new video watching process
         """
@@ -554,7 +554,7 @@ class VideoVideoIdProcessUserId(Resource):
                 raise RouteError(ErrorCode.ROUTE_TOKEN_REQUIRED)
 
             process_result = service_video_op_get_process(
-                conf=conf, video_id=video_id, user_id=user_id)
+                video_id=video_id, user_id=user_id)
 
             return util_serializer_api_response(
                 200, body=process_result, msg="Successfully get video process")
@@ -563,7 +563,7 @@ class VideoVideoIdProcessUserId(Resource):
             return util_error_handler(e)
 
     @jwt_required
-    def post(self, video_id, user_id, conf=config['default']):
+    def post(self, video_id, user_id):
         """
             Post a new video watching process
         """
@@ -585,7 +585,7 @@ class VideoVideoIdProcessUserId(Resource):
 
             kw['video_id'] = video_id
             kw['user_id'] = user_id
-            process_result = service_video_op_add_process(conf=conf, **kw)
+            process_result = service_video_op_add_process(**kw)
 
             return util_serializer_api_response(
                 200, body=process_result, msg="Successfully add video process")
@@ -594,7 +594,7 @@ class VideoVideoIdProcessUserId(Resource):
             return util_error_handler(e)
 
     @jwt_required
-    def put(self, video_id, user_id, conf=config['default']):
+    def put(self, video_id, user_id):
         """
             Update a video watching process
         """
@@ -615,7 +615,7 @@ class VideoVideoIdProcessUserId(Resource):
 
             kw['video_id'] = video_id
             kw['user_id'] = user_id
-            process_result = service_video_op_update_process(conf=conf, **kw)
+            process_result = service_video_op_update_process(**kw)
 
             return util_serializer_api_response(
                 200, body=process_result,
@@ -625,7 +625,7 @@ class VideoVideoIdProcessUserId(Resource):
             return util_error_handler(e)
 
     @jwt_required
-    def delete(self, video_id, user_id, conf=config['default']):
+    def delete(self, video_id, user_id):
         """
             Delete a video watching process
         """
@@ -640,7 +640,7 @@ class VideoVideoIdProcessUserId(Resource):
                 raise RouteError(ErrorCode.ROUTE_TOKEN_REQUIRED)
 
             process_result = service_video_op_cancel_process(
-                conf=conf, video_id=video_id, user_id=user_id)
+                video_id=video_id, user_id=user_id)
 
             return util_serializer_api_response(
                 200, body=process_result,
@@ -662,7 +662,7 @@ class VideoVideoIdProcessUserId(Resource):
 class VideoVideoIdLikeUserId(Resource):
 
     @jwt_required
-    def post(self, video_id, user_id, conf=config['default']):
+    def post(self, video_id, user_id):
         """
             Post a like by specified user and video
         """
@@ -677,7 +677,7 @@ class VideoVideoIdLikeUserId(Resource):
                 raise RouteError(ErrorCode.ROUTE_TOKEN_REQUIRED)
 
             like_result = service_video_op_add_like(
-                conf=conf, video_id=video_id, user_id=user_id)
+                video_id=video_id, user_id=user_id)
 
             return util_serializer_api_response(
                 200, body=like_result, msg="Successfully post a like")
@@ -686,7 +686,7 @@ class VideoVideoIdLikeUserId(Resource):
             return util_error_handler(e)
 
     @jwt_required
-    def delete(self, video_id, user_id, conf=config['default']):
+    def delete(self, video_id, user_id):
         """
             Undo a like by specified user and video
         """
@@ -701,7 +701,7 @@ class VideoVideoIdLikeUserId(Resource):
                 raise RouteError(ErrorCode.ROUTE_TOKEN_REQUIRED)
 
             like_result = service_video_op_cancel_like(
-                conf=conf, user_id=user_id, video_id=video_id)
+                user_id=user_id, video_id=video_id)
 
             return util_serializer_api_response(
                 200, body=like_result, msg="Successfully cancel a like")
@@ -722,7 +722,7 @@ class VideoVideoIdLikeUserId(Resource):
 class VideoVideoIdDislikeUserId(Resource):
 
     @jwt_required
-    def post(self, video_id, user_id, conf=config['default']):
+    def post(self, video_id, user_id):
         """
             Post a dislike by specified user and video
         """
@@ -737,7 +737,7 @@ class VideoVideoIdDislikeUserId(Resource):
                 raise RouteError(ErrorCode.ROUTE_TOKEN_REQUIRED)
 
             dislike_result = service_video_op_add_dislike(
-                conf=conf, video_id=video_id, user_id=user_id)
+                video_id=video_id, user_id=user_id)
 
             return util_serializer_api_response(
                 200, body=dislike_result, msg="Successfully post a dislike")
@@ -746,7 +746,7 @@ class VideoVideoIdDislikeUserId(Resource):
             return util_error_handler(e)
 
     @jwt_required
-    def delete(self, video_id, user_id, conf=config['default']):
+    def delete(self, video_id, user_id):
         """
             Undo a dislike by specified user and video
         """
@@ -761,7 +761,7 @@ class VideoVideoIdDislikeUserId(Resource):
                 raise RouteError(ErrorCode.ROUTE_TOKEN_REQUIRED)
 
             dislike_result = service_video_op_cancel_dislike(
-                conf=conf, video_id=video_id, user_id=user_id)
+                video_id=video_id, user_id=user_id)
 
             return util_serializer_api_response(
                 200, body=dislike_result, msg="Successfully cancel a dislike")
@@ -782,7 +782,7 @@ class VideoVideoIdDislikeUserId(Resource):
 class VideoVideoIdStarUserId(Resource):
 
     @jwt_required
-    def post(self, video_id, user_id, conf=config['default']):
+    def post(self, video_id, user_id):
         """
             Post a star by specified user and video
         """
@@ -797,7 +797,7 @@ class VideoVideoIdStarUserId(Resource):
                 raise RouteError(ErrorCode.ROUTE_TOKEN_REQUIRED)
 
             star_result = service_video_op_add_star(
-                conf=conf, video_id=video_id, user_id=user_id)
+                video_id=video_id, user_id=user_id)
 
             return util_serializer_api_response(
                 200, body=star_result, msg="Successfully add a star")
@@ -806,7 +806,7 @@ class VideoVideoIdStarUserId(Resource):
             return util_error_handler(e)
 
     @jwt_required
-    def delete(self, video_id, user_id, conf=config['default']):
+    def delete(self, video_id, user_id):
         """
             Undo a star by specified user and video
         """
@@ -821,7 +821,7 @@ class VideoVideoIdStarUserId(Resource):
                 raise RouteError(ErrorCode.ROUTE_TOKEN_REQUIRED)
 
             star_result = service_video_op_cancel_star(
-                conf=conf, user_id=user_id, video_id=video_id)
+                user_id=user_id, video_id=video_id)
 
             return util_serializer_api_response(
                 200, body=star_result, msg="Successfully cancel a star")

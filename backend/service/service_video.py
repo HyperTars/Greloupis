@@ -35,8 +35,8 @@ def service_video_auth_modify(token, video_id):
     return False
 
 
-def service_video_upload(conf, **kw):
-    get_db(conf)
+def service_video_upload( **kw):
+    get_db()
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
 
@@ -54,8 +54,8 @@ def service_video_upload(conf, **kw):
     return uploaded_result
 
 
-def service_video_info(conf, **kw):
-    get_db(conf)
+def service_video_info( **kw):
+    get_db()
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
     # keyword check and formatting
@@ -77,8 +77,8 @@ def service_video_info(conf, **kw):
     return res
 
 
-def service_video_get_by_user(conf, **kw):
-    get_db(conf)
+def service_video_get_by_user( **kw):
+    get_db()
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
     # keyword check and formatting
@@ -91,8 +91,8 @@ def service_video_get_by_user(conf, **kw):
     return video_array
 
 
-def service_video_update(conf, **kw):
-    get_db(conf)
+def service_video_update( **kw):
+    get_db()
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
 
@@ -162,8 +162,8 @@ def service_video_update(conf, **kw):
     return query_video_get_by_video_id(kw["video_id"])
 
 
-def service_video_comments(conf, **kw):
-    get_db(conf)
+def service_video_comments( **kw):
+    get_db()
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
 
@@ -197,8 +197,8 @@ def service_video_comments(conf, **kw):
     return comments_result
 
 
-def service_video_likes(conf, **kw):
-    get_db(conf)
+def service_video_likes( **kw):
+    get_db()
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
 
@@ -230,8 +230,8 @@ def service_video_likes(conf, **kw):
     return like_result
 
 
-def service_video_dislikes(conf, **kw):
-    get_db(conf)
+def service_video_dislikes( **kw):
+    get_db()
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
 
@@ -263,8 +263,8 @@ def service_video_dislikes(conf, **kw):
     return dislike_result
 
 
-def service_video_stars(conf, **kw):
-    get_db(conf)
+def service_video_stars( **kw):
+    get_db()
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
 
@@ -296,8 +296,8 @@ def service_video_stars(conf, **kw):
     return star_result
 
 
-def service_video_delete(conf, **kw):
-    get_db(conf)
+def service_video_delete( **kw):
+    get_db()
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
 

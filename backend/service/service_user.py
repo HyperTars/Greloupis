@@ -30,7 +30,7 @@ def service_user_auth_modify(token, user_id):
     return token == user_id
 
 
-def service_user_reg(conf, **kw):
+def service_user_reg(**kw):
     """
     Register user
 
@@ -46,7 +46,7 @@ def service_user_reg(conf, **kw):
     # user_name: str, user_email: str, user_password: str, user_ip = "0.0.0.0"
     # service_user_reg(conf, user_name="t", user_email="k",
     # user_password="lol")
-    get_db(conf)
+    get_db()
     kw['service'] = 'user'
     kw = util_pattern_format_param(**kw)
     if 'user_name' not in kw or 'user_email' not in kw \
@@ -59,8 +59,8 @@ def service_user_reg(conf, **kw):
     return query_user_get_by_name(kw['user_name'])[0].to_dict()
 
 
-def service_user_login(conf, **kw):
-    get_db(conf)
+def service_user_login(**kw):
+    get_db()
     kw['service'] = 'user'
     kw = util_pattern_format_param(**kw)
     if 'user_name' in kw and 'user_password' in kw:
@@ -97,8 +97,8 @@ def service_user_login(conf, **kw):
     return query_user_get_by_id(uid)[0].to_dict()
 
 
-def service_user_update_info(conf, **kw):
-    get_db(conf)
+def service_user_update_info(**kw):
+    get_db()
     kw['service'] = 'user'
     kw = util_pattern_format_param(**kw)
     if 'user_id' not in kw:
@@ -115,8 +115,8 @@ def service_user_update_info(conf, **kw):
     return query_user_get_by_id(kw['user_id'])[0].to_dict()
 
 
-def service_user_close(conf, **kw):
-    get_db(conf)
+def service_user_close(**kw):
+    get_db()
     kw['service'] = 'user'
     kw = util_pattern_format_param(**kw)
     if 'user_id' not in kw:
@@ -130,14 +130,14 @@ def service_user_close(conf, **kw):
         res = query_user_update_status(kw['user_id'], 'closed')
         for video in videos:
             vid = video.to_dict()['video_id']
-            service_video_delete(conf, video_id=vid, method='status')
+            service_video_delete(video_id=vid, method='status')
 
     # delete by removing from databse
     else:
         res = query_user_delete_by_id(kw['user_id'])
         for video in videos:
             vid = video.to_dict()['video_id']
-            service_video_delete(conf, video_id=vid)
+            service_video_delete(video_id=vid)
 
     # delete all op created by this user immediately
     for op in ops:
@@ -164,8 +164,8 @@ def service_user_hide_private(user):
     return user
 
 
-def service_user_get_user(conf, user_id):
-    get_db(conf)
+def service_user_get_user(user_id):
+    get_db()
 
     # user_id check
     if not is_valid_id(user_id):
@@ -179,8 +179,8 @@ def service_user_get_user(conf, user_id):
     return user_array[0]
 
 
-def service_user_get_like(conf, user_id):
-    get_db(conf)
+def service_user_get_like(user_id):
+    get_db()
 
     # user_id check
     if not is_valid_id(user_id):
@@ -208,8 +208,8 @@ def service_user_get_like(conf, user_id):
     return like_result
 
 
-def service_user_get_dislike(conf, user_id):
-    get_db(conf)
+def service_user_get_dislike(user_id):
+    get_db()
 
     # user_id check
     if not is_valid_id(user_id):
@@ -237,8 +237,8 @@ def service_user_get_dislike(conf, user_id):
     return dislike_result
 
 
-def service_user_get_comment(conf, user_id):
-    get_db(conf)
+def service_user_get_comment(user_id):
+    get_db()
 
     # user_id check
     if not is_valid_id(user_id):
@@ -267,8 +267,8 @@ def service_user_get_comment(conf, user_id):
     return comment_result
 
 
-def service_user_get_star(conf, user_id):
-    get_db(conf)
+def service_user_get_star(user_id):
+    get_db()
 
     # user_id check
     if not is_valid_id(user_id):
@@ -296,8 +296,8 @@ def service_user_get_star(conf, user_id):
     return star_result
 
 
-def service_user_get_process(conf, user_id):
-    get_db(conf)
+def service_user_get_process(user_id):
+    get_db()
 
     # user_id check
     if not is_valid_id(user_id):

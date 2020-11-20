@@ -44,8 +44,8 @@ def service_video_op_auth_modify(token, user_id):
     return token == user_id
 
 
-def service_video_op_get_by_user(conf, **kw):
-    get_db(conf)
+def service_video_op_get_by_user(**kw):
+    get_db()
     kw['service'] = 'video_op'
     kw = util_pattern_format_param(**kw)
     # keyword check and formatting
@@ -77,8 +77,8 @@ def service_video_op_get_by_user(conf, **kw):
     return op_array
 
 
-def service_video_op_add_view(conf, **kw):
-    get_db(conf)
+def service_video_op_add_view(**kw):
+    get_db()
 
     # keyword check and formatting
     if 'video_id' not in kw and 'id' not in kw and '_id' not in kw:
@@ -106,8 +106,8 @@ def service_video_op_add_view(conf, **kw):
         raise MongoError(ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND)
 
 
-def service_video_op_get_view(conf, **kw):
-    get_db(conf)
+def service_video_op_get_view(**kw):
+    get_db()
 
     # keyword check and formatting
     if 'video_id' not in kw and 'id' not in kw and '_id' not in kw:
@@ -134,8 +134,8 @@ def service_video_op_get_view(conf, **kw):
         raise MongoError(ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND)
 
 
-def service_video_op_add_comment(conf, **kw):
-    get_db(conf)
+def service_video_op_add_comment(**kw):
+    get_db()
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw or 'comment' not in kw:
@@ -183,8 +183,8 @@ def service_video_op_add_comment(conf, **kw):
         raise MongoError(ErrorCode.MONGODB_VIDEO_COMMENT_UPDATE_FAILURE)
 
 
-def service_video_op_get_comment(conf, **kw):
-    get_db(conf)
+def service_video_op_get_comment(**kw):
+    get_db()
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw:
@@ -213,8 +213,8 @@ def service_video_op_get_comment(conf, **kw):
         raise MongoError(ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND)
 
 
-def service_video_op_update_comment(conf, **kw):
-    get_db(conf)
+def service_video_op_update_comment(**kw):
+    get_db()
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw or 'comment' not in kw:
@@ -260,8 +260,8 @@ def service_video_op_update_comment(conf, **kw):
         raise MongoError(ErrorCode.MONGODB_VIDEO_COMMENT_UPDATE_FAILURE)
 
 
-def service_video_op_cancel_comment(conf, **kw):
-    get_db(conf)
+def service_video_op_cancel_comment(**kw):
+    get_db()
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw:
@@ -305,8 +305,8 @@ def service_video_op_cancel_comment(conf, **kw):
         raise MongoError(ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND)
 
 
-def service_video_op_add_process(conf, **kw):
-    get_db(conf)
+def service_video_op_add_process(**kw):
+    get_db()
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw or 'process' not in kw:
@@ -359,8 +359,8 @@ def service_video_op_add_process(conf, **kw):
         raise MongoError(ErrorCode.MONGODB_VIDEO_PROCESS_UPDATE_FAILURE)
 
 
-def service_video_op_get_process(conf, **kw):
-    get_db(conf)
+def service_video_op_get_process(**kw):
+    get_db()
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw:
@@ -391,8 +391,8 @@ def service_video_op_get_process(conf, **kw):
         raise MongoError(ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND)
 
 
-def service_video_op_update_process(conf, **kw):
-    get_db(conf)
+def service_video_op_update_process(**kw):
+    get_db()
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw or 'process' not in kw:
@@ -442,8 +442,8 @@ def service_video_op_update_process(conf, **kw):
         raise MongoError(ErrorCode.MONGODB_VIDEO_PROCESS_UPDATE_FAILURE)
 
 
-def service_video_op_cancel_process(conf, **kw):
-    get_db(conf)
+def service_video_op_cancel_process(**kw):
+    get_db()
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw:
@@ -492,8 +492,8 @@ def service_video_op_cancel_process(conf, **kw):
         raise MongoError(ErrorCode.MONGODB_VIDEO_PROCESS_DELETE_FAILURE)
 
 
-def service_video_op_add_like(conf, **kw):
-    get_db(conf)
+def service_video_op_add_like(**kw):
+    get_db()
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw:
@@ -552,8 +552,8 @@ def service_video_op_add_like(conf, **kw):
         raise MongoError(ErrorCode.MONGODB_VIDEO_LIKE_UPDATE_FAILURE)
 
 
-def service_video_op_cancel_like(conf, **kw):
-    get_db(conf)
+def service_video_op_cancel_like(**kw):
+    get_db()
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw:
@@ -605,8 +605,8 @@ def service_video_op_cancel_like(conf, **kw):
         raise MongoError(ErrorCode.MONGODB_VIDEO_LIKE_UPDATE_FAILURE)
 
 
-def service_video_op_add_dislike(conf, **kw):
-    get_db(conf)
+def service_video_op_add_dislike(**kw):
+    get_db()
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw:
@@ -665,8 +665,8 @@ def service_video_op_add_dislike(conf, **kw):
         raise MongoError(ErrorCode.MONGODB_VIDEO_DISLIKE_UPDATE_FAILURE)
 
 
-def service_video_op_cancel_dislike(conf, **kw):
-    get_db(conf)
+def service_video_op_cancel_dislike(**kw):
+    get_db()
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw:
@@ -718,8 +718,8 @@ def service_video_op_cancel_dislike(conf, **kw):
         raise MongoError(ErrorCode.MONGODB_VIDEO_DISLIKE_UPDATE_FAILURE)
 
 
-def service_video_op_add_star(conf, **kw):
-    get_db(conf)
+def service_video_op_add_star(**kw):
+    get_db()
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw:
@@ -771,8 +771,8 @@ def service_video_op_add_star(conf, **kw):
         raise MongoError(ErrorCode.MONGODB_VIDEO_STAR_UPDATE_FAILURE)
 
 
-def service_video_op_cancel_star(conf, **kw):
-    get_db(conf)
+def service_video_op_cancel_star(**kw):
+    get_db()
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw:

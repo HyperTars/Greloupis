@@ -1,3 +1,4 @@
+from flask import current_app
 from db.mongo import get_db
 from db.query_user import query_user_search_by_aggregate, \
     query_user_search_by_pattern, query_user_search_by_contains, \
@@ -19,8 +20,9 @@ from models.model_errors import ServiceError, ErrorCode
 # TODO: by comment: search VideoOp.comment -> video_id -> Video.video_id
 # TODO: by uploader: search User.user_id -> user_id -> Video.user_id
 # Search User Caller
-def service_search_user(conf, **kw):
-    get_db(conf)
+def service_search_user(**kw):
+    get_db()
+    conf = current_app.config
     kw['service'] = 'user'
     kw = util_pattern_format_param(**kw)
 
@@ -28,9 +30,9 @@ def service_search_user(conf, **kw):
     if 'slice' in kw and kw['slice'] is True:
         raise ServiceError(ErrorCode.SERVICE_PARAM_SLICE_NOT_SUPPORT)
     if 'ignore_case' not in kw:
-        kw['ignore_case'] = conf.SEARCH_IGNORE_CASE
+        kw['ignore_case'] = conf['SEARCH_IGNORE_CASE']
     if 'exact' not in kw:
-        kw['exact'] = conf.SEARCH_EXACT
+        kw['exact'] = conf['SEARCH_EXACT']
 
     # TODO: add typo allowance, etc.
 
@@ -58,18 +60,19 @@ def service_search_user(conf, **kw):
 
 
 # Search Video Caller
-def service_search_video(conf, **kw):
-    get_db(conf)
+def service_search_video(**kw):
+    get_db()
+    conf = current_app.config
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
 
     # Search configs
     if 'slice' not in kw:
-        kw['slice'] = conf.SEARCH_SLICE
+        kw['slice'] = conf['SEARCH_SLICE']
     if 'ignore_case' not in kw:
-        kw['ignore_case'] = conf.SEARCH_IGNORE_CASE
+        kw['ignore_case'] = conf['SEARCH_IGNORE_CASE']
     if 'exact' not in kw:
-        kw['exact'] = conf.SEARCH_EXACT
+        kw['exact'] = conf['SEARCH_EXACT']
     # TODO: add typo allowance, etc.
 
     # Search

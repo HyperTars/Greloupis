@@ -11,15 +11,15 @@ from settings import config
 import os
 import logging.config
 from pathlib import Path
-
+from db.mongo import get_db
 # from source.utils.util_request_filter import *
 # from flask import request, redirect, session
 from utils.util_jwt import util_get_formated_response
 
 app = Flask(__name__)
-app.config.from_object(config['test'])
+app.config.from_object(config['default'])
 app.register_blueprint(blueprint)
-
+# db = get_db()
 with open('configs/logging.yml', 'r') as f:
     Path("logs").mkdir(parents=True, exist_ok=True)
     conf = yaml.safe_load(f.read())
@@ -68,7 +68,7 @@ def add_cors_headers(response):
         return response
 
     r = request.referrer[:-1]
-    if r in config['test'].FRONTEND:
+    if r in app.config['FRONTEND']:
         response.headers.add('Access-Control-Allow-Origin', r)
         response.headers.add('Access-Control-Allow-Credentials', 'true')
         response.headers.add('Access-Control-Allow-Headers', 'Content-Type')

@@ -2,14 +2,12 @@
 from __future__ import absolute_import, print_function
 from flask import Blueprint
 from flask_restx import Api
-from settings import config
 
 # from source.routes.route_auth import auth
 from routes.route_user import user
 from routes.route_video import video
 from routes.route_search import search
 
-conf = config['default']
 blueprint = Blueprint('api', __name__, url_prefix='/')
 api = Api(blueprint)
 

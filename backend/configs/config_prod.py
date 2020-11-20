@@ -27,8 +27,17 @@ class ProdConfig(BaseConfig):
     #                  "=majority"
     # MONGO_DATABASE = "online_video_platform"
     MONGO_ENDPOINT = "mongodb+srv://greloupis:greloupis@cluster-greloupis" \
-                     ".8gpx5.mongodb.net/greloupis?retryWrites=true&w=majority"
-    MONGO_DATABASE = "greloupis"
+                     ".8gpx5.mongodb.net/greloupis-test?retryWrites=true&w" \
+                     "=majority"
+    MONGO_DATABASE = "greloupis-test"
+    MONGODB_SETTINGS = {
+        'db': MONGO_DATABASE,
+        'host': MONGO_ENDPOINT
+    }
+    MONGO_TABLE_USER = "user"
+    MONGO_TABLE_VIDEO = "video"
+    MONGO_TABLE_VIDEO_OP = "video_op"
+
     # Config Flask
     FLASK_SERVER_NAME = 'localhost:8888'
     FLASK_DEBUG = False
