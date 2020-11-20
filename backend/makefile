@@ -11,7 +11,7 @@ run_python:
 run_backend:	run_wsgi
 
 run_wsgi:
-	uwsgi --http localhost:5000 --wsgi-file  wsgi.py --callable app
+	uwsgi --http localhost:5000 --wsgi-file  app.py --callable app
 	
 tests:	unit report lint
 	echo "unittest and lint check finished"
