@@ -204,7 +204,7 @@ class UserUserId(Resource):
             user_id = request.url.split('/')[-1]
             token = get_jwt_identity()
             result = {}
-            user = service_user_get_user(conf=conf, user_id=user_id)            
+            user = service_user_get_user(conf=conf, user_id=user_id)
             vid = service_video_get_by_user(conf=conf, user_id=user_id)
             op = service_video_op_get_by_user(conf=conf, user_id=user_id)
 
