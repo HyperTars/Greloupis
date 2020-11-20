@@ -124,6 +124,8 @@ def service_search_hide_video(user, results):
     if len(results) == 0:
         return []
     for video in results:
+        if video['video_status'] == 'deleted':
+            continue
         if video['video_status'] == 'public' or video['user_id'] == user:
             ret.append(video)
     return ret
