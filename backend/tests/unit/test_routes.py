@@ -11,12 +11,11 @@ from werkzeug.datastructures import Headers
 from settings import config
 from utils.util_error_handler import util_error_handler
 from utils.util_jwt import blacklist, util_get_formated_response
-from utils.util_serializer import util_serializer_mongo_results_to_array
 from utils.util_tests import util_tests_load_data, \
     util_tests_python_version, util_tests_clean_database
 from models.model_errors import ErrorCode, ServiceError
 from db.query_video import query_video_get_by_video_id, \
-    query_video_get_by_title
+    query_video_get_by_title, query_video_delete
 from routes.route_search import RouteSearchUser, RouteSearchVideo
 from routes.route_video import VideoVideoId
 from routes.route_user import UserUserId, user
@@ -335,7 +334,6 @@ class TestRouteVideo(unittest.TestCase):
         cls.data = util_tests_load_data()
         util_tests_clean_database()
         cls.test_user_id = cls.data['temp_video'][0]["user_id"]
-        cls.final_video_name = "full info hh"
 
         with app.app_context():
             expires = datetime.timedelta(hours=20)
@@ -394,18 +392,17 @@ class TestRouteVideo(unittest.TestCase):
                              ErrorCode.SERVICE_VIDEO_NOT_FOUND.get_msg())
 
     def test_c_video_update(self):
-        temp_video_title = self.data['temp_video'][0]["video_title"]
-        temp_video = util_serializer_mongo_results_to_array(
-            query_video_get_by_title(temp_video_title))[0]
+        temp_video_title = self.data['temp_video'][0]['video_title']
+        temp_video = query_video_get_by_title(temp_video_title)[0].to_dict()
         temp_video_id = temp_video["video_id"]
 
         wrong_id_1 = "123123123"
         wrong_id_2 = "5f88f883e6ac4f89900ac984"
 
-        update_video = self.data['temp_video'][1]
-        update_video["video_title"] = self.final_video_name
+        update_video = temp_video
+        update_video["video_title"] = temp_video_title + " hh"
 
-        wrong_status_data = copy.deepcopy(self.data['temp_video'][1])
+        wrong_status_data = copy.deepcopy(temp_video)
         wrong_status_data["video_status"] = "122345"
 
         # successful case
@@ -419,10 +416,12 @@ class TestRouteVideo(unittest.TestCase):
                              update_video["user_id"])
             self.assertEqual(response_json["body"][0]["video_title"],
                              update_video["video_title"])
-            self.assertEqual(response_json["body"][0]["video_raw_size"],
-                             update_video["video_raw_size"])
-            self.assertEqual(response_json["body"][0]["video_status"],
-                             update_video["video_status"])
+
+        # update back
+        update_video["video_title"] = temp_video_title
+        self.client.put('/video/' + temp_video_id,
+                        data=update_video,
+                        headers=self.headers)
 
         # invalid video_status
         with app.app_context():
@@ -455,8 +454,8 @@ class TestRouteVideo(unittest.TestCase):
                              ErrorCode.SERVICE_VIDEO_NOT_FOUND.get_msg())
 
     def test_d_video_view(self):
-        temp_video = util_serializer_mongo_results_to_array(
-            query_video_get_by_title(self.final_video_name))[0]
+        temp_video_title = self.data['temp_video'][0]['video_title']
+        temp_video = query_video_get_by_title(temp_video_title)[0].to_dict()
         temp_video_id = temp_video["video_id"]
 
         wrong_id = "5f88f883e6ac4f89900ac984"
@@ -497,8 +496,8 @@ class TestRouteVideo(unittest.TestCase):
             self.assertEqual(error_json["code"], 404)
 
     def test_e_video_comment(self):
-        temp_video = util_serializer_mongo_results_to_array(
-            query_video_get_by_title(self.final_video_name))[0]
+        temp_video_title = self.data['temp_video'][0]['video_title']
+        temp_video = query_video_get_by_title(temp_video_title)[0].to_dict()
         temp_video_id = temp_video["video_id"]
         temp_user_id = temp_video["user_id"]
         temp_comment = "nice video"
@@ -613,8 +612,8 @@ class TestRouteVideo(unittest.TestCase):
             self.assertEqual(error_json["code"], 404)
 
     def test_f_video_process(self):
-        temp_video = util_serializer_mongo_results_to_array(
-            query_video_get_by_title(self.final_video_name))[0]
+        temp_video_title = self.data['temp_video'][0]['video_title']
+        temp_video = query_video_get_by_title(temp_video_title)[0].to_dict()
         temp_video_id = temp_video["video_id"]
         temp_user_id = temp_video["user_id"]
         temp_process = 30
@@ -726,8 +725,8 @@ class TestRouteVideo(unittest.TestCase):
             self.assertEqual(error_json["code"], 500)
 
     def test_g_video_like(self):
-        temp_video = util_serializer_mongo_results_to_array(
-            query_video_get_by_title(self.final_video_name))[0]
+        temp_video_title = self.data['temp_video'][0]['video_title']
+        temp_video = query_video_get_by_title(temp_video_title)[0].to_dict()
         temp_video_id = temp_video["video_id"]
         temp_user_id = temp_video["user_id"]
         wrong_id = "5f88f883e6ac4f89900ac984"
@@ -796,8 +795,8 @@ class TestRouteVideo(unittest.TestCase):
             self.assertEqual(error_json["code"], 500)
 
     def test_h_video_dislike(self):
-        temp_video = util_serializer_mongo_results_to_array(
-            query_video_get_by_title(self.final_video_name))[0]
+        temp_video_title = self.data['temp_video'][0]['video_title']
+        temp_video = query_video_get_by_title(temp_video_title)[0].to_dict()
         temp_video_id = temp_video["video_id"]
         temp_user_id = temp_video["user_id"]
         wrong_id = "5f88f883e6ac4f89900ac984"
@@ -869,8 +868,8 @@ class TestRouteVideo(unittest.TestCase):
             self.assertEqual(error_json["code"], 404)
 
     def test_i_video_star(self):
-        temp_video = util_serializer_mongo_results_to_array(
-            query_video_get_by_title(self.final_video_name))[0]
+        temp_video_title = self.data['temp_video'][0]['video_title']
+        temp_video = query_video_get_by_title(temp_video_title)[0].to_dict()
         temp_video_id = temp_video["video_id"]
         temp_user_id = temp_video["user_id"]
         wrong_id = "5f88f883e6ac4f89900ac984"
@@ -939,8 +938,8 @@ class TestRouteVideo(unittest.TestCase):
             self.assertEqual(error_json["code"], 404)
 
     def test_z_video_delete(self):
-        temp_video = util_serializer_mongo_results_to_array(
-            query_video_get_by_title(self.final_video_name))[0]
+        temp_video_title = self.data['temp_video'][0]['video_title']
+        temp_video = query_video_get_by_title(temp_video_title)[0].to_dict()
         temp_video_id = temp_video["video_id"]
 
         # successful case
@@ -950,6 +949,8 @@ class TestRouteVideo(unittest.TestCase):
                                headers=self.headers)
             delete_search = query_video_get_by_video_id(temp_video_id)
             self.assertEqual(len(delete_search), 1)
+
+        query_video_delete(temp_video_id, silent=True)
 
 
 """

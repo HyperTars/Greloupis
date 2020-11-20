@@ -803,7 +803,7 @@ class TestQueryVideo(unittest.TestCase):
     def test_c_query_video_get_by_user_id(self):
         self.assertEqual(
             len(query_video_get_by_user_id(
-                self.data['temp_video'][0]['user_id'])), 2)
+                self.data['temp_video'][0]['user_id'])), 1)
 
     def test_d_query_video_get_by_title(self):
         self.assertEqual(

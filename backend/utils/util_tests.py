@@ -17,6 +17,7 @@ def util_tests_clean_database():
 
     for video in data['temp_video']:
         Video.objects(video_title=video['video_title']).delete()
+        Video.objects(user_id=video['user_id']).delete()
 
     for video in data['const_video']:
         VideoOp.objects(video_id=video['_id']['$oid']).delete()
