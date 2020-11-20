@@ -5,7 +5,7 @@ from configs.config_test import TestConfig
 import os
 
 basedir = os.path.abspath(os.path.dirname(__file__))
-PROFILE = os.environ.get("PROFILE", "dev")
+CONF = os.environ.get("CONF", "dev")
 
 config = {
     'dev': DevConfig,
@@ -15,7 +15,7 @@ config = {
     'default': DevConfig
 }
 
-if PROFILE == 'test':
+if CONF == 'test':
     config['default'] = TestConfig
-elif PROFILE == "prod":
+elif CONF == "prod":
     config['default'] = ProdConfig

@@ -27,9 +27,9 @@ class ProdConfig(BaseConfig):
     #                  "=majority"
     # MONGO_DATABASE = "online_video_platform"
     MONGO_ENDPOINT = "mongodb+srv://greloupis:greloupis@cluster-greloupis" \
-                     ".8gpx5.mongodb.net/greloupis-test?retryWrites=true&w" \
+                     ".8gpx5.mongodb.net/greloupis?retryWrites=true&w" \
                      "=majority"
-    MONGO_DATABASE = "greloupis-test"
+    MONGO_DATABASE = "greloupis"
     MONGODB_SETTINGS = {
         'db': MONGO_DATABASE,
         'host': MONGO_ENDPOINT,
@@ -59,10 +59,42 @@ class ProdConfig(BaseConfig):
 
     # Frontend
     FRONTEND = [
+        'http://greloupis-backend.herokuapp.com',
+        'http://greloupis-frontend.herokuapp.com',
+        'https://greloupis-frontend.herokuapp.com',
+        'https://greloupis.postman.co/',
+        'http://localhost:8081',
+        'http://localhost:8080',
+        'http://localhost:8000',
+        'http://localhost:5000',
         'http://localhost:3000',
+        'http://localhost:443',
+        'http://localhost:80',
+        'http://localhost',
+        'http://localhost/',
+        'http://localhost/api',
+        'http://127.0.0.1:8081',
+        'http://127.0.0.1:8080',
+        'http://127.0.0.1:8000',
+        'http://127.0.0.1:5000',
         'http://127.0.0.1:3000',
-        'http://0.0.0.0:3000'
+        'http://127.0.0.1:443',
+        'http://127.0.0.1:80',
+        'http://127.0.0.1/api',
+        'http://127.0.0.1',
+        'http://127.0.0.1/',
+        'http://0.0.0.0:8081',
+        'http://0.0.0.0:8080',
+        'http://0.0.0.0:8000',
+        'http://0.0.0.0:5000',
+        'http://0.0.0.0:3000',
+        'http://0.0.0.0:443',
+        'http://0.0.0.0:80',
+        'http://0.0.0.0/api',
+        'http://0.0.0.0/',
+        'http://0.0.0.0'
     ]
+    CORS_ALLOW_HEADERS = 'Content-Type'
 
     # jwt
     JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY') or 'jwt-key'
