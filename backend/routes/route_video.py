@@ -165,7 +165,7 @@ class VideoVideoId(Resource):
                 raise RouteError(ErrorCode.ROUTE_DELETED_VIDEO)
 
             # check authority
-            if service_video_auth_get(token, video_id) is False:                
+            if service_video_auth_get(token, video_id) is False:
                 raise RouteError(ErrorCode.ROUTE_PRIVATE_VIDEO)
 
             return util_serializer_api_response(
