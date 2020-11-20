@@ -205,8 +205,15 @@ class UserUserId(Resource):
             token = get_jwt_identity()
             result = {}
             user = service_user_get_user(conf=conf, user_id=user_id)
-            video = service_video_get_by_user(conf=conf, user_id=user_id)
+            vid = service_video_get_by_user(conf=conf, user_id=user_id)
             op = service_video_op_get_by_user(conf=conf, user_id=user_id)
+
+            # remove deleted video
+            video = []
+            for v in vid:
+                if v['video_status'] == 'deleted':
+                    continue
+                video.append(v)
 
             result['user'] = user
             result['video'] = video

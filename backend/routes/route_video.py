@@ -160,10 +160,12 @@ class VideoVideoId(Resource):
             video = service_video_info(
                 conf=conf, video_id=request.url.split('/')[-1])
 
+            # remove deleted video
+            if video['video_status'] == 'deleted':
+                raise RouteError(ErrorCode.ROUTE_DELETED_VIDEO)
+
             # check authority
-            if service_video_auth_get(token, video_id) is False:
-                if video['video_status'] == 'deleted':
-                    raise RouteError(ErrorCode.ROUTE_DELETED_VIDEO)
+            if service_video_auth_get(token, video_id) is False:                
                 raise RouteError(ErrorCode.ROUTE_PRIVATE_VIDEO)
 
             return util_serializer_api_response(
