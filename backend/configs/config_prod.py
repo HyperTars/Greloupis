@@ -32,7 +32,8 @@ class ProdConfig(BaseConfig):
     MONGO_DATABASE = "greloupis-test"
     MONGODB_SETTINGS = {
         'db': MONGO_DATABASE,
-        'host': MONGO_ENDPOINT
+        'host': MONGO_ENDPOINT,
+        'connect': False
     }
     MONGO_TABLE_USER = "user"
     MONGO_TABLE_VIDEO = "video"
