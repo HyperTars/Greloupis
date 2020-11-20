@@ -38,7 +38,7 @@ docker_build:
 	- docker build -f Dockerfile -t $(BACKEND_BUILD):$(TAG) .
 
 docker_run:
-	- docker run -p 5000:5000 --env PORT=5000 --env CONF=$(PROFILE) $(BACKEND_BUILD)
+	- docker run -p 5000:5000 --env PORT=5000 --env PROFILE=$(PROFILE) $(BACKEND_BUILD)
 
 docker_push:
 	- docker login --username $(DOCKER_USER) --password $(DOCKER_PASS)
