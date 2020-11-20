@@ -23,7 +23,6 @@ from service.service_video_op import service_video_op_get_by_user
 from service.service_search import service_search_hide_video
 from utils.util_jwt import blacklist, util_get_formated_response
 from utils.util_error_handler import util_error_handler
-from settings import config
 from utils.util_serializer import util_serializer_api_response
 from models.model_errors import MongoError, RouteError, ServiceError, \
     ErrorCode

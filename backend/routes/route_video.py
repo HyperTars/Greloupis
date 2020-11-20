@@ -25,7 +25,6 @@ from service.service_video_op import service_video_op_add_comment, \
 from utils.util_error_handler import util_error_handler
 from utils.util_serializer import util_serializer_api_response, \
     util_serializer_mongo_results_to_array
-from settings import config
 from models.model_errors import ServiceError, RouteError, MongoError, \
     ErrorCode
 

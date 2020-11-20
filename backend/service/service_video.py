@@ -34,8 +34,8 @@ def service_video_auth_modify(token, video_id):
     return False
 
 
-def service_video_upload( **kw):
-    
+def service_video_upload(**kw):
+
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
 
@@ -53,8 +53,8 @@ def service_video_upload( **kw):
     return uploaded_result
 
 
-def service_video_info( **kw):
-    
+def service_video_info(**kw):
+
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
     # keyword check and formatting
@@ -76,8 +76,8 @@ def service_video_info( **kw):
     return res
 
 
-def service_video_get_by_user( **kw):
-    
+def service_video_get_by_user(**kw):
+
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
     # keyword check and formatting
@@ -90,8 +90,8 @@ def service_video_get_by_user( **kw):
     return video_array
 
 
-def service_video_update( **kw):
-    
+def service_video_update(**kw):
+
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
 
@@ -161,8 +161,8 @@ def service_video_update( **kw):
     return query_video_get_by_video_id(kw["video_id"])
 
 
-def service_video_comments( **kw):
-    
+def service_video_comments(**kw):
+
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
 
@@ -196,8 +196,8 @@ def service_video_comments( **kw):
     return comments_result
 
 
-def service_video_likes( **kw):
-    
+def service_video_likes(**kw):
+
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
 
@@ -229,8 +229,8 @@ def service_video_likes( **kw):
     return like_result
 
 
-def service_video_dislikes( **kw):
-    
+def service_video_dislikes(**kw):
+
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
 
@@ -262,8 +262,8 @@ def service_video_dislikes( **kw):
     return dislike_result
 
 
-def service_video_stars( **kw):
-    
+def service_video_stars(**kw):
+
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
 
@@ -295,8 +295,8 @@ def service_video_stars( **kw):
     return star_result
 
 
-def service_video_delete( **kw):
-    
+def service_video_delete(**kw):
+
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
 

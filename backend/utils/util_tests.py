@@ -2,8 +2,6 @@ import os
 import sys
 import json
 import platform as pf
-from db.mongo import get_db
-from settings import config
 from models.model_user import User
 from models.model_video_op import VideoOp
 from models.model_video import Video
@@ -11,7 +9,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
 def util_tests_clean_database():
-    get_db(config['test'])
+
     data = util_tests_load_data()
 
     for user in data['temp_user']:

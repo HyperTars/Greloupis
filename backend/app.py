@@ -2,7 +2,7 @@
 from __future__ import absolute_import, print_function
 
 import yaml
-from flask import Flask, request
+from flask import Flask, request, g
 from flask_jwt_extended import JWTManager
 
 from apiv1 import blueprint
@@ -19,16 +19,18 @@ from utils.util_jwt import util_get_formated_response
 app = Flask(__name__)
 app.config.from_object(config['default'])
 app.register_blueprint(blueprint)
+
+
 with app.app_context():
-    init_db()
+    if 'db' not in g:
+        g.db = init_db()
+
 
 with open('configs/logging.yml', 'r') as f:
     Path("logs").mkdir(parents=True, exist_ok=True)
     conf = yaml.safe_load(f.read())
     logging.config.dictConfig(conf)
 
-# CORS(app, resources={r'/*': {'origins': config['test'].FRONTEND}},
-#      supports_credentials=True)
 jwt = JWTManager(app)
 
 

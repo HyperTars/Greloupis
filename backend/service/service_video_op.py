@@ -44,7 +44,7 @@ def service_video_op_auth_modify(token, user_id):
 
 
 def service_video_op_get_by_user(**kw):
-    
+
     kw['service'] = 'video_op'
     kw = util_pattern_format_param(**kw)
     # keyword check and formatting
@@ -77,7 +77,6 @@ def service_video_op_get_by_user(**kw):
 
 
 def service_video_op_add_view(**kw):
-    
 
     # keyword check and formatting
     if 'video_id' not in kw and 'id' not in kw and '_id' not in kw:
@@ -106,7 +105,6 @@ def service_video_op_add_view(**kw):
 
 
 def service_video_op_get_view(**kw):
-    
 
     # keyword check and formatting
     if 'video_id' not in kw and 'id' not in kw and '_id' not in kw:
@@ -134,7 +132,6 @@ def service_video_op_get_view(**kw):
 
 
 def service_video_op_add_comment(**kw):
-    
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw or 'comment' not in kw:
@@ -183,7 +180,6 @@ def service_video_op_add_comment(**kw):
 
 
 def service_video_op_get_comment(**kw):
-    
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw:
@@ -213,7 +209,6 @@ def service_video_op_get_comment(**kw):
 
 
 def service_video_op_update_comment(**kw):
-    
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw or 'comment' not in kw:
@@ -260,7 +255,6 @@ def service_video_op_update_comment(**kw):
 
 
 def service_video_op_cancel_comment(**kw):
-    
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw:
@@ -305,7 +299,6 @@ def service_video_op_cancel_comment(**kw):
 
 
 def service_video_op_add_process(**kw):
-    
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw or 'process' not in kw:
@@ -359,7 +352,6 @@ def service_video_op_add_process(**kw):
 
 
 def service_video_op_get_process(**kw):
-    
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw:
@@ -391,7 +383,6 @@ def service_video_op_get_process(**kw):
 
 
 def service_video_op_update_process(**kw):
-    
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw or 'process' not in kw:
@@ -442,7 +433,6 @@ def service_video_op_update_process(**kw):
 
 
 def service_video_op_cancel_process(**kw):
-    
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw:
@@ -492,7 +482,6 @@ def service_video_op_cancel_process(**kw):
 
 
 def service_video_op_add_like(**kw):
-    
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw:
@@ -552,7 +541,6 @@ def service_video_op_add_like(**kw):
 
 
 def service_video_op_cancel_like(**kw):
-    
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw:
@@ -605,7 +593,6 @@ def service_video_op_cancel_like(**kw):
 
 
 def service_video_op_add_dislike(**kw):
-    
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw:
@@ -665,7 +652,6 @@ def service_video_op_add_dislike(**kw):
 
 
 def service_video_op_cancel_dislike(**kw):
-    
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw:
@@ -718,7 +704,6 @@ def service_video_op_cancel_dislike(**kw):
 
 
 def service_video_op_add_star(**kw):
-    
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw:
@@ -771,7 +756,6 @@ def service_video_op_add_star(**kw):
 
 
 def service_video_op_cancel_star(**kw):
-    
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw:

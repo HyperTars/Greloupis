@@ -1,4 +1,5 @@
 import unittest
+from flask import Flask, g
 from settings import config
 from utils.util_tests import util_tests_load_data, \
     util_tests_python_version, util_tests_clean_database
@@ -25,10 +26,18 @@ from db.query_video_op import query_video_op_create, \
     query_video_op_update_star, query_video_op_search_comment_by_contains, \
     query_video_op_search_comment_by_pattern, query_video_op_get_by_user_id, \
     query_video_op_get_by_video_id, query_video_op_delete
-from db.mongo import get_db
+from db.mongo import init_db
 from models.model_errors import MongoError, ErrorCode
 from utils.util_time import get_time_now_utc
 import bson
+
+
+app = Flask(__name__)
+app.config.from_object(config['test'])
+
+with app.app_context():
+    if 'db' not in g:
+        g.db = init_db()
 
 
 class TestQueryUser(unittest.TestCase):
@@ -38,7 +47,6 @@ class TestQueryUser(unittest.TestCase):
         cls.data = util_tests_load_data()
         if util_tests_python_version() is False:
             exit()
-        get_db(config['test'])
         util_tests_clean_database()
 
     def test_a_user_create(self):
@@ -755,7 +763,6 @@ class TestQueryVideo(unittest.TestCase):
         cls.data = util_tests_load_data()
         if util_tests_python_version() is False:
             exit()
-        get_db(config['test'])
         util_tests_clean_database()
 
     def test_a_query_video_create(self):
@@ -1253,7 +1260,6 @@ class TestQueryVideoOp(unittest.TestCase):
         cls.data = util_tests_load_data()
         if util_tests_python_version() is False:
             exit()
-        get_db(config['test'])
         util_tests_clean_database()
 
     def test_a_query_video_op_create(self):
