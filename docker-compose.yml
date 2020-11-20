@@ -29,4 +29,5 @@ services:
       - ./backend:/usr/src/app
     environment:
       - PORT=5000
+      - PROFILE=prod
     image: hypertars/greloupis-backend:latest

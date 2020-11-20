@@ -1,6 +1,7 @@
 LINTER = flake8
 TAG = latest
 BACKEND_REPO = hypertars/greloupis-backend
+PROFILE ?= prod
 
 dev_env_backend:
 	pip3 install -r requirements.txt
@@ -11,7 +12,7 @@ run_python:
 run_backend:	run_wsgi
 
 run_wsgi:
-	uwsgi --http localhost:5000 --wsgi-file  wsgi.py --callable app
+	uwsgi --http localhost:5000 --wsgi-file  app.py --callable app
 	
 tests:	unit report lint
 	echo "unittest and lint check finished"
@@ -37,7 +38,7 @@ docker_build:
 	- docker build -f Dockerfile -t $(BACKEND_BUILD):$(TAG) .
 
 docker_run:
-	- docker run -p 5000:5000 --env PORT=5000 $(BACKEND_BUILD)
+	- docker run -p 5000:5000 --env PORT=5000 --env CONF=$(PROFILE) $(BACKEND_BUILD)
 
 docker_push:
 	- docker login --username $(DOCKER_USER) --password $(DOCKER_PASS)
