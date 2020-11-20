@@ -29,7 +29,7 @@ function VideoPlay({ videoId }) {
       .then((res) => {
         if (res == null) return;
 
-        setMainVideo(res.body[0]);
+        setMainVideo(res.body);
         setIsLoading(false);
       })
       .catch((e) => {

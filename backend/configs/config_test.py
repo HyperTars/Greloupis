@@ -9,13 +9,6 @@ class TestConfig(BaseConfig):
     # Debug Mode
     DEBUG = True
 
-    # Searching Config
-    SEARCH_IGNORE_CASE = True
-    SEARCH_EXACT = False
-    SEARCH_LIKE = True
-    SEARCH_SLICE = False
-    DATA_FORMAT = "dict"
-
     # Mongo DB
     # MONGO_ENDPOINT = "mongodb+srv://devops:DevOps@mongodbcluster.v4vtj" \
     #                  ".mongodb.net/online_video_platform_test?retryWrites" \

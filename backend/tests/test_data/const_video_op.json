@@ -1,41 +1,16 @@
 [
   {
-    "_id": {
-      "$oid": "5f94eb22a2dba5f3d97160a7"
-    },
     "user_id": "5f88f883e6ac4f89900ac983",
     "video_id": "5f88c0307a6eb86b0eccc8d2",
-    "process": {
-      "$numberInt": "0"
-    },
+    "process": 0,
     "comment": "This is comment for const video op test",
     "like": false,
     "dislike": true,
     "star": true,
-    "process_date": {
-      "$date": {
-        "$numberLong": "1603594915000"
-      }
-    },
-    "comment_date": {
-      "$date": {
-        "$numberLong": "1603594915000"
-      }
-    },
-    "like_date": {
-      "$date": {
-        "$numberLong": "1603594915000"
-      }
-    },
-    "dislike_date": {
-      "$date": {
-        "$numberLong": "1603594915000"
-      }
-    },
-    "star_date": {
-      "$date": {
-        "$numberLong": "1603594915000"
-      }
-    }
+    "process_date": "2020-10-25 13:00:00",
+    "comment_date": "2020-10-25 13:00:00",
+    "like_date": "2020-10-25 13:00:00",
+    "dislike_date": "2020-10-25 13:00:00",
+    "star_date": "2020-10-25 13:00:00"
   }
 ]

@@ -1,4 +1,4 @@
-from db.mongo import get_db
+from settings import config
 from db.query_user import query_user_search_by_aggregate, \
     query_user_search_by_pattern, query_user_search_by_contains, \
     query_user_get_by_id
@@ -19,8 +19,9 @@ from models.model_errors import ServiceError, ErrorCode
 # TODO: by comment: search VideoOp.comment -> video_id -> Video.video_id
 # TODO: by uploader: search User.user_id -> user_id -> Video.user_id
 # Search User Caller
-def service_search_user(conf, **kw):
-    get_db(conf)
+def service_search_user(**kw):
+
+    conf = config['base']
     kw['service'] = 'user'
     kw = util_pattern_format_param(**kw)
 
@@ -58,8 +59,9 @@ def service_search_user(conf, **kw):
 
 
 # Search Video Caller
-def service_search_video(conf, **kw):
-    get_db(conf)
+def service_search_video(**kw):
+
+    conf = config['base']
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
 
@@ -114,13 +116,29 @@ def service_search_video(conf, **kw):
     return res_array
 
 
+# Search Hide Caller
 def service_search_hide_video(user, results):
     ret = []
     if user is None:
         user = ""
+    if len(results) == 0:
+        return []
     for video in results:
+        if video['video_status'] == 'deleted':
+            continue
         if video['video_status'] == 'public' or video['user_id'] == user:
             ret.append(video)
+    return ret
+
+
+def service_search_hide_user(user, results):
+    ret = []
+    if user is None:
+        user = ""
+    for user in results:
+        if user['user_status'] == 'closed':
+            continue
+        ret.append(user)
     return ret
 
 

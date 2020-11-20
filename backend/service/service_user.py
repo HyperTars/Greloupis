@@ -2,21 +2,34 @@ from utils.util_hash import util_hash_encode
 from utils.util_serializer import util_serializer_mongo_results_to_array
 from utils.util_validator import is_valid_id
 from utils.util_pattern import util_pattern_format_param
-from db.mongo import get_db
 from db.query_user import query_user_create, query_user_get_by_name, \
     query_user_get_by_email, query_user_delete_by_id, \
     query_user_get_by_id, query_user_update_status, \
     query_user_add_login, query_user_update_name, \
     query_user_update_password, query_user_update_thumbnail, \
     query_user_update_details
-from db.query_video import query_video_get_by_user_id,\
-    query_video_get_by_video_id
-from db.query_video_op import query_video_op_get_by_user_id
+from db.query_video import query_video_get_by_user_id
+from db.query_video_op import query_video_op_get_by_user_id, \
+    query_video_op_delete
+from service.service_video import service_video_delete
 from models.model_errors import ServiceError, ErrorCode
-import datetime
 
 
-def service_user_reg(conf, **kw):
+def service_user_auth_get(token, user_id):
+    users = query_user_get_by_id(user_id)
+    if len(users) == 0:
+        raise ServiceError(ErrorCode.SERVICE_USER_NOT_FOUND)
+    user = users[0].to_dict()
+    if user['user_status'] == 'public' or token == user_id:
+        return True
+    return False
+
+
+def service_user_auth_modify(token, user_id):
+    return token == user_id
+
+
+def service_user_reg(**kw):
     """
     Register user
 
@@ -32,7 +45,7 @@ def service_user_reg(conf, **kw):
     # user_name: str, user_email: str, user_password: str, user_ip = "0.0.0.0"
     # service_user_reg(conf, user_name="t", user_email="k",
     # user_password="lol")
-    get_db(conf)
+
     kw['service'] = 'user'
     kw = util_pattern_format_param(**kw)
     if 'user_name' not in kw or 'user_email' not in kw \
@@ -45,8 +58,8 @@ def service_user_reg(conf, **kw):
     return query_user_get_by_name(kw['user_name'])[0].to_dict()
 
 
-def service_user_login(conf, **kw):
-    get_db(conf)
+def service_user_login(**kw):
+
     kw['service'] = 'user'
     kw = util_pattern_format_param(**kw)
     if 'user_name' in kw and 'user_password' in kw:
@@ -83,39 +96,8 @@ def service_user_login(conf, **kw):
     return query_user_get_by_id(uid)[0].to_dict()
 
 
-# def service_user_get_user(conf, **kw):
-#     # service_user_get_user(config['default'], user_name="t",
-#                             user_password="lol")
-#
-#     get_db(conf)
-#
-#     # TODO: validate user by session
-#
-#     # Validate user by password
-#     if 'user_name' not in kw and 'user_email' not in kw:
-#         return ErrorCode.SERVICE_MISSING_PARAM
-#     if 'user_password' not in kw:
-#         return ErrorCode.SERVICE_MISSING_PARAM
-#
-#     auth = service_user_check_password(**kw)
-#
-#     if type(auth) == ErrorCode or auth is False:
-#         return ErrorCode.SERVICE_USER_NOT_FOUND
-#
-#     if 'user_name' in kw:
-#         return query_user_get_by_name(kw['user_name'])[0].to_dict()
-#     if 'user_email' in kw:
-#         return query_user_get_by_email(kw['user_email'])[0].to_dict()
-#
-#     return ErrorCode.SERVICE_MISSING_PARAM
-#
-#
-# def service_user_logout():
-#     return
-#
-#
-def service_user_update_info(conf, **kw):
-    get_db(conf)
+def service_user_update_info(**kw):
+
     kw['service'] = 'user'
     kw = util_pattern_format_param(**kw)
     if 'user_id' not in kw:
@@ -132,104 +114,70 @@ def service_user_update_info(conf, **kw):
     return query_user_get_by_id(kw['user_id'])[0].to_dict()
 
 
-def service_user_cancel(conf, **kw):
-    get_db(conf)
+def service_user_close(**kw):
+
     kw['service'] = 'user'
     kw = util_pattern_format_param(**kw)
     if 'user_id' not in kw:
         raise ServiceError(ErrorCode.SERVICE_MISSING_USER_ID)
-    return query_user_delete_by_id(kw['user_id'])
+
+    videos = query_video_get_by_user_id(kw['user_id'])
+    ops = query_video_op_get_by_user_id(kw['user_id'])
+
+    # delete by setting status
+    if 'method' in kw and kw['method'] == 'status':
+        res = query_user_update_status(kw['user_id'], 'closed')
+        for video in videos:
+            vid = video.to_dict()['video_id']
+            service_video_delete(video_id=vid, method='status')
+
+    # delete by removing from databse
+    else:
+        res = query_user_delete_by_id(kw['user_id'])
+        for video in videos:
+            vid = video.to_dict()['video_id']
+            service_video_delete(video_id=vid)
+
+    # delete all op created by this user immediately
+    for op in ops:
+        opid = op.to_dict()['video_op_id']
+        query_video_op_delete(opid, silent=True)
+
+    return res
 
 
-def service_user_hide_info(info):
-    if 'user' not in info or 'video' not in info or 'video_op' not in info:
-        raise ServiceError(ErrorCode.SERVICE_MISSING_USER_INFO)
+def service_user_hide_private(user):
     hide = '[Private User]'
-    info['user']['user_detail']['user_city'] = hide
-    info['user']['user_detail']['user_country'] = hide
-    info['user']['user_detail']['user_first_name'] = hide
-    info['user']['user_detail']['user_last_name'] = hide
-    info['user']['user_detail']['user_phone'] = hide
-    info['user']['user_detail']['user_state'] = hide
-    info['user']['user_detail']['user_street1'] = hide
-    info['user']['user_detail']['user_street2'] = hide
-    info['user']['user_detail']['user_zip'] = hide
-    info['user']['user_email'] = hide
-    info['user']['user_following'] = []
-    info['user']['user_login'] = []
-    info['video'] = []
-    info['video_op'] = []
-    return info
+    user['user_detail']['user_city'] = hide
+    user['user_detail']['user_country'] = hide
+    user['user_detail']['user_first_name'] = hide
+    user['user_detail']['user_last_name'] = hide
+    user['user_detail']['user_phone'] = hide
+    user['user_detail']['user_state'] = hide
+    user['user_detail']['user_street1'] = hide
+    user['user_detail']['user_street2'] = hide
+    user['user_detail']['user_zip'] = hide
+    user['user_email'] = hide
+    user['user_following'] = []
+    user['user_login'] = []
+    return user
 
 
-def service_user_get_info(conf, user_id):
-    get_db(conf)
-    final_result = {}
+def service_user_get_user(user_id):
 
     # user_id check
     if not is_valid_id(user_id):
         raise ServiceError(ErrorCode.SERVICE_INVALID_ID_OBJ)
 
-    # table: user
-    user_result = query_user_get_by_id(user_id)
-    if len(user_result) == 1:
-        user_result_dict_array = \
-            util_serializer_mongo_results_to_array(user_result)
-
-        # convert datetime format to str
-        for each_result in user_result_dict_array:
-            for key, value in each_result.items():
-                if isinstance(value, datetime.datetime):
-                    each_result[key] = str(value)
-
-        final_result["user"] = user_result_dict_array[0]
-    else:
+    users = query_user_get_by_id(user_id)
+    if len(users) == 0:
         raise ServiceError(ErrorCode.SERVICE_USER_NOT_FOUND)
 
-    # table: video (belong to this user)
-    video_result = query_video_get_by_user_id(user_id)
-    if len(video_result) > 0:
-        video_result_dict_array = \
-            util_serializer_mongo_results_to_array(video_result)
-
-        # convert datetime format to str
-        for each_result in video_result_dict_array:
-            for key, value in each_result.items():
-                if isinstance(value, datetime.datetime):
-                    each_result[key] = str(value)
-
-        final_result["video"] = video_result_dict_array
-    else:
-        final_result["video"] = [{}]
-
-    # table: video op (belong to this user)
-    video_op_result = query_video_op_get_by_user_id(user_id)
-    if len(video_op_result) > 0:
-        video_op_result_dict_array = \
-            util_serializer_mongo_results_to_array(video_op_result)
-
-        # convert datetime format to str
-        # get video name and video thumbnail for each op video
-        for each_result in video_op_result_dict_array:
-            raw_result = query_video_get_by_video_id(each_result["video_id"])
-            video_result = \
-                util_serializer_mongo_results_to_array(raw_result)[0]
-
-            each_result["video_title"] = video_result["video_title"]
-            each_result["video_thumbnail"] = video_result["video_thumbnail"]
-            for key, value in each_result.items():
-                if isinstance(value, datetime.datetime):
-                    each_result[key] = str(value)
-
-        final_result["video_op"] = video_op_result_dict_array
-    else:
-        final_result["video_op"] = [{}]
-
-    return final_result
+    user_array = util_serializer_mongo_results_to_array(users)
+    return user_array[0]
 
 
-def service_user_get_like(conf, user_id):
-    get_db(conf)
+def service_user_get_like(user_id):
 
     # user_id check
     if not is_valid_id(user_id):
@@ -257,8 +205,7 @@ def service_user_get_like(conf, user_id):
     return like_result
 
 
-def service_user_get_dislike(conf, user_id):
-    get_db(conf)
+def service_user_get_dislike(user_id):
 
     # user_id check
     if not is_valid_id(user_id):
@@ -286,8 +233,7 @@ def service_user_get_dislike(conf, user_id):
     return dislike_result
 
 
-def service_user_get_comment(conf, user_id):
-    get_db(conf)
+def service_user_get_comment(user_id):
 
     # user_id check
     if not is_valid_id(user_id):
@@ -316,8 +262,7 @@ def service_user_get_comment(conf, user_id):
     return comment_result
 
 
-def service_user_get_star(conf, user_id):
-    get_db(conf)
+def service_user_get_star(user_id):
 
     # user_id check
     if not is_valid_id(user_id):
@@ -345,8 +290,7 @@ def service_user_get_star(conf, user_id):
     return star_result
 
 
-def service_user_get_process(conf, user_id):
-    get_db(conf)
+def service_user_get_process(user_id):
 
     # user_id check
     if not is_valid_id(user_id):

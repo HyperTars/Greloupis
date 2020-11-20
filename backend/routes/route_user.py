@@ -10,18 +10,22 @@ from flask_jwt_extended import create_access_token, \
     jwt_required, get_raw_jwt, jwt_optional, get_jwt_identity
 from flask_restx import Resource, fields, Namespace
 from service.service_user import service_user_login, service_user_reg, \
-    service_user_get_info, service_user_update_info, \
-    service_user_cancel, service_user_hide_info
+    service_user_get_user, service_user_update_info, \
+    service_user_close, service_user_hide_private, \
+    service_user_auth_get, service_user_auth_modify
 '''
     #service_user_get_comment, service_user_get_dislike, \
     #, service_user_get_like, \
     #service_user_get_process, service_user_get_star
 '''
+from service.service_video import service_video_get_by_user
+from service.service_video_op import service_video_op_get_by_user
+from service.service_search import service_search_hide_video
 from utils.util_jwt import blacklist, util_get_formated_response
 from utils.util_error_handler import util_error_handler
-from settings import config
 from utils.util_serializer import util_serializer_api_response
-from models.model_errors import MongoError, RouteError, ServiceError
+from models.model_errors import MongoError, RouteError, ServiceError, \
+    ErrorCode
 
 # from source.utils.util_validator import *
 # from flask import Flask, g, Blueprint
@@ -165,7 +169,7 @@ class User(Resource):
                 kw = ast.literal_eval(raw_data)
                 print(kw)
 
-            user = service_user_reg(conf=config["default"], **kw)
+            user = service_user_reg(**kw)
             print(user)
             # default: login
             # expires = datetime.timedelta(seconds=20)
@@ -191,18 +195,39 @@ class User(Resource):
 @user.response(500, 'Internal server error', general_response)
 class UserUserId(Resource):
     @jwt_optional
-    def get(self, user_id, conf=config["default"]):
+    def get(self, user_id):
         """
             Get user information by id
         """
         try:
             user_id = request.url.split('/')[-1]
-            result = service_user_get_info(conf=conf, user_id=user_id)
-            if result['user']['user_status'] != 'public' and \
-               get_jwt_identity() != result['user']['user_id']:
-                result = service_user_hide_info(result)
+            token = get_jwt_identity()
+            result = {}
+            user = service_user_get_user(user_id=user_id)
+            vid = service_video_get_by_user(user_id=user_id)
+            op = service_video_op_get_by_user(user_id=user_id)
+
+            # remove deleted video
+            video = []
+            for v in vid:
+                if v['video_status'] == 'deleted':
+                    continue
+                video.append(v)
+
+            result['user'] = user
+            result['video'] = video
+            result['video_op'] = op
+
+            if not service_user_auth_get(token, user_id):
+                if user['user_status'] == 'closed':
+                    raise RouteError(ErrorCode.ROUTE_DELETED_USER)
+                result['user'] = service_user_hide_private(user)
+                result['video'] = service_search_hide_video('', video)
+                result['video_op'] = []
+
             return util_serializer_api_response(
                     200, body=result, msg="Get user info successfully")
+
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
@@ -224,7 +249,10 @@ class UserUserId(Resource):
                 print(kw)
             kw['user_id'] = user_id
             print(kw)
-            result = service_user_update_info(config['default'], **kw)
+            if not service_user_auth_modify(get_jwt_identity(), kw['user_id']):
+                raise RouteError(ErrorCode.ROUTE_TOKEN_REQUIRED)
+
+            result = service_user_update_info(**kw)
             return util_serializer_api_response(
                 200, body=result, msg="Update user info successfully")
         except (ServiceError, MongoError, RouteError, Exception) as e:
@@ -237,16 +265,11 @@ class UserUserId(Resource):
             Delete user by id
         """
         try:
-            kw = ""
-            if request.form != {}:
-                kw = dict(request.form)
-                print(kw)
-            else:
-                raw_data = request.data.decode("utf-8")
-                kw = ast.literal_eval(raw_data)
-                print(kw)
-
-            result = service_user_cancel(config['default'], kw)
+            token = get_jwt_identity()
+            if not service_user_auth_modify(token, user_id=user_id):
+                raise RouteError(ErrorCode.ROUTE_TOKEN_REQUIRED)
+            result = service_user_close(
+                method='status', user_id=user_id,)
             return util_serializer_api_response(
                 200, body=result, msg="Delete user successfully")
 
@@ -259,7 +282,7 @@ class UserUserId(Resource):
 @user.response(400, 'Invalid user information', general_response)
 @user.response(500, 'Internal server error', general_response)
 class UserLogin(Resource):
-    def post(self, conf=config["default"]):
+    def post(self):
         """
             User sign in
         """
@@ -276,7 +299,7 @@ class UserLogin(Resource):
             else:
                 kw['ip'] = request.environ.get(
                     'HTTP_X_REAL_IP', request.remote_addr)
-            user = service_user_login(conf=conf, **kw)
+            user = service_user_login(**kw)
             # expires = datetime.timedelta(seconds=20)
             expires = datetime.timedelta(hours=24)
             token = create_access_token(identity=user['user_id'],
@@ -320,19 +343,19 @@ class UserLogout(Resource):
 class UserUserIdLike(Resource):
 
     @jwt_optional
-    def get(self, user_id, conf=config["default"]):
+    def get(self, user_id):
         """
             Get a list of like by user id
         """
 
         try:
             user_id = request.url.split('/')[-2]
-            result = service_user_get_info(conf=conf, user_id=user_id)
+            result = service_user_get_info(user_id=user_id)
             if result['user'][0]['user_status'] != 'public' and \
                     get_jwt_identity() != result['user'][0]['user_id']:
                 return util_serializer_api_response(
                     200, body={}, msg="Get user likes successfully")
-            like_result = service_user_get_like(conf=conf, user_id=user_id)
+            like_result = service_user_get_like(user_id=user_id)
             return util_serializer_api_response(
                 200, body=like_result, msg="Get user likes successfully")
         except (ServiceError, MongoError, RouteError, Exception) as e:
@@ -348,20 +371,20 @@ class UserUserIdLike(Resource):
 class UserUserIdDislike(Resource):
 
     @jwt_optional
-    def get(self, user_id, conf=config["default"]):
+    def get(self, user_id):
         """
             Get a list of dislike by user id
         """
 
         try:
             user_id = request.url.split('/')[-2]
-            user_result = service_user_get_info(conf=conf, user_id=user_id)
+            user_result = service_user_get_info(user_id=user_id)
             if user_result['user'][0]['user_status'] != 'public' and\
                     get_jwt_identity() != user_result['user'][0]['user_id']:
                 return util_serializer_api_response(
                     200, body={}, msg="Get user dislikes successfully")
             dislike_result = service_user_get_dislike(
-                conf=conf, user_id=user_id)
+                user_id=user_id)
             return util_serializer_api_response(200, body=dislike_result,
                                                 msg="Get user dislikes "
                                                     "successfully")
@@ -378,19 +401,19 @@ class UserUserIdDislike(Resource):
 class UserUserIdStar(Resource):
 
     @jwt_optional
-    def get(self, user_id, conf=config["default"]):
+    def get(self, user_id):
         """
             Get a list of star by user id
         """
 
         try:
             user_id = request.url.split('/')[-2]
-            user_result = service_user_get_info(conf=conf, user_id=user_id)
+            user_result = service_user_get_info(user_id=user_id)
             if user_result['user'][0]['user_status'] != 'public' and\
                     get_jwt_identity() != user_result['user'][0]['user_id']:
                 return util_serializer_api_response(
                     200, body={}, msg="Get user comments successfully")
-            star_result = service_user_get_star(conf=conf, user_id=user_id)
+            star_result = service_user_get_star(user_id=user_id)
             return util_serializer_api_response(
                 200, body=star_result, msg="Get user comments successfully")
         except (ServiceError, MongoError, RouteError, Exception) as e:
@@ -406,20 +429,20 @@ class UserUserIdStar(Resource):
 class UserUserIdComment(Resource):
 
     @jwt_optional
-    def get(self, user_id, conf=config["default"]):
+    def get(self, user_id):
         """
             Get a list of comments by user id
         """
 
         try:
             user_id = request.url.split('/')[-2]
-            user_result = service_user_get_info(conf=conf, user_id=user_id)
+            user_result = service_user_get_info(user_id=user_id)
             if user_result['user'][0]['user_status'] != 'public' and\
                     get_jwt_identity() != user_result['user'][0]['user_id']:
                 return util_serializer_api_response(
                     200, body={}, msg="Get user comments successfully")
             comment_result = service_user_get_comment(
-                conf=conf, user_id=user_id)
+                user_id=user_id)
             return util_serializer_api_response(
                 200, body=comment_result, msg="Get user comments successfully")
         except (ServiceError, MongoError, RouteError, Exception) as e:
@@ -435,20 +458,20 @@ class UserUserIdComment(Resource):
 class UserUserIdProcess(Resource):
 
     @jwt_optional
-    def get(self, user_id, conf=config["default"]):
+    def get(self, user_id):
         """
             Get a list of comments by user id
         """
 
         try:
             user_id = request.url.split('/')[-2]
-            user_result = service_user_get_info(conf=conf, user_id=user_id)
+            user_result = service_user_get_info(user_id=user_id)
             if user_result['user'][0]['user_status'] != 'public' and\
                     get_jwt_identity() != user_result['user'][0]['user_id']:
                 return util_serializer_api_response(
                     200, body={}, msg="Get user processes successfully")
             process_result = service_user_get_process(
-                conf=conf, user_id=user_id)
+                user_id=user_id)
             return util_serializer_api_response(
                 200, body=process_result,
                 msg="Get user processes successfully")
