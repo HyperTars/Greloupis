@@ -19,6 +19,7 @@ from utils.util_jwt import util_get_formated_response
 app = Flask(__name__)
 app.config.from_object(config['default'])
 app.register_blueprint(blueprint)
+jwt = JWTManager(app)
 
 
 with app.app_context():
@@ -30,8 +31,6 @@ with open('configs/logging.yml', 'r') as f:
     Path("logs").mkdir(parents=True, exist_ok=True)
     conf = yaml.safe_load(f.read())
     logging.config.dictConfig(conf)
-
-jwt = JWTManager(app)
 
 
 @jwt.token_in_blacklist_loader
