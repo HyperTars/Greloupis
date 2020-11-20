@@ -1,7 +1,8 @@
 import unittest
+from flask import Flask, g
 from settings import config
 from utils.util_tests import util_tests_load_data, \
-    util_tests_python_version
+    util_tests_python_version, util_tests_clean_database
 from utils.util_pattern import util_pattern_compile
 from db.query_user import query_user_get_by_id, \
     query_user_update_details, query_user_create, query_user_delete_by_name, \
@@ -25,10 +26,18 @@ from db.query_video_op import query_video_op_create, \
     query_video_op_update_star, query_video_op_search_comment_by_contains, \
     query_video_op_search_comment_by_pattern, query_video_op_get_by_user_id, \
     query_video_op_get_by_video_id, query_video_op_delete
-from db.mongo import get_db
+from db.mongo import init_db
 from models.model_errors import MongoError, ErrorCode
 from utils.util_time import get_time_now_utc
 import bson
+
+
+app = Flask(__name__)
+app.config.from_object(config['test'])
+
+with app.app_context():
+    if 'db' not in g:
+        g.db = init_db()
 
 
 class TestQueryUser(unittest.TestCase):
@@ -38,7 +47,7 @@ class TestQueryUser(unittest.TestCase):
         cls.data = util_tests_load_data()
         if util_tests_python_version() is False:
             exit()
-        get_db(config['test'])
+        util_tests_clean_database()
 
     def test_a_user_create(self):
         # Create successfully
@@ -754,7 +763,7 @@ class TestQueryVideo(unittest.TestCase):
         cls.data = util_tests_load_data()
         if util_tests_python_version() is False:
             exit()
-        get_db(config['test'])
+        util_tests_clean_database()
 
     def test_a_query_video_create(self):
         self.assertEqual(
@@ -792,9 +801,9 @@ class TestQueryVideo(unittest.TestCase):
                          self.data['const_video'][0]['video_title'])
 
     def test_c_query_video_get_by_user_id(self):
-        self.assertEqual(len(
-            query_video_get_by_user_id(self.data['temp_video'][0]['user_id'])),
-            2)
+        self.assertEqual(
+            len(query_video_get_by_user_id(
+                self.data['temp_video'][0]['user_id'])), 1)
 
     def test_d_query_video_get_by_title(self):
         self.assertEqual(
@@ -1251,7 +1260,7 @@ class TestQueryVideoOp(unittest.TestCase):
         cls.data = util_tests_load_data()
         if util_tests_python_version() is False:
             exit()
-        get_db(config['test'])
+        util_tests_clean_database()
 
     def test_a_query_video_op_create(self):
         vid = self.data['temp_video_op'][0]['video_id']
@@ -1292,9 +1301,9 @@ class TestQueryVideoOp(unittest.TestCase):
 
     def test_c_query_video_op_get_by_video_id(self):
         op = query_video_op_get_by_video_id(
-            self.data['temp_video_op'][0]['video_id'])[1]
-        self.assertEqual(op.user_id,
-                         self.data['temp_video_op'][0]['user_id'])
+            self.data['temp_video_op'][0]['video_id'])[0]
+        self.assertEqual(
+            op.user_id, self.data['const_video_op'][0]['user_id'])
 
     def test_d_query_video_op_get_by_user_video(self):
         temp_video_op = query_video_op_get_by_user_video(
@@ -1452,8 +1461,8 @@ class TestQueryVideoOp(unittest.TestCase):
     def test_l_query_video_op_search_comment_by_contains(self):
         video_op = query_video_op_search_comment_by_contains(
             self.data['const_video_op'][0]['comment'][1:10])[0].to_dict()
-        self.assertEqual(video_op['video_id'],
-                         self.data['const_video_op'][0]['video_id'])
+        self.assertEqual(video_op['user_id'],
+                         self.data['const_video_op'][0]['user_id'])
 
     def test_m_query_video_op_search_comment_by_pattern(self):
         search_comment = self.data['const_video_op'][0]['comment']

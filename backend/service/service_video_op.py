@@ -1,10 +1,10 @@
-from db.mongo import get_db
 from db.query_video import query_video_get_by_video_id, \
     query_video_cnt_decr_by_one, query_video_cnt_incr_by_one
 from db.query_video_op import query_video_op_update_star, \
     query_video_op_update_dislike, query_video_op_update_like, \
     query_video_op_update_comment, query_video_op_update_process, \
-    query_video_op_get_by_user_video, query_video_op_create
+    query_video_op_get_by_user_video, query_video_op_create, \
+    query_video_op_get_by_user_id
 from utils.util_validator import is_valid_id
 from utils.util_serializer import util_serializer_mongo_results_to_array
 from utils.util_pattern import util_pattern_format_param
@@ -12,8 +12,71 @@ from utils.util_time import get_time_now_utc
 from models.model_errors import ErrorCode, MongoError, ServiceError
 
 
-def service_video_op_add_view(conf, **kw):
-    get_db(conf)
+def service_video_op_auth_get(token, user_id, video_id):
+    videos = query_video_get_by_video_id(video_id)
+    if len(videos) == 0:
+        raise ServiceError(ErrorCode.SERVICE_VIDEO_NOT_FOUND)
+    video = videos[0].to_dict()
+
+    if video['video_status'] != 'public' and \
+       video['user_id'] != token and \
+       user_id != token:
+        return False
+
+    return True
+
+
+def service_video_op_auth_post(token, user_id, video_id):
+    videos = query_video_get_by_video_id(video_id)
+    if len(videos) == 0:
+        raise ServiceError(ErrorCode.SERVICE_VIDEO_NOT_FOUND)
+    video = videos[0].to_dict()
+    if video['video_status'] != 'public' and \
+       video['user_id'] != token:
+        return False
+    if token != user_id:
+        return False
+    return True
+
+
+def service_video_op_auth_modify(token, user_id):
+    return token == user_id
+
+
+def service_video_op_get_by_user(**kw):
+
+    kw['service'] = 'video_op'
+    kw = util_pattern_format_param(**kw)
+    # keyword check and formatting
+    if 'user_id' not in kw:
+        raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
+
+    ops = query_video_op_get_by_user_id(kw['user_id'])
+    if len(ops) == 0:
+        return []
+
+    op_array = util_serializer_mongo_results_to_array(ops)
+
+    # get video name and video thumbnail for each op video
+    for op in op_array:
+        videos = query_video_get_by_video_id(op['video_id'])
+        if len(videos) == 0:
+            raise ServiceError(ErrorCode.SERVICE_VIDEO_NOT_FOUND)
+        video = videos[0].to_dict()
+
+        op['video_title'] = video['video_title']
+        op['video_thumbnail'] = video['video_thumbnail']
+
+    # for each_result in op_array:
+    #     raw_result = query_video_get_by_video_id(each_result['video_id'])
+    #     video_result = util_serializer_mongo_results_to_array(raw_result)[0]
+
+    #     each_result['video_title'] = video_result['video_title']
+    #     each_result['video_thumbnail'] = video_result['video_thumbnail']
+    return op_array
+
+
+def service_video_op_add_view(**kw):
 
     # keyword check and formatting
     if 'video_id' not in kw and 'id' not in kw and '_id' not in kw:
@@ -41,8 +104,7 @@ def service_video_op_add_view(conf, **kw):
         raise MongoError(ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND)
 
 
-def service_video_op_get_view(conf, **kw):
-    get_db(conf)
+def service_video_op_get_view(**kw):
 
     # keyword check and formatting
     if 'video_id' not in kw and 'id' not in kw and '_id' not in kw:
@@ -69,8 +131,7 @@ def service_video_op_get_view(conf, **kw):
         raise MongoError(ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND)
 
 
-def service_video_op_add_comment(conf, **kw):
-    get_db(conf)
+def service_video_op_add_comment(**kw):
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw or 'comment' not in kw:
@@ -118,8 +179,7 @@ def service_video_op_add_comment(conf, **kw):
         raise MongoError(ErrorCode.MONGODB_VIDEO_COMMENT_UPDATE_FAILURE)
 
 
-def service_video_op_get_comment(conf, **kw):
-    get_db(conf)
+def service_video_op_get_comment(**kw):
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw:
@@ -148,8 +208,7 @@ def service_video_op_get_comment(conf, **kw):
         raise MongoError(ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND)
 
 
-def service_video_op_update_comment(conf, **kw):
-    get_db(conf)
+def service_video_op_update_comment(**kw):
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw or 'comment' not in kw:
@@ -195,8 +254,7 @@ def service_video_op_update_comment(conf, **kw):
         raise MongoError(ErrorCode.MONGODB_VIDEO_COMMENT_UPDATE_FAILURE)
 
 
-def service_video_op_cancel_comment(conf, **kw):
-    get_db(conf)
+def service_video_op_cancel_comment(**kw):
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw:
@@ -240,8 +298,7 @@ def service_video_op_cancel_comment(conf, **kw):
         raise MongoError(ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND)
 
 
-def service_video_op_add_process(conf, **kw):
-    get_db(conf)
+def service_video_op_add_process(**kw):
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw or 'process' not in kw:
@@ -294,8 +351,7 @@ def service_video_op_add_process(conf, **kw):
         raise MongoError(ErrorCode.MONGODB_VIDEO_PROCESS_UPDATE_FAILURE)
 
 
-def service_video_op_get_process(conf, **kw):
-    get_db(conf)
+def service_video_op_get_process(**kw):
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw:
@@ -326,8 +382,7 @@ def service_video_op_get_process(conf, **kw):
         raise MongoError(ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND)
 
 
-def service_video_op_update_process(conf, **kw):
-    get_db(conf)
+def service_video_op_update_process(**kw):
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw or 'process' not in kw:
@@ -377,8 +432,7 @@ def service_video_op_update_process(conf, **kw):
         raise MongoError(ErrorCode.MONGODB_VIDEO_PROCESS_UPDATE_FAILURE)
 
 
-def service_video_op_cancel_process(conf, **kw):
-    get_db(conf)
+def service_video_op_cancel_process(**kw):
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw:
@@ -427,8 +481,7 @@ def service_video_op_cancel_process(conf, **kw):
         raise MongoError(ErrorCode.MONGODB_VIDEO_PROCESS_DELETE_FAILURE)
 
 
-def service_video_op_add_like(conf, **kw):
-    get_db(conf)
+def service_video_op_add_like(**kw):
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw:
@@ -487,8 +540,7 @@ def service_video_op_add_like(conf, **kw):
         raise MongoError(ErrorCode.MONGODB_VIDEO_LIKE_UPDATE_FAILURE)
 
 
-def service_video_op_cancel_like(conf, **kw):
-    get_db(conf)
+def service_video_op_cancel_like(**kw):
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw:
@@ -540,8 +592,7 @@ def service_video_op_cancel_like(conf, **kw):
         raise MongoError(ErrorCode.MONGODB_VIDEO_LIKE_UPDATE_FAILURE)
 
 
-def service_video_op_add_dislike(conf, **kw):
-    get_db(conf)
+def service_video_op_add_dislike(**kw):
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw:
@@ -600,8 +651,7 @@ def service_video_op_add_dislike(conf, **kw):
         raise MongoError(ErrorCode.MONGODB_VIDEO_DISLIKE_UPDATE_FAILURE)
 
 
-def service_video_op_cancel_dislike(conf, **kw):
-    get_db(conf)
+def service_video_op_cancel_dislike(**kw):
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw:
@@ -653,8 +703,7 @@ def service_video_op_cancel_dislike(conf, **kw):
         raise MongoError(ErrorCode.MONGODB_VIDEO_DISLIKE_UPDATE_FAILURE)
 
 
-def service_video_op_add_star(conf, **kw):
-    get_db(conf)
+def service_video_op_add_star(**kw):
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw:
@@ -706,8 +755,7 @@ def service_video_op_add_star(conf, **kw):
         raise MongoError(ErrorCode.MONGODB_VIDEO_STAR_UPDATE_FAILURE)
 
 
-def service_video_op_cancel_star(conf, **kw):
-    get_db(conf)
+def service_video_op_cancel_star(**kw):
 
     # keyword check and formatting
     if 'video_id' not in kw or 'user_id' not in kw:

@@ -2,7 +2,7 @@
 from __future__ import absolute_import, print_function
 
 import yaml
-from flask import Flask, request
+from flask import Flask, request, g
 from flask_jwt_extended import JWTManager
 
 from apiv1 import blueprint
@@ -11,22 +11,26 @@ from settings import config
 import os
 import logging.config
 from pathlib import Path
-
+from db.mongo import init_db
 # from source.utils.util_request_filter import *
 # from flask import request, redirect, session
 from utils.util_jwt import util_get_formated_response
 
 app = Flask(__name__)
-app.config.from_object(config['test'])
+app.config.from_object(config['default'])
 app.register_blueprint(blueprint)
+
+
+with app.app_context():
+    if 'db' not in g:
+        g.db = init_db()
+
 
 with open('configs/logging.yml', 'r') as f:
     Path("logs").mkdir(parents=True, exist_ok=True)
     conf = yaml.safe_load(f.read())
     logging.config.dictConfig(conf)
 
-# CORS(app, resources={r'/*': {'origins': config['test'].FRONTEND}},
-#      supports_credentials=True)
 jwt = JWTManager(app)
 
 
@@ -68,7 +72,7 @@ def add_cors_headers(response):
         return response
 
     r = request.referrer[:-1]
-    if r in config['test'].FRONTEND:
+    if r in app.config['FRONTEND']:
         response.headers.add('Access-Control-Allow-Origin', r)
         response.headers.add('Access-Control-Allow-Credentials', 'true')
         response.headers.add('Access-Control-Allow-Headers', 'Content-Type')

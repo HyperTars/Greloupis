@@ -1,19 +1,41 @@
-from db.mongo import get_db
 from db.query_video import query_video_update, query_video_delete, \
-    query_video_create, query_video_get_by_title, query_video_get_by_video_id
+    query_video_create, query_video_get_by_title, \
+    query_video_get_by_user_id, query_video_get_by_video_id
 from db.query_video_op import query_video_op_get_by_video_id, \
     query_video_op_delete
 from db.query_user import query_user_get_by_id
 from utils.util_pattern import util_pattern_format_param
 from utils.util_serializer import util_serializer_mongo_results_to_array
 from utils.util_validator import is_valid_id
-from models.model_errors import ServiceError, ErrorCode, MongoError
+from models.model_errors import ServiceError, ErrorCode
 
 VALID_VIDEO_STATUS = ['public', 'private', 'processing', 'deleted']
 
 
-def service_video_upload(conf, **kw):
-    get_db(conf)
+def service_video_auth_get(token, video_id):
+    videos = query_video_get_by_video_id(video_id)
+    if len(videos) == 0:
+        raise ServiceError(ErrorCode.SERVICE_VIDEO_NOT_FOUND)
+    video = videos[0].to_dict()
+    user = video['user_id']
+    status = video['video_status']
+    if status != 'public' and user != token:
+        return False
+    return True
+
+
+def service_video_auth_modify(token, video_id):
+    videos = query_video_get_by_video_id(video_id)
+    if len(videos) == 0:
+        raise ServiceError(ErrorCode.SERVICE_VIDEO_NOT_FOUND)
+    video = videos[0].to_dict()
+    if video['user_id'] == token:
+        return True
+    return False
+
+
+def service_video_upload(**kw):
+
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
 
@@ -31,37 +53,45 @@ def service_video_upload(conf, **kw):
     return uploaded_result
 
 
-def service_video_info(conf, **kw):
-    get_db(conf)
+def service_video_info(**kw):
+
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
-
     # keyword check and formatting
     if 'video_id' not in kw:
         raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
 
     if not is_valid_id(kw["video_id"]):
         raise ServiceError(ErrorCode.SERVICE_INVALID_ID_OBJ)
-
     # perform db operations and get result
-    get_result = query_video_get_by_video_id(kw["video_id"])
-    if len(get_result) == 0:
+    video = query_video_get_by_video_id(kw["video_id"])
+    if len(video) == 0:
         raise ServiceError(ErrorCode.SERVICE_VIDEO_NOT_FOUND)
 
-    final_result = []
-    for each in get_result:
-        temp = each.to_dict()
-        user_id = each.to_dict()["user_id"]
-        user_obj = query_user_get_by_id(user_id)[0].to_dict()
-
-        temp["user_name"] = user_obj["user_name"]
-        temp["user_thumbnail"] = user_obj["user_thumbnail"]
-        final_result.append(temp)
-    return final_result
+    res = video[0].to_dict()
+    user_id = res["user_id"]
+    user_obj = query_user_get_by_id(user_id)[0].to_dict()
+    res["user_name"] = user_obj["user_name"]
+    res["user_thumbnail"] = user_obj["user_thumbnail"]
+    return res
 
 
-def service_video_update(conf, **kw):
-    get_db(conf)
+def service_video_get_by_user(**kw):
+
+    kw['service'] = 'video'
+    kw = util_pattern_format_param(**kw)
+    # keyword check and formatting
+    if 'user_id' not in kw:
+        raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
+    videos = query_video_get_by_user_id(kw['user_id'])
+    if len(videos) == 0:
+        return []
+    video_array = util_serializer_mongo_results_to_array(videos)
+    return video_array
+
+
+def service_video_update(**kw):
+
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
 
@@ -131,8 +161,8 @@ def service_video_update(conf, **kw):
     return query_video_get_by_video_id(kw["video_id"])
 
 
-def service_video_comments(conf, **kw):
-    get_db(conf)
+def service_video_comments(**kw):
+
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
 
@@ -166,8 +196,8 @@ def service_video_comments(conf, **kw):
     return comments_result
 
 
-def service_video_likes(conf, **kw):
-    get_db(conf)
+def service_video_likes(**kw):
+
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
 
@@ -199,8 +229,8 @@ def service_video_likes(conf, **kw):
     return like_result
 
 
-def service_video_dislikes(conf, **kw):
-    get_db(conf)
+def service_video_dislikes(**kw):
+
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
 
@@ -232,8 +262,8 @@ def service_video_dislikes(conf, **kw):
     return dislike_result
 
 
-def service_video_stars(conf, **kw):
-    get_db(conf)
+def service_video_stars(**kw):
+
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
 
@@ -265,8 +295,8 @@ def service_video_stars(conf, **kw):
     return star_result
 
 
-def service_video_delete(conf, **kw):
-    get_db(conf)
+def service_video_delete(**kw):
+
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
 
@@ -274,19 +304,19 @@ def service_video_delete(conf, **kw):
     if 'video_id' not in kw:
         raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
 
-    if not is_valid_id(kw["video_id"]):
+    if not is_valid_id(kw['video_id']):
         raise ServiceError(ErrorCode.SERVICE_INVALID_ID_OBJ)
 
-    # perform db operations and get result
-    delete_result = query_video_delete(kw["video_id"])
-    if delete_result == 1:
-        # delete all video_op related to this video
-        video_op_objects = query_video_op_get_by_video_id(kw["video_id"])
-        video_op_results = util_serializer_mongo_results_to_array(
-            video_op_objects)
-        for each in video_op_results:
-            query_video_op_delete(each["video_op_id"])
-
-        return delete_result
+    # delete by setting status
+    if 'method' in kw and kw['method'] == 'status':
+        res = query_video_update(kw['video_id'], video_status='deleted')
+    # delete by removing from database
     else:
-        raise MongoError(ErrorCode.MONGODB_VIDEO_DELETE_FAILURE)
+        res = query_video_delete(kw['video_id'], silent=True)
+
+    # delete all op in this video immediately
+    ops = query_video_op_get_by_video_id(kw['video_id'])
+    for op in ops:
+        opid = op.to_dict()['video_op_id']
+        query_video_op_delete(opid, silent=True)
+    return res
