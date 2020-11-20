@@ -24,15 +24,9 @@ from routes.route_video import Video, VideoVideoId, \
     VideoVideoIdProcessUserId, VideoVideoIdStar, VideoVideoIdStarUserId, \
     VideoVideoIdView
 from routes.route_user import UserUserId, user
-'''
-    UserUserIdStar, UserUserIdComment, UserUserIdDislike, \
-    UserUserIdLike, UserUserIdProcess
-'''
 from service.service_user import service_user_get_user
-'''
-    service_user_get_comment, service_user_get_star, service_user_get_like, \
-    service_user_get_process, service_user_get_dislike
-'''
+from service.service_video import service_video_get_by_user
+from service.service_video_op import service_video_op_get_by_user
 
 
 app = Flask(__name__)
@@ -151,20 +145,18 @@ class TestRouteUser(unittest.TestCase):
         pass
 
     def test_b_route_user_get(self):
-        temp_user_id = self.data['const_user'][0]['_id']['$oid']
+        uid = self.data['const_user'][0]['_id']['$oid']
+        url = '/user/' + uid
+        with app.test_request_context(url, data={}):
+            response = UserUserId().get(user_id=uid, conf=self.conf)
+        body = response.get_json()['body']
+        service_user = service_user_get_user(self.conf, user_id=uid)
+        service_video = service_video_get_by_user(self.conf, user_id=uid)
+        service_op = service_video_op_get_by_user(self.conf, user_id=uid)
 
-        disconnect(alias='default')
-        with app.test_request_context(
-                '/user/' + temp_user_id, data={}):
-            response_json = UserUserId().get(user_id=temp_user_id,
-                                             conf=self.conf).get_json()
-
-        disconnect(alias='default')
-        service_result = service_user_get_user(self.conf, temp_user_id)
-
-        # same result length
-        self.assertEqual(len(service_result),
-                         len(response_json["body"]["user"]))
+        self.assertEqual(service_user['user_id'], body['user']['user_id'])
+        self.assertEqual(len(service_video), len(body['video']))
+        self.assertEqual(len(service_op), len(body['video_op']))
 
         disconnect(alias='default')
         wrong_id = '12345678123456781234567'
@@ -385,21 +377,18 @@ class TestRouteVideo(unittest.TestCase):
             self.assertEqual(error_json["code"], 400)
 
     def test_b_video_get(self):
-        temp_video_title = self.data['temp_video'][0]["video_title"]
-        temp_video = util_serializer_mongo_results_to_array(
-            query_video_get_by_title(temp_video_title))[0]
-        temp_video_id = temp_video["video_id"]
+        temp_video_id = self.data['const_video'][0]["_id"]["$oid"]
         wrong_id_1 = "123123123"
         wrong_id_2 = "5f88f883e6ac4f89900ac984"
 
         # successful case
         with app.test_request_context('/video/' + temp_video_id, data={}):
-            response_json = VideoVideoId().get(temp_video_id,
-                                               self.conf).get_json()
-            self.assertEqual(response_json["body"][0]["user_id"],
-                             temp_video["user_id"])
-            self.assertEqual(response_json["body"][0]["video_title"],
-                             temp_video["video_title"])
+            response_json = VideoVideoId().get(
+                temp_video_id, self.conf).get_json()
+            self.assertEqual(response_json["body"]["user_id"],
+                             self.data['const_video'][0]["user_id"])
+            self.assertEqual(response_json["body"]["video_title"],
+                             self.data['const_video'][0]["video_title"])
 
         # invalid Param
         with app.test_request_context('/video/' + wrong_id_1, data={}):

@@ -2,6 +2,7 @@ import os
 import sys
 import json
 import platform as pf
+import bson
 from db.mongo import get_db
 from settings import config
 from models.model_user import User
@@ -23,6 +24,8 @@ def util_tests_clean_database():
     for video in data['const_video']:
         VideoOp.objects(video_id=video['_id']['$oid']).delete()
 
+    vop = data['const_video_op'][0]
+    VideoOp(**vop).save()
 
 def util_tests_load_data():
     os_ver = pf.system()

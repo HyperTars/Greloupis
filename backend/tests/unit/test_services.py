@@ -604,7 +604,7 @@ class TestServiceVideo(unittest.TestCase):
         cls.temp_video_title_updated = "test video title updated"
         cls.temp_video_status = "public"
         cls.temp_video_raw_size = 51.23
-        cls.const_vid = cls.data['const_video'][0]['_id']['$oid'][:-1] + '0'
+        cls.const_vid = cls.data['const_video'][0]['_id']['$oid']
 
     def test_a_service_video_upload(self):
         test_user_id = self.data['const_user'][1]['_id']['$oid']

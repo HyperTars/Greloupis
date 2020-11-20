@@ -59,12 +59,21 @@ def service_video_op_get_by_user(conf, **kw):
     op_array = util_serializer_mongo_results_to_array(ops)
 
     # get video name and video thumbnail for each op video
-    for each_result in op_array:
-        raw_result = query_video_get_by_video_id(each_result['video_id'])
-        video_result = util_serializer_mongo_results_to_array(raw_result)[0]
+    for op in op_array:
+        videos = query_video_get_by_video_id(op['video_id'])
+        if len(videos) == 0:
+            raise ServiceError(ErrorCode.SERVICE_VIDEO_NOT_FOUND)
+        video = videos[0].to_dict()
 
-        each_result['video_title'] = video_result['video_title']
-        each_result['video_thumbnail'] = video_result['video_thumbnail']
+        op['video_title'] = video['video_title']
+        op['video_thumbnail'] = video['video_thumbnail']
+
+    # for each_result in op_array:
+    #     raw_result = query_video_get_by_video_id(each_result['video_id'])
+    #     video_result = util_serializer_mongo_results_to_array(raw_result)[0]
+
+    #     each_result['video_title'] = video_result['video_title']
+    #     each_result['video_thumbnail'] = video_result['video_thumbnail']
     return op_array
 
 
