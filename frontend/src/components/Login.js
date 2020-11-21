@@ -66,7 +66,6 @@ const styles = (theme) => ({
 // };
 
 class Login extends React.Component {
-
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
@@ -81,9 +80,11 @@ class Login extends React.Component {
       urlTo: "/",
     };
 
-    if (this.props.location.state != null 
-      && this.props.location.state.from !== "/login") {
-        this.urlTo = this.props.location.state.from;
+    if (
+      this.props.location.state != null &&
+      this.props.location.state.from !== "/login"
+    ) {
+      this.urlTo = this.props.location.state.from;
     } else {
       this.urlTo = "/";
     }
@@ -127,7 +128,7 @@ class Login extends React.Component {
           });
 
           console.log(this.state);
-          alert("Username and password do not match.");
+          alert("Username and password do not match. " + resMessage);
         }
       );
     } else {
