@@ -1,10 +1,5 @@
 import React, { Component } from "react";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  // Redirect,
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Home from "./Home";
 import Header from "./Header";
@@ -17,7 +12,6 @@ import UserProfile from "./UserProfile";
 import VideoUpload from "./VideoUpload";
 import VideoPlay from "./VideoPlay";
 import PrivateRoute from "./PrivateRoute";
-import Dashboard from "./Dashboard";
 
 class App extends Component {
   render() {
@@ -89,14 +83,13 @@ class App extends Component {
                 </div>
               )}
             />
-            <Route exact path="/404" render={() => <EmptyPage />} />
-            <PrivateRoute
+            <Route component={EmptyPage} render={() => <EmptyPage />} />
+            {/* <PrivateRoute
               exact
               path="/dashboard"
               component={Dashboard}
               render={(props) => <Dashboard />}
-            />
-            {/* <Route path="*" render={() => <Redirect to="/404"></Redirect>} /> */}
+            /> */}
           </Switch>
         </div>
       </Router>

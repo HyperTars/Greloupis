@@ -12,7 +12,7 @@ from db.query_video import query_video_get_by_user_id
 from db.query_video_op import query_video_op_get_by_user_id, \
     query_video_op_delete
 from service.service_video import service_video_delete
-from models.model_errors import ServiceError, ErrorCode
+from models.model_errors import ServiceError, RouteError, ErrorCode
 
 
 def service_user_auth_get(token, user_id):
@@ -69,6 +69,8 @@ def service_user_login(**kw):
         user = users[0]
         if util_hash_encode(kw['user_password']) != user.user_password:
             raise ServiceError(ErrorCode.SERVICE_USER_PASS_WRONG)
+        if user.to_dict()["user_status"] == "closed":
+            raise RouteError(ErrorCode.ROUTE_USER_CLOSED) 
     elif 'user_email' in kw and 'user_password' in kw:
         users = query_user_get_by_email(kw['user_email'])
         if len(users) == 0:
@@ -76,6 +78,8 @@ def service_user_login(**kw):
         user = users[0]
         if util_hash_encode(kw['user_password']) != user.user_password:
             raise ServiceError(ErrorCode.SERVICE_USER_PASS_WRONG)
+        if user.to_dict()["user_status"] == "closed":
+            raise RouteError(ErrorCode.ROUTE_USER_CLOSED) 
     elif 'user' in kw and 'user_password' in kw:
         user_names = query_user_get_by_name(kw['user'])
         user_emails = query_user_get_by_email(kw['user'])
@@ -85,6 +89,9 @@ def service_user_login(**kw):
             user = user_emails[0]
         elif len(user_names) != 0:
             user = user_names[0]
+        
+        if user.to_dict()["user_status"] == "closed":
+            raise RouteError(ErrorCode.ROUTE_USER_CLOSED)
         if util_hash_encode(kw['user_password']) != user.user_password:
             raise ServiceError(ErrorCode.SERVICE_USER_PASS_WRONG)
     else:

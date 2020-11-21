@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { getUserInfo } from "./FetchData";
+import { getUserInfo, deleteUser, deleteVideo } from "./FetchData";
 import { Redirect, Link } from "react-router-dom";
+import "../static/css/App.css";
 
 import {
   Form,
@@ -33,7 +34,9 @@ import {
   secondTimeConvert,
   dateConvert,
   ellipsifyStr,
+  generateThumbnail,
 } from "../util";
+import logout from "./Logout";
 
 function UserProfile({ userId }) {
   const [loading, setLoading] = useState(true);
@@ -106,6 +109,14 @@ function UserProfile({ userId }) {
         offset: 0,
       },
     },
+  };
+
+  const deleteUserHandler = () => {
+    deleteUser(userId).then(() => {
+      alert("Account deleted!");
+      logout();
+      window.location.href = "/";
+    });
   };
 
   const [fileList, updateFileList] = useState([]);
@@ -521,8 +532,9 @@ function UserProfile({ userId }) {
               placeholder="Select your user status: "
               defaultValue={userData ? userData["user_status"] : "..."}
             >
-              <Option value="public">Public</Option>
-              <Option value="private">Private</Option>
+              <Option value="public">public</Option>
+              <Option value="private">private</Option>
+              <Option value="closed">closed</Option>
             </Select>
           ) : (
             <Input
@@ -574,11 +586,26 @@ function UserProfile({ userId }) {
         </Form.Item> */}
 
         {isLocalUser ? (
-          <Form.Item {...tailFormItemLayout}>
-            <Button type="primary" htmlType="submit">
-              Update
-            </Button>
-          </Form.Item>
+          <div>
+            <Form.Item {...tailFormItemLayout}>
+              <Button type="primary" htmlType="submit">
+                Update Profiles
+              </Button>
+            </Form.Item>
+          </div>
+        ) : (
+          <div></div>
+        )}
+
+        {isLocalUser ? (
+          <Button
+            type="primary"
+            htmlType="submit"
+            className="deleteButton"
+            onClick={deleteUserHandler}
+          >
+            Delete Account
+          </Button>
         ) : (
           <div></div>
         )}
@@ -653,13 +680,28 @@ function UserProfile({ userId }) {
                         text={secondTimeConvert(item.video_duration)}
                         key="list-vertical-time"
                       />,
+                      isLocalUser ? (
+                        <Button
+                          className="deleteButton"
+                          onClick={() => {
+                            deleteVideo(item.video_id).then(() => {
+                              alert("Video deleted!");
+                              window.location.reload();
+                            });
+                          }}
+                        >
+                          Delete Video
+                        </Button>
+                      ) : (
+                        <div></div>
+                      ),
                     ]}
                     extra={
                       <Link to={"/video/" + item.video_id}>
                         <img
                           width={160}
                           alt="logo"
-                          src={item.video_thumbnail}
+                          src={generateThumbnail(item.video_thumbnail)}
                         />
                       </Link>
                     }
@@ -704,7 +746,7 @@ function UserProfile({ userId }) {
                           <Avatar
                             shape="square"
                             size={54}
-                            src={item.video_thumbnail}
+                            src={generateThumbnail(item.video_thumbnail)}
                           />
                         </Link>
                       }
@@ -739,7 +781,7 @@ function UserProfile({ userId }) {
                           <Avatar
                             shape="square"
                             size={54}
-                            src={item.video_thumbnail}
+                            src={generateThumbnail(item.video_thumbnail)}
                           />
                         </Link>
                       }
@@ -775,7 +817,7 @@ function UserProfile({ userId }) {
                           <Avatar
                             shape="square"
                             size={54}
-                            src={item.video_thumbnail}
+                            src={generateThumbnail(item.video_thumbnail)}
                           />
                         </Link>
                       }
@@ -811,7 +853,7 @@ function UserProfile({ userId }) {
                           <Avatar
                             shape="square"
                             size={54}
-                            src={item.video_thumbnail}
+                            src={generateThumbnail(item.video_thumbnail)}
                           />
                         </Link>
                       }

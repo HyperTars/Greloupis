@@ -10,7 +10,12 @@ import {
   CalendarOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { secondTimeConvert, dateConvert, ellipsifyStr } from "../util";
+import {
+  secondTimeConvert,
+  dateConvert,
+  ellipsifyStr,
+  generateThumbnail,
+} from "../util";
 
 function SearchResult() {
   const [loading, setLoading] = useState(true);
@@ -157,7 +162,11 @@ function SearchResult() {
                 ]}
                 extra={
                   <Link to={"/video/" + item.video_id}>
-                    <img width={160} alt="logo" src={item.video_thumbnail} />
+                    <img
+                      width={160}
+                      alt="logo"
+                      src={generateThumbnail(item.video_thumbnail)}
+                    />
                   </Link>
                 }
               >

@@ -10,7 +10,7 @@ function EmptyPage() {
         description={<span></span>}
       ></Empty>
       <div>
-        <h1>{"404 NOT FOUND"}</h1>
+        <h1>{"404 Error: This is not the page you are looking for."}</h1>
       </div>
     </div>
   );
