@@ -7,6 +7,7 @@ import {
   deleteUserVideoDislike,
   createUserVideoStar,
   deleteUserVideoStar,
+  updateUserVideoProcess,
 } from "./FetchData";
 import { Link } from "react-router-dom";
 import * as func from "../util";
@@ -20,6 +21,7 @@ class MainVideo extends Component {
     isStar: false,
     showMore: false,
     showLess: false,
+    videoPlayTime: 0,
   };
 
   static getDerivedStateFromProps(props, state) {
@@ -223,10 +225,38 @@ class MainVideo extends Component {
       <section id={video_id} className="main-video">
         <div className="main-video__content">
           <video
+            id="myVideo"
+            autoPlay
             controls
             src={video_raw_content}
             type="mp4/video"
             poster={video_thumbnail}
+            ref={(element) => {
+              if (
+                localStorage.getItem("user_id") &&
+                element &&
+                this.props.videoProcess.process
+              ) {
+                element.currentTime = parseInt(
+                  this.props.videoProcess.process,
+                  10
+                );
+              }
+            }}
+            onTimeUpdate={() => {
+              if (localStorage.getItem("user_id")) {
+                updateUserVideoProcess(
+                  video_id,
+                  func.getSubstr(localStorage.getItem("user_id")),
+                  {
+                    process: parseInt(
+                      document.getElementById("myVideo").currentTime,
+                      10
+                    ),
+                  }
+                );
+              }
+            }}
           ></video>
         </div>
 

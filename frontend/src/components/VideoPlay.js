@@ -10,6 +10,8 @@ import {
   getVideoDislikes,
   getVideoStars,
   updateVideoViews,
+  createUserVideoProcess,
+  getUserVideoProcess,
 } from "./FetchData";
 import { Spin } from "antd";
 
@@ -21,6 +23,7 @@ function VideoPlay({ videoId }) {
   const [videoStars, setVideoStars] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [videoProcess, setVideoProcess] = useState({});
 
   useEffect(() => {
     updateVideoViews(videoId);
@@ -37,7 +40,23 @@ function VideoPlay({ videoId }) {
         setErrorMsg(e.message);
       });
 
-    // TODO: watching history
+    // get watching history, or create a new one
+    let userId = func.getSubstr(localStorage.getItem("user_id"));
+    if (userId) {
+      getUserVideoProcess(videoId, userId)
+        .then((res) => {
+          if (res == null) return;
+          setVideoProcess(res.body);
+        })
+        .catch((e) => {
+          createUserVideoProcess(videoId, userId, {
+            process: 0,
+          }).then((res) => {
+            if (res == null) return;
+            setVideoProcess(res.body);
+          });
+        });
+    }
   }, [videoId]);
 
   useEffect(() => {
@@ -112,6 +131,7 @@ function VideoPlay({ videoId }) {
             videoLike={videoLikes}
             videoDisLike={videoDisLikes}
             videoStar={videoStars}
+            videoProcess={videoProcess}
             description={mainVideo.video_description}
             id={mainVideo.video_id}
           />
