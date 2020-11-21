@@ -65,3 +65,9 @@ export function generateAvatar() {
 
   return getSubstr(localStorage.getItem("user_thumbnail"));
 }
+
+export function generateThumbnail(thumbnail) {
+  return !thumbnail || thumbnail === ""
+    ? "https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
+    : thumbnail;
+}

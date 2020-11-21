@@ -34,6 +34,7 @@ import {
   secondTimeConvert,
   dateConvert,
   ellipsifyStr,
+  generateThumbnail,
 } from "../util";
 import logout from "./Logout";
 
@@ -685,7 +686,7 @@ function UserProfile({ userId }) {
                         <img
                           width={160}
                           alt="logo"
-                          src={item.video_thumbnail}
+                          src={generateThumbnail(item.video_thumbnail)}
                         />
                       </Link>
                     }
@@ -730,7 +731,7 @@ function UserProfile({ userId }) {
                           <Avatar
                             shape="square"
                             size={54}
-                            src={item.video_thumbnail}
+                            src={generateThumbnail(item.video_thumbnail)}
                           />
                         </Link>
                       }
@@ -765,7 +766,7 @@ function UserProfile({ userId }) {
                           <Avatar
                             shape="square"
                             size={54}
-                            src={item.video_thumbnail}
+                            src={generateThumbnail(item.video_thumbnail)}
                           />
                         </Link>
                       }
@@ -801,7 +802,7 @@ function UserProfile({ userId }) {
                           <Avatar
                             shape="square"
                             size={54}
-                            src={item.video_thumbnail}
+                            src={generateThumbnail(item.video_thumbnail)}
                           />
                         </Link>
                       }
@@ -837,7 +838,7 @@ function UserProfile({ userId }) {
                           <Avatar
                             shape="square"
                             size={54}
-                            src={item.video_thumbnail}
+                            src={generateThumbnail(item.video_thumbnail)}
                           />
                         </Link>
                       }
