@@ -83,14 +83,13 @@ class App extends Component {
                 </div>
               )}
             />
-            <Route exact path="/404" render={() => <EmptyPage />} />
+            <Route component={EmptyPage} render={() => <EmptyPage />} />
             {/* <PrivateRoute
               exact
               path="/dashboard"
               component={Dashboard}
               render={(props) => <Dashboard />}
             /> */}
-            {/* <Route path="*" render={() => <Redirect to="/404"></Redirect>} /> */}
           </Switch>
         </div>
       </Router>
