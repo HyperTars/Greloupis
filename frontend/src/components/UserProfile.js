@@ -589,7 +589,7 @@ function UserProfile({ userId }) {
           <div>
             <Form.Item {...tailFormItemLayout}>
               <Button type="primary" htmlType="submit">
-                Update Account
+                Update Profiles
               </Button>
             </Form.Item>
           </div>
