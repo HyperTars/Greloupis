@@ -1432,8 +1432,11 @@ h3 {
   background-color: #e60000;
   border-color: #e60000;
   padding: 4px 17.5px;
+  color: white;
 }
 
 .deleteButton:hover {
   background-color: #ff6666;
+  border-color: #ff6666;
+  color: white;
 }

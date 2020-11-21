@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getUserInfo, deleteUser } from "./FetchData";
+import { getUserInfo, deleteUser, deleteVideo } from "./FetchData";
 import { Redirect, Link } from "react-router-dom";
 import "../static/css/App.css";
 
@@ -111,7 +111,7 @@ function UserProfile({ userId }) {
     },
   };
 
-  const deleteHandler = () => {
+  const deleteUserHandler = () => {
     deleteUser(userId).then(() => {
       alert("Account deleted!");
       logout();
@@ -602,7 +602,7 @@ function UserProfile({ userId }) {
             type="primary"
             htmlType="submit"
             className="deleteButton"
-            onClick={deleteHandler}
+            onClick={deleteUserHandler}
           >
             Delete Account
           </Button>
@@ -680,6 +680,21 @@ function UserProfile({ userId }) {
                         text={secondTimeConvert(item.video_duration)}
                         key="list-vertical-time"
                       />,
+                      isLocalUser ? (
+                        <Button
+                          className="deleteButton"
+                          onClick={() => {
+                            deleteVideo(item.video_id).then(() => {
+                              alert("Video deleted!");
+                              window.location.reload();
+                            });
+                          }}
+                        >
+                          Delete Video
+                        </Button>
+                      ) : (
+                        <div></div>
+                      ),
                     ]}
                     extra={
                       <Link to={"/video/" + item.video_id}>
