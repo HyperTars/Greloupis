@@ -22,6 +22,8 @@ class ErrorCode(Enum):
     ROUTE_DELETED_USER = {
         2005: "Route Error: This user acoount has been deleted"}
     ROUTE_DELETED_VIDEO = {2006: "Route Error: This video has been deleted"}
+    ROUTE_USER_CLOSED = {2007: "Route Error: This account has been closed"}
+
     # Service 3 Series
     SERVICE_PARAM_SLICE_NOT_SUPPORT = {
         3001: "Service Error: Current Param Does Not Support Slice"}

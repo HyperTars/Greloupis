@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { getUserInfo } from "./FetchData";
+import { getUserInfo, deleteUser } from "./FetchData";
 import { Redirect, Link } from "react-router-dom";
+import "../static/css/App.css";
 
 import {
   Form,
@@ -34,6 +35,7 @@ import {
   dateConvert,
   ellipsifyStr,
 } from "../util";
+import logout from "./Logout";
 
 function UserProfile({ userId }) {
   const [loading, setLoading] = useState(true);
@@ -106,6 +108,14 @@ function UserProfile({ userId }) {
         offset: 0,
       },
     },
+  };
+
+  const deleteHandler = () => {
+    deleteUser(userId).then(() => {
+      alert("Account deleted!");
+      logout();
+      window.location.href = "/";
+    });
   };
 
   const [fileList, updateFileList] = useState([]);
@@ -521,8 +531,9 @@ function UserProfile({ userId }) {
               placeholder="Select your user status: "
               defaultValue={userData ? userData["user_status"] : "..."}
             >
-              <Option value="public">Public</Option>
-              <Option value="private">Private</Option>
+              <Option value="public">public</Option>
+              <Option value="private">private</Option>
+              <Option value="closed">closed</Option>
             </Select>
           ) : (
             <Input
@@ -574,11 +585,26 @@ function UserProfile({ userId }) {
         </Form.Item> */}
 
         {isLocalUser ? (
-          <Form.Item {...tailFormItemLayout}>
-            <Button type="primary" htmlType="submit">
-              Update
-            </Button>
-          </Form.Item>
+          <div>
+            <Form.Item {...tailFormItemLayout}>
+              <Button type="primary" htmlType="submit">
+                Update Account
+              </Button>
+            </Form.Item>
+          </div>
+        ) : (
+          <div></div>
+        )}
+
+        {isLocalUser ? (
+          <Button
+            type="primary"
+            htmlType="submit"
+            className="deleteButton"
+            onClick={deleteHandler}
+          >
+            Delete Account
+          </Button>
         ) : (
           <div></div>
         )}
