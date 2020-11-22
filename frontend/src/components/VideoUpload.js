@@ -1,10 +1,50 @@
 import React, { Component } from "react";
 import Header from "./Header";
+import { createVideo } from "../components/FetchData";
+
 
 export default class VideoUpload extends Component {
-  state = {
-    file: "",
-  };
+  constructor(props) {
+    super(props);
+    //this.handleChange = this.handleChange.bind(this);
+    //this.handleSubmit = this.handleSubmit.bind(this);
+
+    this.state = {
+      video_id: "",
+      file: "",
+      message: ""
+    };
+  }
+
+  getVideoID() {
+    vid = createVideo().then(
+      (response) => {
+        console.log(response);
+        if (response.video_id) {
+          return JSON.stringify(response.video_id)
+        }
+      },
+      (error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+
+        this.setState({
+          message: resMessage,
+        });
+
+        console.log(this.state);
+        alert("Failed to create video. " + resMessage);
+      }
+    )
+    this.setState({
+      video_id = vid,
+    });
+    localStorage.setItem("video_id", vid);
+  }
 
   renderUploadFile() {
     return (
@@ -15,7 +55,7 @@ export default class VideoUpload extends Component {
   }
 
   render() {
-    const { file } = this.state;
+    const { file } = this.state.file;
     return (
       <div>
         <Header />
