@@ -779,15 +779,16 @@ class TestServiceVideoOp(unittest.TestCase):
         cls.temp_video_raw_content = \
             "https://s3.amazon.com/test_video_content.avi"
 
-        vid = query_video_create(cls.data['const_user'][0]['_id']['$oid'])
-        query_video_update(
-            vid,
-            video_title=cls.temp_video_title,
-            video_raw_content=cls.temp_video_raw_content)
+        videos = query_video_get_by_title(cls.temp_video_title)
+        if len(videos) == 0:
+            vid = query_video_create(cls.data['const_user'][0]['_id']['$oid'])
+            query_video_update(
+                vid,
+                video_title=cls.temp_video_title,
+                video_raw_content=cls.temp_video_raw_content)
 
-        temp_video_id = \
-            query_video_get_by_title(cls.temp_video_title)[0].to_dict()[
-                'video_id']
+        temp_video_id = query_video_get_by_title(
+            cls.temp_video_title)[0].to_dict()['video_id']
 
         # create a video op for the video
         query_video_op_create(user_id=cls.data['const_user'][0]['_id']['$oid'],
