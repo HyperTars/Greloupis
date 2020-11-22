@@ -125,7 +125,6 @@ We will use external data from some mainstream online video platforms, including
 
 ## Future Works
 - We might allow users to upload their own videos.
-- We might allow users to delete their own videos.
 - We might allow users to post live comment (danmaku).
 - We might allow users to block certain users.
 - *To Be Continue ...*

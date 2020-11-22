@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import Header from "./Header";
-import { createVideo } from "../components/FetchData";
-
+import { createVideo } from "./FetchData";
 
 export default class VideoUpload extends Component {
   constructor(props) {
@@ -12,7 +11,7 @@ export default class VideoUpload extends Component {
     this.state = {
       video_id: "",
       file: "",
-      message: ""
+      message: "",
     };
   }
 
@@ -21,7 +20,7 @@ export default class VideoUpload extends Component {
       (response) => {
         console.log(response);
         if (response.video_id) {
-          let vid =  JSON.stringify(response.video_id);
+          let vid = JSON.stringify(response.video_id);
           this.setState({
             video_id: vid,
           });
@@ -43,7 +42,7 @@ export default class VideoUpload extends Component {
         console.log(this.state);
         alert("Failed to create video. " + resMessage);
       }
-    )
+    );
   }
 
   renderUploadFile() {
@@ -81,34 +80,6 @@ class UploadInfo extends Component {
           </div>
           <div className="upload-info__basicInfo">
             <h4>Video Upload</h4>
-            <label className="title">
-              Title:
-              <input
-                className="title-input"
-                type="text"
-                name="video-title"
-                placeholder="Add a title to your video"
-              />
-            </label>
-            <label className="description">
-              Description:
-              <textarea
-                maxLength="100"
-                className="description-input"
-                type="text"
-                name="video-description"
-                placeholder="Add a description to your video"
-              />
-            </label>
-            <label className="tags">
-              Tags:
-              <input
-                className="tags-input"
-                type="text"
-                name="video-tags"
-                placeholder="(e.g. DevOps, Albert Einstein, flying pig, ...)"
-              />
-            </label>
             <label className="files">
               Upload video file:
               <input className="files-input" type="file" name="video-files" />

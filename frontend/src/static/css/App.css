@@ -1347,6 +1347,10 @@
     margin: 30px;
     text-align: center;
   }
+
+  .videoUpdate {
+    margin: 50px;
+  }
   
   .searchLoading {
     margin: 100px;
@@ -1438,5 +1442,18 @@ h3 {
 .deleteButton:hover {
   background-color: #ff6666;
   border-color: #ff6666;
+  color: white;
+}
+
+.navigateButton {
+  background-color: #1890ff;
+  border-color: #1890ff;
+  padding: 4px 15px;
+  color: white;
+}
+
+.navigateButton:hover {
+  background-color: #40a9ff;
+  border-color: #40a9ff;
   color: white;
 }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getUserInfo, deleteUser, deleteVideo } from "./FetchData";
+import { getUserInfo, deleteUser } from "./FetchData";
 import { Redirect, Link } from "react-router-dom";
 import "../static/css/App.css";
 
@@ -524,7 +524,14 @@ function UserProfile({ userId }) {
 
         <Form.Item
           name="status"
-          label="Status"
+          label={
+            <span>
+              Status&nbsp;
+              <Tooltip title="Other users can only see your avatar, name and public videos, if the status is set as 'private'">
+                <QuestionCircleOutlined />
+              </Tooltip>
+            </span>
+          }
           rules={[{ message: "Please select your status!" }]}
         >
           {isLocalUser ? (
@@ -534,7 +541,6 @@ function UserProfile({ userId }) {
             >
               <Option value="public">public</Option>
               <Option value="private">private</Option>
-              <Option value="closed">closed</Option>
             </Select>
           ) : (
             <Input
@@ -681,17 +687,11 @@ function UserProfile({ userId }) {
                         key="list-vertical-time"
                       />,
                       isLocalUser ? (
-                        <Button
-                          className="deleteButton"
-                          onClick={() => {
-                            deleteVideo(item.video_id).then(() => {
-                              alert("Video deleted!");
-                              window.location.reload();
-                            });
-                          }}
-                        >
-                          Delete Video
-                        </Button>
+                        <Link to={`/video/update/${item.video_id}`}>
+                          <Button className="navigateButton">
+                            Manage Video
+                          </Button>
+                        </Link>
                       ) : (
                         <div></div>
                       ),

@@ -10,6 +10,7 @@ import Register from "./Register";
 import EmptyPage from "./EmptyPage";
 import UserProfile from "./UserProfile";
 import VideoUpload from "./VideoUpload";
+import VideoUpdate from "./VideoUpdate";
 import VideoPlay from "./VideoPlay";
 import PrivateRoute from "./PrivateRoute";
 
@@ -62,6 +63,16 @@ class App extends Component {
               path="/video/upload"
               component={VideoUpload}
               render={(props) => <VideoUpload />}
+            />
+            <Route
+              exact
+              path="/video/update/:videoId"
+              render={(props) => (
+                <div>
+                  <Header />
+                  <VideoUpdate videoId={props.match.params.videoId} />
+                </div>
+              )}
             />
             <Route
               exact
