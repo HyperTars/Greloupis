@@ -1,6 +1,6 @@
 from db.query_video import query_video_update, query_video_delete, \
-    query_video_create, query_video_get_by_title, \
-    query_video_get_by_user_id, query_video_get_by_video_id
+    query_video_create, query_video_get_by_user_id, \
+    query_video_get_by_video_id
 from db.query_video_op import query_video_op_get_by_video_id, \
     query_video_op_delete
 from db.query_user import query_user_get_by_id

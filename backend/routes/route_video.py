@@ -128,7 +128,7 @@ class Video(Resource):
             return util_serializer_api_response(
                     200, body={'video_id': video_id},
                     msg="Successfully uploaded video")
-                
+
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 

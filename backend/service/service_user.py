@@ -70,7 +70,7 @@ def service_user_login(**kw):
         if util_hash_encode(kw['user_password']) != user.user_password:
             raise ServiceError(ErrorCode.SERVICE_USER_PASS_WRONG)
         if user.to_dict()["user_status"] == "closed":
-            raise RouteError(ErrorCode.ROUTE_USER_CLOSED) 
+            raise RouteError(ErrorCode.ROUTE_USER_CLOSED)
     elif 'user_email' in kw and 'user_password' in kw:
         users = query_user_get_by_email(kw['user_email'])
         if len(users) == 0:
@@ -79,7 +79,7 @@ def service_user_login(**kw):
         if util_hash_encode(kw['user_password']) != user.user_password:
             raise ServiceError(ErrorCode.SERVICE_USER_PASS_WRONG)
         if user.to_dict()["user_status"] == "closed":
-            raise RouteError(ErrorCode.ROUTE_USER_CLOSED) 
+            raise RouteError(ErrorCode.ROUTE_USER_CLOSED)
     elif 'user' in kw and 'user_password' in kw:
         user_names = query_user_get_by_name(kw['user'])
         user_emails = query_user_get_by_email(kw['user'])
@@ -89,7 +89,7 @@ def service_user_login(**kw):
             user = user_emails[0]
         elif len(user_names) != 0:
             user = user_names[0]
-        
+
         if user.to_dict()["user_status"] == "closed":
             raise RouteError(ErrorCode.ROUTE_USER_CLOSED)
         if util_hash_encode(kw['user_password']) != user.user_password:

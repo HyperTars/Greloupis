@@ -2,7 +2,6 @@ from models.model_video import Video, VideoURI
 from db.query_user import query_user_get_by_id
 from models.model_errors import MongoError, ErrorCode
 from utils.util_time import get_time_now_utc
-import bson
 import re
 
 VALID_VIDEO_STATUS = ['public', 'private', 'processing', 'deleted']
@@ -28,10 +27,10 @@ def query_video_create(user_id: str):
 
     # Construct Video Model
     video = Video(user_id=user_id, video_title="", video_raw_content="",
-                  video_raw_status="pending", video_raw_size=0, video_duration=0,
+                  video_raw_status="pending", video_status="processing",
+                  video_raw_size=0, video_duration=0,
                   video_channel="", video_tag=[], video_category=[],
-                  video_description="", video_language="", 
-                  video_status="processing",
+                  video_description="", video_language="",
                   video_view=0, video_comment=0, video_like=0, video_dislike=0,
                   video_star=0, video_share=0, video_thumbnail="",
                   video_upload_date=get_time_now_utc(), video_uri=VideoURI())
@@ -210,7 +209,8 @@ def query_video_update(video_id: str, **kw):
         Video.objects(id=video_id).update(
             video_raw_content=kw['video_raw_content'])
     if 'video_raw_status' in kw:
-        Video.objects(id=video_id).update(video_raw_status=kw['video_raw_status'])
+        Video.objects(id=video_id).update(
+            video_raw_status=kw['video_raw_status'])
     if 'video_raw_size' in kw:
         Video.objects(id=video_id).update(video_raw_size=kw['video_raw_size'])
     if 'video_duration' in kw:
@@ -235,7 +235,8 @@ def query_video_update(video_id: str, **kw):
             raise MongoError(ErrorCode.MONGODB_VIDEO_INVALID_STATUS)
         Video.objects(id=video_id).update(video_status=kw['video_status'])
     if 'video_thumbnail' in kw:
-        Video.objects(id=video_id).update(video_thumbnail=kw['video_thumbnail'])
+        Video.objects(id=video_id).update(
+            video_thumbnail=kw['video_thumbnail'])
     if 'video_uri_low' in kw:
         Video.objects(id=video_id).update(
             video_uri__video_uri_low=kw['video_uri_low'])

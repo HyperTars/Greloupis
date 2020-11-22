@@ -25,6 +25,7 @@ def util_tests_clean_database():
     Video.objects(user_id=data['const_user'][1]['_id']['$oid']).delete()
     Video.objects(user_id=data['const_user'][2]['_id']['$oid']).delete()
     Video.objects(video_title="new title").delete()
+    VideoOp.objects(user_id=data['const_user'][1]['_id']['$oid']).delete()
     vop = data['const_video_op'][0]
     VideoOp(**vop).save()
 

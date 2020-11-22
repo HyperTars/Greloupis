@@ -352,7 +352,7 @@ class TestRouteVideo(unittest.TestCase):
             response_vid = json.loads(response.data)["body"]["video_id"]
 
             self.assertEqual(len(response_vid), 24)
-        
+
         query_video_update(
             response_vid,
             video_title=data['video_title'],
