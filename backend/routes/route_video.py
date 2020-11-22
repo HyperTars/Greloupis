@@ -115,26 +115,20 @@ class Video(Resource):
         """
 
         try:
-            if request.form != {}:
-                kw = dict(request.form)
-            else:
-                raw_data = request.data.decode("utf-8")
-                kw = ast.literal_eval(raw_data)
-
             # check authority
             if get_jwt_identity is None:
                 raise RouteError(ErrorCode.ROUTE_TOKEN_REQUIRED)
 
-            kw['user_id'] = get_jwt_identity()
-            upload_result = service_video_upload(**kw)
-            if upload_result is not None and upload_result != {}:
-                return_body = util_serializer_mongo_results_to_array(
-                    upload_result, format="json")
+            video_id = service_video_upload(get_jwt_identity())
+
+            if type(video_id) != str or len(video_id) != 24:
                 return util_serializer_api_response(
-                    200, body=return_body, msg="Successfully uploaded video")
-            else:
-                return util_serializer_api_response(
-                    500, msg="Failed to upload video")
+                    500, msg="Failed to create temp video instance")
+
+            return util_serializer_api_response(
+                    200, body={'video_id': video_id},
+                    msg="Successfully uploaded video")
+                
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
