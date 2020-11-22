@@ -791,9 +791,15 @@ class TestServiceVideoOp(unittest.TestCase):
             cls.temp_video_title)[0].to_dict()['video_id']
 
         # create a video op for the video
-        query_video_op_create(user_id=cls.data['const_user'][0]['_id']['$oid'],
-                              video_id=temp_video_id,
-                              init_time=get_time_now_utc())
+        ops = query_video_op_get_by_user_video(
+            user_id=cls.data['const_user'][0]['_id']['$oid'],
+            video_id=temp_video_id)
+
+        if len(ops) == 0:
+            query_video_op_create(
+                user_id=cls.data['const_user'][0]['_id']['$oid'],
+                video_id=temp_video_id,
+                init_time=get_time_now_utc())
 
     def test_a_service_video_op_add_view(self):
         temp_video_id = \
