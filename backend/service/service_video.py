@@ -34,23 +34,14 @@ def service_video_auth_modify(token, video_id):
     return False
 
 
-def service_video_upload(**kw):
+def service_video_upload(user_id: str):
 
-    kw['service'] = 'video'
-    kw = util_pattern_format_param(**kw)
-
-    # keyword check and formatting
-    if 'user_id' not in kw or 'video_title' not in kw \
-            or 'video_raw_content' not in kw:
-        raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
+    if not is_valid_id(user_id):
+        raise ServiceError(ErrorCode.SERVICE_INVALID_ID_OBJ)
 
     # perform db operations and get result
-    query_video_create(kw['user_id'], kw['video_title'],
-                       kw['video_raw_content'])
-    uploaded_result = query_video_get_by_title(kw['video_title'])
-    if len(uploaded_result) == 0:
-        raise ServiceError(ErrorCode.SERVICE_VIDEO_NOT_FOUND)
-    return uploaded_result
+    vid = query_video_create(user_id)
+    return vid
 
 
 def service_video_info(**kw):
@@ -105,58 +96,7 @@ def service_video_update(**kw):
     if not is_valid_id(kw["video_id"]):
         raise ServiceError(ErrorCode.SERVICE_INVALID_ID_OBJ)
 
-    # perform db operations and get result
-    video_get_result = query_video_get_by_video_id(kw["video_id"])
-    if len(video_get_result) == 0:
-        raise ServiceError(ErrorCode.SERVICE_VIDEO_NOT_FOUND)
-    original = util_serializer_mongo_results_to_array(video_get_result)[0]
-
-    # override original data or not
-    video_title = kw["video_title"] if 'video_title' in kw \
-        else original["video_title"]
-    video_raw_content = kw["video_raw_content"] if 'video_raw_content' in kw \
-        else original["video_raw_content"]
-    video_raw_status = kw["video_raw_status"] if 'video_raw_status' in kw \
-        else original["video_raw_status"]
-    video_raw_size = kw["video_raw_size"] if 'video_raw_size' in kw \
-        else original["video_raw_size"]
-    video_duration = int(kw["video_duration"]) if 'video_duration' in kw \
-        else int(original["video_duration"])
-    video_channel = kw["video_channel"] if 'video_channel' in kw \
-        else original["video_channel"]
-    video_tag = kw["video_tag"] if 'video_tag' in kw else original["video_tag"]
-    video_category = kw["video_category"] if 'video_category' in kw \
-        else original["video_category"]
-    video_description = kw["video_description"] if 'video_description' in kw \
-        else original["video_description"]
-    video_language = kw["video_language"] if 'video_language' in kw \
-        else original["video_language"]
-    video_status = kw["video_status"] if 'video_status' in kw \
-        else original["video_status"]
-    video_thumbnail = kw["video_thumbnail"] if 'video_thumbnail' in kw \
-        else original["video_thumbnail"]
-    video_uri_low = kw["video_uri_low"] if 'video_uri_low' in kw \
-        else original["video_uri"]["video_uri_low"]
-    video_uri_mid = kw["video_uri_mid"] if 'video_uri_mid' in kw \
-        else original["video_uri"]["video_uri_mid"]
-    video_uri_high = kw["video_uri_high"] if 'video_uri_high' in kw \
-        else original["video_uri"]["video_uri_high"]
-
-    query_video_update(video_id=kw["video_id"], video_title=video_title,
-                       video_raw_content=video_raw_content,
-                       video_raw_status=video_raw_status,
-                       video_raw_size=video_raw_size,
-                       video_channel=video_channel,
-                       video_duration=video_duration,
-                       video_tag=video_tag,
-                       video_category=video_category,
-                       video_description=video_description,
-                       video_language=video_language,
-                       video_status=video_status,
-                       video_thumbnail=video_thumbnail,
-                       video_uri_low=video_uri_low,
-                       video_uri_mid=video_uri_mid,
-                       video_uri_high=video_uri_high)
+    query_video_update(**kw)
 
     return query_video_get_by_video_id(kw["video_id"])
 

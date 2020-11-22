@@ -28,7 +28,8 @@ from utils.util_tests import util_tests_python_version, \
     util_tests_load_data, util_tests_clean_database
 from db.query_user import query_user_get_by_name
 from db.query_video import query_video_get_by_title, \
-    query_video_get_by_video_id
+    query_video_get_by_video_id, query_video_create, \
+    query_video_update
 from db.query_video_op import query_video_op_get_by_video_id
 from db.mongo import init_db
 from models.model_errors import ErrorCode, MongoError, ServiceError
@@ -591,30 +592,18 @@ class TestServiceVideo(unittest.TestCase):
 
     def test_a_service_video_upload(self):
         test_user_id = self.data['const_user'][1]['_id']['$oid']
-
-        self.assertEqual(
-            service_video_upload(user_id=test_user_id,
-                                 video_title=self.temp_video_title,
-                                 video_raw_content=self.temp_video_raw_content)
-            [0]['video_title'],
-            self.temp_video_title)
-
-        # Raise Error: ErrorCode.SERVICE_MISSING_PARAM
-        with self.assertRaises(ServiceError) as e:
-            oid = self.data['const_user'][1]['_id']['$oid']
-            service_video_upload(user_id=oid,
-                                 video_raw_content=self.temp_video_raw_content)
-
-        self.assertEqual(e.exception.error_code,
-                         ErrorCode.SERVICE_MISSING_PARAM)
+        vid = service_video_upload(test_user_id)
+        query_video_update(
+            vid,
+            video_title=self.temp_video_title,
+            video_raw_content=self.temp_video_raw_content)
+        self.assertEqual(type(vid), str)
+        self.assertEqual(len(vid), 24)
 
         # Simply create a video op for testing
-        temp_video_id = \
-            query_video_get_by_title(self.temp_video_title)[0].to_dict()[
-                'video_id']
         query_video_op_create(
             user_id=self.data['const_user'][1]['_id']['$oid'],
-            video_id=temp_video_id,
+            video_id=vid,
             init_time=get_time_now_utc())
 
     def test_b_service_video_info(self):
@@ -643,9 +632,8 @@ class TestServiceVideo(unittest.TestCase):
                          ErrorCode.SERVICE_INVALID_ID_OBJ)
 
     def test_c_service_video_update(self):
-        temp_video_id = \
-            query_video_get_by_title(self.temp_video_title)[0].to_dict()[
-                'video_id']
+        temp_video_id = query_video_get_by_title(
+            self.temp_video_title)[0].to_dict()['video_id']
 
         # Raise Error: ErrorCode.SERVICE_MISSING_PARAM
         with self.assertRaises(ServiceError) as e:
@@ -791,9 +779,11 @@ class TestServiceVideoOp(unittest.TestCase):
         cls.temp_video_raw_content = \
             "https://s3.amazon.com/test_video_content.avi"
 
-        service_video_upload(user_id=cls.data['const_user'][0]['_id']['$oid'],
-                             video_title=cls.temp_video_title,
-                             video_raw_content=cls.temp_video_raw_content)
+        vid = query_video_create(cls.data['const_user'][0]['_id']['$oid'])
+        query_video_update(
+            vid,
+            video_title=cls.temp_video_title,
+            video_raw_content=cls.temp_video_raw_content)
 
         temp_video_id = \
             query_video_get_by_title(cls.temp_video_title)[0].to_dict()[
