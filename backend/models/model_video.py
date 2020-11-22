@@ -15,18 +15,16 @@ class VideoURI(db.EmbeddedDocument):
 
 
 class Video(db.Document):
-    _id = db.StringField()
-    user_id = db.StringField(max_length=100, required=True)
-    video_title = db.StringField(max_length=50, required=True, unique=True)
+    user_id = db.StringField(max_length=100, required=True, default="")
     """
     video_raw_content description:
     user will get a raw video URI after uploading raw video to cache
     (temp storage space where videos waiting for being transcoded)
     transcoder will start transcoding, but user can create a video now
     """
-    video_raw_content = db.StringField(required=True)
-    video_raw_status = db.StringField(max_length=20, default="pending",
-                                      required=True)
+    video_title = db.StringField(max_length=50, default="")
+    video_raw_content = db.StringField(default="")
+    video_raw_status = db.StringField(max_length=20, default="pending")
     video_raw_size = db.FloatField(default=0)  # in MB
     video_duration = db.IntField(default=0)  # in second
     video_channel = db.StringField(default="self-made")
@@ -34,16 +32,15 @@ class Video(db.Document):
     video_category = db.ListField(db.StringField())
     video_description = db.StringField(max_length=1000, default="")
     video_language = db.StringField(max_length=20)
-    video_status = db.StringField(max_length=20, default="public",
-                                  required=True)
+    video_status = db.StringField(max_length=20, default="public")
     video_view = db.LongField(default=0)
     video_comment = db.LongField(default=0)
     video_like = db.LongField(default=0)
     video_dislike = db.LongField(default=0)
     video_star = db.LongField(default=0)
     video_share = db.LongField(default=0)
-    video_thumbnail = db.StringField(max_length=200, required=True, default="")
-    video_upload_date = db.DateTimeField(required=True)
+    video_thumbnail = db.StringField(max_length=200, default="")
+    video_upload_date = db.DateTimeField()
     video_uri = db.EmbeddedDocumentField('VideoURI')
 
     def to_dict(self):
@@ -62,7 +59,7 @@ class Video(db.Document):
         video_uri_dict['video_uri_mid'] = self.video_uri.video_uri_mid or ""
         video_uri_dict['video_uri_low'] = self.video_uri.video_uri_low or ""
 
-        video_dict['video_id'] = str(self._id)
+        video_dict['video_id'] = str(self.id)
         video_dict['user_id'] = str(self.user_id)
         video_dict['video_title'] = self.video_title or ""
         video_dict['video_raw_content'] = self.video_raw_content or ""

@@ -470,7 +470,7 @@ class TestQueryUser(unittest.TestCase):
         # Search successfully
         search_user_id = self.data['const_user'][0]['_id']['$oid']
         self.assertEqual(
-            str(query_user_search_by_contains(user_id=search_user_id)[0]._id),
+            str(query_user_search_by_contains(user_id=search_user_id)[0].id),
             search_user_id)
 
         search_user_name = self.data['const_user'][0]['user_name']
@@ -766,33 +766,12 @@ class TestQueryVideo(unittest.TestCase):
         util_tests_clean_database()
 
     def test_a_query_video_create(self):
-        self.assertEqual(
-            query_video_create(user_id=self.data['temp_video'][0]['user_id'],
-                               video_title=self.data['temp_video'][0][
-                                   'video_title'],
-                               video_raw_content=self.data['temp_video'][0][
-                                   'video_raw_content']).video_title,
-            self.data['temp_video'][0]['video_title'])
-
-        # Raise Error: ErrorCode.MONGODB_USER_NOT_FOUND
-        with self.assertRaises(MongoError) as e:
-            query_video_create(user_id="123412341234123412341234",
-                               video_title=self.data['temp_video'][0][
-                                   'video_title'],
-                               video_raw_content=self.data['temp_video'][0][
-                                   'video_raw_content'])
-        self.assertEqual(e.exception.error_code,
-                         ErrorCode.MONGODB_USER_NOT_FOUND)
-
-        # Raise Error: ErrorCode.MONGODB_VIDEO_TITLE_TAKEN
-        with self.assertRaises(MongoError) as e:
-            query_video_create(user_id=self.data['temp_video'][0]['user_id'],
-                               video_title=self.data['temp_video'][0][
-                                   'video_title'],
-                               video_raw_content=self.data['temp_video'][0][
-                                   'video_raw_content'])
-        self.assertEqual(e.exception.error_code,
-                         ErrorCode.MONGODB_VIDEO_TITLE_TAKEN)
+        temp_data = self.data['temp_video'][0]
+        vid = query_video_create(temp_data['user_id'])
+        title = temp_data['video_title']
+        query_video_update(vid, video_title=title)
+        self.assertEqual(type(vid), str)
+        self.assertEqual(len(vid), 24)
 
     def test_b_query_video_get_by_video_id(self):
         result = query_video_get_by_video_id(

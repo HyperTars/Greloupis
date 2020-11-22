@@ -24,6 +24,7 @@ def util_tests_clean_database():
 
     Video.objects(user_id=data['const_user'][1]['_id']['$oid']).delete()
     Video.objects(user_id=data['const_user'][2]['_id']['$oid']).delete()
+    Video.objects(video_title="new title").delete()
     vop = data['const_video_op'][0]
     VideoOp(**vop).save()
 
@@ -65,3 +66,13 @@ def util_tests_python_version():
 
 if __name__ == '__main__':
     print(util_tests_load_data())
+
+
+'''
+from flask import Flask
+from flask_mongoengine import MongoEngine
+from settings import *
+app = Flask(__name__)
+app.config.from_object(config['test'])
+db = MongoEngine(app)
+'''

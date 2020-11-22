@@ -1,7 +1,6 @@
 from models.model_user import UserDetail, UserLogin, User
 from models.model_errors import ErrorCode, MongoError
 from utils.util_time import get_time_now_utc
-import bson
 import datetime
 import re
 
@@ -81,7 +80,7 @@ def query_user_get_by_id(user_id: str):
     if type(user_id) != str:
         raise MongoError(ErrorCode.MONGODB_STR_EXPECTED)
 
-    return User.objects(_id=bson.ObjectId(user_id))
+    return User.objects(id=user_id)
 
 
 ##########
@@ -102,7 +101,7 @@ def query_user_update_status(user_id: str, user_status: str):
     if user_status not in VALID_USER_STATUS:
         raise MongoError(ErrorCode.MONGODB_USER_INVALID_STATUS)
 
-    return User.objects(_id=bson.ObjectId(user_id)).update(
+    return User.objects(id=user_id).update(
         user_status=user_status)
 
 
@@ -128,9 +127,9 @@ def query_user_add_follow(follower_id: str, following_id: str):
             following[0].user_follower:
         raise MongoError(ErrorCode.MONGODB_FOLLOW_REL_EXISTS)
 
-    User.objects(_id=bson.ObjectId(follower_id)).update(
+    User.objects(id=follower_id).update(
         add_to_set__user_following=following_id)
-    User.objects(_id=bson.ObjectId(following_id)).update(
+    User.objects(id=following_id).update(
         add_to_set__user_follower=follower_id)
 
     return 1
@@ -154,9 +153,9 @@ def query_user_delete_follow(follower_id: str, following_id: str):
     if len(following) == 0:
         raise MongoError(ErrorCode.MONGODB_FOLLOWED_NOT_FOUND)
 
-    User.objects(_id=bson.ObjectId(follower_id)).update(
+    User.objects(id=follower_id).update(
         pull__user_following=following_id)
-    User.objects(_id=bson.ObjectId(following_id)).update(
+    User.objects(id=following_id).update(
         pull__user_follower=follower_id)
 
     return 1
@@ -182,7 +181,7 @@ def query_user_update_name(user_id: str, user_name: str):
     if len(query_user_get_by_name(user_name)) > 0:
         raise MongoError(ErrorCode.MONGODB_USER_NAME_TAKEN)
 
-    return User.objects(_id=bson.ObjectId(user_id)).update(user_name=user_name)
+    return User.objects(id=user_id).update(user_name=user_name)
 
 
 def query_user_update_password(user_id: str, user_password: str):
@@ -202,7 +201,7 @@ def query_user_update_password(user_id: str, user_password: str):
     if user_password == old_password:
         raise MongoError(ErrorCode.MONGODB_UPDATE_SAME_PASS)
 
-    return User.objects(_id=bson.ObjectId(user_id)).update(
+    return User.objects(id=user_id).update(
         user_password=user_password)
 
 
@@ -219,7 +218,7 @@ def query_user_update_thumbnail(user_id: str, user_thumbnail: str):
     if len(users) == 0:
         raise MongoError(ErrorCode.MONGODB_USER_NOT_FOUND)
 
-    User.objects(_id=bson.ObjectId(user_id)).update(
+    User.objects(id=user_id).update(
         user_thumbnail=user_thumbnail)
 
 
@@ -250,34 +249,34 @@ def query_user_update_details(**kw):
     if len(users) == 0:
         raise MongoError(ErrorCode.MONGODB_USER_NOT_FOUND)
 
-    _id = bson.ObjectId(kw['user_id'])
+    id = kw['user_id']
 
     if 'user_first_name' in kw:
-        User.objects(_id=_id).update(
+        User.objects(id=id).update(
             set__user_detail__user_first_name=kw['user_first_name'])
     if 'user_last_name' in kw:
-        User.objects(_id=_id).update(
+        User.objects(id=id).update(
             set__user_detail__user_last_name=kw['user_last_name'])
     if 'user_phone' in kw:
-        User.objects(_id=_id).update(
+        User.objects(id=id).update(
             set__user_detail__user_phone=kw['user_phone'])
     if 'user_street1' in kw:
-        User.objects(_id=_id).update(
+        User.objects(id=id).update(
             set__user_detail__user_street1=kw['user_street1'])
     if 'user_street2' in kw:
-        User.objects(_id=_id).update(
+        User.objects(id=id).update(
             set__user_detail__user_street2=kw['user_street2'])
     if 'user_city' in kw:
-        User.objects(_id=_id).update(
+        User.objects(id=id).update(
             set__user_detail__user_city=kw['user_city'])
     if 'user_state' in kw:
-        User.objects(_id=_id).update(
+        User.objects(id=id).update(
             set__user_detail__user_state=kw['user_state'])
     if 'user_country' in kw:
-        User.objects(_id=_id).update(
+        User.objects(id=id).update(
             set__user_detail__user_country=kw['user_country'])
     if 'user_zip' in kw:
-        User.objects(_id=_id).update(set__user_detail__user_zip=kw['user_zip'])
+        User.objects(id=id).update(set__user_detail__user_zip=kw['user_zip'])
 
     return 1
 
@@ -307,13 +306,13 @@ def query_user_add_login(user_id: str, ip="0.0.0.0", time=get_time_now_utc()):
             user_login_ip=oldest.user_login_ip,
             user_login_time=oldest.user_login_time)
         print("to delete: " + clean.user_login_time)
-        print(User.objects(_id=bson.ObjectId(user_id)).update_one(
+        print(User.objects(id=user_id).update_one(
             pull__user_login__user_login_time=clean.user_login_time))
     if time == latest:
-        User.objects(_id=bson.ObjectId(user_id)).update(
+        User.objects(id=user_id).update(
             pull__user_login__user_login_time=latest)
     new_login = {'user_login_ip': ip, 'user_login_time': time}
-    User.objects(_id=bson.ObjectId(user_id)).update(
+    User.objects(id=user_id).update(
         add_to_set__user_login=[new_login])
     return 1
 
@@ -334,7 +333,7 @@ def query_user_delete_by_id(user_id: str, silent=False):
     if len(users) == 0 and silent is False:
         raise MongoError(ErrorCode.MONGODB_USER_NOT_FOUND)
 
-    return User.objects(_id=bson.ObjectId(user_id)).delete()
+    return User.objects(id=user_id).delete()
 
 
 def query_user_delete_by_name(user_name: str, silent=False):
