@@ -17,11 +17,15 @@ export default class VideoUpload extends Component {
   }
 
   getVideoID() {
-    vid = createVideo().then(
+    createVideo().then(
       (response) => {
         console.log(response);
         if (response.video_id) {
-          return JSON.stringify(response.video_id)
+          let vid =  JSON.stringify(response.video_id);
+          this.setState({
+            video_id: vid,
+          });
+          localStorage.setItem("video_id", vid);
         }
       },
       (error) => {
@@ -40,10 +44,6 @@ export default class VideoUpload extends Component {
         alert("Failed to create video. " + resMessage);
       }
     )
-    this.setState({
-      video_id = vid,
-    });
-    localStorage.setItem("video_id", vid);
   }
 
   renderUploadFile() {
