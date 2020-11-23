@@ -188,10 +188,6 @@ class VideoVideoId(Resource):
                 raise RouteError(ErrorCode.ROUTE_TOKEN_NOT_PERMITTED)
 
             kw["video_id"] = video_id
-            if "video_tag" in kw.keys():
-                kw["video_tag"] = request.form.getlist("video_tag")
-            if "video_category" in kw.keys():
-                kw["video_category"] = request.form.getlist("video_category")
 
             update_result = service_video_update(**kw)
             if len(update_result) == 1:

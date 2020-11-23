@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getVideoInfo, deleteVideo } from "./FetchData";
+import { getVideoInfo, updateVideoInfo, deleteVideo } from "./FetchData";
 import { Redirect } from "react-router-dom";
 import "../static/css/App.css";
 
@@ -19,6 +19,9 @@ import {
 import { UploadOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 
 import { getSubstr } from "../util";
+
+let AWS = require("aws-sdk");
+// let uuid = require("node-uuid");
 
 function VideoUpdate({ videoId }) {
   const [loading, setLoading] = useState(true);
@@ -46,6 +49,21 @@ function VideoUpdate({ videoId }) {
         }
 
         setLoading(false);
+
+        // set tag and catogory to string
+        let tagStr = "";
+        res.body.video_tag.forEach((e) => {
+          tagStr += e + ",";
+        });
+        res.body.video_tag = tagStr === "" ? "" : tagStr.slice(0, -1);
+
+        let categoryStr = "";
+        res.body.video_category.forEach((e) => {
+          categoryStr += e + ",";
+        });
+        res.body.video_category =
+          categoryStr === "" ? "" : categoryStr.slice(0, -1);
+
         setVideoData(res.body);
       })
       .catch((e) => {
@@ -59,11 +77,11 @@ function VideoUpdate({ videoId }) {
   const formItemLayout = {
     labelCol: {
       xs: { span: 6 },
-      sm: { span: 4 },
+      sm: { span: 6 },
     },
     wrapperCol: {
       xs: { span: 12 },
-      sm: { span: 20 },
+      sm: { span: 18 },
     },
   };
   const tailFormItemLayout = {
@@ -80,30 +98,90 @@ function VideoUpdate({ videoId }) {
   };
 
   const [fileList, updateFileList] = useState([]);
-  const uploadProps = {
-    fileList,
-    name: "file",
-    action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
-    headers: {
-      authorization: "authorization-text",
-    },
-    beforeUpload: (file) => {
-      if (file.type !== "image/png") {
-        message.error(`${file.name} is not a png file`);
-      }
-      return file.type === "image/png";
-    },
-    onChange: (info) => {
-      // file.status is empty when beforeUpload return false
-      updateFileList(info.fileList.filter((file) => !!file.status));
-    },
-  };
+  const [thumbnailFile, setThumbnailFile] = useState(null);
 
   const VideoUpdateForm = () => {
     const [form] = Form.useForm();
 
-    const onFinish = (values) => {
-      console.log("Received values of form: ", values);
+    const submitHandler = (values) => {
+      // tag and category to list again, trim blank space
+      if (values.tag.length > 0) {
+        let tagArray = [];
+
+        values.tag.split(",").forEach((e) => {
+          tagArray.push(e.trim());
+        });
+
+        values.tag = tagArray;
+      }
+
+      if (values.category.length > 0) {
+        let categoryArray = [];
+
+        values.category.split(",").forEach((e) => {
+          categoryArray.push(e.trim());
+        });
+
+        values.category = categoryArray;
+      }
+
+      // upload image to s3
+      // console.log(thumbnailFile);
+      // if (thumbnailFile) {
+      //   let upload = new AWS.S3.ManagedUpload({
+      //     params: {
+      //       Bucket: "greloupis-images",
+      //       Key: "thumbnail-" + thumbnailFile.name,
+      //       Body: thumbnailFile,
+      //       ACL: "public-read",
+      //     },
+      //   });
+
+      //   let promise = upload.promise();
+      //   promise.then(() => {
+      //     console.log("Success");
+      //   });
+      // }
+
+      updateVideoInfo(videoId, {
+        video_thumbnail: thumbnailFile ? "" : videoData.video_thumbnail,
+        video_title: values.title !== videoData.video_title ? values.title : "",
+        video_description: values.description,
+        video_channel: values.channel,
+        video_tag: values.tag,
+        video_category: values.category,
+        video_language: values.language,
+        video_status: values.status,
+      }).then((res) => {
+        alert("Successfully update video information!");
+        window.location.href =
+          "/user/" + getSubstr(localStorage.getItem("user_id"));
+      });
+    };
+
+    const uploadProps = {
+      fileList,
+      name: "file",
+      action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
+      beforeUpload: (file) => {
+        if (
+          file.type !== "image/png" &&
+          file.type !== "image/jpg" &&
+          file.type !== "image/jpeg"
+        ) {
+          message.error(`${file.name} is not a png/jpg/jpeg file!`);
+        }
+        return (
+          file.type === "image/png" ||
+          file.type === "image/jpg" ||
+          file.type === "image/jpeg"
+        );
+      },
+      onChange: (info) => {
+        info.fileList = info.fileList.slice(-1); // only submit 1 file at most
+        updateFileList(info.fileList.filter((file) => !!file.status));
+        setThumbnailFile(info.fileList[0]);
+      },
     };
 
     return (
@@ -111,16 +189,29 @@ function VideoUpdate({ videoId }) {
         {...formItemLayout}
         form={form}
         name="submit"
-        onFinish={onFinish}
+        onFinish={submitHandler}
         labelAlign="left"
         initialValues={{
-          prefix: "1",
+          thumbnail: videoData ? videoData["video_thumbnail"] : "",
+          title: videoData ? videoData["video_title"] : "",
+          description: videoData ? videoData["video_description"] : "",
+          channel: videoData ? videoData["video_channel"] : "",
+          tag: videoData ? videoData["video_tag"] : "",
+          category: videoData ? videoData["video_category"] : "",
+          language: videoData ? videoData["video_language"] : "",
+          status: videoData ? videoData["video_status"] : "",
         }}
-        scrollToFirstError
       >
         <Form.Item
           name="thumbnail"
-          label="Video Thumbnail"
+          label={
+            <span>
+              Video Thumbnail&nbsp;
+              <Tooltip title="Support image in .png, .jpg and .jpeg format">
+                <QuestionCircleOutlined />
+              </Tooltip>
+            </span>
+          }
           rules={[{ message: "Please upload your video thumbnail!" }]}
         >
           <Upload {...uploadProps}>
@@ -148,6 +239,7 @@ function VideoUpdate({ videoId }) {
           <Input.TextArea
             placeholder="Input your video description: "
             defaultValue={videoData ? videoData["video_description"] : ""}
+            maxLength={1000}
           />
         </Form.Item>
 
@@ -211,13 +303,18 @@ function VideoUpdate({ videoId }) {
           rules={[{ message: "Please input your video language!" }]}
         >
           <Select defaultValue={videoData ? videoData["video_language"] : ""}>
+            <Option value="Arabian">Arabian</Option>
             <Option value="English">English</Option>
-            <Option value="Mandarin">Mandarin</Option>
             <Option value="French">French</Option>
             <Option value="German">German</Option>
             <Option value="Hindi">Hindi</Option>
+            <Option value="Italian">Italian</Option>
             <Option value="Japanese">Japanese</Option>
             <Option value="Korean">Korean</Option>
+            <Option value="Mandarin">Mandarin</Option>
+            <Option value="Portuguese">Portuguese</Option>
+            <Option value="Russian">Russian</Option>
+            <Option value="Spanish">Spanish</Option>
             <Option value="Other">Other</Option>
           </Select>
         </Form.Item>
@@ -241,7 +338,7 @@ function VideoUpdate({ videoId }) {
         </Form.Item>
 
         <Form.Item {...tailFormItemLayout}>
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" onSubmit={submitHandler}>
             Update Video
           </Button>
         </Form.Item>

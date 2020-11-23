@@ -49,6 +49,7 @@ function UserProfile({ userId }) {
   const [userDislike, setUserDislike] = useState([]);
   const [userStar, setUserStar] = useState([]);
   const [userComment, setUserComment] = useState([]);
+  const [userProcess, setUserProcess] = useState([]);
 
   // is current user the logged in user stored in local browser
   const isLocalUser = userId === getSubstr(localStorage.getItem("user_id"));
@@ -74,6 +75,9 @@ function UserProfile({ userId }) {
           );
           setUserStar(
             res.body["video_op"].filter((element) => element.star === true)
+          );
+          setUserProcess(
+            res.body["video_op"].filter((element) => element.process > 0)
           );
           setUserComment(
             res.body["video_op"].filter((element) => element.comment !== "")
@@ -721,6 +725,44 @@ function UserProfile({ userId }) {
                       }
                     />
                     {item.content}
+                  </List.Item>
+                )}
+              />
+            )}
+
+            <h4>{"User Watching History: "}</h4>
+            {userProcess == null ? (
+              <Spin />
+            ) : (
+              <List
+                grid={{ gutter: 12, column: 2 }}
+                itemLayout="vertical"
+                size="large"
+                pagination={{
+                  pageSize: 2,
+                }}
+                dataSource={userProcess}
+                renderItem={(item) => (
+                  <List.Item>
+                    <List.Item.Meta
+                      avatar={
+                        <Link to={"/video/" + item.video_id}>
+                          <Avatar
+                            shape="square"
+                            size={54}
+                            src={generateThumbnail(item.video_thumbnail)}
+                          />
+                        </Link>
+                      }
+                      title={
+                        <Link to={"/video/" + item.video_id}>
+                          {item.video_title}
+                        </Link>
+                      }
+                      description={
+                        "Last watched on " + dateConvert(item.process_date)
+                      }
+                    />
                   </List.Item>
                 )}
               />
