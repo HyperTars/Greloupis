@@ -98,7 +98,8 @@ function VideoUpdate({ videoId }) {
   };
 
   const [fileList, updateFileList] = useState([]);
-  const [thumbnailFile, setThumbnailFile] = useState(null);
+  const [thumbnailName, setThumbnailName] = useState("");
+  const [hasThumbnail, setHasThumbnail] = useState(false);
 
   const VideoUpdateForm = () => {
     const [form] = Form.useForm();
@@ -125,26 +126,11 @@ function VideoUpdate({ videoId }) {
         values.category = categoryArray;
       }
 
-      // upload image to s3
-      // console.log(thumbnailFile);
-      // if (thumbnailFile) {
-      //   let upload = new AWS.S3.ManagedUpload({
-      //     params: {
-      //       Bucket: "greloupis-images",
-      //       Key: "thumbnail-" + thumbnailFile.name,
-      //       Body: thumbnailFile,
-      //       ACL: "public-read",
-      //     },
-      //   });
-
-      //   let promise = upload.promise();
-      //   promise.then(() => {
-      //     console.log("Success");
-      //   });
-      // }
-
       updateVideoInfo(videoId, {
-        video_thumbnail: thumbnailFile ? "" : videoData.video_thumbnail,
+        video_thumbnail: hasThumbnail
+          ? "https://greloupis-images.s3.amazonaws.com/thumbnail-" +
+            thumbnailName
+          : videoData.video_thumbnail,
         video_title: values.title !== videoData.video_title ? values.title : "",
         video_description: values.description,
         video_channel: values.channel,
@@ -152,7 +138,7 @@ function VideoUpdate({ videoId }) {
         video_category: values.category,
         video_language: values.language,
         video_status: values.status,
-      }).then((res) => {
+      }).then(() => {
         alert("Successfully update video information!");
         window.location.href =
           "/user/" + getSubstr(localStorage.getItem("user_id"));
@@ -171,6 +157,33 @@ function VideoUpdate({ videoId }) {
         ) {
           message.error(`${file.name} is not a png/jpg/jpeg file!`);
         }
+
+        let fileObj = document.getElementById("submit_thumbnail").files[0];
+
+        // upload to s3
+        AWS.config.update({
+          // accessKeyId: AWS.config.credentials.accessKeyId,
+          // secretAccessKey: AWS.config.credentials.secretAccessKey,
+          accessKeyId: "AKIA3OYIJQ4LRR5D4QMP",
+          secretAccessKey: "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",
+          region: AWS.config.region,
+        });
+
+        if (fileObj) {
+          let upload = new AWS.S3.ManagedUpload({
+            params: {
+              Bucket: "greloupis-images",
+              Key: "thumbnail-" + fileObj.name,
+              Body: fileObj,
+              ACL: "public-read",
+            },
+          });
+          let promise = upload.promise();
+          promise.then(() => {
+            console.log("Successfully uploaded thumbnail");
+          });
+        }
+
         return (
           file.type === "image/png" ||
           file.type === "image/jpg" ||
@@ -180,7 +193,8 @@ function VideoUpdate({ videoId }) {
       onChange: (info) => {
         info.fileList = info.fileList.slice(-1); // only submit 1 file at most
         updateFileList(info.fileList.filter((file) => !!file.status));
-        setThumbnailFile(info.fileList[0]);
+        setThumbnailName(info.fileList.length > 0 ? info.fileList[0].name : "");
+        setHasThumbnail(info.fileList.length > 0 ? true : false);
       },
     };
 
@@ -203,6 +217,7 @@ function VideoUpdate({ videoId }) {
         }}
       >
         <Form.Item
+          id="thumbnailUpload"
           name="thumbnail"
           label={
             <span>
