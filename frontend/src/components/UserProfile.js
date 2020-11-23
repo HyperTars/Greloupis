@@ -643,14 +643,14 @@ function UserProfile({ userId }) {
       <Row gutter={12}>
         <Col span={8}>
           <div className="userProfile">
-            <h4>{"User Profiles: "}</h4>
+            <h4>{isLocalUser ? "My Profiles: " : "User Profiles: "}</h4>
             <RegistrationForm></RegistrationForm>
           </div>
         </Col>
 
         <Col span={16}>
           <div className="userProfile">
-            <h4>{"User Videos: "}</h4>
+            <h4>{isLocalUser ? "My Videos: " : "User Videos: "}</h4>
             {videoData == null ? (
               <Spin />
             ) : (
@@ -730,7 +730,11 @@ function UserProfile({ userId }) {
               />
             )}
 
-            <h4>{"User Watching History: "}</h4>
+            <h4>
+              {isLocalUser
+                ? "My Watching History: "
+                : "User Watching History: "}
+            </h4>
             {userProcess == null ? (
               <Spin />
             ) : (
@@ -768,7 +772,7 @@ function UserProfile({ userId }) {
               />
             )}
 
-            <h4>{"User Stars: "}</h4>
+            <h4>{isLocalUser ? "My Stars: " : "User Stars: "}</h4>
             {userStar == null ? (
               <Spin />
             ) : (
@@ -804,7 +808,7 @@ function UserProfile({ userId }) {
               />
             )}
 
-            <h4>{"User Comments: "}</h4>
+            <h4>{isLocalUser ? "My Comments: " : "User Comments: "}</h4>
             {userComment == null ? (
               <Spin />
             ) : (
@@ -839,7 +843,7 @@ function UserProfile({ userId }) {
               />
             )}
 
-            <h4>{"User Likes: "}</h4>
+            <h4>{isLocalUser ? "My Likes: " : "User Likes: "}</h4>
             {userLike == null ? (
               <Spin />
             ) : (
@@ -875,7 +879,7 @@ function UserProfile({ userId }) {
               />
             )}
 
-            <h4>{"User Dislikes: "}</h4>
+            <h4>{isLocalUser ? "My Dislikes: " : "User Dislikes: "}</h4>
             {userDislike == null ? (
               <Spin />
             ) : (

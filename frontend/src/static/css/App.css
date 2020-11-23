@@ -1457,3 +1457,19 @@ h3 {
   border-color: #40a9ff;
   color: white;
 }
+
+.ant-upload-list-item-error, .ant-upload-list-item-error .ant-upload-text-icon > .anticon, .ant-upload-list-item-error .ant-upload-list-item-name {
+  color: black;
+}
+
+.ant-upload-list-picture .ant-upload-list-item-error, .ant-upload-list-picture-card .ant-upload-list-item-error {
+  border-color: #d9d9d9;
+}
+
+.ant-upload-list-item-error .ant-upload-list-item-card-actions .anticon {
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.ant-upload-list-picture-container .ant-tooltip-arrow, .ant-upload-list-picture-container .ant-tooltip-inner  {
+  display: none;
+} 

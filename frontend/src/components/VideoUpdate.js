@@ -148,6 +148,7 @@ function VideoUpdate({ videoId }) {
     const uploadProps = {
       fileList,
       name: "file",
+      listType: "picture",
       action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
       beforeUpload: (file) => {
         if (
@@ -360,7 +361,6 @@ function VideoUpdate({ videoId }) {
 
         <Button
           type="primary"
-          htmlType="submit"
           className="deleteButton"
           onClick={() => {
             deleteVideo(videoId).then(() => {
