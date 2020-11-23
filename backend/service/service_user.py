@@ -7,7 +7,7 @@ from db.query_user import query_user_create, query_user_get_by_name, \
     query_user_get_by_id, query_user_update_status, \
     query_user_add_login, query_user_update_name, \
     query_user_update_password, query_user_update_thumbnail, \
-    query_user_update_details
+    query_user_update_details, query_user_update_email
 from db.query_video import query_video_get_by_user_id
 from db.query_video_op import query_video_op_get_by_user_id, \
     query_video_op_delete
@@ -113,6 +113,8 @@ def service_user_update_info(**kw):
         query_user_update_status(kw['user_id'], kw['user_status'])
     if 'user_name' in kw:
         query_user_update_name(kw['user_id'], kw['user_name'])
+    if 'user_email' in kw:
+        query_user_update_email(kw['user_id'], kw['user_email'])
     if 'user_password' in kw:
         query_user_update_password(kw['user_id'], kw['user_password'])
     if 'user_thumbnail' in kw:

@@ -132,6 +132,10 @@
   .videoPlay .header {
     width: 99vw;
   }
+
+  .userProfilePage .header {
+    width: 99vw;
+  }
   
   * {
     margin: 0px;

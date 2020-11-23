@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getUserInfo, deleteUser } from "./FetchData";
+import { getUserInfo, updateUserInfo, deleteUser } from "./FetchData";
 import { Redirect, Link } from "react-router-dom";
 import "../static/css/App.css";
 
@@ -35,8 +35,12 @@ import {
   dateConvert,
   ellipsifyStr,
   generateThumbnail,
+  uuid,
 } from "../util";
 import logout from "./Logout";
+
+let AWS = require("aws-sdk");
+let CURRENT_UUID = uuid();
 
 function UserProfile({ userId }) {
   const [loading, setLoading] = useState(true);
@@ -144,10 +148,10 @@ function UserProfile({ userId }) {
   const formItemLayout = {
     labelCol: {
       xs: { span: 8 },
-      sm: { span: 6 },
+      sm: { span: 8 },
     },
     wrapperCol: {
-      xs: { span: 24 },
+      xs: { span: 18 },
       sm: { span: 24 },
     },
   };
@@ -173,56 +177,160 @@ function UserProfile({ userId }) {
   };
 
   const [fileList, updateFileList] = useState([]);
+  const [thumbnailName, setThumbnailName] = useState("");
+  const [hasThumbnail, setHasThumbnail] = useState(false);
+
   const uploadProps = {
     fileList,
     name: "file",
+    listType: "picture",
     action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
-    headers: {
-      authorization: "authorization-text",
-    },
     beforeUpload: (file) => {
-      if (file.type !== "image/png") {
-        message.error(`${file.name} is not a png file`);
+      if (
+        file.type !== "image/png" &&
+        file.type !== "image/jpg" &&
+        file.type !== "image/jpeg"
+      ) {
+        message.error(`${file.name} is not a png/jpg/jpeg file!`);
       }
-      return file.type === "image/png";
+
+      let fileObj = document.getElementById("submit_avatar").files[0];
+
+      // upload to s3
+      AWS.config.update({
+        // accessKeyId: AWS.config.credentials.accessKeyId,
+        // secretAccessKey: AWS.config.credentials.secretAccessKey,
+        accessKeyId: "AKIA3OYIJQ4LRR5D4QMP",
+        secretAccessKey: "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",
+        region: AWS.config.region,
+      });
+
+      if (fileObj) {
+        let upload = new AWS.S3.ManagedUpload({
+          params: {
+            Bucket: "greloupis-images",
+            Key: "avatar-" + CURRENT_UUID + "-" + fileObj.name,
+            Body: fileObj,
+            ACL: "public-read",
+          },
+        });
+        let promise = upload.promise();
+        promise.then(() => {
+          console.log("Successfully uploaded avatar");
+        });
+      }
+
+      return (
+        file.type === "image/png" ||
+        file.type === "image/jpg" ||
+        file.type === "image/jpeg"
+      );
     },
     onChange: (info) => {
-      // file.status is empty when beforeUpload return false
+      info.fileList = info.fileList.slice(-1); // only submit 1 file at most
       updateFileList(info.fileList.filter((file) => !!file.status));
+      setThumbnailName(info.fileList.length > 0 ? info.fileList[0].name : "");
+      setHasThumbnail(info.fileList.length > 0 ? true : false);
     },
   };
 
   const RegistrationForm = () => {
     const [form] = Form.useForm();
 
-    const onFinish = (values) => {
-      console.log("Received values of form: ", values);
-    };
+    const submitHandler = (values) => {
+      let dataObj = {
+        user_thumbnail: hasThumbnail
+          ? "https://greloupis-images.s3.amazonaws.com/avatar-" +
+            CURRENT_UUID +
+            "-" +
+            thumbnailName
+          : userData.user_thumbnail,
+        user_first_name: values.first_name,
+        user_last_name: values.last_name,
+        user_phone: values.phone,
+        user_street1: values.street1,
+        user_street2: values.street2,
+        user_city: values.city,
+        user_state: values.state,
+        user_country: values.country,
+        user_zip: values.zip,
+        user_status: values.status,
+      };
 
-    const prefixSelector = (
-      <Form.Item name="prefix" noStyle>
-        <Select style={{ width: 70 }}>
-          <Option value="1">+1</Option>
-          <Option value="86">+86</Option>
-        </Select>
-      </Form.Item>
-    );
+      console.log(dataObj["user_thumbnail"]);
+
+      if (userData.user_name !== values.nickname)
+        dataObj["user_name"] = values.nickname;
+      if (userData.user_email !== values.email)
+        dataObj["user_email"] = values.email;
+      if (values.password !== "") dataObj["user_password"] = values.password;
+
+      updateUserInfo(userId, dataObj).then(() => {
+        if (dataObj["user_thumbnail"] !== userData.user_thumbnail) {
+          localStorage.setItem(
+            "user_thumbnail",
+            '"' + dataObj["user_thumbnail"] + '"'
+          );
+        }
+
+        alert("Successfully update user profile!");
+        window.location.reload();
+      });
+    };
 
     return (
       <Form
         {...formItemLayout}
         form={form}
         name="submit"
-        onFinish={onFinish}
+        onFinish={submitHandler}
         labelAlign="left"
         initialValues={{
-          prefix: "1",
+          avatar: userData ? userData["user_thumbnail"] : "",
+          nickname: userData ? userData["user_name"] : "",
+          email: userData ? userData["user_email"] : "",
+          password: "",
+          first_name: userData["user_detail"]
+            ? userData["user_detail"]["user_first_name"]
+            : "",
+          last_name: userData["user_detail"]
+            ? userData["user_detail"]["user_last_name"]
+            : "",
+          phone: userData["user_detail"]
+            ? userData["user_detail"]["user_phone"]
+            : "",
+          street1: userData["user_detail"]
+            ? userData["user_detail"]["user_street1"]
+            : "",
+          street2: userData["user_detail"]
+            ? userData["user_detail"]["user_street2"]
+            : "",
+          city: userData["user_detail"]
+            ? userData["user_detail"]["user_city"]
+            : "",
+          state: userData["user_detail"]
+            ? userData["user_detail"]["user_state"]
+            : "",
+          country: userData["user_detail"]
+            ? userData["user_detail"]["user_country"]
+            : "",
+          zip: userData["user_detail"]
+            ? userData["user_detail"]["user_zip"]
+            : "",
+          status: userData ? userData["user_status"] : "",
         }}
         scrollToFirstError
       >
         <Form.Item
           name="avatar"
-          label="Avatar"
+          label={
+            <span>
+              Avatar&nbsp;
+              <Tooltip title="Support image in .png, .jpg and .jpeg format">
+                <QuestionCircleOutlined />
+              </Tooltip>
+            </span>
+          }
           rules={[{ message: "Please upload your avatar!" }]}
         >
           {isLocalUser ? (
@@ -230,7 +338,7 @@ function UserProfile({ userId }) {
               <Button icon={<UploadOutlined />}>Click to Upload</Button>
             </Upload>
           ) : (
-            <Avatar src={userData ? userData["user_thumbnail"] : "/"} />
+            <Avatar src={userData ? userData["user_thumbnail"] : ""} />
           )}
         </Form.Item>
 
@@ -254,11 +362,11 @@ function UserProfile({ userId }) {
           {isLocalUser ? (
             <Input
               placeholder="Input your nickname: "
-              defaultValue={userData ? userData["user_name"] : "..."}
+              defaultValue={userData ? userData["user_name"] : ""}
             />
           ) : (
             <Input
-              defaultValue={userData ? userData["user_name"] : "..."}
+              defaultValue={userData ? userData["user_name"] : ""}
               disabled
               bordered={false}
             />
@@ -278,16 +386,32 @@ function UserProfile({ userId }) {
           {isLocalUser ? (
             <Input
               placeholder="Input your email address: "
-              defaultValue={userData ? userData["user_email"] : "..."}
+              defaultValue={userData ? userData["user_email"] : ""}
             />
           ) : (
             <Input
-              defaultValue={userData ? userData["user_email"] : "..."}
+              defaultValue={userData ? userData["user_email"] : ""}
               disabled
               bordered={false}
             />
           )}
         </Form.Item>
+
+        {isLocalUser ? (
+          <Form.Item
+            name="password"
+            label="New Password"
+            rules={[
+              {
+                message: "Please input your password!",
+              },
+            ]}
+          >
+            <Input.Password placeholder="Input your new password: " />
+          </Form.Item>
+        ) : (
+          <div></div>
+        )}
 
         <Form.Item
           name="first_name"
@@ -305,7 +429,7 @@ function UserProfile({ userId }) {
               defaultValue={
                 userData["user_detail"]
                   ? userData["user_detail"]["user_first_name"]
-                  : "..."
+                  : ""
               }
             />
           ) : (
@@ -313,7 +437,7 @@ function UserProfile({ userId }) {
               defaultValue={
                 userData["user_detail"]
                   ? userData["user_detail"]["user_first_name"]
-                  : "..."
+                  : ""
               }
               disabled
               bordered={false}
@@ -337,7 +461,7 @@ function UserProfile({ userId }) {
               defaultValue={
                 userData["user_detail"]
                   ? userData["user_detail"]["user_last_name"]
-                  : "..."
+                  : ""
               }
             />
           ) : (
@@ -345,7 +469,7 @@ function UserProfile({ userId }) {
               defaultValue={
                 userData["user_detail"]
                   ? userData["user_detail"]["user_last_name"]
-                  : "..."
+                  : ""
               }
               disabled
               bordered={false}
@@ -364,19 +488,16 @@ function UserProfile({ userId }) {
               defaultValue={
                 userData["user_detail"]
                   ? userData["user_detail"]["user_phone"]
-                  : "..."
+                  : ""
               }
-              addonBefore={prefixSelector}
-              style={{ width: "100%" }}
             />
           ) : (
             <Input
               defaultValue={
                 userData["user_detail"]
                   ? userData["user_detail"]["user_phone"]
-                  : "..."
+                  : ""
               }
-              style={{ width: "100%" }}
               disabled
               bordered={false}
             />
@@ -399,7 +520,7 @@ function UserProfile({ userId }) {
               defaultValue={
                 userData["user_detail"]
                   ? userData["user_detail"]["user_street1"]
-                  : "..."
+                  : ""
               }
             />
           ) : (
@@ -407,7 +528,7 @@ function UserProfile({ userId }) {
               defaultValue={
                 userData["user_detail"]
                   ? userData["user_detail"]["user_street1"]
-                  : "..."
+                  : ""
               }
               disabled
               bordered={false}
@@ -431,7 +552,7 @@ function UserProfile({ userId }) {
               defaultValue={
                 userData["user_detail"]
                   ? userData["user_detail"]["user_street2"]
-                  : "..."
+                  : ""
               }
             />
           ) : (
@@ -439,7 +560,7 @@ function UserProfile({ userId }) {
               defaultValue={
                 userData["user_detail"]
                   ? userData["user_detail"]["user_street2"]
-                  : "..."
+                  : ""
               }
               disabled
               bordered={false}
@@ -463,7 +584,7 @@ function UserProfile({ userId }) {
               defaultValue={
                 userData["user_detail"]
                   ? userData["user_detail"]["user_city"]
-                  : "..."
+                  : ""
               }
             />
           ) : (
@@ -471,7 +592,7 @@ function UserProfile({ userId }) {
               defaultValue={
                 userData["user_detail"]
                   ? userData["user_detail"]["user_city"]
-                  : "..."
+                  : ""
               }
               disabled
               bordered={false}
@@ -495,7 +616,7 @@ function UserProfile({ userId }) {
               defaultValue={
                 userData["user_detail"]
                   ? userData["user_detail"]["user_state"]
-                  : "..."
+                  : ""
               }
             />
           ) : (
@@ -503,7 +624,7 @@ function UserProfile({ userId }) {
               defaultValue={
                 userData["user_detail"]
                   ? userData["user_detail"]["user_state"]
-                  : "..."
+                  : ""
               }
               disabled
               bordered={false}
@@ -527,7 +648,7 @@ function UserProfile({ userId }) {
               defaultValue={
                 userData["user_detail"]
                   ? userData["user_detail"]["user_country"]
-                  : "..."
+                  : ""
               }
             />
           ) : (
@@ -535,7 +656,7 @@ function UserProfile({ userId }) {
               defaultValue={
                 userData["user_detail"]
                   ? userData["user_detail"]["user_country"]
-                  : "..."
+                  : ""
               }
               disabled
               bordered={false}
@@ -559,7 +680,7 @@ function UserProfile({ userId }) {
               defaultValue={
                 userData["user_detail"]
                   ? userData["user_detail"]["user_zip"]
-                  : "..."
+                  : ""
               }
             />
           ) : (
@@ -567,7 +688,7 @@ function UserProfile({ userId }) {
               defaultValue={
                 userData["user_detail"]
                   ? userData["user_detail"]["user_zip"]
-                  : "..."
+                  : ""
               }
               disabled
               bordered={false}
@@ -590,59 +711,20 @@ function UserProfile({ userId }) {
           {isLocalUser ? (
             <Select
               placeholder="Select your user status: "
-              defaultValue={userData ? userData["user_status"] : "..."}
+              defaultValue={userData ? userData["user_status"] : ""}
             >
               <Option value="public">public</Option>
               <Option value="private">private</Option>
             </Select>
           ) : (
             <Input
-              defaultValue={userData ? userData["user_status"] : "..."}
+              defaultValue={userData ? userData["user_status"] : ""}
               style={{ width: "100%" }}
               disabled
               bordered={false}
             />
           )}
         </Form.Item>
-
-        {/* <Form.Item
-          name="password"
-          label="Password"
-          rules={[
-            {
-              required: true,
-              message: "Please input your password!",
-            },
-          ]}
-          hasFeedback
-        >
-          <Input.Password />
-        </Form.Item>
-
-        <Form.Item
-          name="confirm"
-          label="Confirm Password"
-          dependencies={["password"]}
-          hasFeedback
-          rules={[
-            {
-              required: true,
-              message: "Please confirm your password!",
-            },
-            ({ getFieldValue }) => ({
-              validator(rule, value) {
-                if (!value || getFieldValue("password") === value) {
-                  return Promise.resolve();
-                }
-                return Promise.reject(
-                  "The two passwords that you entered do not match!"
-                );
-              },
-            }),
-          ]}
-        >
-          <Input.Password />
-        </Form.Item> */}
 
         {isLocalUser ? (
           <div>
@@ -659,7 +741,6 @@ function UserProfile({ userId }) {
         {isLocalUser ? (
           <Button
             type="primary"
-            htmlType="submit"
             className="deleteButton"
             onClick={deleteUserHandler}
           >

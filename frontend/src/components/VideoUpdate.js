@@ -18,10 +18,10 @@ import {
 
 import { UploadOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 
-import { getSubstr } from "../util";
+import { getSubstr, uuid } from "../util";
 
 let AWS = require("aws-sdk");
-// let uuid = require("node-uuid");
+let CURRENT_UUID = uuid();
 
 function VideoUpdate({ videoId }) {
   const [loading, setLoading] = useState(true);
@@ -129,6 +129,8 @@ function VideoUpdate({ videoId }) {
       updateVideoInfo(videoId, {
         video_thumbnail: hasThumbnail
           ? "https://greloupis-images.s3.amazonaws.com/thumbnail-" +
+            CURRENT_UUID +
+            "-" +
             thumbnailName
           : videoData.video_thumbnail,
         video_title: values.title !== videoData.video_title ? values.title : "",
@@ -174,7 +176,7 @@ function VideoUpdate({ videoId }) {
           let upload = new AWS.S3.ManagedUpload({
             params: {
               Bucket: "greloupis-images",
-              Key: "thumbnail-" + fileObj.name,
+              Key: "thumbnail-" + CURRENT_UUID + "-" + fileObj.name,
               Body: fileObj,
               ACL: "public-read",
             },

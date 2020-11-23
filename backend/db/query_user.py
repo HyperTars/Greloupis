@@ -1,6 +1,7 @@
 from models.model_user import UserDetail, UserLogin, User
 from models.model_errors import ErrorCode, MongoError
 from utils.util_time import get_time_now_utc
+from utils.util_hash import util_hash_encode
 import datetime
 import re
 
@@ -198,11 +199,28 @@ def query_user_update_password(user_id: str, user_password: str):
         raise MongoError(ErrorCode.MONGODB_USER_NOT_FOUND)
 
     old_password = users[0].user_password
-    if user_password == old_password:
+    if util_hash_encode(user_password) == old_password:
         raise MongoError(ErrorCode.MONGODB_UPDATE_SAME_PASS)
 
     return User.objects(id=user_id).update(
-        user_password=user_password)
+        user_password=util_hash_encode(user_password))
+
+
+def query_user_update_email(user_id: str, user_email: str):
+    """
+    :param user_id: user's id
+    :param user_email: user's password
+    :return: array of User Model
+    """
+    if type(user_id) != str or type(user_email) != str:
+        raise MongoError(ErrorCode.MONGODB_STR_EXPECTED)
+
+    users = query_user_get_by_id(user_id)
+    if len(users) == 0:
+        raise MongoError(ErrorCode.MONGODB_USER_NOT_FOUND)
+
+    return User.objects(id=user_id).update(
+        user_email=user_email)
 
 
 def query_user_update_thumbnail(user_id: str, user_thumbnail: str):

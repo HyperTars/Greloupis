@@ -29,6 +29,7 @@ from db.query_video_op import query_video_op_create, \
 from db.mongo import init_db
 from models.model_errors import MongoError, ErrorCode
 from utils.util_time import get_time_now_utc
+from utils.util_hash import util_hash_encode
 import bson
 
 
@@ -287,11 +288,11 @@ class TestQueryUser(unittest.TestCase):
 
         query_user_update_password(temp_user_id, new_pass)
         self.assertEqual(query_user_get_by_id(temp_user_id)[0].user_password,
-                         new_pass)
+                         util_hash_encode(new_pass))
 
         query_user_update_password(temp_user_id, old_pass)
         self.assertEqual(query_user_get_by_id(temp_user_id)[0].user_password,
-                         old_pass)
+                         util_hash_encode(old_pass))
 
         # Raise Error: ErrorCode.MONGODB_STR_EXPECTED
         with self.assertRaises(MongoError) as e:
@@ -324,8 +325,8 @@ class TestQueryUser(unittest.TestCase):
         self.assertEqual(query_user_get_by_id(temp_user_id)[0].user_thumbnail,
                          new_thumbnail)
 
-        query_user_update_password(temp_user_id, old_thumbnail)
-        self.assertEqual(query_user_get_by_id(temp_user_id)[0].user_password,
+        query_user_update_thumbnail(temp_user_id, old_thumbnail)
+        self.assertEqual(query_user_get_by_id(temp_user_id)[0].user_thumbnail,
                          old_thumbnail)
 
         # Raise Error: ErrorCode.MONGODB_STR_EXPECTED

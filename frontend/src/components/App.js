@@ -78,7 +78,7 @@ class App extends Component {
               exact
               path="/user/:userId"
               render={(props) => (
-                <div>
+                <div className="userProfilePage">
                   <Header />
                   <UserProfile userId={props.match.params.userId} />
                 </div>
