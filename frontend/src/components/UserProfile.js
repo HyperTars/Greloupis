@@ -64,24 +64,73 @@ function UserProfile({ userId }) {
         setLoading(false);
         setUserData(res.body["user"]);
 
+        let videoList = res.body["video"];
+        let likeList = res.body["video_op"].filter(
+          (element) => element.like === true
+        );
+        let dislikeList = res.body["video_op"].filter(
+          (element) => element.dislike === true
+        );
+        let starList = res.body["video_op"].filter(
+          (element) => element.star === true
+        );
+        let processList = res.body["video_op"].filter(
+          (element) => element.process > 0
+        );
+        let commentList = res.body["video_op"].filter(
+          (element) => element.comment !== ""
+        );
+
+        videoList.sort((a, b) => {
+          let dataA = new Date(a.video_upload_date);
+          let dataB = new Date(b.video_upload_date);
+          if (dataA === dataB) return 0;
+          return dataA > dataB ? -1 : 1;
+        });
+
+        likeList.sort((a, b) => {
+          let dataA = new Date(a.like_date);
+          let dataB = new Date(b.like_date);
+          if (dataA === dataB) return 0;
+          return dataA > dataB ? -1 : 1;
+        });
+
+        dislikeList.sort((a, b) => {
+          let dataA = new Date(a.dislike_date);
+          let dataB = new Date(b.dislike_date);
+          if (dataA === dataB) return 0;
+          return dataA > dataB ? -1 : 1;
+        });
+
+        starList.sort((a, b) => {
+          let dataA = new Date(a.star_date);
+          let dataB = new Date(b.star_date);
+          if (dataA === dataB) return 0;
+          return dataA > dataB ? -1 : 1;
+        });
+
+        processList.sort((a, b) => {
+          let dataA = new Date(a.process_date);
+          let dataB = new Date(b.process_date);
+          if (dataA === dataB) return 0;
+          return dataA > dataB ? -1 : 1;
+        });
+
+        commentList.sort((a, b) => {
+          let dataA = new Date(a.comment_date);
+          let dataB = new Date(b.comment_date);
+          if (dataA === dataB) return 0;
+          return dataA > dataB ? -1 : 1;
+        });
+
         if (JSON.stringify(res.body["video"]) !== "[{}]")
-          setVideoData(res.body["video"]);
+          setVideoData(videoList);
         if (JSON.stringify(res.body["video_op"]) !== "[{}]") {
-          setUserLike(
-            res.body["video_op"].filter((element) => element.like === true)
-          );
-          setUserDislike(
-            res.body["video_op"].filter((element) => element.dislike === true)
-          );
-          setUserStar(
-            res.body["video_op"].filter((element) => element.star === true)
-          );
-          setUserProcess(
-            res.body["video_op"].filter((element) => element.process > 0)
-          );
-          setUserComment(
-            res.body["video_op"].filter((element) => element.comment !== "")
-          );
+          setUserLike(likeList);
+          setUserDislike(dislikeList);
+          setUserStar(starList);
+          setUserProcess(processList);
+          setUserComment(commentList);
         }
       })
       .catch((e) => {
