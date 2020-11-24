@@ -1328,6 +1328,16 @@ h3 {
   color: white;
 }
 
+.ant-card {
+  border-radius: 4px;
+  box-shadow: 0 2px 16px 0 rgba(0,0,0,.05);
+  margin: 16px;
+}
+
+.ant-card-head-title {
+  font-size: 20px;
+}
+
 .ant-upload-list-item-error, .ant-upload-list-item-error .ant-upload-text-icon > .anticon, .ant-upload-list-item-error .ant-upload-list-item-name {
   color: black;
 }
@@ -1343,13 +1353,3 @@ h3 {
 .ant-upload-list-picture-container .ant-tooltip-arrow, .ant-upload-list-picture-container .ant-tooltip-inner  {
   display: none;
 } 
-
-.ant-card {
-  border-radius: 4px;
-  box-shadow: 0 2px 16px 0 rgba(0,0,0,.05);
-  margin: 16px;
-}
-
-.ant-card-head-title {
-  font-size: 20px;
-}
