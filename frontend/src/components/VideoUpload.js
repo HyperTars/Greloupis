@@ -74,7 +74,7 @@ class UploadInfo extends Component {
           <div className="upload-info__progress">
             <div className="upload-info__progress-bar"></div>
             <div className="progress-text">
-              <p>Click "Publish" to make your video live!</p>
+              <p>Click "Publish" to upload your video!</p>
               <div>{}</div>
             </div>
           </div>
