@@ -2,6 +2,7 @@
 
   html, body {
     width: 98.45vw;
+    background-color: #fafafa;
   }
   
   * {
@@ -405,7 +406,7 @@
     -webkit-box-pack: center;
         -ms-flex-pack: center;
             justify-content: center;
-    background-color: #FFFFFF;
+    background-color: #fafafa;
     min-width: auto;
   }
   
@@ -426,7 +427,7 @@
   }
   
   main #main-video-content .main-video__description {
-    border-bottom: #f0f0f0 1px solid;
+    border-bottom: #d4d4d4 1px solid;
     margin-top: 2rem;
   }
   
@@ -506,7 +507,7 @@
   
   main #main-video-content .main-video__details {
     padding: 2rem 0;
-    border-bottom: #f0f0f0 1px solid;
+    border-bottom: #d4d4d4 1px solid;
   }
   
   main #main-video-content .main-video__details-author {
@@ -580,7 +581,7 @@
   }
   
   main #main-video-content .main-video__details-author .subscribe-button span:last-child {
-    color: #f0f0f0;
+    color: #d4d4d4;
   }
   
   main #main-video-content .main-video__details-info {
@@ -619,7 +620,7 @@
   
   main #main-video-content .comments-list {
     padding: 2rem 0;
-    border-bottom: #f0f0f0 1px solid;
+    border-bottom: #d4d4d4 1px solid;
   }
   
   main #main-video-content .comments-list .comments-form {
@@ -655,13 +656,11 @@
     border: none;
     font-size: 0.8125rem;
     height: 2rem;
-    border-bottom: #f0f0f0 1px solid;
   }
   
   main #main-video-content .comments-list .comments-form__input-shown {
     outline: none;
     background-color: #f1f1f1;
-    border-bottom: #f0f0f0 2px solid;
   }
   
   @-webkit-keyframes color-change {
