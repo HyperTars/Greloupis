@@ -14,6 +14,7 @@ import {
   Spin,
   Upload,
   message,
+  Card,
 } from "antd";
 
 import { UploadOutlined, QuestionCircleOutlined } from "@ant-design/icons";
@@ -392,8 +393,9 @@ function VideoUpdate({ videoId }) {
         <Col span={6}></Col>
         <Col span={12}>
           <div className="VideoUpdate">
-            <h4>{"Video Information: "}</h4>
-            <VideoUpdateForm></VideoUpdateForm>
+            <Card title="Video Information">
+              <VideoUpdateForm></VideoUpdateForm>
+            </Card>
           </div>
         </Col>
         <Col span={6}></Col>

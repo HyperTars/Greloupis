@@ -24,7 +24,7 @@ class App extends Component {
               exact
               path="/"
               render={() => (
-                <div>
+                <div className="homePage">
                   <Header />
                   <Home />
                 </div>
@@ -34,7 +34,7 @@ class App extends Component {
               exact
               path="/search"
               render={() => (
-                <div>
+                <div className="searchPage">
                   <Header />
                   <SearchResult />
                 </div>

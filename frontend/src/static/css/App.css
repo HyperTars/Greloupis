@@ -1,140 +1,7 @@
 @import 'antd/dist/antd.css';
 
-@import 'antd/dist/antd.css';
-
-@font-face {
-    font-family: 'Roboto';
-    src: url("../fonts/Roboto-Thin.ttf") format("truetype");
-    font-weight: 100;
-    font-style: normal;
-  }
-  
-  @font-face {
-    font-family: 'Roboto';
-    src: url("../fonts/Roboto-Regular.ttf") format("truetype");
-    font-weight: normal;
-    font-style: normal;
-  }
-  
-  @font-face {
-    font-family: 'Roboto';
-    src: url("../fonts/Roboto-BlackItalic.ttf") format("truetype");
-    font-weight: 900;
-    font-style: italic;
-  }
-  
-  @font-face {
-    font-family: 'Roboto';
-    src: url("../fonts/Roboto-BoldItalic.ttf") format("truetype");
-    font-weight: bold;
-    font-style: italic;
-  }
-  
-  @font-face {
-    font-family: 'Roboto';
-    src: url("../fonts/Roboto-ThinItalic.ttf") format("truetype");
-    font-weight: 100;
-    font-style: italic;
-  }
-  
-  @font-face {
-    font-family: 'Roboto';
-    src: url("../fonts/Roboto-Bold.ttf") format("truetype");
-    font-weight: bold;
-    font-style: normal;
-  }
-  
-  @font-face {
-    font-family: 'Roboto';
-    src: url("../fonts/Roboto-Thin_1.ttf") format("truetype");
-    font-weight: 100;
-    font-style: normal;
-  }
-  
-  @font-face {
-    font-family: 'Roboto';
-    src: url("../fonts/Roboto-Black.ttf") format("truetype");
-    font-weight: 900;
-    font-style: normal;
-  }
-  
-  @font-face {
-    font-family: 'Roboto';
-    src: url("../fonts/Roboto-Bold_1.ttf") format("truetype");
-    font-weight: bold;
-    font-style: normal;
-  }
-  
-  @font-face {
-    font-family: 'Roboto';
-    src: url("../fonts/Roboto-Medium.ttf") format("truetype");
-    font-weight: 500;
-    font-style: normal;
-  }
-  
-  @font-face {
-    font-family: 'Roboto';
-    src: url("../fonts/Roboto-Light.ttf") format("truetype");
-    font-weight: 300;
-    font-style: normal;
-  }
-  
-  @font-face {
-    font-family: 'Roboto';
-    src: url("../fonts/Roboto-Medium_1.ttf") format("truetype");
-    font-weight: 500;
-    font-style: normal;
-  }
-  
-  @font-face {
-    font-family: 'Roboto';
-    src: url("../fonts/Roboto-Light_1.ttf") format("truetype");
-    font-weight: 300;
-    font-style: normal;
-  }
-  
-  @font-face {
-    font-family: 'Roboto';
-    src: url("../fonts/Roboto-Regular_1.ttf") format("truetype");
-    font-weight: normal;
-    font-style: normal;
-  }
-  
-  @font-face {
-    font-family: 'Roboto';
-    src: url("../fonts/Roboto-LightItalic.ttf") format("truetype");
-    font-weight: 300;
-    font-style: italic;
-  }
-  
-  @font-face {
-    font-family: 'Roboto';
-    src: url("../fonts/Roboto-MediumItalic.ttf") format("truetype");
-    font-weight: 500;
-    font-style: italic;
-  }
-  
-  @font-face {
-    font-family: 'Roboto';
-    src: url("../fonts/Roboto-Italic.ttf") format("truetype");
-    font-weight: normal;
-    font-style: italic;
-  }
-  
-  body {
-    font-family: 'Roboto', sans-serif;
-  }
-
   html, body {
-    width: 100%;
-  }
-
-  .videoPlay .header {
-    width: 99vw;
-  }
-
-  .userProfilePage .header {
-    width: 99vw;
+    width: 98.45vw;
   }
   
   * {
@@ -559,7 +426,7 @@
   }
   
   main #main-video-content .main-video__description {
-    border-bottom: #D4D4D4 1px solid;
+    border-bottom: #f0f0f0 1px solid;
     margin-top: 2rem;
   }
   
@@ -639,7 +506,7 @@
   
   main #main-video-content .main-video__details {
     padding: 2rem 0;
-    border-bottom: #D4D4D4 1px solid;
+    border-bottom: #f0f0f0 1px solid;
   }
   
   main #main-video-content .main-video__details-author {
@@ -713,7 +580,7 @@
   }
   
   main #main-video-content .main-video__details-author .subscribe-button span:last-child {
-    color: #D4D4D4;
+    color: #f0f0f0;
   }
   
   main #main-video-content .main-video__details-info {
@@ -752,7 +619,7 @@
   
   main #main-video-content .comments-list {
     padding: 2rem 0;
-    border-bottom: #D4D4D4 1px solid;
+    border-bottom: #f0f0f0 1px solid;
   }
   
   main #main-video-content .comments-list .comments-form {
@@ -788,13 +655,13 @@
     border: none;
     font-size: 0.8125rem;
     height: 2rem;
-    border-bottom: #D4D4D4 1px solid;
+    border-bottom: #f0f0f0 1px solid;
   }
   
   main #main-video-content .comments-list .comments-form__input-shown {
     outline: none;
     background-color: #f1f1f1;
-    border-bottom: #D4D4D4 2px solid;
+    border-bottom: #f0f0f0 2px solid;
   }
   
   @-webkit-keyframes color-change {
@@ -1422,9 +1289,9 @@ h3 {
 }
 
 .userProfile {
-  margin-left: 4vw;
-  margin-top: 3%;
-  margin-right: 4vw;
+  margin-left: 1vw;
+  margin-top: 1vw;
+  margin-right: 1vw;
   text-align: left;
 }
 
@@ -1477,3 +1344,13 @@ h3 {
 .ant-upload-list-picture-container .ant-tooltip-arrow, .ant-upload-list-picture-container .ant-tooltip-inner  {
   display: none;
 } 
+
+.ant-card {
+  border-radius: 4px;
+  box-shadow: 0 2px 16px 0 rgba(0,0,0,.05);
+  margin: 16px;
+}
+
+.ant-card-head-title {
+  font-size: 20px;
+}

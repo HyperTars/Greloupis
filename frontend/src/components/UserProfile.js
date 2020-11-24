@@ -17,6 +17,7 @@ import {
   Space,
   Upload,
   message,
+  Card,
 } from "antd";
 
 import {
@@ -770,282 +771,289 @@ function UserProfile({ userId }) {
 
   const sampleFormat = (
     <div className="topMargin">
-      <Row gutter={12}>
+      <Row gutter={0}>
         <Col span={8}>
           <div className="userProfile">
-            <h4>{isLocalUser ? "My Profiles: " : "User Profiles: "}</h4>
-            <RegistrationForm></RegistrationForm>
+            <Card title={isLocalUser ? "My Profiles" : "User Profiles"}>
+              <RegistrationForm></RegistrationForm>
+            </Card>
           </div>
         </Col>
 
         <Col span={16}>
           <div className="userProfile">
-            <h4>{isLocalUser ? "My Videos: " : "User Videos: "}</h4>
-            {videoData == null ? (
-              <Spin />
-            ) : (
-              <List
-                itemLayout="vertical"
-                size="large"
-                pagination={{
-                  pageSize: 2,
-                }}
-                dataSource={videoData}
-                renderItem={(item) => (
-                  <List.Item
-                    actions={[
-                      <IconText
-                        icon={EyeOutlined}
-                        text={item.video_view}
-                        key="list-vertical-view-o"
-                      />,
-                      <IconText
-                        icon={StarOutlined}
-                        text={item.video_star}
-                        key="list-vertical-star-o"
-                      />,
-                      <IconText
-                        icon={LikeOutlined}
-                        text={item.video_like}
-                        key="list-vertical-like-o"
-                      />,
+            <Card title={isLocalUser ? "My Videos" : "User Videos"}>
+              {videoData == null ? (
+                <Spin />
+              ) : (
+                <List
+                  itemLayout="vertical"
+                  size="large"
+                  pagination={{
+                    pageSize: 2,
+                  }}
+                  dataSource={videoData}
+                  renderItem={(item) => (
+                    <List.Item
+                      actions={[
+                        <IconText
+                          icon={EyeOutlined}
+                          text={item.video_view}
+                          key="list-vertical-view-o"
+                        />,
+                        <IconText
+                          icon={StarOutlined}
+                          text={item.video_star}
+                          key="list-vertical-star-o"
+                        />,
+                        <IconText
+                          icon={LikeOutlined}
+                          text={item.video_like}
+                          key="list-vertical-like-o"
+                        />,
 
-                      <IconText
-                        icon={CalendarOutlined}
-                        text={dateConvert(item.video_upload_date)}
-                        key="list-vertical-date"
-                      />,
-                      <IconText
-                        icon={FieldTimeOutlined}
-                        text={secondTimeConvert(item.video_duration)}
-                        key="list-vertical-time"
-                      />,
-                      isLocalUser ? (
-                        <Link to={`/video/update/${item.video_id}`}>
-                          <Button className="navigateButton">
-                            Manage Video
-                          </Button>
-                        </Link>
-                      ) : (
-                        <div></div>
-                      ),
-                    ]}
-                    extra={
-                      <Link to={"/video/" + item.video_id}>
-                        <img
-                          width={160}
-                          alt="logo"
-                          src={generateThumbnail(item.video_thumbnail)}
-                        />
-                      </Link>
-                    }
-                  >
-                    <List.Item.Meta
-                      title={
-                        <Link to={"/video/" + item.video_id}>
-                          {item.video_title}
-                        </Link>
-                      }
-                      description={
-                        item.video_description !== "" ? (
-                          ellipsifyStr(item.video_description)
+                        <IconText
+                          icon={CalendarOutlined}
+                          text={dateConvert(item.video_upload_date)}
+                          key="list-vertical-date"
+                        />,
+                        <IconText
+                          icon={FieldTimeOutlined}
+                          text={secondTimeConvert(item.video_duration)}
+                          key="list-vertical-time"
+                        />,
+                        isLocalUser ? (
+                          <Link to={`/video/update/${item.video_id}`}>
+                            <Button className="navigateButton">
+                              Manage Video
+                            </Button>
+                          </Link>
                         ) : (
-                          <br />
-                        )
-                      }
-                    />
-                    {item.content}
-                  </List.Item>
-                )}
-              />
-            )}
-
-            <h4>
-              {isLocalUser
-                ? "My Watching History: "
-                : "User Watching History: "}
-            </h4>
-            {userProcess == null ? (
-              <Spin />
-            ) : (
-              <List
-                grid={{ gutter: 12, column: 2 }}
-                itemLayout="vertical"
-                size="large"
-                pagination={{
-                  pageSize: 2,
-                }}
-                dataSource={userProcess}
-                renderItem={(item) => (
-                  <List.Item>
-                    <List.Item.Meta
-                      avatar={
+                          <div></div>
+                        ),
+                      ]}
+                      extra={
                         <Link to={"/video/" + item.video_id}>
-                          <Avatar
-                            shape="square"
-                            size={54}
+                          <img
+                            width={160}
+                            alt="logo"
                             src={generateThumbnail(item.video_thumbnail)}
                           />
                         </Link>
                       }
-                      title={
-                        <Link to={"/video/" + item.video_id}>
-                          {item.video_title}
-                        </Link>
-                      }
-                      description={
-                        "Last watched on " + dateConvert(item.process_date)
-                      }
-                    />
-                  </List.Item>
-                )}
-              />
-            )}
+                    >
+                      <List.Item.Meta
+                        title={
+                          <Link to={"/video/" + item.video_id}>
+                            {item.video_title}
+                          </Link>
+                        }
+                        description={
+                          item.video_description !== "" ? (
+                            ellipsifyStr(item.video_description)
+                          ) : (
+                            <br />
+                          )
+                        }
+                      />
+                      {item.content}
+                    </List.Item>
+                  )}
+                />
+              )}
+            </Card>
 
-            <h4>{isLocalUser ? "My Stars: " : "User Stars: "}</h4>
-            {userStar == null ? (
-              <Spin />
-            ) : (
-              <List
-                grid={{ gutter: 12, column: 2 }}
-                itemLayout="vertical"
-                size="large"
-                pagination={{
-                  pageSize: 2,
-                }}
-                dataSource={userStar}
-                renderItem={(item) => (
-                  <List.Item>
-                    <List.Item.Meta
-                      avatar={
-                        <Link to={"/video/" + item.video_id}>
-                          <Avatar
-                            shape="square"
-                            size={54}
-                            src={generateThumbnail(item.video_thumbnail)}
-                          />
-                        </Link>
-                      }
-                      title={
-                        <Link to={"/video/" + item.video_id}>
-                          {item.video_title}
-                        </Link>
-                      }
-                      description={"Star on " + dateConvert(item.star_date)}
-                    />
-                  </List.Item>
-                )}
-              />
-            )}
+            <Card
+              title={
+                isLocalUser ? "My Watching History" : "User Watching History"
+              }
+            >
+              {userProcess == null ? (
+                <Spin />
+              ) : (
+                <List
+                  grid={{ gutter: 12, column: 2 }}
+                  itemLayout="vertical"
+                  size="large"
+                  pagination={{
+                    pageSize: 2,
+                  }}
+                  dataSource={userProcess}
+                  renderItem={(item) => (
+                    <List.Item>
+                      <List.Item.Meta
+                        avatar={
+                          <Link to={"/video/" + item.video_id}>
+                            <Avatar
+                              shape="square"
+                              size={54}
+                              src={generateThumbnail(item.video_thumbnail)}
+                            />
+                          </Link>
+                        }
+                        title={
+                          <Link to={"/video/" + item.video_id}>
+                            {item.video_title}
+                          </Link>
+                        }
+                        description={
+                          "Last watched on " + dateConvert(item.process_date)
+                        }
+                      />
+                    </List.Item>
+                  )}
+                />
+              )}
+            </Card>
 
-            <h4>{isLocalUser ? "My Comments: " : "User Comments: "}</h4>
-            {userComment == null ? (
-              <Spin />
-            ) : (
-              <List
-                itemLayout="vertical"
-                size="large"
-                pagination={{
-                  pageSize: 2,
-                }}
-                dataSource={userComment}
-                renderItem={(item) => (
-                  <List.Item>
-                    <List.Item.Meta
-                      avatar={
-                        <Link to={"/video/" + item.video_id}>
-                          <Avatar
-                            shape="square"
-                            size={54}
-                            src={generateThumbnail(item.video_thumbnail)}
-                          />
-                        </Link>
-                      }
-                      title={
-                        <Link to={"/video/" + item.video_id}>
-                          {item.video_title}
-                        </Link>
-                      }
-                      description={item.comment}
-                    />
-                  </List.Item>
-                )}
-              />
-            )}
+            <Card title={isLocalUser ? "My Stars" : "User Stars"}>
+              {userStar == null ? (
+                <Spin />
+              ) : (
+                <List
+                  grid={{ gutter: 12, column: 2 }}
+                  itemLayout="vertical"
+                  size="large"
+                  pagination={{
+                    pageSize: 2,
+                  }}
+                  dataSource={userStar}
+                  renderItem={(item) => (
+                    <List.Item>
+                      <List.Item.Meta
+                        avatar={
+                          <Link to={"/video/" + item.video_id}>
+                            <Avatar
+                              shape="square"
+                              size={54}
+                              src={generateThumbnail(item.video_thumbnail)}
+                            />
+                          </Link>
+                        }
+                        title={
+                          <Link to={"/video/" + item.video_id}>
+                            {item.video_title}
+                          </Link>
+                        }
+                        description={"Star on " + dateConvert(item.star_date)}
+                      />
+                    </List.Item>
+                  )}
+                />
+              )}
+            </Card>
 
-            <h4>{isLocalUser ? "My Likes: " : "User Likes: "}</h4>
-            {userLike == null ? (
-              <Spin />
-            ) : (
-              <List
-                grid={{ gutter: 12, column: 2 }}
-                itemLayout="vertical"
-                size="large"
-                pagination={{
-                  pageSize: 2,
-                }}
-                dataSource={userLike}
-                renderItem={(item) => (
-                  <List.Item>
-                    <List.Item.Meta
-                      avatar={
-                        <Link to={"/video/" + item.video_id}>
-                          <Avatar
-                            shape="square"
-                            size={54}
-                            src={generateThumbnail(item.video_thumbnail)}
-                          />
-                        </Link>
-                      }
-                      title={
-                        <Link to={"/video/" + item.video_id}>
-                          {item.video_title}
-                        </Link>
-                      }
-                      description={"Like on " + dateConvert(item.like_date)}
-                    />
-                  </List.Item>
-                )}
-              />
-            )}
+            <Card title={isLocalUser ? "My Comments" : "User Comments"}>
+              {userComment == null ? (
+                <Spin />
+              ) : (
+                <List
+                  itemLayout="vertical"
+                  size="large"
+                  pagination={{
+                    pageSize: 2,
+                  }}
+                  dataSource={userComment}
+                  renderItem={(item) => (
+                    <List.Item>
+                      <List.Item.Meta
+                        avatar={
+                          <Link to={"/video/" + item.video_id}>
+                            <Avatar
+                              shape="square"
+                              size={54}
+                              src={generateThumbnail(item.video_thumbnail)}
+                            />
+                          </Link>
+                        }
+                        title={
+                          <Link to={"/video/" + item.video_id}>
+                            {item.video_title}
+                          </Link>
+                        }
+                        description={item.comment}
+                      />
+                    </List.Item>
+                  )}
+                />
+              )}
+            </Card>
 
-            <h4>{isLocalUser ? "My Dislikes: " : "User Dislikes: "}</h4>
-            {userDislike == null ? (
-              <Spin />
-            ) : (
-              <List
-                grid={{ gutter: 12, column: 2 }}
-                itemLayout="vertical"
-                size="large"
-                pagination={{
-                  pageSize: 2,
-                }}
-                dataSource={userDislike}
-                renderItem={(item) => (
-                  <List.Item>
-                    <List.Item.Meta
-                      avatar={
-                        <Link to={"/video/" + item.video_id}>
-                          <Avatar
-                            shape="square"
-                            size={54}
-                            src={generateThumbnail(item.video_thumbnail)}
-                          />
-                        </Link>
-                      }
-                      title={
-                        <Link to={"/video/" + item.video_id}>
-                          {item.video_title}
-                        </Link>
-                      }
-                      description={
-                        "Dislike on " + dateConvert(item.dislike_date)
-                      }
-                    />
-                  </List.Item>
-                )}
-              />
-            )}
+            <Card title={isLocalUser ? "My Likes" : "User Likes"}>
+              {userLike == null ? (
+                <Spin />
+              ) : (
+                <List
+                  grid={{ gutter: 12, column: 2 }}
+                  itemLayout="vertical"
+                  size="large"
+                  pagination={{
+                    pageSize: 2,
+                  }}
+                  dataSource={userLike}
+                  renderItem={(item) => (
+                    <List.Item>
+                      <List.Item.Meta
+                        avatar={
+                          <Link to={"/video/" + item.video_id}>
+                            <Avatar
+                              shape="square"
+                              size={54}
+                              src={generateThumbnail(item.video_thumbnail)}
+                            />
+                          </Link>
+                        }
+                        title={
+                          <Link to={"/video/" + item.video_id}>
+                            {item.video_title}
+                          </Link>
+                        }
+                        description={"Like on " + dateConvert(item.like_date)}
+                      />
+                    </List.Item>
+                  )}
+                />
+              )}
+            </Card>
+
+            <Card title={isLocalUser ? "My Dislikes" : "User Dislikes"}>
+              {userDislike == null ? (
+                <Spin />
+              ) : (
+                <List
+                  grid={{ gutter: 12, column: 2 }}
+                  itemLayout="vertical"
+                  size="large"
+                  pagination={{
+                    pageSize: 2,
+                  }}
+                  dataSource={userDislike}
+                  renderItem={(item) => (
+                    <List.Item>
+                      <List.Item.Meta
+                        avatar={
+                          <Link to={"/video/" + item.video_id}>
+                            <Avatar
+                              shape="square"
+                              size={54}
+                              src={generateThumbnail(item.video_thumbnail)}
+                            />
+                          </Link>
+                        }
+                        title={
+                          <Link to={"/video/" + item.video_id}>
+                            {item.video_title}
+                          </Link>
+                        }
+                        description={
+                          "Dislike on " + dateConvert(item.dislike_date)
+                        }
+                      />
+                    </List.Item>
+                  )}
+                />
+              )}
+            </Card>
           </div>
         </Col>
       </Row>
