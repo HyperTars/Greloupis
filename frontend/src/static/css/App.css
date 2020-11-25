@@ -117,8 +117,7 @@
   }
   
   .header-logo__img {
-    width: 7rem;
-    height: 1.5625rem;
+    width: 8rem;
   }
   
   .header-logo__tooltip {
@@ -153,7 +152,7 @@
     width: 100%;
     min-width: auto;
     height: 100%;
-    font-size: 1.125rem;
+    font-size: 1rem;
     padding: 1rem;
     border: none;
     -webkit-box-shadow: inset 0px 0px 3px 1px #D4D4D450;
@@ -185,9 +184,8 @@
     background-color: #F1F1F1;
   }
   
-  .header-searchBar__button-icon .img {
-    height: 1.25rem;
-    width: 1.25rem;
+  .header-searchBar__search-icon {
+    color: grey;
   }
   
   .header-searchBar__button-tooltip {
@@ -218,11 +216,14 @@
   }
   
   .header-profile__upload-icon {
+    color: grey;
     -webkit-box-sizing: content-box;
             box-sizing: content-box;
-    height: 2.25rem;
-    width: 2.0625rem;
-    margin: 0 1rem;
+    transform: scale(1.5);
+  }
+
+  .header-profile__upload-icon:hover{
+    color: #0095FF;
   }
   
   .header-profile__avatar {
@@ -1353,3 +1354,37 @@ h3 {
 .ant-upload-list-picture-container .ant-tooltip-arrow, .ant-upload-list-picture-container .ant-tooltip-inner  {
   display: none;
 } 
+
+.profile-button-line {
+  display: flex;
+  grid-column-gap: 20px;
+}
+
+.profile-button {
+  margin-top: 0px;
+}
+
+.profile-manage-video {
+  margin-left: 5px;
+}
+
+@media screen and (max-width: 1350px) {
+  .profile-button-line {
+    display: block;
+    flex-wrap: wrap;
+  }
+
+  .profile-button {
+    margin-top: 10px;
+  }
+}
+
+.profile-video-title {
+  color: black;
+  margin-top: 4px;
+}
+
+.profile-icon-text {
+  margin-top: 30px;
+  padding-top: 10px;
+}

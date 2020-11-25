@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getUserInfo, updateUserInfo, deleteUser } from "./FetchData";
 import { Redirect, Link } from "react-router-dom";
+import Grid from "@material-ui/core/Grid";
 import "../static/css/App.css";
 
 import {
@@ -157,6 +158,7 @@ function UserProfile({ userId }) {
     },
   };
   const tailFormItemLayout = {
+    display: "flex",
     wrapperCol: {
       xs: {
         span: 24,
@@ -730,23 +732,20 @@ function UserProfile({ userId }) {
         {isLocalUser ? (
           <div>
             <Form.Item {...tailFormItemLayout}>
-              <Button type="primary" htmlType="submit">
+            <Grid className="profile-button-line">
+              <Button type="primary" htmlType="submit" className="profile-button">
                 Update Profiles
               </Button>
+              <Button
+                type="primary"
+                className="deleteButton profile-button"
+                onClick={deleteUserHandler}
+              >
+                Delete Account
+              </Button>
+            </Grid>
             </Form.Item>
           </div>
-        ) : (
-          <div></div>
-        )}
-
-        {isLocalUser ? (
-          <Button
-            type="primary"
-            className="deleteButton"
-            onClick={deleteUserHandler}
-          >
-            Delete Account
-          </Button>
         ) : (
           <div></div>
         )}
@@ -799,7 +798,8 @@ function UserProfile({ userId }) {
                         <IconText
                           icon={EyeOutlined}
                           text={item.video_view}
-                          key="list-vertical-view-o"
+                          key="list-vertical-star-o"
+                          className="profile-icon-text"
                         />,
                         <IconText
                           icon={StarOutlined}
@@ -822,15 +822,6 @@ function UserProfile({ userId }) {
                           text={secondTimeConvert(item.video_duration)}
                           key="list-vertical-time"
                         />,
-                        isLocalUser ? (
-                          <Link to={`/video/update/${item.video_id}`}>
-                            <Button className="navigateButton">
-                              Manage Video
-                            </Button>
-                          </Link>
-                        ) : (
-                          <div></div>
-                        ),
                       ]}
                       extra={
                         <Link to={"/video/" + item.video_id}>
@@ -844,9 +835,20 @@ function UserProfile({ userId }) {
                     >
                       <List.Item.Meta
                         title={
-                          <Link to={"/video/" + item.video_id}>
+                          <Grid className="profile-button-line">
+                          <Link to={"/video/" + item.video_id} className="profile-video-title">
                             {item.video_title}
                           </Link>
+                          {isLocalUser ? (
+                            <Link to={`/video/update/${item.video_id}`}>
+                              <Button className="navigateButton profile-button profile-manage-video">
+                                Manage Video
+                              </Button>
+                            </Link>
+                          ) : (
+                            <div></div>
+                          )}
+                          </Grid>
                         }
                         description={
                           item.video_description !== "" ? (
