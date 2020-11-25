@@ -247,8 +247,6 @@ function UserProfile({ userId }) {
         user_status: values.status,
       };
 
-      console.log(dataObj["user_thumbnail"]);
-
       if (userData.user_name !== values.nickname)
         dataObj["user_name"] = values.nickname;
       if (userData.user_email !== values.email)
@@ -719,16 +717,20 @@ function UserProfile({ userId }) {
         {isLocalUser ? (
           <div>
             <Form.Item className="profile-button-form">
-            <Button type="primary" htmlType="submit" className="profile-button">
-              Update Profiles
-            </Button>
-            <Button
-              type="primary"
-              className="deleteButton profile-button"
-              onClick={deleteUserHandler}
-            >
-              Delete Account
-            </Button>
+              <Button
+                type="primary"
+                htmlType="submit"
+                className="profile-button"
+              >
+                Update Profiles
+              </Button>
+              <Button
+                type="primary"
+                className="deleteButton profile-button"
+                onClick={deleteUserHandler}
+              >
+                Delete Account
+              </Button>
             </Form.Item>
           </div>
         ) : (
@@ -812,7 +814,10 @@ function UserProfile({ userId }) {
                       <List.Item.Meta
                         title={
                           <Grid className="profile-video-line">
-                            <Link to={"/video/" + item.video_id} className="profile-video-title">
+                            <Link
+                              to={"/video/" + item.video_id}
+                              className="profile-video-title"
+                            >
                               {item.video_title}
                             </Link>
                             {isLocalUser ? (

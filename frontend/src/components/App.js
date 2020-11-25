@@ -95,12 +95,6 @@ class App extends Component {
               )}
             />
             <Route component={EmptyPage} render={() => <EmptyPage />} />
-            {/* <PrivateRoute
-              exact
-              path="/dashboard"
-              component={Dashboard}
-              render={(props) => <Dashboard />}
-            /> */}
           </Switch>
         </div>
       </Router>

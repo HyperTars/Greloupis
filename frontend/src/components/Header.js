@@ -3,8 +3,8 @@ import "../static/css/App.css";
 import { Link } from "react-router-dom";
 import { getSubstr, generateAvatar } from "../util";
 import { Menu, Dropdown } from "antd";
-import VideoCallIcon from '@material-ui/icons/VideoCall';
-import SearchIcon from '@material-ui/icons/Search';
+import VideoCallIcon from "@material-ui/icons/VideoCall";
+import SearchIcon from "@material-ui/icons/Search";
 
 const isLoggedIn = localStorage.getItem("user_id") != null;
 const currentUserId = getSubstr(localStorage.getItem("user_id"));
@@ -73,7 +73,7 @@ class Header extends Component {
 
           <div className="header-searchBar__button">
             <button className="header-searchBar__button-icon" type="submit">
-              <SearchIcon className="header-searchBar__search-icon"/>
+              <SearchIcon className="header-searchBar__search-icon" />
             </button>
 
             <span className="tooltip header-searchBar__button-tooltip">
@@ -97,7 +97,7 @@ class Header extends Component {
               <a
                 className="ant-dropdown-link"
                 onClick={(e) => e.preventDefault()}
-                href="./"
+                href="/"
               >
                 <img
                   className="header-profile__avatar-img"

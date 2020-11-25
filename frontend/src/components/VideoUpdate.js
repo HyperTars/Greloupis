@@ -343,24 +343,29 @@ function VideoUpdate({ videoId }) {
             <Option value="private">private</Option>
           </Select>
         </Form.Item>
-        
+
         <Form.Item className="video-button-form">
-          <Button type="primary" htmlType="submit" onSubmit={submitHandler} className="video-update-button">
+          <Button
+            type="primary"
+            htmlType="submit"
+            onSubmit={submitHandler}
+            className="video-update-button"
+          >
             Update Video
           </Button>
           <Button
-          type="primary"
-          className="deleteButton video-update-button"
-          onClick={() => {
-            deleteVideo(videoId).then(() => {
-              alert("Video deleted!");
-              window.location.href =
-                "/user/" + getSubstr(localStorage.getItem("user_id"));
-            });
-          }}
-        >
-          Delete Video
-        </Button>
+            type="primary"
+            className="deleteButton video-update-button"
+            onClick={() => {
+              deleteVideo(videoId).then(() => {
+                alert("Video deleted!");
+                window.location.href =
+                  "/user/" + getSubstr(localStorage.getItem("user_id"));
+              });
+            }}
+          >
+            Delete Video
+          </Button>
         </Form.Item>
       </Form>
     );
