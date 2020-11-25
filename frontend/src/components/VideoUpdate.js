@@ -85,18 +85,6 @@ function VideoUpdate({ videoId }) {
       sm: { span: 18 },
     },
   };
-  const tailFormItemLayout = {
-    wrapperCol: {
-      xs: {
-        span: 24,
-        offset: 0,
-      },
-      sm: {
-        span: 16,
-        offset: 0,
-      },
-    },
-  };
 
   const [fileList, updateFileList] = useState([]);
   const [thumbnailName, setThumbnailName] = useState("");
@@ -355,16 +343,14 @@ function VideoUpdate({ videoId }) {
             <Option value="private">private</Option>
           </Select>
         </Form.Item>
-
-        <Form.Item {...tailFormItemLayout}>
-          <Button type="primary" htmlType="submit" onSubmit={submitHandler}>
+        
+        <Form.Item className="video-button-form">
+          <Button type="primary" htmlType="submit" onSubmit={submitHandler} className="video-update-button">
             Update Video
           </Button>
-        </Form.Item>
-
-        <Button
+          <Button
           type="primary"
-          className="deleteButton"
+          className="deleteButton video-update-button"
           onClick={() => {
             deleteVideo(videoId).then(() => {
               alert("Video deleted!");
@@ -375,6 +361,7 @@ function VideoUpdate({ videoId }) {
         >
           Delete Video
         </Button>
+        </Form.Item>
       </Form>
     );
   };

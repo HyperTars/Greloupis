@@ -1304,6 +1304,7 @@ h3 {
 }
 
 .deleteButton {
+  margin-top: 15px;
   background-color: #e60000;
   border-color: #e60000;
   padding: 4px 15px;
@@ -1355,28 +1356,68 @@ h3 {
   display: none;
 } 
 
-.profile-button-line {
+.profile-video-line {
   display: flex;
   justify-content: space-between;
-  grid-column-gap: 20px;
+}
+
+.profile-button-form {
+  text-align: center;
 }
 
 .profile-button {
-  margin-top: 0px;
+  width: 23vw;
 }
 
-.profile-manage-video {
-  margin-left: 5px;
+.video-button-form {
+  text-align: center;
 }
 
-@media screen and (max-width: 1200px) {
-  .profile-button-line {
+.video-update-button {
+  width: 40vw;
+}
+
+@media screen and (max-width: 1250px) {
+  .profile-button-form {
+    display: block;
+    text-align: center;
+  }
+  
+  .profile-button {
+    width: 15vw;
+  }
+}
+
+@media screen and (max-width: 1250px) {
+  .video-update-button {
+    width: 38vw;
+  }
+}
+
+@media screen and (max-width: 1050px) {
+  .video-update-button {
+    width: 35vw;
+  }
+}
+
+@media screen and (max-width: 750px) {
+  .video-update-button {
+    width: 30vw;
+  }
+}
+
+.profile-delete-account {
+  margin-top: 16px;
+}
+
+@media screen and (max-width: 950px) {
+  .profile-video-line {
     display: block;
     justify-content: space-between;
     flex-wrap: wrap;
   }
 
-  .profile-button {
+  .profile-manage-video {
     margin-top: 10px;
   }
 }

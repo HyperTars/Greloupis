@@ -157,19 +157,6 @@ function UserProfile({ userId }) {
       sm: { span: 24 },
     },
   };
-  const tailFormItemLayout = {
-    display: "flex",
-    wrapperCol: {
-      xs: {
-        span: 24,
-        offset: 0,
-      },
-      sm: {
-        span: 16,
-        offset: 0,
-      },
-    },
-  };
 
   const deleteUserHandler = () => {
     deleteUser(userId).then(() => {
@@ -731,19 +718,17 @@ function UserProfile({ userId }) {
 
         {isLocalUser ? (
           <div>
-            <Form.Item {...tailFormItemLayout}>
-            <Grid className="profile-button-line">
-              <Button type="primary" htmlType="submit" className="profile-button">
-                Update Profiles
-              </Button>
-              <Button
-                type="primary"
-                className="deleteButton profile-button"
-                onClick={deleteUserHandler}
-              >
-                Delete Account
-              </Button>
-            </Grid>
+            <Form.Item className="profile-button-form">
+            <Button type="primary" htmlType="submit" className="profile-button">
+              Update Profiles
+            </Button>
+            <Button
+              type="primary"
+              className="deleteButton profile-button"
+              onClick={deleteUserHandler}
+            >
+              Delete Account
+            </Button>
             </Form.Item>
           </div>
         ) : (
@@ -823,25 +808,16 @@ function UserProfile({ userId }) {
                           key="list-vertical-time"
                         />,
                       ]}
-                      extra={
-                        <Link to={"/video/" + item.video_id}>
-                          <img
-                            width={160}
-                            alt="logo"
-                            src={generateThumbnail(item.video_thumbnail)}
-                          />
-                        </Link>
-                      }
                     >
                       <List.Item.Meta
                         title={
-                          <Grid className="profile-button-line">
+                          <Grid className="profile-video-line">
                             <Link to={"/video/" + item.video_id} className="profile-video-title">
                               {item.video_title}
                             </Link>
                             {isLocalUser ? (
                               <Link to={`/video/update/${item.video_id}`}>
-                                <Button className="navigateButton profile-button profile-manage-video">
+                                <Button className="navigateButton profile-manage-video">
                                   Manage Video
                                 </Button>
                               </Link>
@@ -849,6 +825,15 @@ function UserProfile({ userId }) {
                               <div></div>
                             )}
                           </Grid>
+                        }
+                        avatar={
+                          <Link to={"/video/" + item.video_id}>
+                            <img
+                              width={160}
+                              alt="logo"
+                              src={generateThumbnail(item.video_thumbnail)}
+                            />
+                          </Link>
                         }
                         description={
                           item.video_description !== "" ? (
