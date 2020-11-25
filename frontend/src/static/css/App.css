@@ -1385,6 +1385,12 @@ h3 {
 
 @media screen and (max-width: 1950px) {
   .video-update-button {
+    width: 43vw;
+  }
+}
+
+@media screen and (max-width: 1750px) {
+  .video-update-button {
     width: 42vw;
   }
 }
