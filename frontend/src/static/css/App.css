@@ -1449,3 +1449,8 @@ h3 {
   margin-top: 30px;
   padding-top: 10px;
 }
+
+.ant-space-item svg {
+  width: 1.75em;
+  height: 1.75em;
+}
