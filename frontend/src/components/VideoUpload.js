@@ -17,7 +17,6 @@ export default class VideoUpload extends Component {
       video_duration: 0,
       video_raw_size: 0,
       fileObj: "",
-      message: "",
     };
   }
 
@@ -31,7 +30,7 @@ export default class VideoUpload extends Component {
       file.type !== "video/avi" &&
       file.type !== "video/rmvb"
     ) {
-      alert(`${file.name} is not a rmvb/mp4/avi file!`);
+      alert(`${file.name} is not a .rmvb / .mp4 / .avi file!`);
       window.location.reload();
     }
 
