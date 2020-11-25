@@ -89,7 +89,7 @@ function Home() {
               itemLayout="vertical"
               size="large"
               pagination={{
-                pageSize: 5,
+                pageSize: 10,
               }}
               dataSource={videoResult}
               renderItem={(item) => (
