@@ -119,7 +119,7 @@ function SearchResult() {
               itemLayout="vertical"
               size="large"
               pagination={{
-                pageSize: 3,
+                pageSize: 5,
               }}
               dataSource={videoResult}
               renderItem={(item) => (

@@ -1364,14 +1364,6 @@ h3 {
   width: 23vw;
 }
 
-.video-button-form {
-  text-align: center;
-}
-
-.video-update-button {
-  width: 40vw;
-}
-
 @media screen and (max-width: 1250px) {
   .profile-button-form {
     display: block;
@@ -1380,6 +1372,26 @@ h3 {
   
   .profile-button {
     width: 15vw;
+  }
+}
+
+.video-button-form {
+  text-align: center;
+}
+
+.video-update-button {
+  width: 44vw;
+}
+
+@media screen and (max-width: 1950px) {
+  .video-update-button {
+    width: 42vw;
+  }
+}
+
+@media screen and (max-width: 1550px) {
+  .video-update-button {
+    width: 40vw;
   }
 }
 
