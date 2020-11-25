@@ -836,18 +836,18 @@ function UserProfile({ userId }) {
                       <List.Item.Meta
                         title={
                           <Grid className="profile-button-line">
-                          <Link to={"/video/" + item.video_id} className="profile-video-title">
-                            {item.video_title}
-                          </Link>
-                          {isLocalUser ? (
-                            <Link to={`/video/update/${item.video_id}`}>
-                              <Button className="navigateButton profile-button profile-manage-video">
-                                Manage Video
-                              </Button>
+                            <Link to={"/video/" + item.video_id} className="profile-video-title">
+                              {item.video_title}
                             </Link>
-                          ) : (
-                            <div></div>
-                          )}
+                            {isLocalUser ? (
+                              <Link to={`/video/update/${item.video_id}`}>
+                                <Button className="navigateButton profile-button profile-manage-video">
+                                  Manage Video
+                                </Button>
+                              </Link>
+                            ) : (
+                              <div></div>
+                            )}
                           </Grid>
                         }
                         description={

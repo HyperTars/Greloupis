@@ -117,7 +117,7 @@
   }
   
   .header-logo__img {
-    width: 8rem;
+    width: 9rem;
   }
   
   .header-logo__tooltip {
@@ -1352,6 +1352,7 @@ h3 {
 
 .profile-button-line {
   display: flex;
+  justify-content: space-between;
   grid-column-gap: 20px;
 }
 
@@ -1363,9 +1364,10 @@ h3 {
   margin-left: 5px;
 }
 
-@media screen and (max-width: 1350px) {
+@media screen and (max-width: 1200px) {
   .profile-button-line {
     display: block;
+    justify-content: space-between;
     flex-wrap: wrap;
   }
 
