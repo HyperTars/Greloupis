@@ -940,7 +940,7 @@ class TestQueryVideo(unittest.TestCase):
         old_title = self.data['temp_video'][0]['video_title']
         new_title = "new_title"
         new_raw_content = "some new content uri"
-        new_raw_status = "finished"
+        new_raw_status = "streaming"
         new_raw_size = 123.45
         new_duration = 777
         new_channel = "tc"

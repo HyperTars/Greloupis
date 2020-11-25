@@ -8,8 +8,11 @@ from utils.util_pattern import util_pattern_format_param
 from utils.util_serializer import util_serializer_mongo_results_to_array
 from utils.util_validator import is_valid_id
 from models.model_errors import ServiceError, ErrorCode
+from settings import config
 
-VALID_VIDEO_STATUS = ['public', 'private', 'processing', 'deleted']
+conf = config['base']
+VALID_VIDEO_STATUS = conf.VIDEO_STATUS
+VALID_VIDEO_RAW_STATUS = conf.VIDEO_RAW_STATUS
 
 
 def service_video_auth_get(token, video_id):
@@ -19,7 +22,10 @@ def service_video_auth_get(token, video_id):
     video = videos[0].to_dict()
     user = video['user_id']
     status = video['video_status']
+    raw = video['video_raw_status']
     if status != 'public' and user != token:
+        return False
+    if raw != 'streaming' and user != token:
         return False
     return True
 
@@ -91,6 +97,10 @@ def service_video_update(**kw):
         raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
 
     if 'video_status' in kw and kw['video_status'] not in VALID_VIDEO_STATUS:
+        raise ServiceError(ErrorCode.SERVICE_VIDEO_INVALID_STATUS)
+
+    if 'video_raw_status' in kw and \
+       kw['video_raw_status'] not in VALID_VIDEO_RAW_STATUS:
         raise ServiceError(ErrorCode.SERVICE_VIDEO_INVALID_STATUS)
 
     if not is_valid_id(kw["video_id"]):

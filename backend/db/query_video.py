@@ -2,15 +2,13 @@ from models.model_video import Video, VideoURI
 from db.query_user import query_user_get_by_id
 from models.model_errors import MongoError, ErrorCode
 from utils.util_time import get_time_now_utc
+from settings import config
 import re
 
-VALID_VIDEO_STATUS = ['public', 'private', 'processing', 'deleted']
-VALID_VIDEO_CNT = ['view', 'views', 'video_view',
-                   'comment', 'comments', 'video_comment',
-                   'like', 'likes', 'video_like',
-                   'dislike', 'dislikes', 'video_dislike',
-                   'star', 'stars', 'video_star',
-                   'share', 'shares', 'video_share']
+conf = config['base']
+VALID_VIDEO_STATUS = conf.VIDEO_STATUS
+VALID_VIDEO_RAW_STATUS = conf.VIDEO_RAW_STATUS
+VALID_VIDEO_CNT = conf.VIDEO_CNT
 
 
 ##########
@@ -27,7 +25,7 @@ def query_video_create(user_id: str):
 
     # Construct Video Model
     video = Video(user_id=user_id, video_title="", video_raw_content="",
-                  video_raw_status="pending", video_status="processing",
+                  video_raw_status="pending", video_status="public",
                   video_raw_size=0, video_duration=0,
                   video_channel="", video_tag=[], video_category=[],
                   video_description="", video_language="",
@@ -209,6 +207,8 @@ def query_video_update(video_id: str, **kw):
         Video.objects(id=video_id).update(
             video_raw_content=kw['video_raw_content'])
     if 'video_raw_status' in kw:
+        if kw['video_raw_status'] not in VALID_VIDEO_RAW_STATUS:
+            raise MongoError(ErrorCode.MONGODB_VIDEO_INVALID_STATUS)
         Video.objects(id=video_id).update(
             video_raw_status=kw['video_raw_status'])
     if 'video_raw_size' in kw:
