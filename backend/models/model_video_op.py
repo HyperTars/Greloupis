@@ -9,7 +9,6 @@ db = MongoEngine()
 
 # VideoOp Model
 class VideoOp(db.Document):
-    _id = db.StringField()
     user_id = db.StringField(max_length=100, required=True)
     video_id = db.StringField(max_length=100, required=True)
     process = db.IntField(required=False, default=0)
@@ -25,7 +24,7 @@ class VideoOp(db.Document):
 
     # Convert to dict
     def to_dict(self):
-        video_op_dict = {'video_op_id': str(self._id), 'user_id': self.user_id,
+        video_op_dict = {'video_op_id': str(self.id), 'user_id': self.user_id,
                          'video_id': self.video_id,
                          'process': self.process, 'comment': self.comment,
                          'like': self.like, 'dislike': self.dislike,

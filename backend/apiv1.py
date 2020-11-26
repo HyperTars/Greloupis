@@ -11,7 +11,6 @@ from routes.route_search import search
 blueprint = Blueprint('api', __name__, url_prefix='/')
 api = Api(blueprint)
 
-# api.add_namespace(auth)
 api.add_namespace(user)
 api.add_namespace(video)
 api.add_namespace(search)

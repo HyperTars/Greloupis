@@ -10,8 +10,7 @@ from .route_user import thumbnail, general_response, star, comment, like, \
     dislike_response_list
 from service.service_video import service_video_info, service_video_delete, \
     service_video_comments, service_video_dislikes, service_video_likes, \
-    service_video_stars, service_video_update, service_video_upload, \
-    service_video_auth_get, service_video_auth_modify
+    service_video_stars, service_video_update, service_video_upload
 from service.service_video_op import service_video_op_add_comment, \
     service_video_op_add_dislike, service_video_op_add_like, \
     service_video_op_add_process, service_video_op_add_star, \
@@ -20,8 +19,10 @@ from service.service_video_op import service_video_op_add_comment, \
     service_video_op_cancel_process, service_video_op_cancel_star, \
     service_video_op_get_comment, service_video_op_get_process, \
     service_video_op_get_view, service_video_op_update_comment, \
-    service_video_op_update_process, service_video_op_auth_get, \
-    service_video_op_auth_post, service_video_op_auth_modify
+    service_video_op_update_process
+from service.service_auth import service_auth_video_get, \
+    service_auth_video_modify, service_auth_video_op_get, \
+    service_auth_video_op_post, service_auth_video_op_modify
 from utils.util_error_handler import util_error_handler
 from utils.util_serializer import util_serializer_api_response, \
     util_serializer_mongo_results_to_array
@@ -115,26 +116,20 @@ class Video(Resource):
         """
 
         try:
-            if request.form != {}:
-                kw = dict(request.form)
-            else:
-                raw_data = request.data.decode("utf-8")
-                kw = ast.literal_eval(raw_data)
-
             # check authority
             if get_jwt_identity is None:
                 raise RouteError(ErrorCode.ROUTE_TOKEN_REQUIRED)
 
-            kw['user_id'] = get_jwt_identity()
-            upload_result = service_video_upload(**kw)
-            if upload_result is not None and upload_result != {}:
-                return_body = util_serializer_mongo_results_to_array(
-                    upload_result, format="json")
+            video_id = service_video_upload(get_jwt_identity())
+
+            if type(video_id) != str or len(video_id) != 24:
                 return util_serializer_api_response(
-                    200, body=return_body, msg="Successfully uploaded video")
-            else:
-                return util_serializer_api_response(
-                    500, msg="Failed to upload video")
+                    500, msg="Failed to create temp video instance")
+
+            return util_serializer_api_response(
+                    200, body={'video_id': video_id},
+                    msg="Successfully uploaded video")
+
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
@@ -164,7 +159,7 @@ class VideoVideoId(Resource):
                 raise RouteError(ErrorCode.ROUTE_DELETED_VIDEO)
 
             # check authority
-            if service_video_auth_get(token, video_id) is False:
+            if service_auth_video_get(token, video_id) is False:
                 raise RouteError(ErrorCode.ROUTE_PRIVATE_VIDEO)
 
             return util_serializer_api_response(
@@ -190,14 +185,10 @@ class VideoVideoId(Resource):
             token = get_jwt_identity()
 
             # check authority
-            if not service_video_auth_modify(token, video_id):
+            if not service_auth_video_modify(token, video_id):
                 raise RouteError(ErrorCode.ROUTE_TOKEN_NOT_PERMITTED)
 
             kw["video_id"] = video_id
-            if "video_tag" in kw.keys():
-                kw["video_tag"] = request.form.getlist("video_tag")
-            if "video_category" in kw.keys():
-                kw["video_category"] = request.form.getlist("video_category")
 
             update_result = service_video_update(**kw)
             if len(update_result) == 1:
@@ -222,7 +213,7 @@ class VideoVideoId(Resource):
             token = get_jwt_identity()
 
             # check authority
-            if service_video_auth_modify(token, video_id) is False:
+            if service_auth_video_modify(token, video_id) is False:
                 raise RouteError(ErrorCode.ROUTE_TOKEN_NOT_PERMITTED)
 
             service_video_delete(
@@ -253,7 +244,7 @@ class VideoVideoIdView(Resource):
             token = get_jwt_identity()
 
             # check authority
-            if service_video_auth_get(token, video_id) is False:
+            if service_auth_video_get(token, video_id) is False:
                 raise RouteError(ErrorCode.ROUTE_PRIVATE_VIDEO)
 
             view_result = service_video_op_get_view(
@@ -304,7 +295,7 @@ class VideoVideoIdComment(Resource):
             token = get_jwt_identity()
 
             # check authority
-            if service_video_auth_get(token, video_id) is False:
+            if service_auth_video_get(token, video_id) is False:
                 raise RouteError(ErrorCode.ROUTE_PRIVATE_VIDEO)
 
             comments_result = service_video_comments(
@@ -335,7 +326,7 @@ class VideoVideoIdDislike(Resource):
             token = get_jwt_identity()
 
             # check authority
-            if service_video_auth_get(token, video_id) is False:
+            if service_auth_video_get(token, video_id) is False:
                 raise RouteError(ErrorCode.ROUTE_PRIVATE_VIDEO)
 
             dislike_result = service_video_dislikes(
@@ -366,7 +357,7 @@ class VideoVideoIdLike(Resource):
             token = get_jwt_identity()
 
             # check authority
-            if service_video_auth_get(token, video_id) is False:
+            if service_auth_video_get(token, video_id) is False:
                 raise RouteError(ErrorCode.ROUTE_PRIVATE_VIDEO)
 
             like_result = service_video_likes(video_id=video_id)
@@ -394,7 +385,7 @@ class VideoVideoIdStar(Resource):
             token = get_jwt_identity()
 
             # check authority
-            if service_video_auth_get(token, video_id) is False:
+            if service_auth_video_get(token, video_id) is False:
                 raise RouteError(ErrorCode.ROUTE_PRIVATE_VIDEO)
 
             star_result = service_video_stars(video_id=video_id)
@@ -429,7 +420,7 @@ class VideoVideoIdCommentUserId(Resource):
             token = get_jwt_identity()
 
             # check authority
-            if not service_video_op_auth_get(token, user_id, video_id):
+            if not service_auth_video_op_get(token, user_id, video_id):
                 raise RouteError(ErrorCode.ROUTE_TOKEN_REQUIRED)
 
             comments_result = service_video_op_get_comment(
@@ -459,7 +450,7 @@ class VideoVideoIdCommentUserId(Resource):
             user_id = request.url.split('/')[-1]
             token = get_jwt_identity()
             # check authority
-            if not service_video_op_auth_post(token, user_id, video_id):
+            if not service_auth_video_op_post(token, user_id, video_id):
                 raise RouteError(ErrorCode.ROUTE_TOKEN_REQUIRED)
             kw['video_id'] = video_id
             kw['user_id'] = user_id
@@ -488,7 +479,7 @@ class VideoVideoIdCommentUserId(Resource):
             token = get_jwt_identity()
 
             # check authority
-            if not service_video_op_auth_modify(token, user_id):
+            if not service_auth_video_op_modify(token, user_id):
                 raise RouteError(ErrorCode.ROUTE_TOKEN_REQUIRED)
 
             kw['video_id'] = video_id
@@ -514,7 +505,7 @@ class VideoVideoIdCommentUserId(Resource):
             token = get_jwt_identity()
 
             # check authority
-            if not service_video_op_auth_modify(token, user_id):
+            if not service_auth_video_op_modify(token, user_id):
                 raise RouteError(ErrorCode.ROUTE_TOKEN_REQUIRED)
 
             comments_result = service_video_op_cancel_comment(
@@ -549,7 +540,7 @@ class VideoVideoIdProcessUserId(Resource):
             token = get_jwt_identity()
 
             # check authority
-            if not service_video_op_auth_get(token, user_id, video_id):
+            if not service_auth_video_op_get(token, user_id, video_id):
                 raise RouteError(ErrorCode.ROUTE_TOKEN_REQUIRED)
 
             process_result = service_video_op_get_process(
@@ -579,7 +570,7 @@ class VideoVideoIdProcessUserId(Resource):
             token = get_jwt_identity()
 
             # check authority
-            if not service_video_op_auth_post(token, user_id, video_id):
+            if not service_auth_video_op_post(token, user_id, video_id):
                 raise RouteError(ErrorCode.ROUTE_TOKEN_REQUIRED)
 
             kw['video_id'] = video_id
@@ -609,7 +600,7 @@ class VideoVideoIdProcessUserId(Resource):
             token = get_jwt_identity()
 
             # check authority
-            if not service_video_op_auth_modify(token, user_id):
+            if not service_auth_video_op_modify(token, user_id):
                 raise RouteError(ErrorCode.ROUTE_TOKEN_REQUIRED)
 
             kw['video_id'] = video_id
@@ -635,7 +626,7 @@ class VideoVideoIdProcessUserId(Resource):
             token = get_jwt_identity()
 
             # check authority
-            if not service_video_op_auth_modify(token, user_id):
+            if not service_auth_video_op_modify(token, user_id):
                 raise RouteError(ErrorCode.ROUTE_TOKEN_REQUIRED)
 
             process_result = service_video_op_cancel_process(
@@ -672,7 +663,7 @@ class VideoVideoIdLikeUserId(Resource):
             token = get_jwt_identity()
 
             # check authority
-            if not service_video_op_auth_post(token, user_id, video_id):
+            if not service_auth_video_op_post(token, user_id, video_id):
                 raise RouteError(ErrorCode.ROUTE_TOKEN_REQUIRED)
 
             like_result = service_video_op_add_like(
@@ -696,7 +687,7 @@ class VideoVideoIdLikeUserId(Resource):
             token = get_jwt_identity()
 
             # check authority
-            if not service_video_op_auth_modify(token, user_id):
+            if not service_auth_video_op_modify(token, user_id):
                 raise RouteError(ErrorCode.ROUTE_TOKEN_REQUIRED)
 
             like_result = service_video_op_cancel_like(
@@ -732,7 +723,7 @@ class VideoVideoIdDislikeUserId(Resource):
             token = get_jwt_identity()
 
             # check authority
-            if not service_video_op_auth_post(token, user_id, video_id):
+            if not service_auth_video_op_post(token, user_id, video_id):
                 raise RouteError(ErrorCode.ROUTE_TOKEN_REQUIRED)
 
             dislike_result = service_video_op_add_dislike(
@@ -756,7 +747,7 @@ class VideoVideoIdDislikeUserId(Resource):
             token = get_jwt_identity()
 
             # check authority
-            if not service_video_op_auth_modify(token, user_id):
+            if not service_auth_video_op_modify(token, user_id):
                 raise RouteError(ErrorCode.ROUTE_TOKEN_REQUIRED)
 
             dislike_result = service_video_op_cancel_dislike(
@@ -792,7 +783,7 @@ class VideoVideoIdStarUserId(Resource):
             token = get_jwt_identity()
 
             # check authority
-            if not service_video_op_auth_post(token, user_id, video_id):
+            if not service_auth_video_op_post(token, user_id, video_id):
                 raise RouteError(ErrorCode.ROUTE_TOKEN_REQUIRED)
 
             star_result = service_video_op_add_star(
@@ -816,7 +807,7 @@ class VideoVideoIdStarUserId(Resource):
             token = get_jwt_identity()
 
             # check authority
-            if not service_video_op_auth_modify(token, user_id):
+            if not service_auth_video_op_modify(token, user_id):
                 raise RouteError(ErrorCode.ROUTE_TOKEN_REQUIRED)
 
             star_result = service_video_op_cancel_star(

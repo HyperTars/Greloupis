@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { searchTopVideo } from "./FetchData";
-import { Spin, List, Space } from "antd";
+import { Spin, List, Space, Card } from "antd";
 import { Link } from "react-router-dom";
 import {
   EyeOutlined,
@@ -79,84 +79,88 @@ function Home() {
   const sampleFormat = (
     <div className="topMargin">
       <div className="searchPart">
-        <h4>{"Trending Videos: "}</h4>
+        <Card title="Trending Videos">
+          {/* <h4>{"Trending Videos: "}</h4> */}
 
-        {videoResult == null ? (
-          <Spin />
-        ) : (
-          <List
-            itemLayout="vertical"
-            size="large"
-            pagination={{
-              pageSize: 5,
-            }}
-            dataSource={videoResult}
-            renderItem={(item) => (
-              <List.Item
-                actions={[
-                  <IconText
-                    icon={UserOutlined}
-                    text={
-                      <Link to={"/user/" + item.user_id}>{item.user_name}</Link>
-                    }
-                    key="list-vertical-user-o"
-                  />,
-                  <IconText
-                    icon={EyeOutlined}
-                    text={item.video_view}
-                    key="list-vertical-view-o"
-                  />,
-                  <IconText
-                    icon={StarOutlined}
-                    text={item.video_star}
-                    key="list-vertical-star-o"
-                  />,
-                  <IconText
-                    icon={LikeOutlined}
-                    text={item.video_like}
-                    key="list-vertical-like-o"
-                  />,
+          {videoResult == null ? (
+            <Spin />
+          ) : (
+            <List
+              itemLayout="vertical"
+              size="large"
+              pagination={{
+                pageSize: 10,
+              }}
+              dataSource={videoResult}
+              renderItem={(item) => (
+                <List.Item
+                  actions={[
+                    <IconText
+                      icon={UserOutlined}
+                      text={
+                        <Link to={"/user/" + item.user_id}>
+                          {item.user_name}
+                        </Link>
+                      }
+                      key="list-vertical-user-o"
+                    />,
+                    <IconText
+                      icon={EyeOutlined}
+                      text={item.video_view}
+                      key="list-vertical-view-o"
+                    />,
+                    <IconText
+                      icon={StarOutlined}
+                      text={item.video_star}
+                      key="list-vertical-star-o"
+                    />,
+                    <IconText
+                      icon={LikeOutlined}
+                      text={item.video_like}
+                      key="list-vertical-like-o"
+                    />,
 
-                  <IconText
-                    icon={CalendarOutlined}
-                    text={dateConvert(item.video_upload_date)}
-                    key="list-vertical-date"
-                  />,
-                  <IconText
-                    icon={FieldTimeOutlined}
-                    text={secondTimeConvert(item.video_duration)}
-                    key="list-vertical-time"
-                  />,
-                ]}
-                extra={
-                  <Link to={"/video/" + item.video_id}>
-                    <img
-                      width={160}
-                      alt="logo"
-                      src={generateThumbnail(item.video_thumbnail)}
-                    />
-                  </Link>
-                }
-              >
-                <List.Item.Meta
-                  title={
+                    <IconText
+                      icon={CalendarOutlined}
+                      text={dateConvert(item.video_upload_date)}
+                      key="list-vertical-date"
+                    />,
+                    <IconText
+                      icon={FieldTimeOutlined}
+                      text={secondTimeConvert(item.video_duration)}
+                      key="list-vertical-time"
+                    />,
+                  ]}
+                  extra={
                     <Link to={"/video/" + item.video_id}>
-                      {item.video_title}
+                      <img
+                        width={160}
+                        alt="logo"
+                        src={generateThumbnail(item.video_thumbnail)}
+                      />
                     </Link>
                   }
-                  description={
-                    item.video_description !== "" ? (
-                      ellipsifyStr(item.video_description)
-                    ) : (
-                      <br />
-                    )
-                  }
-                />
-                {item.content}
-              </List.Item>
-            )}
-          />
-        )}
+                >
+                  <List.Item.Meta
+                    title={
+                      <Link to={"/video/" + item.video_id}>
+                        {item.video_title}
+                      </Link>
+                    }
+                    description={
+                      item.video_description !== "" ? (
+                        ellipsifyStr(item.video_description)
+                      ) : (
+                        <br />
+                      )
+                    }
+                  />
+                  {item.content}
+                </List.Item>
+              )}
+            />
+          )}
+        </Card>
       </div>
     </div>
   );

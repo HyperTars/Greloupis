@@ -12,6 +12,16 @@ class BaseConfig(object):
     SEARCH_SLICE = False
     DATA_FORMAT = "dict"
 
+    # Video Status
+    VIDEO_STATUS = ['public', 'private', 'deleted']
+    VIDEO_RAW_STATUS = ['pending', 'transcoding', 'streaming']
+    VIDEO_CNT = ['view', 'views', 'video_view',
+                 'comment', 'comments', 'video_comment',
+                 'like', 'likes', 'video_like',
+                 'dislike', 'dislikes', 'video_dislike',
+                 'star', 'stars', 'video_star',
+                 'share', 'shares', 'video_share']
+
     @staticmethod
     def init_app(app):
         pass

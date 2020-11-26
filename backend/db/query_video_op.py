@@ -3,7 +3,6 @@ from db.query_user import query_user_get_by_id
 from db.query_video import query_video_get_by_video_id
 from models.model_errors import ErrorCode, MongoError
 from utils.util_time import get_time_now_utc
-import bson
 import re
 
 
@@ -75,7 +74,7 @@ def query_video_op_get_by_op_id(op_id: str):
     :return: an array of such video_op (len == 0 or 1), len == 0 if no such
     video_op_id, len == 1 if found
     """
-    return VideoOp.objects(_id=bson.ObjectId(op_id))
+    return VideoOp.objects(id=op_id)
 
 
 ##########
@@ -93,7 +92,7 @@ def query_video_op_update_process(op_id: str, process: int,
         # No such video op
         raise MongoError(ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND)
 
-    return VideoOp.objects(_id=bson.ObjectId(op_id)) \
+    return VideoOp.objects(id=op_id) \
         .update(process=process, process_date=process_date)
 
 
@@ -109,7 +108,7 @@ def query_video_op_update_comment(op_id: str, comment: str,
         # No such video op
         raise MongoError(ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND)
 
-    return VideoOp.objects(_id=bson.ObjectId(op_id)) \
+    return VideoOp.objects(id=op_id) \
         .update(comment=comment, comment_date=comment_date)
 
 
@@ -125,7 +124,7 @@ def query_video_op_update_like(op_id: str, like: bool,
         # No such video op
         raise MongoError(ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND)
 
-    return VideoOp.objects(_id=bson.ObjectId(op_id))\
+    return VideoOp.objects(id=op_id)\
         .update(like=like, like_date=like_date)
 
 
@@ -141,7 +140,7 @@ def query_video_op_update_dislike(op_id: str, dislike: bool,
         # No such video op
         raise MongoError(ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND)
 
-    return VideoOp.objects(_id=bson.ObjectId(op_id)) \
+    return VideoOp.objects(id=op_id) \
         .update(dislike=dislike, dislike_date=dislike_date)
 
 
@@ -157,7 +156,7 @@ def query_video_op_update_star(op_id: str, star: bool,
         # No such video op
         raise MongoError(ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND)
 
-    return VideoOp.objects(_id=bson.ObjectId(op_id))\
+    return VideoOp.objects(id=op_id)\
         .update(star=star, star_date=star_date)
 
 
@@ -174,7 +173,7 @@ def query_video_op_delete(op_id: str, silent=False):
         # No such video op
         raise MongoError(ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND)
 
-    return VideoOp.objects(_id=bson.ObjectId(op_id)).delete()
+    return VideoOp.objects(id=op_id).delete()
 
 
 ##########

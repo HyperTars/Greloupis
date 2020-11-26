@@ -27,7 +27,6 @@ class UserLogin(db.EmbeddedDocument):
 
 
 class User(db.Document):
-    _id = db.StringField()
     user_email = db.StringField(max_length=50, required=True, unique=True)
     user_name = db.StringField(max_length=60, required=True, unique=True)
     user_password = db.StringField(max_length=512, required=True, default="")
@@ -70,7 +69,7 @@ class User(db.Document):
         for follower in self.user_follower:
             user_follower_array.append(follower)
 
-        user_dict['user_id'] = str(self._id)
+        user_dict['user_id'] = str(self.id)
         user_dict['user_email'] = self.user_email
         user_dict['user_name'] = self.user_name
         user_dict['user_detail'] = user_detail_dict

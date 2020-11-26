@@ -3,6 +3,8 @@ import "../static/css/App.css";
 import { Link } from "react-router-dom";
 import { getSubstr, generateAvatar } from "../util";
 import { Menu, Dropdown } from "antd";
+import VideoCallIcon from "@material-ui/icons/VideoCall";
+import SearchIcon from "@material-ui/icons/Search";
 
 const isLoggedIn = localStorage.getItem("user_id") != null;
 const currentUserId = getSubstr(localStorage.getItem("user_id"));
@@ -42,7 +44,6 @@ class Header extends Component {
 
   render() {
     const logoPath = "/Assets/logo/greloupis-horizontal-blue-fill-b.svg";
-    const uploadPath = "/Assets/upload.svg";
     const avatarPath = generateAvatar();
 
     return (
@@ -61,7 +62,7 @@ class Header extends Component {
             className="header-searchBar__input"
             type="text"
             name="keyword"
-            placeholder="Search"
+            placeholder="Search user name, video title, video channel, etc."
             value={this.state.value}
             onChange={(e) => {
               this.setState({
@@ -72,7 +73,7 @@ class Header extends Component {
 
           <div className="header-searchBar__button">
             <button className="header-searchBar__button-icon" type="submit">
-              <img src="/Assets/search.svg" alt="Search Icon"></img>
+              <SearchIcon className="header-searchBar__search-icon" />
             </button>
 
             <span className="tooltip header-searchBar__button-tooltip">
@@ -84,11 +85,7 @@ class Header extends Component {
         <div className="header-profile">
           <Link to="/video/upload">
             <div className="header-profile__upload">
-              <img
-                className="header-profile__upload-icon"
-                src={uploadPath}
-                alt="Content Upload Button"
-              ></img>
+              <VideoCallIcon className="header-profile__upload-icon" />
               <span className="tooltip header-tooltip-text">
                 Upload a new video
               </span>
@@ -100,7 +97,7 @@ class Header extends Component {
               <a
                 className="ant-dropdown-link"
                 onClick={(e) => e.preventDefault()}
-                href="./"
+                href="/"
               >
                 <img
                   className="header-profile__avatar-img"
