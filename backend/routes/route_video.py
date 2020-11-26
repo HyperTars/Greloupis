@@ -818,3 +818,46 @@ class VideoVideoIdStarUserId(Resource):
 
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
+
+
+# AWS
+@video.route('/aws', methods=['POST'])
+@video.response(200, 'Successful operation', video_info)
+@video.response(400, 'Invalid video information', general_response)
+@video.response(405, 'Method not allowed', general_response)
+@video.response(500, 'Internal server error', general_response)
+class Video(Resource):
+
+    @jwt_required
+    def post(self):
+        """
+            AWS update video info
+        """
+
+        try:
+            if request.form != {}:
+                kw = dict(request.form)
+            else:
+                raw_data = request.data.decode("utf-8")
+                kw = ast.literal_eval(raw_data)
+
+            # check authority
+            if 'aws_auth_key' not in kw:
+                raise RouteError(ErrorCode.ROUTE_TOKEN_REQUIRED)
+            
+            # video_uri_low
+            # video_uri_mid
+            # video_uri_high
+            # video_raw_status = "streaming"
+
+            update_result = service_video_update(**kw)
+            if len(update_result) == 1:
+                return_body = util_serializer_mongo_results_to_array(
+                    update_result, format="json")
+                return util_serializer_api_response(
+                    200, body=return_body, msg="Successfully updated video")
+            else:
+                return util_serializer_api_response(
+                    500, msg="Failed to update video")
+        except (ServiceError, MongoError, RouteError, Exception) as e:
+            return util_error_handler(e)
