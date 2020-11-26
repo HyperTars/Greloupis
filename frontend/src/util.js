@@ -87,7 +87,7 @@ let urlBase64 = (function () {
 })();
 
 export function uuid() {
-  let buffer = new Buffer(16);
+  let buffer = Buffer.alloc(16);
   Uuid.v4(null, buffer);
   return urlBase64(buffer);
 }
