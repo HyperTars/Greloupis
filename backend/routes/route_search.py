@@ -6,8 +6,9 @@ from flask_restx import Resource, fields, Namespace
 from .route_user import user_info, general_response
 from .route_video import video_info
 from service.service_search import service_search_user, \
-    service_search_video, service_search_hide_video, \
-    service_search_hide_user
+    service_search_video
+from service.service_auth import service_auth_hide_user, \
+    service_auth_hide_video
 from utils.util_serializer import util_serializer_request, \
     util_serializer_api_response
 from utils.util_error_handler import util_error_handler
@@ -126,7 +127,7 @@ class RouteSearchUser(Resource):
 
             return util_serializer_api_response(
                 200,
-                body=service_search_hide_user(
+                body=service_auth_hide_user(
                     get_jwt_identity(), search_result),
                 msg="Search user successfully")
         except (ServiceError, MongoError, RouteError, Exception) as e:
@@ -194,7 +195,7 @@ class RouteSearchVideo(Resource):
                 raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
             return util_serializer_api_response(
                 200,
-                body=service_search_hide_video(
+                body=service_auth_hide_video(
                     get_jwt_identity(), search_result),
                 msg="Search video successfully")
         except (ServiceError, MongoError, RouteError, Exception) as e:
@@ -261,7 +262,7 @@ class RouteSearchTopVideos(Resource):
                 search_result.reverse()
             return util_serializer_api_response(
                 200,
-                body=service_search_hide_video(
+                body=service_auth_hide_video(
                     get_jwt_identity(), search_result),
                 msg="Search video successfully")
         except (ServiceError, MongoError, RouteError, Exception) as e:

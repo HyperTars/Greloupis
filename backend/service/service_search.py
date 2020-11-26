@@ -116,33 +116,6 @@ def service_search_video(**kw):
     return res_array
 
 
-# Search Hide Caller
-def service_search_hide_video(user, results):
-    ret = []
-    if user is None:
-        user = ""
-    if len(results) == 0:
-        return []
-    for video in results:
-        if video['video_status'] == 'deleted' or \
-           video['video_raw_status'] != 'streaming':
-            continue
-        if video['video_status'] == 'public' or video['user_id'] == user:
-            ret.append(video)
-    return ret
-
-
-def service_search_hide_user(user, results):
-    ret = []
-    if user is None:
-        user = ""
-    for user in results:
-        if user['user_status'] == 'closed':
-            continue
-        ret.append(user)
-    return ret
-
-
 ###########
 # Helpers #
 ###########

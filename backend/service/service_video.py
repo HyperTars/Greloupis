@@ -15,31 +15,6 @@ VALID_VIDEO_STATUS = conf.VIDEO_STATUS
 VALID_VIDEO_RAW_STATUS = conf.VIDEO_RAW_STATUS
 
 
-def service_video_auth_get(token, video_id):
-    videos = query_video_get_by_video_id(video_id)
-    if len(videos) == 0:
-        raise ServiceError(ErrorCode.SERVICE_VIDEO_NOT_FOUND)
-    video = videos[0].to_dict()
-    user = video['user_id']
-    status = video['video_status']
-    raw = video['video_raw_status']
-    if status != 'public' and user != token:
-        return False
-    if raw != 'streaming' and user != token:
-        return False
-    return True
-
-
-def service_video_auth_modify(token, video_id):
-    videos = query_video_get_by_video_id(video_id)
-    if len(videos) == 0:
-        raise ServiceError(ErrorCode.SERVICE_VIDEO_NOT_FOUND)
-    video = videos[0].to_dict()
-    if video['user_id'] == token:
-        return True
-    return False
-
-
 def service_video_upload(user_id: str):
 
     if not is_valid_id(user_id):
