@@ -5,13 +5,13 @@ import { createVideo, updateVideoInfo } from "./FetchData";
 import { uuid } from "../util";
 
 let AWS = require("aws-sdk");
-let CURRENT_UUID = uuid();
 
 export default class VideoUpload extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      CURRENT_UUID: uuid(),
       video_id: "",
       video_raw_content: "",
       video_duration: 0,
@@ -28,9 +28,10 @@ export default class VideoUpload extends Component {
     if (
       file.type !== "video/mp4" &&
       file.type !== "video/avi" &&
-      file.type !== "video/rmvb"
+      file.type !== "video/rmvb" &&
+      file.type !== "video/mov"
     ) {
-      alert(`${file.name} is not a .rmvb / .mp4 / .avi file!`);
+      alert(`${file.name} is not a .rmvb / .mp4 / .avi / .mov file!`);
       window.location.reload();
     }
 
@@ -48,10 +49,10 @@ export default class VideoUpload extends Component {
         fileObj: file,
         video_raw_size: temp_video_size,
         video_duration: temp_video_duration,
-        video_title: CURRENT_UUID,
+        video_title: this.state.CURRENT_UUID,
         video_raw_content:
           "https://greloupis-video-streaming.s3.amazonaws.com/" +
-          CURRENT_UUID +
+          this.state.CURRENT_UUID +
           "-" +
           file.name,
       });
@@ -66,11 +67,9 @@ export default class VideoUpload extends Component {
       createVideo()
         .then((res) => {
           if (res == null || res.body == null) return;
-
           this.setState({
             video_id: res.body.video_id,
           });
-
           // upload to s3
           AWS.config.update({
             // accessKeyId: AWS.config.credentials.accessKeyId,
@@ -82,15 +81,13 @@ export default class VideoUpload extends Component {
           let upload = new AWS.S3.ManagedUpload({
             params: {
               Bucket: "greloupis-video-streaming",
-              Key: CURRENT_UUID + "-" + this.state.fileObj.name,
+              Key: this.state.CURRENT_UUID + "-" + this.state.fileObj.name,
               Body: this.state.fileObj,
               ACL: "public-read",
             },
           });
           upload.promise();
-
           alert("Successfully uploaded video!");
-
           // update some system generated data, then route to update page
           let updateData = {
             video_duration: this.state.video_duration,
@@ -99,12 +96,10 @@ export default class VideoUpload extends Component {
             video_raw_size: this.state.video_raw_size,
             video_title: this.state.video_title,
           };
-
           updateVideoInfo(this.state.video_id, updateData).then(() => {
             let path = {
               pathname: `/video/update/${this.state.video_id}`,
             };
-
             this.props.history.push(path);
           });
         })
@@ -132,7 +127,7 @@ export default class VideoUpload extends Component {
               <div className="upload-info__basicInfo">
                 <h4>Video Upload</h4>
                 <label className="files">
-                  Upload video file: (Format supported: .mp4, .rmvb, .avi)
+                  Upload video file: (Format supported: .mp4, .rmvb, .avi, .mov)
                   <input
                     className="files-input"
                     type="file"
