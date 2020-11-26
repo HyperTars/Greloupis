@@ -12,37 +12,6 @@ from utils.util_time import get_time_now_utc
 from models.model_errors import ErrorCode, MongoError, ServiceError
 
 
-def service_video_op_auth_get(token, user_id, video_id):
-    videos = query_video_get_by_video_id(video_id)
-    if len(videos) == 0:
-        raise ServiceError(ErrorCode.SERVICE_VIDEO_NOT_FOUND)
-    video = videos[0].to_dict()
-
-    if video['video_status'] != 'public' and \
-       video['user_id'] != token and \
-       user_id != token:
-        return False
-
-    return True
-
-
-def service_video_op_auth_post(token, user_id, video_id):
-    videos = query_video_get_by_video_id(video_id)
-    if len(videos) == 0:
-        raise ServiceError(ErrorCode.SERVICE_VIDEO_NOT_FOUND)
-    video = videos[0].to_dict()
-    if video['video_status'] != 'public' and \
-       video['user_id'] != token:
-        return False
-    if token != user_id:
-        return False
-    return True
-
-
-def service_video_op_auth_modify(token, user_id):
-    return token == user_id
-
-
 def service_video_op_get_by_user(**kw):
 
     kw['service'] = 'video_op'
@@ -67,12 +36,6 @@ def service_video_op_get_by_user(**kw):
         op['video_title'] = video['video_title']
         op['video_thumbnail'] = video['video_thumbnail']
 
-    # for each_result in op_array:
-    #     raw_result = query_video_get_by_video_id(each_result['video_id'])
-    #     video_result = util_serializer_mongo_results_to_array(raw_result)[0]
-
-    #     each_result['video_title'] = video_result['video_title']
-    #     each_result['video_thumbnail'] = video_result['video_thumbnail']
     return op_array
 
 

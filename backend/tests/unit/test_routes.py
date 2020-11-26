@@ -15,7 +15,8 @@ from utils.util_tests import util_tests_load_data, \
     util_tests_python_version, util_tests_clean_database
 from models.model_errors import ErrorCode, ServiceError
 from db.query_video import query_video_get_by_video_id, \
-    query_video_get_by_title, query_video_delete
+    query_video_get_by_title, query_video_delete, \
+    query_video_update
 from routes.route_search import RouteSearchUser, RouteSearchVideo
 from routes.route_video import VideoVideoId
 from routes.route_user import UserUserId, user
@@ -343,25 +344,19 @@ class TestRouteVideo(unittest.TestCase):
             cls.headers = Headers({'Authorization': 'Bearer ' + cls.token})
 
     def test_a_video_post(self):
-        post_data = self.data['temp_video'][0]
+        data = self.data['temp_video'][0]
 
         # post video
         with app.app_context():
-            response = self.client.post('/video', data=post_data,
-                                        headers=self.headers)
-            response_json = json.loads(response.data)
+            response = self.client.post('/video', headers=self.headers)
+            response_vid = json.loads(response.data)["body"]["video_id"]
 
-            self.assertEqual(response_json["body"][0]["user_id"],
-                             post_data["user_id"])
-            self.assertEqual(response_json["body"][0]["video_title"],
-                             post_data["video_title"])
+            self.assertEqual(len(response_vid), 24)
 
-        # SERVICE_MISSING_PARAM
-        with app.app_context():
-            response = self.client.post('/video', data={"user_id": "123"},
-                                        headers=self.headers)
-            error_json = json.loads(response.data)
-            self.assertEqual(error_json["code"], 400)
+        query_video_update(
+            response_vid,
+            video_title=data['video_title'],
+            video_raw_content=data['video_raw_content'])
 
     def test_b_video_get(self):
         temp_video_id = self.data['const_video'][0]["_id"]["$oid"]

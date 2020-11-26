@@ -6,7 +6,7 @@
     "user_id": "5f88f883e6ac4f89900ac983",
     "video_title": "XiXiHaHa",
     "video_raw_content": "https://s3.amazon.com/54asd56a4d5asdasd.mp4",
-    "video_raw_status": "pending",
+    "video_raw_status": "streaming",
     "video_raw_size": {
         "$numberDouble": "93.66"
     },

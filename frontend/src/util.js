@@ -1,4 +1,5 @@
 import moment from "moment";
+let Uuid = require("node-uuid");
 
 // convert timestamp to relative time
 export function convertToRelativeTime(timestamp) {
@@ -70,4 +71,23 @@ export function generateThumbnail(thumbnail) {
   return !thumbnail || thumbnail === ""
     ? "https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
     : thumbnail;
+}
+
+let urlBase64 = (function () {
+  let alphabet = { "+": "-", "/": "_" };
+
+  return function urlBase64(buffer) {
+    return buffer
+      .toString("base64")
+      .replace(/[+/]/g, function (token) {
+        return alphabet[token];
+      })
+      .replace(/=+$/, "");
+  };
+})();
+
+export function uuid() {
+  let buffer = Buffer.alloc(16);
+  Uuid.v4(null, buffer);
+  return urlBase64(buffer);
 }

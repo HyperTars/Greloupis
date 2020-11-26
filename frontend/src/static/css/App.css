@@ -1,136 +1,8 @@
 @import 'antd/dist/antd.css';
 
-@import 'antd/dist/antd.css';
-
-@font-face {
-    font-family: 'Roboto';
-    src: url("../fonts/Roboto-Thin.ttf") format("truetype");
-    font-weight: 100;
-    font-style: normal;
-  }
-  
-  @font-face {
-    font-family: 'Roboto';
-    src: url("../fonts/Roboto-Regular.ttf") format("truetype");
-    font-weight: normal;
-    font-style: normal;
-  }
-  
-  @font-face {
-    font-family: 'Roboto';
-    src: url("../fonts/Roboto-BlackItalic.ttf") format("truetype");
-    font-weight: 900;
-    font-style: italic;
-  }
-  
-  @font-face {
-    font-family: 'Roboto';
-    src: url("../fonts/Roboto-BoldItalic.ttf") format("truetype");
-    font-weight: bold;
-    font-style: italic;
-  }
-  
-  @font-face {
-    font-family: 'Roboto';
-    src: url("../fonts/Roboto-ThinItalic.ttf") format("truetype");
-    font-weight: 100;
-    font-style: italic;
-  }
-  
-  @font-face {
-    font-family: 'Roboto';
-    src: url("../fonts/Roboto-Bold.ttf") format("truetype");
-    font-weight: bold;
-    font-style: normal;
-  }
-  
-  @font-face {
-    font-family: 'Roboto';
-    src: url("../fonts/Roboto-Thin_1.ttf") format("truetype");
-    font-weight: 100;
-    font-style: normal;
-  }
-  
-  @font-face {
-    font-family: 'Roboto';
-    src: url("../fonts/Roboto-Black.ttf") format("truetype");
-    font-weight: 900;
-    font-style: normal;
-  }
-  
-  @font-face {
-    font-family: 'Roboto';
-    src: url("../fonts/Roboto-Bold_1.ttf") format("truetype");
-    font-weight: bold;
-    font-style: normal;
-  }
-  
-  @font-face {
-    font-family: 'Roboto';
-    src: url("../fonts/Roboto-Medium.ttf") format("truetype");
-    font-weight: 500;
-    font-style: normal;
-  }
-  
-  @font-face {
-    font-family: 'Roboto';
-    src: url("../fonts/Roboto-Light.ttf") format("truetype");
-    font-weight: 300;
-    font-style: normal;
-  }
-  
-  @font-face {
-    font-family: 'Roboto';
-    src: url("../fonts/Roboto-Medium_1.ttf") format("truetype");
-    font-weight: 500;
-    font-style: normal;
-  }
-  
-  @font-face {
-    font-family: 'Roboto';
-    src: url("../fonts/Roboto-Light_1.ttf") format("truetype");
-    font-weight: 300;
-    font-style: normal;
-  }
-  
-  @font-face {
-    font-family: 'Roboto';
-    src: url("../fonts/Roboto-Regular_1.ttf") format("truetype");
-    font-weight: normal;
-    font-style: normal;
-  }
-  
-  @font-face {
-    font-family: 'Roboto';
-    src: url("../fonts/Roboto-LightItalic.ttf") format("truetype");
-    font-weight: 300;
-    font-style: italic;
-  }
-  
-  @font-face {
-    font-family: 'Roboto';
-    src: url("../fonts/Roboto-MediumItalic.ttf") format("truetype");
-    font-weight: 500;
-    font-style: italic;
-  }
-  
-  @font-face {
-    font-family: 'Roboto';
-    src: url("../fonts/Roboto-Italic.ttf") format("truetype");
-    font-weight: normal;
-    font-style: italic;
-  }
-  
-  body {
-    font-family: 'Roboto', sans-serif;
-  }
-
   html, body {
-    width: 100%;
-  }
-
-  .videoPlay .header {
-    width: 99vw;
+    width: 98.45vw;
+    background-color: #fafafa;
   }
   
   * {
@@ -245,8 +117,7 @@
   }
   
   .header-logo__img {
-    width: 7rem;
-    height: 1.5625rem;
+    width: 9rem;
   }
   
   .header-logo__tooltip {
@@ -281,7 +152,7 @@
     width: 100%;
     min-width: auto;
     height: 100%;
-    font-size: 1.125rem;
+    font-size: 1rem;
     padding: 1rem;
     border: none;
     -webkit-box-shadow: inset 0px 0px 3px 1px #D4D4D450;
@@ -313,9 +184,8 @@
     background-color: #F1F1F1;
   }
   
-  .header-searchBar__button-icon .img {
-    height: 1.25rem;
-    width: 1.25rem;
+  .header-searchBar__search-icon {
+    color: grey;
   }
   
   .header-searchBar__button-tooltip {
@@ -346,11 +216,14 @@
   }
   
   .header-profile__upload-icon {
+    color: grey;
     -webkit-box-sizing: content-box;
             box-sizing: content-box;
-    height: 2.25rem;
-    width: 2.0625rem;
-    margin: 0 1rem;
+    transform: scale(1.5);
+  }
+
+  .header-profile__upload-icon:hover{
+    color: #0095FF;
   }
   
   .header-profile__avatar {
@@ -534,7 +407,7 @@
     -webkit-box-pack: center;
         -ms-flex-pack: center;
             justify-content: center;
-    background-color: #FFFFFF;
+    background-color: #fafafa;
     min-width: auto;
   }
   
@@ -555,7 +428,7 @@
   }
   
   main #main-video-content .main-video__description {
-    border-bottom: #D4D4D4 1px solid;
+    border-bottom: #d4d4d4 1px solid;
     margin-top: 2rem;
   }
   
@@ -635,7 +508,7 @@
   
   main #main-video-content .main-video__details {
     padding: 2rem 0;
-    border-bottom: #D4D4D4 1px solid;
+    border-bottom: #d4d4d4 1px solid;
   }
   
   main #main-video-content .main-video__details-author {
@@ -709,7 +582,7 @@
   }
   
   main #main-video-content .main-video__details-author .subscribe-button span:last-child {
-    color: #D4D4D4;
+    color: #d4d4d4;
   }
   
   main #main-video-content .main-video__details-info {
@@ -748,7 +621,7 @@
   
   main #main-video-content .comments-list {
     padding: 2rem 0;
-    border-bottom: #D4D4D4 1px solid;
+    border-bottom: #d4d4d4 1px solid;
   }
   
   main #main-video-content .comments-list .comments-form {
@@ -784,13 +657,11 @@
     border: none;
     font-size: 0.8125rem;
     height: 2rem;
-    border-bottom: #D4D4D4 1px solid;
   }
   
   main #main-video-content .comments-list .comments-form__input-shown {
     outline: none;
     background-color: #f1f1f1;
-    border-bottom: #D4D4D4 2px solid;
   }
   
   @-webkit-keyframes color-change {
@@ -1343,9 +1214,8 @@
     }
   }
 
-  .topMargin {
-    margin: 30px;
-    text-align: center;
+  .videoUpdate {
+    margin: 50px;
   }
   
   .searchLoading {
@@ -1414,9 +1284,8 @@ h3 {
 }
 
 .userProfile {
-  margin-left: 4vw;
-  margin-top: 3%;
-  margin-right: 4vw;
+  margin-left: 1vw;
+  margin-top: 1vw;
   text-align: left;
 }
 
@@ -1429,6 +1298,7 @@ h3 {
 }
 
 .deleteButton {
+  margin-top: 15px;
   background-color: #e60000;
   border-color: #e60000;
   padding: 4px 15px;
@@ -1439,4 +1309,148 @@ h3 {
   background-color: #ff6666;
   border-color: #ff6666;
   color: white;
+}
+
+.navigateButton {
+  background-color: #1890ff;
+  border-color: #1890ff;
+  padding: 4px 15px;
+  color: white;
+}
+
+.navigateButton:hover {
+  background-color: #40a9ff;
+  border-color: #40a9ff;
+  color: white;
+}
+
+.ant-card {
+  border-radius: 4px;
+  box-shadow: 0 2px 16px 0 rgba(0,0,0,.05);
+  margin: 16px;
+}
+
+.ant-card-head-title {
+  font-size: 20px;
+}
+
+.ant-upload-list-item-error, .ant-upload-list-item-error .ant-upload-text-icon > .anticon, .ant-upload-list-item-error .ant-upload-list-item-name {
+  color: black;
+}
+
+.ant-upload-list-picture .ant-upload-list-item-error, .ant-upload-list-picture-card .ant-upload-list-item-error {
+  border-color: #d9d9d9;
+}
+
+.ant-upload-list-item-error .ant-upload-list-item-card-actions .anticon {
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.ant-upload-list-picture-container .ant-tooltip-arrow, .ant-upload-list-picture-container .ant-tooltip-inner  {
+  display: none;
+} 
+
+.profile-video-line {
+  display: flex;
+  justify-content: space-between;
+}
+
+.profile-button-form {
+  text-align: center;
+}
+
+.profile-button {
+  width: 23vw;
+}
+
+@media screen and (max-width: 1250px) {
+  .profile-button-form {
+    display: block;
+    text-align: center;
+  }
+  
+  .profile-button {
+    width: 15vw;
+  }
+}
+
+.video-button-form {
+  text-align: center;
+}
+
+.video-update-button {
+  width: 44.5vw;
+}
+
+@media screen and (max-width: 2350px) {
+  .video-update-button {
+    width: 44vw;
+  }
+}
+
+@media screen and (max-width: 2050px) {
+  .video-update-button {
+    width: 43vw;
+  }
+}
+
+@media screen and (max-width: 1750px) {
+  .video-update-button {
+    width: 42vw;
+  }
+}
+
+@media screen and (max-width: 1550px) {
+  .video-update-button {
+    width: 40vw;
+  }
+}
+
+@media screen and (max-width: 1250px) {
+  .video-update-button {
+    width: 38vw;
+  }
+}
+
+@media screen and (max-width: 1050px) {
+  .video-update-button {
+    width: 35vw;
+  }
+}
+
+@media screen and (max-width: 750px) {
+  .video-update-button {
+    width: 30vw;
+  }
+}
+
+.profile-delete-account {
+  margin-top: 16px;
+}
+
+@media screen and (max-width: 950px) {
+  .profile-video-line {
+    display: block;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+  .profile-manage-video {
+    margin-top: 10px;
+  }
+}
+
+.profile-video-title {
+  color: black;
+  margin-top: 4px;
+}
+
+.profile-icon-text {
+  margin-top: 30px;
+  padding-top: 10px;
+}
+
+.ant-space-item svg {
+  width: 1.75em;
+  height: 1.75em;
 }

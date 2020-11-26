@@ -11,8 +11,7 @@ from flask_jwt_extended import create_access_token, \
 from flask_restx import Resource, fields, Namespace
 from service.service_user import service_user_login, service_user_reg, \
     service_user_get_user, service_user_update_info, \
-    service_user_close, service_user_hide_private, \
-    service_user_auth_get, service_user_auth_modify
+    service_user_close, service_user_hide_private
 '''
     #service_user_get_comment, service_user_get_dislike, \
     #, service_user_get_like, \
@@ -20,7 +19,8 @@ from service.service_user import service_user_login, service_user_reg, \
 '''
 from service.service_video import service_video_get_by_user
 from service.service_video_op import service_video_op_get_by_user
-from service.service_search import service_search_hide_video
+from service.service_auth import service_auth_user_get, \
+    service_auth_user_modify, service_auth_hide_video
 from utils.util_jwt import blacklist, util_get_formated_response
 from utils.util_error_handler import util_error_handler
 from utils.util_serializer import util_serializer_api_response
@@ -218,11 +218,11 @@ class UserUserId(Resource):
             result['video'] = video
             result['video_op'] = op
 
-            if not service_user_auth_get(token, user_id):
+            if not service_auth_user_get(token, user_id):
                 if user['user_status'] == 'closed':
                     raise RouteError(ErrorCode.ROUTE_DELETED_USER)
                 result['user'] = service_user_hide_private(user)
-                result['video'] = service_search_hide_video('', video)
+                result['video'] = service_auth_hide_video('', video)
                 result['video_op'] = []
 
             return util_serializer_api_response(
@@ -249,7 +249,7 @@ class UserUserId(Resource):
                 print(kw)
             kw['user_id'] = user_id
             print(kw)
-            if not service_user_auth_modify(get_jwt_identity(), kw['user_id']):
+            if not service_auth_user_modify(get_jwt_identity(), kw['user_id']):
                 raise RouteError(ErrorCode.ROUTE_TOKEN_REQUIRED)
 
             result = service_user_update_info(**kw)
@@ -266,7 +266,7 @@ class UserUserId(Resource):
         """
         try:
             token = get_jwt_identity()
-            if not service_user_auth_modify(token, user_id=user_id):
+            if not service_auth_user_modify(token, user_id=user_id):
                 raise RouteError(ErrorCode.ROUTE_TOKEN_REQUIRED)
             result = service_user_close(
                 method='status', user_id=user_id,)

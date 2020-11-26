@@ -10,6 +10,7 @@ import Register from "./Register";
 import EmptyPage from "./EmptyPage";
 import UserProfile from "./UserProfile";
 import VideoUpload from "./VideoUpload";
+import VideoUpdate from "./VideoUpdate";
 import VideoPlay from "./VideoPlay";
 import PrivateRoute from "./PrivateRoute";
 
@@ -23,7 +24,7 @@ class App extends Component {
               exact
               path="/"
               render={() => (
-                <div>
+                <div className="homePage">
                   <Header />
                   <Home />
                 </div>
@@ -33,7 +34,7 @@ class App extends Component {
               exact
               path="/search"
               render={() => (
-                <div>
+                <div className="searchPage">
                   <Header />
                   <SearchResult />
                 </div>
@@ -65,9 +66,19 @@ class App extends Component {
             />
             <Route
               exact
-              path="/user/:userId"
+              path="/video/update/:videoId"
               render={(props) => (
                 <div>
+                  <Header />
+                  <VideoUpdate videoId={props.match.params.videoId} />
+                </div>
+              )}
+            />
+            <Route
+              exact
+              path="/user/:userId"
+              render={(props) => (
+                <div className="userProfilePage">
                   <Header />
                   <UserProfile userId={props.match.params.userId} />
                 </div>
@@ -84,12 +95,6 @@ class App extends Component {
               )}
             />
             <Route component={EmptyPage} render={() => <EmptyPage />} />
-            {/* <PrivateRoute
-              exact
-              path="/dashboard"
-              component={Dashboard}
-              render={(props) => <Dashboard />}
-            /> */}
           </Switch>
         </div>
       </Router>

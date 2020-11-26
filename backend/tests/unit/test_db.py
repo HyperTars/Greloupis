@@ -29,6 +29,7 @@ from db.query_video_op import query_video_op_create, \
 from db.mongo import init_db
 from models.model_errors import MongoError, ErrorCode
 from utils.util_time import get_time_now_utc
+from utils.util_hash import util_hash_encode
 import bson
 
 
@@ -287,11 +288,11 @@ class TestQueryUser(unittest.TestCase):
 
         query_user_update_password(temp_user_id, new_pass)
         self.assertEqual(query_user_get_by_id(temp_user_id)[0].user_password,
-                         new_pass)
+                         util_hash_encode(new_pass))
 
         query_user_update_password(temp_user_id, old_pass)
         self.assertEqual(query_user_get_by_id(temp_user_id)[0].user_password,
-                         old_pass)
+                         util_hash_encode(old_pass))
 
         # Raise Error: ErrorCode.MONGODB_STR_EXPECTED
         with self.assertRaises(MongoError) as e:
@@ -324,8 +325,8 @@ class TestQueryUser(unittest.TestCase):
         self.assertEqual(query_user_get_by_id(temp_user_id)[0].user_thumbnail,
                          new_thumbnail)
 
-        query_user_update_password(temp_user_id, old_thumbnail)
-        self.assertEqual(query_user_get_by_id(temp_user_id)[0].user_password,
+        query_user_update_thumbnail(temp_user_id, old_thumbnail)
+        self.assertEqual(query_user_get_by_id(temp_user_id)[0].user_thumbnail,
                          old_thumbnail)
 
         # Raise Error: ErrorCode.MONGODB_STR_EXPECTED
@@ -470,7 +471,7 @@ class TestQueryUser(unittest.TestCase):
         # Search successfully
         search_user_id = self.data['const_user'][0]['_id']['$oid']
         self.assertEqual(
-            str(query_user_search_by_contains(user_id=search_user_id)[0]._id),
+            str(query_user_search_by_contains(user_id=search_user_id)[0].id),
             search_user_id)
 
         search_user_name = self.data['const_user'][0]['user_name']
@@ -766,33 +767,12 @@ class TestQueryVideo(unittest.TestCase):
         util_tests_clean_database()
 
     def test_a_query_video_create(self):
-        self.assertEqual(
-            query_video_create(user_id=self.data['temp_video'][0]['user_id'],
-                               video_title=self.data['temp_video'][0][
-                                   'video_title'],
-                               video_raw_content=self.data['temp_video'][0][
-                                   'video_raw_content']).video_title,
-            self.data['temp_video'][0]['video_title'])
-
-        # Raise Error: ErrorCode.MONGODB_USER_NOT_FOUND
-        with self.assertRaises(MongoError) as e:
-            query_video_create(user_id="123412341234123412341234",
-                               video_title=self.data['temp_video'][0][
-                                   'video_title'],
-                               video_raw_content=self.data['temp_video'][0][
-                                   'video_raw_content'])
-        self.assertEqual(e.exception.error_code,
-                         ErrorCode.MONGODB_USER_NOT_FOUND)
-
-        # Raise Error: ErrorCode.MONGODB_VIDEO_TITLE_TAKEN
-        with self.assertRaises(MongoError) as e:
-            query_video_create(user_id=self.data['temp_video'][0]['user_id'],
-                               video_title=self.data['temp_video'][0][
-                                   'video_title'],
-                               video_raw_content=self.data['temp_video'][0][
-                                   'video_raw_content'])
-        self.assertEqual(e.exception.error_code,
-                         ErrorCode.MONGODB_VIDEO_TITLE_TAKEN)
+        temp_data = self.data['temp_video'][0]
+        vid = query_video_create(temp_data['user_id'])
+        title = temp_data['video_title']
+        query_video_update(vid, video_title=title)
+        self.assertEqual(type(vid), str)
+        self.assertEqual(len(vid), 24)
 
     def test_b_query_video_get_by_video_id(self):
         result = query_video_get_by_video_id(
@@ -960,7 +940,7 @@ class TestQueryVideo(unittest.TestCase):
         old_title = self.data['temp_video'][0]['video_title']
         new_title = "new_title"
         new_raw_content = "some new content uri"
-        new_raw_status = "finished"
+        new_raw_status = "streaming"
         new_raw_size = 123.45
         new_duration = 777
         new_channel = "tc"
