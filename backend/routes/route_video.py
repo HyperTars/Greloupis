@@ -857,7 +857,7 @@ class Video(Resource):
                 video_uri_mid=aws_uri + aws_mid + aws_format,
                 video_uri_high=aws_uri + aws_high + aws_format,
                 video_raw_status="streaming")
-            
+
             # TODO: Thumbnail?
 
             if len(update_result) == 1:
