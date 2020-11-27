@@ -845,7 +845,7 @@ class Video(Resource):
             if 'video_id' not in kw:
                 raise RouteError(ErrorCode.ROUTE_VIDEO_ID_REQUIRED)
 
-            aws_uri = conf.AWS_CLOUD_FRONT
+            aws_uri = conf.AWS_CLOUD_FRONT + '/' + kw['video_id'] + '/'
 
             video_uri_low = aws_uri + '_360.m3u8'
             video_uri_mid = aws_uri + '_540.m3u8'
