@@ -1472,3 +1472,11 @@ h3 {
   height: 1.75em;
 }
 
+.ant-badge {
+  margin-left: 20px;
+  font-size: 18px;
+}
+
+.ant-tag {
+  background-color: rgba(64,184,132,.1);
+}

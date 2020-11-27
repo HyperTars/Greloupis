@@ -13,7 +13,7 @@ import {
   createUserVideoProcess,
   getUserVideoProcess,
 } from "./FetchData";
-import { Spin } from "antd";
+import { Spin, message } from "antd";
 
 function VideoPlay({ videoId }) {
   const [mainVideo, setMainVideo] = useState({});
@@ -33,6 +33,13 @@ function VideoPlay({ videoId }) {
         if (res == null) return;
 
         setMainVideo(res.body);
+
+        if (res.body.video_raw_status === "pending") {
+          message.warning(
+            "The video is being transcoded and cannot be played now. Check back later."
+          );
+        }
+
         setIsLoading(false);
       })
       .catch((e) => {

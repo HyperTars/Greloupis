@@ -155,9 +155,6 @@ class VideoVideoId(Resource):
             if video['video_status'] == 'deleted':
                 raise RouteError(ErrorCode.ROUTE_DELETED_VIDEO)
 
-            if video['video_raw_status'] != 'streaming':
-                raise RouteError(ErrorCode.ROUTE_VIDEO_PENDING)
-
             # check authority
             if service_auth_video_get(token, video_id) is False:
                 raise RouteError(ErrorCode.ROUTE_PRIVATE_VIDEO)
@@ -848,20 +845,8 @@ class Video(Resource):
             if 'video_id' not in kw:
                 raise RouteError(ErrorCode.ROUTE_VIDEO_ID_REQUIRED)
 
-            aws_uri = conf.AWS_CLOUD_FRONT + '/' + kw['video_id'] + '_'
-            aws_format = conf.AWS_STREAMING_FORMAT
-            aws_low = conf.AWS_STREAMING_LOW
-            aws_mid = conf.AWS_STREAMING_MID
-            aws_high = conf.AWS_STREAMING_HIGH
-
             update_result = service_video_update(
-                video_id=kw['video_id'],
-                video_uri_low=aws_uri + aws_low + aws_format,
-                video_uri_mid=aws_uri + aws_mid + aws_format,
-                video_uri_high=aws_uri + aws_high + aws_format,
-                video_raw_status="streaming")
-
-            # TODO: Thumbnail?
+                video_id=kw['video_id'], video_raw_status="streaming")
 
             if len(update_result) == 1:
                 return_body = util_serializer_mongo_results_to_array(

@@ -33,6 +33,18 @@ def query_video_create(user_id: str):
                   video_star=0, video_share=0, video_thumbnail="",
                   video_upload_date=get_time_now_utc(), video_uri=VideoURI())
     video.save()
+
+    aws_uri = conf.AWS_STREAMING_FOLDER + str(video.id) + '_'
+    aws_low = aws_uri + conf.AWS_STREAMING_LOW + conf.AWS_STREAMING_FORMAT
+    aws_mid = aws_uri + conf.AWS_STREAMING_MID + conf.AWS_STREAMING_FORMAT
+    aws_high = aws_uri + conf.AWS_STREAMING_HIGH + conf.AWS_STREAMING_FORMAT
+
+    aws_thumbnail = conf.AWS_THUMBNAIL_FOLDER + str(video.id) + conf.AWS_THUMBNAIL_FORMAT
+
+    Video.objects(id=video.id).update(video_uri__video_uri_low=aws_low)
+    Video.objects(id=video.id).update(video_uri__video_uri_mid=aws_mid)
+    Video.objects(id=video.id).update(video_uri__video_uri_high=aws_high)
+    Video.objects(id=video.id).update(video_thumbnail=aws_thumbnail)
     return str(video.id)
 
 

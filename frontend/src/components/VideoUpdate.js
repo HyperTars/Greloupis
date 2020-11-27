@@ -128,7 +128,7 @@ function VideoUpdate({ videoId }) {
           : videoData.video_thumbnail,
         video_title: values.title !== videoData.video_title ? values.title : "",
         video_description: values.description,
-        video_channel: values.channel,
+        video_channel: values.channel === "" ? "self-made" : values.channel,
         video_tag: values.tag,
         video_category: values.category,
         video_language: values.language,
@@ -271,10 +271,24 @@ function VideoUpdate({ videoId }) {
           }
           rules={[{ message: "Please input your video channel!" }]}
         >
-          <Input
-            placeholder="Input your video channel: "
-            defaultValue={videoData ? videoData["video_channel"] : ""}
-          />
+          <Select
+            defaultValue={videoData ? videoData["video_channel"] : "self-made"}
+          >
+            <Option value="anime">anime</Option>
+            <Option value="documentary">documentary</Option>
+            <Option value="entertainment">entertainment</Option>
+            <Option value="fashion">fashion</Option>
+            <Option value="food">food</Option>
+            <Option value="game">game</Option>
+            <Option value="life">life</Option>
+            <Option value="movie">movie</Option>
+            <Option value="music">music</Option>
+            <Option value="other">other</Option>
+            <Option value="self-made">self-made</Option>
+            <Option value="techonology">techonology</Option>
+            <Option value="tv-show">tv-show</Option>
+            <Option value="vlog">v-log</Option>
+          </Select>
         </Form.Item>
 
         <Form.Item
