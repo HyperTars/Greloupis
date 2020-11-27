@@ -79,9 +79,7 @@ function Home() {
   const sampleFormat = (
     <div className="topMargin">
       <div className="searchPart">
-        <Card title="Trending Videos">
-          {/* <h4>{"Trending Videos: "}</h4> */}
-
+        <Card title="Top 10 Hit Videos">
           {videoResult == null ? (
             <Spin />
           ) : (

@@ -111,7 +111,13 @@ function SearchResult() {
   const sampleFormat = (
     <div className="topMargin">
       <div className="searchPart">
-        <Card title="Matched Videos">
+        <Card
+          title={
+            videoResult
+              ? `Matched ${videoResult.length} Videos`
+              : `Searching...`
+          }
+        >
           {videoResult == null ? (
             <Spin />
           ) : (
@@ -194,14 +200,21 @@ function SearchResult() {
       </div>
 
       <div className="searchPart">
-        <Card title="Matched Users">
+        <Card
+          title={
+            userResult ? `Matched ${userResult.length} Users` : `Searching...`
+          }
+        >
           {userResult == null ? (
             <Spin />
           ) : (
             <List
-              grid={{ gutter: 24, column: 3 }}
+              grid={{ gutter: 24, column: 4 }}
               itemLayout="horizontal"
               dataSource={userResult}
+              pagination={{
+                pageSize: 12,
+              }}
               renderItem={(item) => (
                 <List.Item>
                   <List.Item.Meta

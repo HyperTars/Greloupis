@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Header from "./Header";
 import { createVideo, updateVideoInfo } from "./FetchData";
+import { message } from "antd";
 
 let AWS = require("aws-sdk");
 
@@ -104,7 +105,7 @@ export default class VideoUpload extends Component {
           window.location.href = "/404";
         });
     } else {
-      alert("You have not uploaded video!");
+      message.error("You have not uploaded video!");
     }
   };
 

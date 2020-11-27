@@ -1283,14 +1283,30 @@ h3 {
   cursor: default;
 }
 
+.anticon {
+  vertical-align: 0;
+}
+
+.ant-form-item-label-left {
+  font-weight: bold;
+}
+
+.ant-form-item-label > label {
+  font-size: 18px;
+}
+
 .userProfile {
   margin-left: 1vw;
   margin-top: 1vw;
   text-align: left;
 }
 
-.userProfile .ant-list-item-meta-title{
+.userProfile .ant-list-item-meta-title {
   font-size: 20px;
+}
+
+.userProfile .ant-list-item-meta-description {
+  font-size: 15px;
 }
 
 .ant-dropdown-menu-item .logout-alert {
@@ -1331,7 +1347,8 @@ h3 {
 }
 
 .ant-card-head-title {
-  font-size: 20px;
+  font-size: 24px;
+  font-weight: bold;
 }
 
 .ant-upload-list-item-error, .ant-upload-list-item-error .ant-upload-text-icon > .anticon, .ant-upload-list-item-error .ant-upload-list-item-name {
@@ -1360,7 +1377,7 @@ h3 {
 }
 
 .profile-button {
-  width: 23vw;
+  width: 27vw;
 }
 
 @media screen and (max-width: 1250px) {
@@ -1454,3 +1471,4 @@ h3 {
   width: 1.75em;
   height: 1.75em;
 }
+
