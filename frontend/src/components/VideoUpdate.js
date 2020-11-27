@@ -264,7 +264,7 @@ function VideoUpdate({ videoId }) {
           label={
             <span>
               Video Channel&nbsp;
-              <Tooltip title="Your video channel">
+              <Tooltip title="Your video channel, defaultly set as 'self-made'">
                 <QuestionCircleOutlined />
               </Tooltip>
             </span>
@@ -354,7 +354,7 @@ function VideoUpdate({ videoId }) {
           label={
             <span>
               Video Status&nbsp;
-              <Tooltip title="Only you can see this video, if the status is set as 'private'">
+              <Tooltip title="Only the video author can see the video, if the status is set as 'private'">
                 <QuestionCircleOutlined />
               </Tooltip>
             </span>

@@ -266,7 +266,7 @@ function UserProfile({ userId }) {
         name="submit"
         onFinish={submitHandler}
         labelAlign="left"
-        layout="vertical"
+        layout={isLocalUser ? "vertical" : "horizontal"}
         initialValues={{
           avatar: userData ? userData["user_thumbnail"] : "",
           nickname: userData ? userData["user_name"] : "",
@@ -329,7 +329,7 @@ function UserProfile({ userId }) {
           label={
             <span>
               Name&nbsp;
-              <Tooltip title="What do you want others to call you?">
+              <Tooltip title="Your nickname on Greloupis">
                 <QuestionCircleOutlined />
               </Tooltip>
             </span>
@@ -683,7 +683,7 @@ function UserProfile({ userId }) {
           label={
             <span>
               Status&nbsp;
-              <Tooltip title="Other users can only see your avatar, name and public videos, if the status is set as 'private'">
+              <Tooltip title="Other users can only see user avatar, name and public videos, if the status is set as 'private'">
                 <QuestionCircleOutlined />
               </Tooltip>
             </span>
