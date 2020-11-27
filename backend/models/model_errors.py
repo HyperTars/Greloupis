@@ -23,6 +23,8 @@ class ErrorCode(Enum):
         2005: "Route Error: This user acoount has been deleted"}
     ROUTE_DELETED_VIDEO = {2006: "Route Error: This video has been deleted"}
     ROUTE_USER_CLOSED = {2007: "Route Error: This account has been closed"}
+    ROUTE_VIDEO_ID_REQUIRED = {2008: "Route Error: Video ID Not Provided"}
+    ROUTE_VIDEO_PENDING = {2009: "Route Error: Video Pending"}
 
     # Service 3 Series
     SERVICE_PARAM_SLICE_NOT_SUPPORT = {

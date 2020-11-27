@@ -71,15 +71,15 @@ def service_video_update(**kw):
     if 'video_id' not in kw:
         raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
 
+    if not is_valid_id(kw["video_id"]):
+        raise ServiceError(ErrorCode.SERVICE_INVALID_ID_OBJ)
+
     if 'video_status' in kw and kw['video_status'] not in VALID_VIDEO_STATUS:
         raise ServiceError(ErrorCode.SERVICE_VIDEO_INVALID_STATUS)
 
     if 'video_raw_status' in kw and \
        kw['video_raw_status'] not in VALID_VIDEO_RAW_STATUS:
         raise ServiceError(ErrorCode.SERVICE_VIDEO_INVALID_STATUS)
-
-    if not is_valid_id(kw["video_id"]):
-        raise ServiceError(ErrorCode.SERVICE_INVALID_ID_OBJ)
 
     query_video_update(**kw)
 

@@ -133,11 +133,15 @@ function VideoUpdate({ videoId }) {
         video_category: values.category,
         video_language: values.language,
         video_status: values.status,
-      }).then(() => {
-        alert("Successfully update video information!");
-        window.location.href =
-          "/user/" + getSubstr(localStorage.getItem("user_id"));
-      });
+      })
+        .then(() => {
+          alert("Successfully update video information!");
+          window.location.href =
+            "/user/" + getSubstr(localStorage.getItem("user_id"));
+        })
+        .catch((e) => {
+          message.error(e.message);
+        });
     };
 
     const uploadProps = {
