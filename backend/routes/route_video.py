@@ -155,6 +155,9 @@ class VideoVideoId(Resource):
             if video['video_status'] == 'deleted':
                 raise RouteError(ErrorCode.ROUTE_DELETED_VIDEO)
 
+            if video['video_raw_status'] != 'streaming':
+                raise RouteError(ErrorCode.ROUTE_VIDEO_PENDING)
+
             # check authority
             if service_auth_video_get(token, video_id) is False:
                 raise RouteError(ErrorCode.ROUTE_PRIVATE_VIDEO)
