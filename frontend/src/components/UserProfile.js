@@ -241,17 +241,21 @@ function UserProfile({ userId }) {
         dataObj["user_email"] = values.email;
       if (values.password !== "") dataObj["user_password"] = values.password;
 
-      updateUserInfo(userId, dataObj).then(() => {
-        if (dataObj["user_thumbnail"] !== userData.user_thumbnail) {
-          localStorage.setItem(
-            "user_thumbnail",
-            '"' + dataObj["user_thumbnail"] + '"'
-          );
-        }
+      updateUserInfo(userId, dataObj)
+        .then(() => {
+          if (dataObj["user_thumbnail"] !== userData.user_thumbnail) {
+            localStorage.setItem(
+              "user_thumbnail",
+              '"' + dataObj["user_thumbnail"] + '"'
+            );
+          }
 
-        alert("Successfully update user profile!");
-        window.location.reload();
-      });
+          alert("Successfully update user profile!");
+          window.location.reload();
+        })
+        .catch((e) => {
+          message.error(e.message);
+        });
     };
 
     return (

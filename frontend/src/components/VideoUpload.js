@@ -47,12 +47,8 @@ export default class VideoUpload extends Component {
         fileObj: file,
         video_raw_size: temp_video_size,
         video_duration: temp_video_duration,
-        video_title: this.state.video_id,
-        video_raw_content:
-          "https://greloupis-video-streaming.s3.amazonaws.com/" +
-          this.state.video_id +
-          "-" +
-          file.name,
+        video_title: "",
+        video_raw_content: "",
       });
     });
 
@@ -72,14 +68,14 @@ export default class VideoUpload extends Component {
           AWS.config.update({
             // accessKeyId: AWS.config.credentials.accessKeyId,
             // secretAccessKey: AWS.config.credentials.secretAccessKey,
-            accessKeyId: "AKIA3OYIJQ4LRR5D4QMP",
-            secretAccessKey: "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",
-            region: AWS.config.region,
+            accessKeyId: "AKIA4KCXIGUZXUOBYG3E",
+            secretAccessKey: "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",
+            region: "us-west-1",
           });
           let upload = new AWS.S3.ManagedUpload({
             params: {
-              Bucket: "greloupis-video-streaming",
-              Key: this.state.video_id + "-" + this.state.fileObj.name,
+              Bucket: "vod-watchfolder-ovs-lxb",
+              Key: this.state.video_id + "." + this.state.fileObj.type.slice(6),
               Body: this.state.fileObj,
               ACL: "public-read",
             },
@@ -90,7 +86,11 @@ export default class VideoUpload extends Component {
           let updateData = {
             video_duration: this.state.video_duration,
             video_id: this.state.video_id,
-            video_raw_content: this.state.video_raw_content,
+            video_raw_content:
+              "https://vod-watchfolder-ovs-lxb.s3-us-west-1.amazonaws.com/" +
+              this.state.video_id +
+              "." +
+              this.state.fileObj.type.slice(6),
             video_raw_size: this.state.video_raw_size,
             video_title: this.state.video_id,
           };
@@ -102,7 +102,7 @@ export default class VideoUpload extends Component {
           });
         })
         .catch((e) => {
-          window.location.href = "/404";
+          message.error(e.message);
         });
     } else {
       message.error("You have not uploaded video!");
