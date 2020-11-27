@@ -19,6 +19,7 @@ import {
   Upload,
   message,
   Card,
+  Badge,
 } from "antd";
 
 import {
@@ -812,6 +813,14 @@ function UserProfile({ userId }) {
                               className="profile-video-title"
                             >
                               {item.video_title}
+                              <Badge
+                                status={
+                                  item.video_raw_status === "streaming"
+                                    ? "success"
+                                    : "warning"
+                                }
+                                text={item.video_raw_status}
+                              />
                             </Link>
                             {isLocalUser ? (
                               <Link to={`/video/update/${item.video_id}`}>
