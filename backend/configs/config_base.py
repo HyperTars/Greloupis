@@ -25,11 +25,15 @@ class BaseConfig(object):
     AWS_AUTH_KEY = "bf9e5788a7f59072e26712bdfacdfd30c0941d836e9" \
         "340de9503ca579aa765716ae9521ae429d76876b818b00c34096582" \
         "ac4c7784eaf2c1febdafd667134101"
-    AWS_CLOUD_FRONT = "https://d2t7530wn5sgoq.cloudfront.net/assets/MP4"
+    AWS_CLOUD_FRONT = "https://d2t7530wn5sgoq.cloudfront.net/assets/"
+    AWS_STREAMING_FOLDER = AWS_CLOUD_FRONT + "MP4/"
     AWS_STREAMING_FORMAT = ".mp4"
     AWS_STREAMING_LOW = "360"
     AWS_STREAMING_MID = "720"
     AWS_STREAMING_HIGH = "1080"
+    AWS_THUMBNAIL_FOLDER = AWS_CLOUD_FRONT + "Thumbnails/"
+    AWS_THUMBNAIL_FORMAT = ".0000000.jpg"
+
 
     @staticmethod
     def init_app(app):
