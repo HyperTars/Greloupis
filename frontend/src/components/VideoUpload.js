@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import Header from "./Header";
 import { createVideo, updateVideoInfo } from "./FetchData";
-
-import { uuid } from "../util";
+import { message } from "antd";
 
 let AWS = require("aws-sdk");
 
@@ -11,7 +10,6 @@ export default class VideoUpload extends Component {
     super(props);
 
     this.state = {
-      CURRENT_UUID: uuid(),
       video_id: "",
       video_raw_content: "",
       video_duration: 0,
@@ -49,10 +47,10 @@ export default class VideoUpload extends Component {
         fileObj: file,
         video_raw_size: temp_video_size,
         video_duration: temp_video_duration,
-        video_title: this.state.CURRENT_UUID,
+        video_title: this.state.video_id,
         video_raw_content:
           "https://greloupis-video-streaming.s3.amazonaws.com/" +
-          this.state.CURRENT_UUID +
+          this.state.video_id +
           "-" +
           file.name,
       });
@@ -81,7 +79,7 @@ export default class VideoUpload extends Component {
           let upload = new AWS.S3.ManagedUpload({
             params: {
               Bucket: "greloupis-video-streaming",
-              Key: this.state.CURRENT_UUID + "-" + this.state.fileObj.name,
+              Key: this.state.video_id + "-" + this.state.fileObj.name,
               Body: this.state.fileObj,
               ACL: "public-read",
             },
@@ -94,7 +92,7 @@ export default class VideoUpload extends Component {
             video_id: this.state.video_id,
             video_raw_content: this.state.video_raw_content,
             video_raw_size: this.state.video_raw_size,
-            video_title: this.state.video_title,
+            video_title: this.state.video_id,
           };
           updateVideoInfo(this.state.video_id, updateData).then(() => {
             let path = {
@@ -107,7 +105,7 @@ export default class VideoUpload extends Component {
           window.location.href = "/404";
         });
     } else {
-      alert("You have not uploaded video!");
+      message.error("You have not uploaded video!");
     }
   };
 
