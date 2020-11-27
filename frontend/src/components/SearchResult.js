@@ -114,7 +114,9 @@ function SearchResult() {
         <Card
           title={
             videoResult
-              ? `Matched ${videoResult.length} Videos`
+              ? `Matched ${videoResult.length} Video${
+                  videoResult.length <= 1 ? "" : "s"
+                }`
               : `Searching...`
           }
         >
@@ -202,7 +204,11 @@ function SearchResult() {
       <div className="searchPart">
         <Card
           title={
-            userResult ? `Matched ${userResult.length} Users` : `Searching...`
+            userResult
+              ? `Matched ${userResult.length} User${
+                  userResult.length <= 1 ? "" : "s"
+                }`
+              : `Searching...`
           }
         >
           {userResult == null ? (
