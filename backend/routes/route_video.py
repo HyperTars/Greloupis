@@ -854,9 +854,9 @@ class Video(Resource):
 
             update_result = service_video_update(
                 video_id=kw['video_id'],
-                video_uri_low=kw['video_uri_low'],
-                video_uri_mid=kw['video_uri_mid'],
-                video_uri_high=kw['video_uri_high'],
+                video_uri_low=video_uri_low,
+                video_uri_mid=video_uri_mid,
+                video_uri_high=video_uri_high,
                 video_raw_status="streaming")
             
             if len(update_result) == 1:
