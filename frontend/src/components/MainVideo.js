@@ -11,6 +11,7 @@ import {
 } from "./FetchData";
 import { Link } from "react-router-dom";
 import * as func from "../util";
+import { Tag } from "antd";
 
 const VIDEO_INFO_LIMIT = 1000;
 
@@ -212,13 +213,16 @@ class MainVideo extends Component {
       user_name,
       user_thumbnail,
       video_id,
-      video_raw_content,
+      video_uri,
       video_thumbnail,
       video_title,
       video_view,
       video_like,
       video_dislike,
       video_upload_date,
+      video_channel,
+      video_category,
+      video_tag,
     } = mainVideoCopy;
 
     return (
@@ -228,7 +232,7 @@ class MainVideo extends Component {
             id="myVideo"
             autoPlay
             controls
-            src={video_raw_content}
+            src={video_uri ? video_uri.video_uri_high : null}
             type="mp4/video"
             poster={video_thumbnail}
             ref={(element) => {
@@ -261,7 +265,10 @@ class MainVideo extends Component {
         </div>
 
         <div className="main-video__description">
-          <div className="description-title">{video_title}</div>
+          <div className="description-title">
+            <Tag>{video_channel}</Tag>
+            {video_title}
+          </div>
           <div className="description-reaction">
             <p className="description-reaction__views">{video_view} views</p>
             <div className="description-reaction__icons">
@@ -330,6 +337,20 @@ class MainVideo extends Component {
             </div>
           </div>
           <div className="main-video__details-info">
+            {video_category && video_category.length > 0
+              ? video_category.map((e) => {
+                  return (
+                    <Link to={`/search?keyword=${e}`}>{"#" + e + " "}</Link>
+                  );
+                })
+              : ""}
+            {video_tag && video_tag.length > 0
+              ? video_tag.map((e) => {
+                  return (
+                    <Link to={`/search?keyword=${e}`}>{"#" + e + " "}</Link>
+                  );
+                })
+              : ""}
             {this.props.description
               ? this.state.showMore
                 ? this.renderDescription()
