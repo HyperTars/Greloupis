@@ -1,5 +1,6 @@
 import { backendPoint } from "./Endpoint";
 import { authHeader } from "../service/AuthHeader";
+import AuthService from "../service/AuthService";
 import logout from "./Logout";
 
 export class GatewayTimeout extends Error {}
@@ -59,9 +60,11 @@ function fetchWithErrorHandling(url, method, data) {
       throw Error(responseJson["message"]);
     } else {
       if (responseJson.code === -10000) {
-        alert("Local user token has expired!");
-        logout();
-        return;
+        if (AuthService.isAuth()) {
+          alert("Local user token has expired!");
+          logout();
+          window.location.href = "/";
+        }
       }
 
       return response;

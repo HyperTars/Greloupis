@@ -82,7 +82,7 @@ function VideoUpdate({ videoId }) {
     },
     wrapperCol: {
       xs: { span: 12 },
-      sm: { span: 18 },
+      sm: { span: 24 },
     },
   };
 
@@ -103,6 +103,8 @@ function VideoUpdate({ videoId }) {
         });
 
         values.tag = tagArray;
+      } else {
+        values.tag = [];
       }
 
       if (values.category.length > 0) {
@@ -113,6 +115,8 @@ function VideoUpdate({ videoId }) {
         });
 
         values.category = categoryArray;
+      } else {
+        values.category = [];
       }
 
       updateVideoInfo(videoId, {
@@ -197,6 +201,7 @@ function VideoUpdate({ videoId }) {
         name="submit"
         onFinish={submitHandler}
         labelAlign="left"
+        layout="vertical"
         initialValues={{
           thumbnail: videoData ? videoData["video_thumbnail"] : "",
           title: videoData ? videoData["video_title"] : "",

@@ -52,7 +52,6 @@ function UserProfile({ userId }) {
   const [videoData, setVideoData] = useState([]);
 
   const [userLike, setUserLike] = useState([]);
-  const [userDislike, setUserDislike] = useState([]);
   const [userStar, setUserStar] = useState([]);
   const [userComment, setUserComment] = useState([]);
   const [userProcess, setUserProcess] = useState([]);
@@ -74,9 +73,6 @@ function UserProfile({ userId }) {
         let likeList = res.body["video_op"].filter(
           (element) => element.like === true
         );
-        let dislikeList = res.body["video_op"].filter(
-          (element) => element.dislike === true
-        );
         let starList = res.body["video_op"].filter(
           (element) => element.star === true
         );
@@ -97,13 +93,6 @@ function UserProfile({ userId }) {
         likeList.sort((a, b) => {
           let dataA = new Date(a.like_date);
           let dataB = new Date(b.like_date);
-          if (dataA === dataB) return 0;
-          return dataA > dataB ? -1 : 1;
-        });
-
-        dislikeList.sort((a, b) => {
-          let dataA = new Date(a.dislike_date);
-          let dataB = new Date(b.dislike_date);
           if (dataA === dataB) return 0;
           return dataA > dataB ? -1 : 1;
         });
@@ -133,7 +122,6 @@ function UserProfile({ userId }) {
           setVideoData(videoList);
         if (JSON.stringify(res.body["video_op"]) !== "[{}]") {
           setUserLike(likeList);
-          setUserDislike(dislikeList);
           setUserStar(starList);
           setUserProcess(processList);
           setUserComment(commentList);
@@ -273,6 +261,7 @@ function UserProfile({ userId }) {
         name="submit"
         onFinish={submitHandler}
         labelAlign="left"
+        layout="vertical"
         initialValues={{
           avatar: userData ? userData["user_thumbnail"] : "",
           nickname: userData ? userData["user_name"] : "",
@@ -363,7 +352,7 @@ function UserProfile({ userId }) {
 
         <Form.Item
           name="email"
-          label="Email:"
+          label="Email"
           rules={[
             {
               type: "email",
@@ -776,7 +765,7 @@ function UserProfile({ userId }) {
                   itemLayout="vertical"
                   size="large"
                   pagination={{
-                    pageSize: 2,
+                    pageSize: 3,
                   }}
                   dataSource={videoData}
                   renderItem={(item) => (
@@ -868,7 +857,7 @@ function UserProfile({ userId }) {
                   itemLayout="vertical"
                   size="large"
                   pagination={{
-                    pageSize: 2,
+                    pageSize: 4,
                   }}
                   dataSource={userProcess}
                   renderItem={(item) => (
@@ -963,7 +952,7 @@ function UserProfile({ userId }) {
                             {item.video_title}
                           </Link>
                         }
-                        description={item.comment}
+                        description={ellipsifyStr(item.comment)}
                       />
                     </List.Item>
                   )}
@@ -1001,45 +990,6 @@ function UserProfile({ userId }) {
                           </Link>
                         }
                         description={"Like on " + dateConvert(item.like_date)}
-                      />
-                    </List.Item>
-                  )}
-                />
-              )}
-            </Card>
-
-            <Card title={isLocalUser ? "My Dislikes" : "User Dislikes"}>
-              {userDislike == null ? (
-                <Spin />
-              ) : (
-                <List
-                  grid={{ gutter: 12, column: 2 }}
-                  itemLayout="vertical"
-                  size="large"
-                  pagination={{
-                    pageSize: 2,
-                  }}
-                  dataSource={userDislike}
-                  renderItem={(item) => (
-                    <List.Item>
-                      <List.Item.Meta
-                        avatar={
-                          <Link to={"/video/" + item.video_id}>
-                            <Avatar
-                              shape="square"
-                              size={54}
-                              src={generateThumbnail(item.video_thumbnail)}
-                            />
-                          </Link>
-                        }
-                        title={
-                          <Link to={"/video/" + item.video_id}>
-                            {item.video_title}
-                          </Link>
-                        }
-                        description={
-                          "Dislike on " + dateConvert(item.dislike_date)
-                        }
                       />
                     </List.Item>
                   )}

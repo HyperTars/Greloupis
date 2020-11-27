@@ -7,6 +7,7 @@ export function convertToRelativeTime(timestamp) {
   return moment(t).startOf("minutes").fromNow();
 }
 
+// convert second to hour:minute:second format
 export function secondTimeConvert(second) {
   if (second < 3600)
     return [parseInt((second / 60) % 60), second % 60]
@@ -22,6 +23,7 @@ export function secondTimeConvert(second) {
       .replace(/\b(\d)\b/g, "0$1");
 }
 
+// convert timestamp to yy:mm:dd
 export function dateConvert(time) {
   let d = new Date(time),
     month = "" + (d.getMonth() + 1),
@@ -34,17 +36,20 @@ export function dateConvert(time) {
   return [year, month, day].join("-");
 }
 
+// slice the first and last character of the string
 export function getSubstr(rawStr) {
   if (rawStr == null) return rawStr;
 
   return rawStr.slice(1, -1);
 }
 
+// set the max display length of given string
 export function ellipsifyStr(rawStr, maxLength = 150) {
   if (rawStr.length <= maxLength) return rawStr;
   return rawStr.slice(0, maxLength) + "...";
 }
 
+// check if local storage is missing item
 export function isStorageEmpty() {
   return (
     !localStorage.getItem("user_name") ||
@@ -53,6 +58,7 @@ export function isStorageEmpty() {
   );
 }
 
+// login check and redirect
 export function loginCheck() {
   if (isStorageEmpty()) {
     alert("You have not signed in!");
@@ -60,6 +66,7 @@ export function loginCheck() {
   }
 }
 
+// read user avatar from local storage, or use default avatar
 export function generateAvatar() {
   if (!localStorage.getItem("user_thumbnail"))
     return "https://greloupis-images.s3.amazonaws.com/avatar-default-1.svg";
@@ -67,12 +74,14 @@ export function generateAvatar() {
   return getSubstr(localStorage.getItem("user_thumbnail"));
 }
 
+// read video thumbnail, or use default thumbnail
 export function generateThumbnail(thumbnail) {
   return !thumbnail || thumbnail === ""
     ? "https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
     : thumbnail;
 }
 
+// generate uuid
 let urlBase64 = (function () {
   let alphabet = { "+": "-", "/": "_" };
 
