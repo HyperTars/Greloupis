@@ -31,7 +31,9 @@ class BaseConfig(object):
     AWS_STREAMING_LOW = "360"
     AWS_STREAMING_MID = "720"
     AWS_STREAMING_HIGH = "1080"
-    AWS_THUMBNAIL_FOLDER = AWS_CLOUD_FRONT + "Thumbnails/"
+
+    AWS_THUMBNAIL_FOLDER = "https://vod-xuanbinmediabucket." \
+        "s3-us-west-1.amazonaws.com/assets/Thumbnails/"
     AWS_THUMBNAIL_FORMAT = ".0000000.jpg"
 
 
