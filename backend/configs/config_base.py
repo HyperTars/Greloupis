@@ -1,5 +1,4 @@
 import os
-# import sys
 
 
 class BaseConfig(object):
@@ -21,6 +20,12 @@ class BaseConfig(object):
                  'dislike', 'dislikes', 'video_dislike',
                  'star', 'stars', 'video_star',
                  'share', 'shares', 'video_share']
+
+    # AWS
+    AWS_AUTH_KEY = "bf9e5788a7f59072e26712bdfacdfd30c0941d836e9" \
+        "340de9503ca579aa765716ae9521ae429d76876b818b00c34096582" \
+        "ac4c7784eaf2c1febdafd667134101"
+    AWS_CLOUD_FRONT = "https://d2t7530wn5sgoq.cloudfront.net/assets"
 
     @staticmethod
     def init_app(app):

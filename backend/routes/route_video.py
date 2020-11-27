@@ -3,8 +3,9 @@ from __future__ import absolute_import, print_function
 from flask import request
 from flask_jwt_extended import jwt_required, jwt_optional, get_jwt_identity
 from flask_restx import Resource, fields, Namespace
+import ast
 
-# from service.service_user import service_user_get_info
+from settings import config
 from .route_user import thumbnail, general_response, star, comment, like, \
     dislike, star_response_list, comment_response_list, like_response_list, \
     dislike_response_list
@@ -29,12 +30,8 @@ from utils.util_serializer import util_serializer_api_response, \
 from models.model_errors import ServiceError, RouteError, MongoError, \
     ErrorCode
 
-import ast
 
-# from flask import Flask, g, Blueprint
-# from flask_restx import Api, marshal_with, reqparse
-# from source.utils.util_serializer import *
-# import json
+conf = config['base']
 
 video = Namespace('video', description='Video APIs')
 
@@ -828,7 +825,6 @@ class VideoVideoIdStarUserId(Resource):
 @video.response(500, 'Internal server error', general_response)
 class Video(Resource):
 
-    @jwt_required
     def post(self):
         """
             AWS update video info
@@ -844,13 +840,25 @@ class Video(Resource):
             # check authority
             if 'aws_auth_key' not in kw:
                 raise RouteError(ErrorCode.ROUTE_TOKEN_REQUIRED)
-            
-            # video_uri_low
-            # video_uri_mid
-            # video_uri_high
-            # video_raw_status = "streaming"
+            if kw['aws_auth_key'] != conf.AWS_AUTH_KEY:
+                raise RouteError(ErrorCode.ROUTE_TOKEN_NOT_PERMITTED)
+            if 'video_id' not in kw:
+                raise RouteError(ErrorCode.ROUTE_VIDEO_ID_REQUIRED)
 
-            update_result = service_video_update(**kw)
+            video_uri = conf.AWS_CLOUD_FRONT + \
+                ('/' + kw['video_id']) * 2
+            
+            video_uri_low = video_uri + '_360.m3u8'
+            video_uri_mid = video_uri + '_720.m3u8'
+            video_uri_high = video_uri + '_1080.m3u8'
+
+            update_result = service_video_update(
+                video_id=kw['video_id'],
+                video_uri_low=kw['video_uri_low'],
+                video_uri_mid=kw['video_uri_mid'],
+                video_uri_high=kw['video_uri_high'],
+                video_raw_status="streaming")
+            
             if len(update_result) == 1:
                 return_body = util_serializer_mongo_results_to_array(
                     update_result, format="json")
