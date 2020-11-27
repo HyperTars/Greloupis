@@ -845,12 +845,11 @@ class Video(Resource):
             if 'video_id' not in kw:
                 raise RouteError(ErrorCode.ROUTE_VIDEO_ID_REQUIRED)
 
-            video_uri = conf.AWS_CLOUD_FRONT + \
-                ('/' + kw['video_id']) * 2
-            
-            video_uri_low = video_uri + '_360.m3u8'
-            video_uri_mid = video_uri + '_720.m3u8'
-            video_uri_high = video_uri + '_1080.m3u8'
+            aws_uri = conf.AWS_CLOUD_FRONT
+
+            video_uri_low = aws_uri + '_360.m3u8'
+            video_uri_mid = aws_uri + '_540.m3u8'
+            video_uri_high = aws_uri + '_720.m3u8'
 
             update_result = service_video_update(
                 video_id=kw['video_id'],
@@ -859,6 +858,8 @@ class Video(Resource):
                 video_uri_high=video_uri_high,
                 video_raw_status="streaming")
             
+            # TODO: Thumbnail?
+
             if len(update_result) == 1:
                 return_body = util_serializer_mongo_results_to_array(
                     update_result, format="json")
