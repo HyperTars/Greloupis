@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Redirect } from "react-router-dom";
 import MainVideo from "./MainVideo";
 import Comments from "./Comments";
-import * as func from "../util";
+import { getSubstr, isStorageEmpty } from "../util";
 import {
   getVideoInfo,
   getVideoComments,
@@ -48,7 +48,7 @@ function VideoPlay({ videoId }) {
       });
 
     // get watching history, or create a new one
-    let userId = func.getSubstr(localStorage.getItem("user_id"));
+    let userId = getSubstr(localStorage.getItem("user_id"));
     if (userId) {
       getUserVideoProcess(videoId, userId)
         .then((res) => {
@@ -74,15 +74,13 @@ function VideoPlay({ videoId }) {
 
     getVideoLikes(videoId).then((res) => {
       if (res == null) return;
-      if (func.isStorageEmpty()) {
+      if (isStorageEmpty()) {
         setVideoLikes(false);
         return false;
       }
 
       res.body.forEach((element) => {
-        if (
-          element.user_id === func.getSubstr(localStorage.getItem("user_id"))
-        ) {
+        if (element.user_id === getSubstr(localStorage.getItem("user_id"))) {
           setVideoLikes(true);
         }
       });
@@ -90,15 +88,13 @@ function VideoPlay({ videoId }) {
 
     getVideoDislikes(videoId).then((res) => {
       if (res == null) return;
-      if (func.isStorageEmpty()) {
+      if (isStorageEmpty()) {
         setVideoDisLikes(false);
         return false;
       }
 
       res.body.forEach((element) => {
-        if (
-          element.user_id === func.getSubstr(localStorage.getItem("user_id"))
-        ) {
+        if (element.user_id === getSubstr(localStorage.getItem("user_id"))) {
           setVideoDisLikes(true);
         }
       });
@@ -106,15 +102,13 @@ function VideoPlay({ videoId }) {
 
     getVideoStars(videoId).then((res) => {
       if (res == null) return;
-      if (func.isStorageEmpty()) {
+      if (isStorageEmpty()) {
         setVideoStars(false);
         return false;
       }
 
       res.body.forEach((element) => {
-        if (
-          element.user_id === func.getSubstr(localStorage.getItem("user_id"))
-        ) {
+        if (element.user_id === getSubstr(localStorage.getItem("user_id"))) {
           setVideoStars(true);
         }
       });

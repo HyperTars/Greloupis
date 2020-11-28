@@ -1,5 +1,10 @@
 import React, { Component } from "react";
-import * as func from "../util";
+import {
+  loginCheck,
+  getSubstr,
+  generateAvatar,
+  convertToRelativeTime,
+} from "../util";
 import { createUserVideoComment, deleteUserVideoComment } from "./FetchData";
 
 export default class Comments extends Component {
@@ -24,11 +29,11 @@ export default class Comments extends Component {
   }
 
   deleteCommentHandler = () => {
-    func.loginCheck();
+    loginCheck();
 
     deleteUserVideoComment(
       this.props.mainVideoId,
-      func.getSubstr(localStorage.getItem("user_id"))
+      getSubstr(localStorage.getItem("user_id"))
     ).then(() => {
       window.location.reload();
     });
@@ -40,7 +45,7 @@ export default class Comments extends Component {
   };
 
   submitCommentHandler = () => {
-    func.loginCheck();
+    loginCheck();
 
     if (this.commentInput.value) {
       const data = {
@@ -49,7 +54,7 @@ export default class Comments extends Component {
 
       createUserVideoComment(
         this.props.mainVideoId,
-        func.getSubstr(localStorage.getItem("user_id")),
+        getSubstr(localStorage.getItem("user_id")),
         data
       ).then(() => {
         this.commentInput.value = "";
@@ -131,7 +136,7 @@ export default class Comments extends Component {
         <div className="comments-form">
           <img
             className="comments-form__avatar"
-            src={func.generateAvatar()}
+            src={generateAvatar()}
             alt="Profile Avatar"
           />
           {!this.state.isAddingComment
@@ -162,7 +167,7 @@ class CommentBlock extends Component {
   }
 
   deleteCommentHandler = () => {
-    func.loginCheck();
+    loginCheck();
 
     this.props.deleteCommentHandler(String(this.state.commentId));
     this.displayConfirmWindow(false);
@@ -215,8 +220,7 @@ class CommentBlock extends Component {
         onMouseOver={() => {
           if (
             localStorage.getItem("user_name") &&
-            this.props.userName ===
-              func.getSubstr(localStorage.getItem("user_name"))
+            this.props.userName === getSubstr(localStorage.getItem("user_name"))
           )
             this.displayDeleteButton(true);
         }}
@@ -234,7 +238,7 @@ class CommentBlock extends Component {
         <div className="comment-block__content">
           <span className="comment-block__content-name">{userName}</span>
           <span className="comment-block__content-timestamp">
-            {func.convertToRelativeTime(timestamp)}
+            {convertToRelativeTime(timestamp)}
           </span>
           <p className="comment-block__content-comment">{comment}</p>
         </div>
