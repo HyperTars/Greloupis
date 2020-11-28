@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { getVideoInfo, updateVideoInfo, deleteVideo } from "./FetchData";
 import { Redirect } from "react-router-dom";
-import "../static/css/App.css";
 
 import {
   Form,

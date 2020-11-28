@@ -1480,3 +1480,13 @@ h3 {
 .ant-tag {
   background-color: rgba(64,184,132,.1);
 }
+
+.jw-settings-menu {
+  height: 200px!important;
+  width: 170px!important;
+}
+
+.jw-breakpoint-6 .jw-settings-menu, .jw-breakpoint-5 .jw-settings-menu {
+  height: 150px!important;
+  width: 130px!important;
+}

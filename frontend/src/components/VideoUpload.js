@@ -134,11 +134,7 @@ export default class VideoUpload extends Component {
                     onChange={this.uploadHandler}
                   />
                 </label>
-                <video
-                  style={{ display: "none" }}
-                  controls="controls"
-                  id="test_video"
-                ></video>
+                <video style={{ display: "none" }} id="test_video"></video>
               </div>
             </div>
             <div className="upload-page__btnBox">
