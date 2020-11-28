@@ -257,44 +257,38 @@ class MainVideo extends Component {
     return (
       <section id={video_id} className="main-video">
         <div className="main-video__content">
-          {/* <video
-            id="myVideo"
-            controls
-            src={video_uri ? video_uri.video_uri_high : null}
-            type="mp4/video"
-            poster={video_thumbnail}
-            ref={(element) => {
-              if (
-                localStorage.getItem("user_id") &&
-                element &&
-                this.props.videoProcess.process
-              ) {
-                element.currentTime = parseInt(
-                  this.props.videoProcess.process,
-                  10
-                );
-              }
-            }}
-            onTimeUpdate={() => {
-              if (localStorage.getItem("user_id")) {
-                updateUserVideoProcess(
-                  video_id,
-                  func.getSubstr(localStorage.getItem("user_id")),
-                  {
-                    process: parseInt(
-                      document.getElementById("myVideo").currentTime,
-                      10
-                    ),
-                  }
-                );
-              }
-            }}
-          ></video> */}
           {video_uri && video_uri.video_uri_high !== "" ? (
             <ReactJWPlayer
               playerId="jw-player"
               playerScript="https://content.jwplatform.com/libraries/jvJ1Gu3c.js"
               playlist={playList}
+              onVideoLoad={() => {
+                if (
+                  localStorage.getItem("user_id") &&
+                  this.props.videoProcess.process
+                ) {
+                  document.getElementsByTagName(
+                    "video"
+                  )[0].currentTime = parseInt(
+                    this.props.videoProcess.process,
+                    10
+                  );
+                }
+              }}
+              onTime={() => {
+                if (localStorage.getItem("user_id")) {
+                  updateUserVideoProcess(
+                    video_id,
+                    func.getSubstr(localStorage.getItem("user_id")),
+                    {
+                      process: parseInt(
+                        document.getElementsByTagName("video")[0].currentTime,
+                        10
+                      ),
+                    }
+                  );
+                }
+              }}
             />
           ) : (
             <div></div>
