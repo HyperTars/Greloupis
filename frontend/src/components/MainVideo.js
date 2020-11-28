@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Player from "griffith";
 import { dateConvert } from "../util";
 import {
   createUserVideoLike,
@@ -221,41 +220,11 @@ class MainVideo extends Component {
       video_tag,
     } = mainVideoCopy;
 
-    const video_sources = {
-      fhd: {
-        play_url: video_uri ? video_uri.video_uri_high : "",
-      },
-      hd: {
-        play_url: video_uri ? video_uri.video_uri_mid : "",
-      },
-      sd: {
-        play_url: video_uri ? video_uri.video_uri_low : "",
-      },
-    };
-
-    const videoProps = {
-      id: video_id,
-      sources: video_sources,
-      cover: video_thumbnail,
-      defaultQuality: "fhd",
-      // onBeforePlay: () => {
-      // if (
-      //   localStorage.getItem("user_id") &&
-      //   this.props.videoProcess.process
-      // ) {
-      //   console.log(this.props.videoProcess.process);
-      //   //element.currentTime = parseInt(this.props.videoProcess.process, 10);
-      //   return;
-      // }
-      // },
-    };
-
     return (
       <section id={video_id} className="main-video">
         <div className="main-video__content">
-          {/* <video
+          <video
             id="myVideo"
-            autoPlay
             controls
             src={video_uri ? video_uri.video_uri_high : null}
             type="mp4/video"
@@ -286,15 +255,7 @@ class MainVideo extends Component {
                 );
               }
             }}
-          ></video> */}
-          {videoProps.cover &&
-          videoProps.sources.fhd !== "" &&
-          videoProps.sources.hd !== "" &&
-          videoProps.sources.sd !== "" ? (
-            <Player {...videoProps} />
-          ) : (
-            <div></div>
-          )}
+          ></video>
         </div>
 
         <div className="main-video__description">

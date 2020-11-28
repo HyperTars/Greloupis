@@ -17,7 +17,6 @@
     "axios": "^0.21.0",
     "bootstrap": "^4.5.3",
     "build": "^0.1.4",
-    "griffith": "^1.9.0",
     "logger": "0.0.1",
     "node-uuid": "^1.4.8",
     "react": "^17.0.1",
