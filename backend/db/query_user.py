@@ -323,7 +323,6 @@ def query_user_add_login(user_id: str, ip="0.0.0.0", time=get_time_now_utc()):
         clean = UserLogin(
             user_login_ip=oldest.user_login_ip,
             user_login_time=oldest.user_login_time)
-        print("to delete: " + clean.user_login_time)
         print(User.objects(id=user_id).update_one(
             pull__user_login__user_login_time=clean.user_login_time))
     if time == latest:
