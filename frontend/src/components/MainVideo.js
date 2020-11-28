@@ -12,6 +12,7 @@ import {
 import { Link } from "react-router-dom";
 import * as func from "../util";
 import { Tag } from "antd";
+import ReactJWPlayer from "react-jw-player";
 
 const VIDEO_INFO_LIMIT = 1000;
 
@@ -208,6 +209,7 @@ class MainVideo extends Component {
       user_name,
       user_thumbnail,
       video_id,
+      video_duration,
       video_uri,
       video_thumbnail,
       video_title,
@@ -220,10 +222,42 @@ class MainVideo extends Component {
       video_tag,
     } = mainVideoCopy;
 
+    const playList = {
+      playlist: [
+        {
+          image: video_thumbnail,
+          duration: video_duration,
+          sources: [
+            {
+              file: video_uri ? video_uri.video_uri_high : "",
+              type: "video/mp4",
+              height: 1080,
+              width: 1920,
+              label: "1080P",
+            },
+            {
+              file: video_uri ? video_uri.video_uri_mid : "",
+              type: "video/mp4",
+              height: 720,
+              width: 1280,
+              label: "HD",
+            },
+            {
+              file: video_uri ? video_uri.video_uri_low : "",
+              type: "video/mp4",
+              height: 360,
+              width: 540,
+              label: "SD",
+            },
+          ],
+        },
+      ],
+    };
+
     return (
       <section id={video_id} className="main-video">
         <div className="main-video__content">
-          <video
+          {/* <video
             id="myVideo"
             controls
             src={video_uri ? video_uri.video_uri_high : null}
@@ -255,7 +289,16 @@ class MainVideo extends Component {
                 );
               }
             }}
-          ></video>
+          ></video> */}
+          {video_uri && video_uri.video_uri_high !== "" ? (
+            <ReactJWPlayer
+              playerId="jw-player"
+              playerScript="https://content.jwplatform.com/libraries/jvJ1Gu3c.js"
+              playlist={playList}
+            />
+          ) : (
+            <div></div>
+          )}
         </div>
 
         <div className="main-video__description">

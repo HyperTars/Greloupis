@@ -23,6 +23,7 @@
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.0",
+    "react-jw-player": "^1.19.1",
     "react-validation": "^3.0.7",
     "redux": "^4.0.5",
     "run": "^1.4.0",
