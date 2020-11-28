@@ -1,4 +1,4 @@
-import React /*, {Component}*/ from "react";
+import React from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -10,12 +10,9 @@ import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
-import { /*makeStyles, */ withStyles } from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import PropTypes from "prop-types";
-// import Form from "react-validation/build/form";
-// import Input from "react-validation/build/input";
-// import CheckButton from "react-validation/build/button";
 import AuthService from "../service/AuthService";
 
 function Copyright() {
@@ -54,16 +51,6 @@ const styles = (theme) => ({
     margin: theme.spacing(3, 0, 2),
   },
 });
-
-// const required = value => {
-//   if (!value) {
-//     return (
-//       <div className="alert alert-danger" role="alert">
-//         This field is required!
-//       </div>
-//     );
-//   }
-// };
 
 class Login extends React.Component {
   constructor(props) {
@@ -105,8 +92,6 @@ class Login extends React.Component {
       loading: true,
     });
 
-    // this.form.validateAll();
-
     if (true) {
       // validate here
       AuthService.login(this.state.username, this.state.password).then(
@@ -131,11 +116,6 @@ class Login extends React.Component {
           alert("Username and password do not match. " + resMessage);
         }
       );
-    } else {
-      this.setState({
-        loading: false,
-      });
-      alert("Incorrect Credentials!");
     }
   }
 

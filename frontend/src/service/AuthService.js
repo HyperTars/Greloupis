@@ -3,7 +3,6 @@ import { createUser, userLogin } from "../components/FetchData";
 class AuthService {
   login(username, password) {
     return userLogin({
-      // user_name: username,
       user: username, // support both name and email
       user_password: password,
     }).then((response) => {

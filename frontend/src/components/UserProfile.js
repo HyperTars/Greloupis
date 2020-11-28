@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { getUserInfo, updateUserInfo, deleteUser } from "./FetchData";
 import { Redirect, Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
-import "../static/css/App.css";
 
 import {
   Form,

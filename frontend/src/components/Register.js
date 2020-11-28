@@ -1,4 +1,4 @@
-import React /*, {Component}*/ from "react";
+import React from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -82,8 +82,6 @@ class Register extends React.Component {
       success: false,
     });
 
-    // this.form.validateAll();
-
     if (true) {
       // validate here
       AuthService.register(
@@ -115,11 +113,6 @@ class Register extends React.Component {
           alert(this.state.message);
         }
       );
-    } else {
-      this.setState({
-        loading: false,
-      });
-      alert("Invalid params");
     }
   }
 

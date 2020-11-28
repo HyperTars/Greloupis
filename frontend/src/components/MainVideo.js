@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { dateConvert } from "../util";
+import { dateConvert, loginCheck, getSubstr } from "../util";
 import {
   createUserVideoLike,
   deleteUserVideoLike,
@@ -10,7 +10,6 @@ import {
   updateUserVideoProcess,
 } from "./FetchData";
 import { Link } from "react-router-dom";
-import * as func from "../util";
 import { Tag } from "antd";
 import ReactJWPlayer from "react-jw-player";
 
@@ -95,13 +94,13 @@ class MainVideo extends Component {
     );
   }
   likeHandler = () => {
-    func.loginCheck();
+    loginCheck();
 
     // like a video
     if (!this.props.videoLike && this.props.mainVideo.video_id) {
       createUserVideoLike(
         this.props.mainVideo.video_id,
-        func.getSubstr(localStorage.getItem("user_id"))
+        getSubstr(localStorage.getItem("user_id"))
       )
         .then(() => {
           this.setState({
@@ -117,7 +116,7 @@ class MainVideo extends Component {
     else if (this.props.videoLike && this.props.mainVideo.video_id) {
       deleteUserVideoLike(
         this.props.mainVideo.video_id,
-        func.getSubstr(localStorage.getItem("user_id"))
+        getSubstr(localStorage.getItem("user_id"))
       )
         .then(() => {
           this.setState({
@@ -130,13 +129,13 @@ class MainVideo extends Component {
     }
   };
   dislikeHandler = () => {
-    func.loginCheck();
+    loginCheck();
 
     // dislike a video
     if (!this.props.videoDisLike && this.props.mainVideo.video_id) {
       createUserVideoDislike(
         this.props.mainVideo.video_id,
-        func.getSubstr(localStorage.getItem("user_id"))
+        getSubstr(localStorage.getItem("user_id"))
       )
         .then(() => {
           this.setState({
@@ -152,7 +151,7 @@ class MainVideo extends Component {
     else if (this.props.videoDisLike && this.props.mainVideo.video_id) {
       deleteUserVideoDislike(
         this.props.mainVideo.video_id,
-        func.getSubstr(localStorage.getItem("user_id"))
+        getSubstr(localStorage.getItem("user_id"))
       )
         .then(() => {
           this.setState({
@@ -165,13 +164,13 @@ class MainVideo extends Component {
     }
   };
   starHandler = () => {
-    func.loginCheck();
+    loginCheck();
 
     // star a video
     if (!this.props.videoStar && this.props.mainVideo.video_id) {
       createUserVideoStar(
         this.props.mainVideo.video_id,
-        func.getSubstr(localStorage.getItem("user_id"))
+        getSubstr(localStorage.getItem("user_id"))
       )
         .then(() => {
           this.setState({
@@ -187,7 +186,7 @@ class MainVideo extends Component {
     else if (this.props.videoStar && this.props.mainVideo.video_id) {
       deleteUserVideoStar(
         this.props.mainVideo.video_id,
-        func.getSubstr(localStorage.getItem("user_id"))
+        getSubstr(localStorage.getItem("user_id"))
       )
         .then(() => {
           this.setState({
@@ -279,7 +278,7 @@ class MainVideo extends Component {
                 if (localStorage.getItem("user_id")) {
                   updateUserVideoProcess(
                     video_id,
-                    func.getSubstr(localStorage.getItem("user_id")),
+                    getSubstr(localStorage.getItem("user_id")),
                     {
                       process: parseInt(
                         document.getElementsByTagName("video")[0].currentTime,
