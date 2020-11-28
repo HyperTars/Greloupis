@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Player from 'griffith';
 import { dateConvert } from "../util";
 import {
   createUserVideoLike,
@@ -40,7 +41,6 @@ class MainVideo extends Component {
 
     return null;
   }
-
   componentDidUpdate() {
     const description = this.props.description;
     const { showMore, showLess } = this.state;
@@ -62,7 +62,6 @@ class MainVideo extends Component {
       }
     }
   }
-
   toggleHandler = () => {
     this.setState({
       showMore: !this.state.showMore,
@@ -95,7 +94,6 @@ class MainVideo extends Component {
       </div>
     );
   }
-
   likeHandler = () => {
     func.loginCheck();
 
@@ -131,7 +129,6 @@ class MainVideo extends Component {
         });
     }
   };
-
   dislikeHandler = () => {
     func.loginCheck();
 
@@ -167,7 +164,6 @@ class MainVideo extends Component {
         });
     }
   };
-
   starHandler = () => {
     func.loginCheck();
 
@@ -225,43 +221,53 @@ class MainVideo extends Component {
       video_tag,
     } = mainVideoCopy;
 
+    const sources = {
+      hd: {
+        play_url: 'https://vod-xuanbinmediabucket.s3-us-west-1.amazonaws.com/assets/MP4/5fc11f0009cebd2c6458c6ab_1080.mp4',
+      },
+      sd: {
+        play_url: 'https://vod-xuanbinmediabucket.s3-us-west-1.amazonaws.com/assets/MP4/5fc11f0009cebd2c6458c6ab_720.mp4',
+      }
+    }
     return (
       <section id={video_id} className="main-video">
         <div className="main-video__content">
           <video
-            id="myVideo"
-            autoPlay
-            controls
-            src={video_uri ? video_uri.video_uri_high : null}
-            type="mp4/video"
-            poster={video_thumbnail}
-            ref={(element) => {
-              if (
-                localStorage.getItem("user_id") &&
-                element &&
-                this.props.videoProcess.process
-              ) {
-                element.currentTime = parseInt(
-                  this.props.videoProcess.process,
-                  10
-                );
-              }
-            }}
-            onTimeUpdate={() => {
-              if (localStorage.getItem("user_id")) {
-                updateUserVideoProcess(
-                  video_id,
-                  func.getSubstr(localStorage.getItem("user_id")),
-                  {
-                    process: parseInt(
-                      document.getElementById("myVideo").currentTime,
-                      10
-                    ),
-                  }
-                );
-              }
-            }}
-          ></video>
+              id="myVideo"
+              autoPlay
+              controls
+              src={video_uri ? video_uri.video_uri_high : null}
+              type="mp4/video"
+              poster={video_thumbnail}
+              ref={(element) => {
+                if (
+                  localStorage.getItem("user_id") &&
+                  element &&
+                  this.props.videoProcess.process
+                ) {
+                  element.currentTime = parseInt(
+                    this.props.videoProcess.process,
+                    10
+                  );
+                }
+              }}
+              onTimeUpdate={() => {
+                if (localStorage.getItem("user_id")) {
+                  updateUserVideoProcess(
+                    video_id,
+                    func.getSubstr(localStorage.getItem("user_id")),
+                    {
+                      process: parseInt(
+                        document.getElementById("myVideo").currentTime,
+                        10
+                      ),
+                    }
+                  );
+                }
+              }}
+          >
+          </video>
+          <Player sources={sources} />
         </div>
 
         <div className="main-video__description">

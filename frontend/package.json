@@ -17,6 +17,7 @@
     "axios": "^0.21.0",
     "bootstrap": "^4.5.3",
     "build": "^0.1.4",
+    "griffith": "^1.9.0",
     "logger": "0.0.1",
     "node-uuid": "^1.4.8",
     "react": "^17.0.1",
@@ -27,6 +28,7 @@
     "redux": "^4.0.5",
     "run": "^1.4.0",
     "validator": "^13.1.17",
+    "video.js": "^7.10.2",
     "web-vitals": "^1.0.1"
   },
   "scripts": {
