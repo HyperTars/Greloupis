@@ -267,6 +267,14 @@ class MainVideo extends Component {
                   localStorage.getItem("user_id") &&
                   this.props.videoProcess.process
                 ) {
+                  if (
+                    parseInt(this.props.videoProcess.process, 10) ===
+                      video_duration ||
+                    -1 <= this.props.videoProcess.process - video_duration <= 1
+                  ) {
+                    document.getElementsByTagName("video")[0].currentTime = 0;
+                  }
+
                   document.getElementsByTagName(
                     "video"
                   )[0].currentTime = parseInt(
