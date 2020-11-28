@@ -221,14 +221,23 @@ class MainVideo extends Component {
       video_tag,
     } = mainVideoCopy;
 
-    const sources = {
-      hd: {
+    const video_sources = {
+      fhd: {
         play_url: 'https://vod-xuanbinmediabucket.s3-us-west-1.amazonaws.com/assets/MP4/5fc11f0009cebd2c6458c6ab_1080.mp4',
       },
-      sd: {
+      hd: {
         play_url: 'https://vod-xuanbinmediabucket.s3-us-west-1.amazonaws.com/assets/MP4/5fc11f0009cebd2c6458c6ab_720.mp4',
+      },
+      sd: {
+        play_url: 'https://vod-xuanbinmediabucket.s3-us-west-1.amazonaws.com/assets/MP4/5fc11f0009cebd2c6458c6ab_360.mp4',
       }
     }
+
+    const videoProps = {
+      sources: video_sources,
+      cover: video_thumbnail
+    }
+
     return (
       <section id={video_id} className="main-video">
         <div className="main-video__content">
@@ -267,7 +276,7 @@ class MainVideo extends Component {
               }}
           >
           </video>
-          <Player sources={sources} />
+          <Player { ...videoProps } />
         </div>
 
         <div className="main-video__description">
