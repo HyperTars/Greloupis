@@ -49,7 +49,9 @@ function Home() {
         });
 
         setLoading(false);
-        setVideoResult(videoArray);
+        setVideoResult(
+          videoArray.length > 10 ? videoArray.slice(0, 10) : videoArray
+        );
       })
       .catch((e) => {
         setLoading(false);
@@ -87,7 +89,7 @@ function Home() {
               itemLayout="vertical"
               size="large"
               pagination={{
-                pageSize: 10,
+                hideOnSinglePage: true,
               }}
               dataSource={videoResult}
               renderItem={(item) => (

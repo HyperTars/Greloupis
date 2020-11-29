@@ -57,6 +57,8 @@ export default class VideoUpload extends Component {
 
   submitHandler = () => {
     if (this.state.fileObj) {
+      message.loading("Uploading, please wait...", 0);
+
       // acquire video ID
       createVideo()
         .then((res) => {
@@ -80,26 +82,34 @@ export default class VideoUpload extends Component {
               ACL: "public-read",
             },
           });
-          upload.promise();
-          alert("Successfully uploaded video!");
-          // update some system generated data, then route to update page
-          let updateData = {
-            video_duration: this.state.video_duration,
-            video_id: this.state.video_id,
-            video_raw_content:
-              "https://vod-watchfolder-ovs-lxb.s3-us-west-1.amazonaws.com/" +
-              this.state.video_id +
-              "." +
-              this.state.fileObj.type.slice(6),
-            video_raw_size: this.state.video_raw_size,
-            video_title: this.state.video_id,
-          };
-          updateVideoInfo(this.state.video_id, updateData).then(() => {
-            let path = {
-              pathname: `/video/update/${this.state.video_id}`,
-            };
-            this.props.history.push(path);
-          });
+          upload
+            .promise()
+            .then(() => {
+              // update some system generated data, then route to update page
+              let updateData = {
+                video_duration: this.state.video_duration,
+                video_id: this.state.video_id,
+                video_raw_content:
+                  "https://vod-watchfolder-ovs-lxb.s3-us-west-1.amazonaws.com/" +
+                  this.state.video_id +
+                  "." +
+                  this.state.fileObj.type.slice(6),
+                video_raw_size: this.state.video_raw_size,
+                video_title: this.state.video_id,
+              };
+              updateVideoInfo(this.state.video_id, updateData).then(() => {
+                message.destroy();
+                alert("Successfully uploaded video!");
+
+                let path = {
+                  pathname: `/video/update/${this.state.video_id}`,
+                };
+                this.props.history.push(path);
+              });
+            })
+            .catch((e) => {
+              message.error("Upload failed!" + e.message);
+            });
         })
         .catch((e) => {
           message.error(e.message);
