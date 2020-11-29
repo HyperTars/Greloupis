@@ -93,6 +93,12 @@ class App extends Component {
                 </div>
               )}
             />
+            <Route exact path="/50x" render={() => {
+              window.location.href="50x.html"}} />
+            <Route exact path="/40x" render={() => {
+              window.location.href="40x.html"}} />
+            <Route exact path="/404" render={() => {
+              window.location.href="404.html"}} />
             <Route component={EmptyPage} render={() => <EmptyPage />} />
           </Switch>
         </div>
