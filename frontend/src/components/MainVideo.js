@@ -288,6 +288,18 @@ class MainVideo extends Component {
                   );
                 }
               }}
+              onOneHundredPercent={() => {
+                if (localStorage.getItem("user_id")) {
+                  updateUserVideoProcess(
+                    video_id,
+                    getSubstr(localStorage.getItem("user_id")),
+                    {
+                      process: 0,
+                    }
+                  );
+                  document.getElementsByTagName("video")[0].currentTime = 0;
+                }
+              }}
             />
           ) : (
             <div></div>

@@ -77,9 +77,7 @@ function UserProfile({ userId }) {
         let starList = res.body["video_op"].filter(
           (element) => element.star === true
         );
-        let processList = res.body["video_op"].filter(
-          (element) => element.process > 0
-        );
+        let processList = res.body["video_op"];
         let commentList = res.body["video_op"].filter(
           (element) => element.comment !== ""
         );
