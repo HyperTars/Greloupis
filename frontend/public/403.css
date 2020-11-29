@@ -1,0 +1,61 @@
+@font-face {
+  font-family: 'Borda';
+  src: url('Assets/fonts/Borda.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  padding: 60px 30px;
+  min-height: 100%;
+  overflow: hidden;  
+}
+
+header h1 {
+  font-size: 60px;
+}
+
+header p {
+  font-size: 20px;
+}
+
+.intro {
+  position: relative;
+  width: 100%;
+  text-align: center;
+  -webkit-transition: 0.6s ease-in-out;
+  transition: 0.6s ease-in-out;
+}
+
+
+html { 
+  height: 100%;
+  font-family: 'Borda';
+}
+
+
+.police-tape {
+  background-color: #e2bb2d;
+  background: linear-gradient(180deg, lighten(#e2bb2d, 20%) 0%, #e2bb2d 5%, #e2bb2d 90%, lighten(#e2bb2d, 5%) 95%, darken(#e2bb2d, 50%) 100%);
+  padding: 0.25em;
+  font-size: 3em;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.police-tape--1 {
+  transform: rotate(10deg);
+  position: absolute;
+  top: 50%;
+  left: -5%;
+  right: -5%;
+  z-index: 2;
+  margin-top: 0;
+}
+.police-tape--2 {
+  transform: rotate(-8deg);
+  position: absolute;
+  top: 60%;
+  left: -5%;
+  right: -5%;
+}

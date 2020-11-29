@@ -93,8 +93,8 @@ class App extends Component {
                 </div>
               )}
             />
-            <Route exact path="/50x" render={() => {
-              window.location.href="50x.html"}} />
+            <Route exact path="/500" render={() => {
+              window.location.href="500.html"}} />
             <Route exact path="/40x" render={() => {
               window.location.href="40x.html"}} />
             <Route exact path="/404" render={() => {
