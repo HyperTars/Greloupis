@@ -95,8 +95,8 @@ class App extends Component {
             />
             <Route exact path="/500" render={() => {
               window.location.href="500.html"}} />
-            <Route exact path="/40x" render={() => {
-              window.location.href="40x.html"}} />
+            <Route exact path="/403" render={() => {
+              window.location.href="403.html"}} />
             <Route exact path="/404" render={() => {
               window.location.href="404.html"}} />
             <Route component={EmptyPage} render={() => <EmptyPage />} />
