@@ -303,12 +303,11 @@ def service_user_get_process(user_id):
 
     process_result = []
     for each in search_result:
-        if each["process"] != 0:
-            process_result.append({
-                "video_id": each["video_id"],
-                "user_id": each["user_id"],
-                "process": str(each["process"]),
-                "process_date": str(each["process_date"])
-            })
+        process_result.append({
+            "video_id": each["video_id"],
+            "user_id": each["user_id"],
+            "process": str(each["process"]),
+            "process_date": str(each["process_date"])
+        })
 
     return process_result
