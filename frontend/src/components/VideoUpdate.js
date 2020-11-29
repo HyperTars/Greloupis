@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { getVideoInfo, updateVideoInfo, deleteVideo } from "./FetchData";
-import { Redirect } from "react-router-dom";
+import ErrorPage from "./ErrorPage";
 
 import {
   Form,
@@ -14,6 +14,7 @@ import {
   Upload,
   message,
   Card,
+  Popconfirm,
 } from "antd";
 
 import { UploadOutlined, QuestionCircleOutlined } from "@ant-design/icons";
@@ -26,6 +27,7 @@ let CURRENT_UUID = uuid();
 function VideoUpdate({ videoId }) {
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState(null);
+  const [errorCode, setErrorCode] = useState(null);
   const [videoData, setVideoData] = useState({});
 
   useEffect(() => {
@@ -68,7 +70,8 @@ function VideoUpdate({ videoId }) {
       })
       .catch((e) => {
         setLoading(false);
-        setErrorMsg(e.message);
+        setErrorCode(e.message.slice(0, 2));
+        setErrorMsg(e.message.slice(3));
       });
   }, [videoId]);
 
@@ -139,7 +142,7 @@ function VideoUpdate({ videoId }) {
             "/user/" + getSubstr(localStorage.getItem("user_id"));
         })
         .catch((e) => {
-          message.error(e.message);
+          message.error(e.message.slice(3));
         });
     };
 
@@ -375,19 +378,24 @@ function VideoUpdate({ videoId }) {
           >
             Update Video
           </Button>
-          <Button
-            type="primary"
-            className="deleteButton video-update-button"
-            onClick={() => {
+
+          <Popconfirm
+            title="Are you sure to delete the video?"
+            onConfirm={() => {
               deleteVideo(videoId).then(() => {
                 alert("Video deleted!");
                 window.location.href =
                   "/user/" + getSubstr(localStorage.getItem("user_id"));
               });
             }}
+            onCancel={() => {}}
+            okText="Yes"
+            cancelText="No"
           >
-            Delete Video
-          </Button>
+            <Button type="primary" className="deleteButton video-update-button">
+              Delete Video
+            </Button>
+          </Popconfirm>
         </Form.Item>
       </Form>
     );
@@ -399,7 +407,7 @@ function VideoUpdate({ videoId }) {
     </div>
   );
 
-  const errorFormat = <Redirect to="/404"></Redirect>;
+  const errorFormat = <ErrorPage errCode={errorCode}></ErrorPage>;
 
   const sampleFormat = (
     <div className="videoUpdate">

@@ -6,7 +6,6 @@ import SearchResult from "./SearchResult";
 import Login from "./Login";
 import Logout from "./Logout";
 import Register from "./Register";
-import EmptyPage from "./EmptyPage";
 import UserProfile from "./UserProfile";
 import VideoUpload from "./VideoUpload";
 import VideoUpdate from "./VideoUpdate";
@@ -93,7 +92,25 @@ class App extends Component {
                 </div>
               )}
             />
-            <Route component={EmptyPage} render={() => <EmptyPage />} />
+            <Route
+              exact
+              path="/500"
+              render={() => {
+                window.location.href = "500.html";
+              }}
+            />
+            <Route
+              exact
+              path="/403"
+              render={() => {
+                window.location.href = "403.html";
+              }}
+            />
+            <Route
+              render={() => {
+                window.location.href = "404.html";
+              }}
+            />
           </Switch>
         </div>
       </Router>

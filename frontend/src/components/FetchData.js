@@ -48,16 +48,16 @@ function fetchWithErrorHandling(url, method, data) {
             });
         }
       } else {
-        throw new GatewayTimeout(responseJson["message"]);
+        throw new GatewayTimeout(response.status + responseJson["message"]);
       }
     } else if (response.status >= 500) {
-      throw new ServerError(responseJson["message"]);
+      throw new ServerError(response.status + responseJson["message"]);
     } else if (response.status === 404) {
-      throw new NotFoundError(responseJson["message"]);
+      throw new NotFoundError(response.status + responseJson["message"]);
     } else if (response.status >= 400) {
-      throw new ClientError(responseJson["message"]);
+      throw new ClientError(response.status + responseJson["message"]);
     } else if (!response.ok) {
-      throw Error(responseJson["message"]);
+      throw Error(response.status + responseJson["message"]);
     } else {
       if (responseJson.code === -10000) {
         if (AuthService.isAuth()) {

@@ -997,12 +997,6 @@ class TestQueryVideo(unittest.TestCase):
         self.assertEqual(e.exception.error_code,
                          ErrorCode.MONGODB_VIDEO_NOT_FOUND)
 
-        # Raise Error: ErrorCode.MONGODB_VIDEO_TITLE_TAKEN
-        with self.assertRaises(MongoError) as e:
-            query_video_update(temp_video_id, video_title=old_title)
-        self.assertEqual(e.exception.error_code,
-                         ErrorCode.MONGODB_VIDEO_TITLE_TAKEN)
-
         # Raise Error: ErrorCode.MONGODB_LIST_EXPECTED
         with self.assertRaises(MongoError) as e:
             query_video_update(temp_video_id, video_tag="test")

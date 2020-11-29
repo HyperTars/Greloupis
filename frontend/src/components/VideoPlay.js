@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Redirect } from "react-router-dom";
+import ErrorPage from "./ErrorPage";
 import MainVideo from "./MainVideo";
 import Comments from "./Comments";
 import { getSubstr, isStorageEmpty } from "../util";
@@ -21,6 +21,7 @@ function VideoPlay({ videoId }) {
   const [videoLikes, setVideoLikes] = useState(false);
   const [videoDisLikes, setVideoDisLikes] = useState(false);
   const [videoStars, setVideoStars] = useState(false);
+  const [errorCode, setErrorCode] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [videoProcess, setVideoProcess] = useState({});
@@ -44,7 +45,8 @@ function VideoPlay({ videoId }) {
       })
       .catch((e) => {
         setIsLoading(false);
-        setErrorMsg(e.message);
+        setErrorCode(e.message.slice(0, 2));
+        setErrorMsg(e.message.slice(3));
       });
 
     // get watching history, or create a new one
@@ -115,8 +117,7 @@ function VideoPlay({ videoId }) {
     });
   }, [videoId]);
 
-  const errorFormat = <Redirect to="/404"></Redirect>;
-  if (errorMsg) return errorFormat;
+  if (errorMsg) return <ErrorPage errCode={errorCode}></ErrorPage>;
 
   return (
     <main>
