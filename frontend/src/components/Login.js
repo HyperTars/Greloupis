@@ -69,7 +69,9 @@ class Login extends React.Component {
 
     if (
       this.props.location.state != null &&
-      this.props.location.state.from !== "/login"
+      this.props.location.state.from !== "/login" &&
+      this.props.location.state.from !== "/403" &&
+      this.props.location.state.from !== "/403.html"
     ) {
       this.urlTo = this.props.location.state.from;
     } else {

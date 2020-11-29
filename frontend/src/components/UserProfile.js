@@ -819,10 +819,14 @@ function UserProfile({ userId }) {
                               <Badge
                                 status={
                                   item.video_raw_status === "streaming"
-                                    ? "success"
-                                    : "warning"
+                                    ? item.video_status === "public"
+                                      ? "success"
+                                      : "warning"
+                                    : "processing"
                                 }
-                                text={item.video_raw_status}
+                                text={item.video_raw_status === "streaming"
+                                    ? item.video_status
+                                    : item.video_raw_status}
                               />
                             </Link>
                             {isLocalUser ? (
