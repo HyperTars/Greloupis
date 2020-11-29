@@ -19,6 +19,7 @@ import {
   message,
   Card,
   Badge,
+  Popconfirm,
 } from "antd";
 
 import {
@@ -717,13 +718,18 @@ function UserProfile({ userId }) {
               >
                 Update Profiles
               </Button>
-              <Button
-                type="primary"
-                className="deleteButton profile-button"
-                onClick={deleteUserHandler}
+
+              <Popconfirm
+                title="Are you sure to delete the account?"
+                onConfirm={deleteUserHandler}
+                onCancel={() => {}}
+                okText="Yes"
+                cancelText="No"
               >
-                Delete Account
-              </Button>
+                <Button type="primary" className="deleteButton profile-button">
+                  Delete Account
+                </Button>
+              </Popconfirm>
             </Form.Item>
           </div>
         ) : (

@@ -14,6 +14,7 @@ import {
   Upload,
   message,
   Card,
+  Popconfirm,
 } from "antd";
 
 import { UploadOutlined, QuestionCircleOutlined } from "@ant-design/icons";
@@ -375,19 +376,24 @@ function VideoUpdate({ videoId }) {
           >
             Update Video
           </Button>
-          <Button
-            type="primary"
-            className="deleteButton video-update-button"
-            onClick={() => {
+
+          <Popconfirm
+            title="Are you sure to delete the video?"
+            onConfirm={() => {
               deleteVideo(videoId).then(() => {
                 alert("Video deleted!");
                 window.location.href =
                   "/user/" + getSubstr(localStorage.getItem("user_id"));
               });
             }}
+            onCancel={() => {}}
+            okText="Yes"
+            cancelText="No"
           >
-            Delete Video
-          </Button>
+            <Button type="primary" className="deleteButton video-update-button">
+              Delete Video
+            </Button>
+          </Popconfirm>
         </Form.Item>
       </Form>
     );
