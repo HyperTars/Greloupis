@@ -6,7 +6,6 @@ import SearchResult from "./SearchResult";
 import Login from "./Login";
 import Logout from "./Logout";
 import Register from "./Register";
-// import EmptyPage from "./EmptyPage";
 import UserProfile from "./UserProfile";
 import VideoUpload from "./VideoUpload";
 import VideoUpdate from "./VideoUpdate";
@@ -112,7 +111,6 @@ class App extends Component {
                 window.location.href = "404.html";
               }}
             />
-            {/* <Route component={EmptyPage} render={() => <EmptyPage />} /> */}
           </Switch>
         </div>
       </Router>

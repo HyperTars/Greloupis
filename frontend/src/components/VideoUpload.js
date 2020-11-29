@@ -108,11 +108,11 @@ export default class VideoUpload extends Component {
               });
             })
             .catch((e) => {
-              message.error("Upload failed!" + e.message);
+              message.error("Upload failed!" + e.message.slice(3));
             });
         })
         .catch((e) => {
-          message.error(e.message);
+          message.error(e.message.slice(3));
         });
     } else {
       message.error("You have not uploaded video!");

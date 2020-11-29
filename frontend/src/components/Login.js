@@ -111,11 +111,10 @@ class Login extends React.Component {
 
           this.setState({
             loading: false,
-            message: resMessage,
+            message: resMessage.slice(3),
           });
 
-          console.log(this.state);
-          alert("Username and password do not match. " + resMessage);
+          alert("Username and password do not match. " + resMessage.slice(3));
         }
       );
     }

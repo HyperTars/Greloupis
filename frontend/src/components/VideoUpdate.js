@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { getVideoInfo, updateVideoInfo, deleteVideo } from "./FetchData";
-import { Redirect } from "react-router-dom";
+import ErrorPage from "./ErrorPage";
 
 import {
   Form,
@@ -27,6 +27,7 @@ let CURRENT_UUID = uuid();
 function VideoUpdate({ videoId }) {
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState(null);
+  const [errorCode, setErrorCode] = useState(null);
   const [videoData, setVideoData] = useState({});
 
   useEffect(() => {
@@ -69,7 +70,8 @@ function VideoUpdate({ videoId }) {
       })
       .catch((e) => {
         setLoading(false);
-        setErrorMsg(e.message);
+        setErrorCode(e.message.slice(0, 2));
+        setErrorMsg(e.message.slice(3));
       });
   }, [videoId]);
 
@@ -140,7 +142,7 @@ function VideoUpdate({ videoId }) {
             "/user/" + getSubstr(localStorage.getItem("user_id"));
         })
         .catch((e) => {
-          message.error(e.message);
+          message.error(e.message.slice(3));
         });
     };
 
@@ -405,7 +407,7 @@ function VideoUpdate({ videoId }) {
     </div>
   );
 
-  const errorFormat = <Redirect to="/404"></Redirect>;
+  const errorFormat = <ErrorPage errCode={errorCode}></ErrorPage>;
 
   const sampleFormat = (
     <div className="videoUpdate">

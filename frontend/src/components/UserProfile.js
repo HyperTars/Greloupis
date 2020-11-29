@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getUserInfo, updateUserInfo, deleteUser } from "./FetchData";
-import { Redirect, Link } from "react-router-dom";
+import ErrorPage from "./ErrorPage";
+import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 
 import {
@@ -47,6 +48,7 @@ let CURRENT_UUID = uuid();
 
 function UserProfile({ userId }) {
   const [loading, setLoading] = useState(true);
+  const [errorCode, setErrorCode] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [userData, setUserData] = useState([]);
 
@@ -128,7 +130,8 @@ function UserProfile({ userId }) {
       })
       .catch((e) => {
         setLoading(false);
-        setErrorMsg(e.message);
+        setErrorCode(e.message.slice(0, 2));
+        setErrorMsg(e.message.slice(3));
       });
   }, [userId]);
 
@@ -253,7 +256,7 @@ function UserProfile({ userId }) {
           window.location.reload();
         })
         .catch((e) => {
-          message.error(e.message);
+          message.error(e.message.slice(3));
         });
     };
 
@@ -743,7 +746,7 @@ function UserProfile({ userId }) {
     </div>
   );
 
-  const errorFormat = <Redirect to="/404"></Redirect>;
+  const errorFormat = <ErrorPage errCode={errorCode}></ErrorPage>;
 
   const IconText = ({ icon, text }) => (
     <Space>
@@ -824,9 +827,11 @@ function UserProfile({ userId }) {
                                       : "warning"
                                     : "processing"
                                 }
-                                text={item.video_raw_status === "streaming"
+                                text={
+                                  item.video_raw_status === "streaming"
                                     ? item.video_status
-                                    : item.video_raw_status}
+                                    : item.video_raw_status
+                                }
                               />
                             </Link>
                             {isLocalUser ? (
