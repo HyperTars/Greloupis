@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { searchTopVideo } from "./FetchData";
 import { Spin, List, Space, Card } from "antd";
 import { Link } from "react-router-dom";
+import ErrorPage from "./ErrorPage";
 import {
   EyeOutlined,
   LikeOutlined,
@@ -20,6 +21,7 @@ import {
 function Home() {
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState(null);
+  const [errorCode, setErrorCode] = useState(null);
   const [videoResult, setVideoResult] = useState(null);
 
   useEffect(() => {
@@ -49,11 +51,14 @@ function Home() {
         });
 
         setLoading(false);
-        setVideoResult(videoArray);
+        setVideoResult(
+          videoArray.length > 10 ? videoArray.slice(0, 10) : videoArray
+        );
       })
       .catch((e) => {
         setLoading(false);
-        setErrorMsg(e.message);
+        setErrorCode(e.message.slice(0, 2));
+        setErrorMsg(e.message.slice(3));
       });
   }, []);
 
@@ -70,11 +75,7 @@ function Home() {
     </div>
   );
 
-  const errorFormat = (
-    <div className="topMargin">
-      <div>Error: {errorMsg}</div>
-    </div>
-  );
+  const errorFormat = <ErrorPage errCode={errorCode}></ErrorPage>;
 
   const sampleFormat = (
     <div className="topMargin">
@@ -87,7 +88,7 @@ function Home() {
               itemLayout="vertical"
               size="large"
               pagination={{
-                pageSize: 10,
+                hideOnSinglePage: true,
               }}
               dataSource={videoResult}
               renderItem={(item) => (

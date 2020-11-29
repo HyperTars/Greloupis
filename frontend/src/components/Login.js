@@ -69,7 +69,9 @@ class Login extends React.Component {
 
     if (
       this.props.location.state != null &&
-      this.props.location.state.from !== "/login"
+      this.props.location.state.from !== "/login" &&
+      this.props.location.state.from !== "/403" &&
+      this.props.location.state.from !== "/403.html"
     ) {
       this.urlTo = this.props.location.state.from;
     } else {
@@ -109,11 +111,10 @@ class Login extends React.Component {
 
           this.setState({
             loading: false,
-            message: resMessage,
+            message: resMessage.slice(3),
           });
 
-          console.log(this.state);
-          alert("Username and password do not match. " + resMessage);
+          alert("Username and password do not match. " + resMessage.slice(3));
         }
       );
     }

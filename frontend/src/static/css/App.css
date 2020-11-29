@@ -185,6 +185,7 @@
   }
   
   .header-searchBar__search-icon {
+    margin-top: 7px;
     color: grey;
   }
   
@@ -1377,7 +1378,7 @@ h3 {
 }
 
 .profile-button {
-  width: 27vw;
+  width: 25vw;
 }
 
 @media screen and (max-width: 1250px) {

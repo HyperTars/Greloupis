@@ -546,7 +546,7 @@ class TestServiceUser(unittest.TestCase):
         # Get successfully
         oid = self.data['const_user'][0]['_id']['$oid']
         res = service_user_get_process(oid)
-        self.assertEqual(len(res), 0)
+        self.assertEqual(len(res), 1)
 
         # no video op
         temp_id = self.data['const_user'][1]['_id']['$oid']

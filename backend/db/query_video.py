@@ -211,9 +211,6 @@ def query_video_update(video_id: str, **kw):
         raise MongoError(ErrorCode.MONGODB_VIDEO_NOT_FOUND)
 
     if 'video_title' in kw and kw['video_title'] != "":
-        videos = query_video_get_by_title(kw['video_title'])
-        if len(videos) != 0:
-            raise MongoError(ErrorCode.MONGODB_VIDEO_TITLE_TAKEN)
         Video.objects(id=video_id).update(video_title=kw['video_title'])
     if 'video_raw_content' in kw:
         Video.objects(id=video_id).update(

@@ -28,7 +28,7 @@ class BaseConfig(object):
     AWS_CLOUD_FRONT = "https://d2t7530wn5sgoq.cloudfront.net/assets/"
     AWS_STREAMING_FOLDER = AWS_CLOUD_FRONT + "MP4/"
     AWS_STREAMING_FORMAT = ".mp4"
-    AWS_STREAMING_LOW = "360"
+    AWS_STREAMING_LOW = "540"
     AWS_STREAMING_MID = "720"
     AWS_STREAMING_HIGH = "1080"
 
