@@ -59,3 +59,11 @@ html {
   left: -5%;
   right: -5%;
 }
+
+img {
+  width: 15vw;
+  position: absolute;
+  left: 50%;
+  transform:translate(-50%);
+  bottom: 5%;
+}

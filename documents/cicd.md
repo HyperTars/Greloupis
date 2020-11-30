@@ -22,10 +22,21 @@
     [![Heroku](https://pyheroku-badge.herokuapp.com/?app=greloupis-backend&style=flat)](https://greloupis-backend.herokuapp.com/)
 
 ## Table of Content
-- [Overview](#Overview)
-- [Stage Test](#Stage-Test)
-- [Stage Dockerize](#Stage-Dockerize)
-- [Stage Deploy](#Stage-Deploy)
+- [Greloupis - CI / CD Workflow](#greloupis---ci--cd-workflow)
+  - [Table of Content](#table-of-content)
+  - [Overview](#overview)
+  - [Stage Test](#stage-test)
+    - [Setup Test Environment](#setup-test-environment)
+    - [Test Frontend](#test-frontend)
+    - [Test Backend](#test-backend)
+  - [Stage Dockerize](#stage-dockerize)
+    - [Dockerize Frontend](#dockerize-frontend)
+    - [Dockerize Backend](#dockerize-backend)
+    - [Docker-Compose](#docker-compose)
+  - [Stage Deploy](#stage-deploy)
+    - [Deploy Frontend](#deploy-frontend)
+    - [Deploy Backend](#deploy-backend)
+    - [Deploy Monintoring](#deploy-monintoring)
 
 ## Overview
 - We use [GitHub Action](https://github.com/HyperTars/Online-Video-Platform/actions) to do our CI/CD job.
@@ -72,6 +83,7 @@
     ```
     ![Stage Test](GitHubAction-Test.png)
 
+### Setup Test Environment
 - First of all, we setup the environment we need: Node.js 14.15 & Python 3.8
 - Then we execute `make_env` to install depenencies
     - In [makefile](../makefile), we execute `dev_env_backend` and `dev_env_frontend`
@@ -86,44 +98,45 @@
           pip3 install -r requirements.txt
           ```
         - [requirements.txt](../backend/requirements.txt)
-- After all the dependencies are installed, we can run `tests`
-    - Frontend
-        - We run `make tests` in [frontend makefile](../frontend/makefile)
-            ```makefile
-            tests:	test report
-            test: 
-                npm run test
-            report:
-                npx jest --coverage
-            ```
-        - `npm run test`: For frontend, we use [jest](../frontend/jest.config.js) to test our React files.
-        - `report`: After testing, we can generate a test report
 
-            ![jest report](jest.png)
-    - Backend
-        - We run `make tests` in [backend makefile](../backend/makefile)
-            ```makefile
-            tests:	unit report lint
-            echo "unittest and lint check finished"
-            unit:
-                coverage run --source ./ -m py.test --disable-pytest-warnings
-            lint:
-                $(LINTER) --config configs/flake8 --exit-zero ./
-            report:
-                coverage report
-            coverage:
-                - coveralls
-                - codecov -t $(CODECOV_TOKEN)
-            ```
-        - `unit`: In unit test part, we use `PyTest` to test every file we wrote for background separately with lots of boundary cases. Since lots of tests need to interact with MongoDB, this might take some time (usually 20 sec ~ 60 sec)
+### Test Frontend
+- We run `make tests` in [frontend makefile](../frontend/makefile)
+    ```makefile
+    tests:	test report
+    test: 
+        npm run test
+    report:
+        npx jest --coverage
+    ```
+- `npm run test`: For frontend, we use [jest](../frontend/jest.config.js) to test our React files.
+- `report`: After testing, we can generate a test report
 
-            ![unit test](unittest.png)
-        - `report`: Then we generate a coverage report for each file. Since some try-exception boundary cases cannot be reached, coverage for each file is usually less than 100%
+    ![jest report](jest.png)
 
-            ![coverage](coverage.png)
-        - `lint`: Finally, we use [Flake8](../backend/configs/flake8) to do lint test
+### Test Backend
+- We run `make tests` in [backend makefile](../backend/makefile)
+    ```makefile
+    tests:	unit report lint
+        echo "unittest and lint check finished"
+    unit:
+        coverage run --source ./ -m py.test --disable-pytest-warnings
+    lint:
+        $(LINTER) --config configs/flake8 --exit-zero ./
+    report:
+        coverage report
+    coverage:
+        - coveralls
+        - codecov -t $(CODECOV_TOKEN)
+    ```
+- `unit`: In unit test part, we use `PyTest` to test every file we wrote for background separately with lots of boundary cases. Since lots of tests need to interact with MongoDB, this might take some time (usually 20 sec ~ 60 sec)
 
-            ![lint](lint.png)
+    ![unit test](unittest.png)
+- `report`: Then we generate a coverage report for each file. Since some try-exception boundary cases cannot be reached, coverage of some files will be close to 100% but not exactly 100%.
+
+    ![coverage](coverage.png)
+- `lint`: Finally, we use [Flake8](../backend/configs/flake8) to do lint test
+
+    ![lint](lint.png)
 - Finally, we upload our test results to [CodeCov](https://codecov.io/gh/HyperTars/Online-Video-Platform) and [Coveralls](https://coveralls.io/github/HyperTars/Online-Video-Platform) so that we can see our visualized coverage report.
     - CodeCov
 
@@ -132,7 +145,6 @@
     - Coveralls
 
         ![coveralls](coveralls.png)
-        ![coveralls files](coveralls-files.png)
 
 ## Stage Dockerize
 - To dockerize our project, we wrote Dockerfile for both [frontend](../frontend/Dockerfile) and [backend](../backend/Dockerfile). And we also have a [docker-compose](../docker-compose.yml) in case you want to run both frontend and backend locally with only one command in one terminal.
@@ -156,7 +168,7 @@
     ![Stage Dockerize](GitHubAction-Dockerize.png)
 
 
-### Frontend
+### Dockerize Frontend
 - We run `make docker_build docker_push` in [frontend makefile](../frontend/makefile)
     ```makefile
     docker_build:
@@ -177,7 +189,7 @@
 - You can set `$(TAG)` in environment if you wish, the default value is `latest`
 - Run `make docker_run_frontend` to use [Dockerfile](../frontend/Dockerfile) to run frontend locally.
 
-### Backend
+### Dockerize Backend
 - We run `make docker_build docker_push` in [backend makefile](../backend/makefile)
     ```makefile
     docker_build:
@@ -197,7 +209,8 @@
 - You can set `$(TAG)` in environment if you wish, the default value is `latest`
 - Run `make docker_run_backend` to use [Dockerfile](../backend/Dockerfile) to run backend locally.
 
-### Docker-Compose (for running test locally only)
+### Docker-Compose
+- *For running test locally only*
 - We also wrote a docker-compose file so that you can run both frontend and backend locally with one command in one terminal.
     ```yml
     version: "3"
@@ -256,7 +269,7 @@
     ![Stage Deploy](GitHubAction-Deploy.png)
 
 
-### Frontend
+### Deploy Frontend
 - We run `make heroku` in [frontend makefile](../frontend/makefile)
     ```makefile
     heroku:
@@ -266,7 +279,7 @@
     ```
 - Note that if you want to tag and push locally, you should configure the [environment variables](env.sh) first. These should also be set in **GitHub Action Secret Keys** so that the workflow could be executed automatically.
 
-###  Backend
+### Deploy Backend
 - We run `make heroku` in [backend makefile](../backend/makefile)
     ```makefile
     heroku:
@@ -276,6 +289,6 @@
     ```
 - Note that if you want to tag and push locally, you should configure the [environment variables](env.sh) first. These should also be set in **GitHub Action Secret Keys** so that the workflow could be executed automatically.
 
-### Monintoring
+### Deploy Monintoring
 - [Heroku Frontend Metrics Monitor](https://metrics.librato.com/s/public/wxet4vyas)
 - [Heroku Backend Metrics Monitor](https://metrics.librato.com/s/public/reo8fj68x)

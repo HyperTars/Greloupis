@@ -144,3 +144,11 @@ h1, h2 {
 .loading .gear.two {
   -webkit-animation: anticlockwise 3s linear infinite;
 }
+
+img {
+  width: 15vw;
+  position: absolute;
+  left: 50%;
+  transform:translate(-50%);
+  bottom: 5%;
+}
