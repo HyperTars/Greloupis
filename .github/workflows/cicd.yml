@@ -1,0 +1,83 @@
+name: CI/CD
+
+on:
+  push:
+  # pull_request:
+  workflow_dispatch:
+
+env:
+  COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+  CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+  DOCKER_USER: "hypertars"
+  DOCKER_EMAIL: "hypertars@gmail.com"
+  DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
+  BACKEND_BUILD: "greloupis-backend"
+  FRONTEND_BUILD: "greloupis-frontend"
+  HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+  HEROKU_APP_FRONTEND: "greloupis-frontend"
+  HEROKU_APP_BACKEND: "greloupis-backend"
+  HEROKU_EMAIL: "hypertars@gmail.com"
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: technote-space/auto-cancel-redundant-workflow@v1
+    - name: Set up Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: 14.15
+    - name: Set up Python3 ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - name: Display Python Version
+      run: |
+        python3 -V
+        pip3 -V
+    - name: Install Dependencies
+      run: make dev_env
+    - name: Run Tests
+      run: make tests
+    - name: Test Report
+      run: |
+        make report
+        make coverage
+  dockerize:
+    name: Dockerize
+    runs-on: ubuntu-18.04
+    needs: [test]
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - uses: actions/checkout@master
+      - name: Dockerize Frontend
+        run: make docker_build_frontend
+      - name: Push Frontend To Dockerhub
+        run: make docker_push_frontend
+      - name: Dockerize Backend
+        run: make docker_build_backend
+      - name: Push Backend To Dockerhub
+        run: make docker_push_backend
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-18.04
+    needs: [dockerize]
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - uses: actions/checkout@master
+      - name: Deploy Frontend
+        uses: mtsmachado8/heroku-deploy@v2.0.3
+        with:
+          email: $HEROKU_EMAIL
+          api_key: $HEROKU_API_KEY
+          app_name: $HEROKU_APP_FRONTEND
+          dockerfile_path: frontend/Dockerfile
+      - name: Deploy Backend
+        uses: mtsmachado8/heroku-deploy@v2.0.3
+        with:
+          email: $HEROKU_EMAIL
+          api_key: $HEROKU_API_KEY
+          app_name: $HEROKU_APP_BACKEND
+          dockerfile_path: backend/Dockerfile

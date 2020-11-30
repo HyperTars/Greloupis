@@ -48,18 +48,30 @@ docker_clean:
 	- docker stop $(docker ps -aq)
 	- docker system prune -a
 
-# Build and Run from local Docker (for development tests)
 docker_build_backend:
-	cd $(BACKEND_DIR); make docker_build docker_run
+	cd $(BACKEND_DIR); make docker_build
 
 docker_build_frontend:
-	cd $(FRONTEND_DIR); make docker_build docker_run
+	cd $(FRONTEND_DIR); make docker_build
+
+docker_push_backend:
+	cd $(BACKEND_DIR); make docker_push
+
+docker_push_frontend:
+	cd $(FRONTEND_DIR); make docker_push
+
+# Build and Run from local Docker build (for development tests)
+docker_run_backend_build: docker_build_backend
+	cd $(BACKEND_DIR); docker_run
+
+docker_run_frontend_build: docker_build_frontend
+	cd $(FRONT_DIR); docker_run
 
 # Run from Docker Hub (for fast use)
-docker_run_backend:
+docker_run_backend_hub:
 	cd $(BACKEND_DIR); make docker_hub
 
-docker_run_frontend:
+docker_run_frontend_hub:
 	cd $(FRONTEND_DIR); make docker_hub
 
 # Run from native python or npm (for Dockerfile use)
