@@ -22,7 +22,7 @@
 - CI / CD
 
     <!--[![build](https://travis-ci.com/HyperTars/Online-Video-Platform.svg?token=btA3ungCKHqWzLxCoxT7&branch=master)](https://travis-ci.com/HyperTars/Online-Video-Platform)-->
-    [![CI/CD](https://github.com/HyperTars/Online-Video-Platform/workflows/CI/CD/badge.svg)](https://github.com/HyperTars/Online-Video-Platform/actions?query=workflow%3ATest)
+    [![CI/CD](https://github.com/HyperTars/Online-Video-Platform/workflows/CI/CD/badge.svg)](https://github.com/HyperTars/Online-Video-Platform/actions?query=workflow%3ACI%2FCD)
     [![CodeCov Status](https://codecov.io/gh/HyperTars/Online-Video-Platform/branch/master/graph/badge.svg?token=8K7ODQK5BV)](https://codecov.io/gh/HyperTars/Online-Video-Platform)
     [![docker status](https://img.shields.io/docker/cloud/build/hypertars/greloupis-backend)](https://hub.docker.com/r/hypertars/greloupis-backend)
     [![docker image size](https://img.shields.io/docker/image-size/hypertars/greloupis-backend)](https://hub.docker.com/r/hypertars/greloupis-backend/tags)
