@@ -10,7 +10,6 @@
     [![Flask](https://img.shields.io/badge/Flask-1.1.2-blue)](https://pypi.org/project/Flask/)
     [![React](https://img.shields.io/badge/React-17.0.1-blue)](https://reactjs.org/versions)
     [![MongoDB](https://img.shields.io/badge/MongoDB-4.4-blue)](https://docs.mongodb.com/manual/release-notes/4.4/)
-    [![uWSGI](https://img.shields.io/badge/uWSGI-2.0.19-blue)](https://uwsgi-docs.readthedocs.io/en/latest/)
 
 - Continuous Integration
 
@@ -43,6 +42,9 @@
     - Our [Heroku Frontend Site](https://greloupis-frontend.herokuapp.com/) | [Heroku Backend Site](https://greloupis-backend.herokuapp.com/)
     - Our [Heroku Frontend Metrics Monitor](https://metrics.librato.com/s/public/wxet4vyas) | [Heroku Backend Metrics Monitor](https://metrics.librato.com/s/public/reo8fj68x)
 
+- **See more details about our [Frontend](frontend/readme.md)**
+- **See more details about our [Backend](backend/readme.md)**
+
 ### Project Proposal
 - [Proposal](documents/Proposal.md)
   
@@ -52,6 +54,7 @@
 - Python 3.7 / 3.8 **(3.6 or below and 3.9 are not supported)**
 - npm (6.14.8)
 - node.js (14.15.0)
+- [Environment Variables](documents/env.sh)
 
 #### Install dependencies
 - To install dependencies, run
@@ -82,38 +85,6 @@ make prod
         make docker_run
         ```
 
-- To run backend only (http://localhost:5000 or http://0.0.0.0:5000)
-    - From Docker Hub 
-        ```bash
-        make docker_run_backend (including build and run)
-        ```
-    - From local docker build
-        ```bash
-        make docker_build_backend
-        ```
-    - From uWSGI (use uWSGI to replace flask WSGI)
-        ```bash
-        make run_backend
-        ```
-    - From native python flask
-        ```bash
-        python3 backend/app.py FLASK_APP=app flask run --host=0.0.0.0 --port=5000
-        ```
-
-- To run frontend only (http://localhost:3000 or http://0.0.0.0:3000)
-    - From Docker Hub
-        ```bash
-        make docker_run_frontend
-        ```
-    - From local docker build
-        ```bash
-        make docker_build_frontend
-        ```
-    - From native npm
-        ```bash
-        make run_frontend
-        ```
-
 #### Test Users
 - hypertars (both username and password)
 - milvus (both username and password)
@@ -122,13 +93,7 @@ make prod
 ### Designs
 #### Coding Style
 - Python: [PEP8](https://www.python.org/dev/peps/pep-0008/)
-- React: [ES6](http://es6-features.org/)
-
-#### Models Design (Entity)
-- See full [Models Design](documents/Models.md)
-
-#### Database Design
-- See full [Database Design](documents/Database.md)
+- React: [JSX](https://reactjs.org/docs/introducing-jsx.html)
 
 #### APIs Design
 - See full [APIs Design](documents/APIs.md)
@@ -144,16 +109,11 @@ make prod
 - Architecture Design
     
     ![Architecture Design Diagram](documents/ArchitectureDesign_resize.png)
-    
-- Background Design
-
-    ![BackgroundDesign](documents/BackgroundDesign.png)
 
 ### Tests
 - See full [Test Cases](documents/Test.md)
 - Coverage
   - [CodeCov](https://codecov.io/gh/HyperTars/Online-Video-Platform)
-  - [Coveralls](https://coveralls.io/github/HyperTars/Online-Video-Platform)
 
 ### CI / CD 
 - We use `Travis-CI`, `Docker` and `Heroku` to do CI/CD works

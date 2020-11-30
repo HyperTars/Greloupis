@@ -2,13 +2,16 @@ FRONTEND_REPO = hypertars/greloupis-frontend
 TAG = latest
 
 dev_env_frontend:
+	npm -g install react-scripts
 	npm install
 	npm run build
 
 run_frontend:
 	npm start
 
-tests:
+tests:	test report
+
+test: 
 	npm run test
 
 report:
