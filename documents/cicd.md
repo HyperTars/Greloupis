@@ -196,6 +196,7 @@
 ```
 - We use **Heroku** to deploy our [Frontend Site](https://greloupis-frontend.herokuapp.com/) and [Backend Site](https://greloupis-backend.herokuapp.com/)
 - **Frontend**
+    - [make heroku](../frontend/makefile)
     ```makefile
     heroku:
         - docker login --username _ --password=$(HEROKU_API_KEY) registry.heroku.com
@@ -204,6 +205,7 @@
     ```
     - Note that if you want to push to heroku from local, you should configure the [environment variables](env.sh) first. These should also be set in Travis-CI so that the workflow could be executed automatically.
 - **Backend**
+    - [make heroku](../backend/makefile)
     ```makefile
     heroku:
         - docker login --username _ --password=$(HEROKU_API_KEY) registry.heroku.com
