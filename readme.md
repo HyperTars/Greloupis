@@ -92,7 +92,7 @@ make prod
 
 ### Run
 - To run both frontend(http://localhost:3000) and backend (http://localhost:5000)
-    - Start (build from docker-compose.yml)
+    - Start (build from [docker-compose.yml](docker-compose.yml))
         ```bash
         make docker_build
         ```
