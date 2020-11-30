@@ -59,7 +59,7 @@
   * [API Designs](#Test-Users)
   * [Component Design](#Components-Design)
 - [Tests](#Tests)
-- [CI / CD](#CI-/-CD)
+- [CI CD](#CI-CD)
 - [Contributors](#Contributors)
 
 ## Project Proposal
