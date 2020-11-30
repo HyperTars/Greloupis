@@ -50,7 +50,6 @@
   * [Run Test](#Run-Test)
   * [Make Prod](#Make-Prod)
   * [Run](#Run)
-  * [Test Users](#Test-Users)
 - [Designs](#Designs)
   * [Coding Styles](#Coding-Style)
   * [API Designs](#Test-Users)
@@ -66,32 +65,32 @@
   
 ## Setup Guide
 
-### Environment Requirement
+#### Environment Requirement
 - Python 3.7 / 3.8 **(3.6 or below and 3.9 are not supported)**
 - npm (6.14.8)
 - node.js (14.15.0)
 - [Environment Variables](documents/env.sh)
 
-### Install Dependencies
+#### Install Dependencies
 - To install dependencies, run
 ```bash
 make dev_env
 ```
 
-### Run Test
+#### Run Test
 - To run test, run
 ```bash
 make tests
 ```
 
-### Make Prod
+#### Make Prod
 - To make prod, run
 ```bash
 make prod
 ```
 
-### Run
-- To run both frontend(http://localhost:3000) and backend (http://localhost:5000)
+#### Run
+- To run both frontend(http://localhost:3000) and backend (http://localhost:5000) locally
     - Start (build from [docker-compose.yml](docker-compose.yml))
         ```bash
         make docker_build
@@ -100,11 +99,13 @@ make prod
         ```bash
         make docker_run
         ```
-
-### Test Users
-- hypertars (both username and password)
-- milvus (both username and password)
-- eclipse (both username and password)
+- Or you can access our [website deployed on Heroku](https://greloupis-frontend.herokuapp.com/)
+- To test our project, you can try to register or log in with existed user for testing
+    - For existed users, you can [search their username](https://greloupis-frontend.herokuapp.com/search?keyword=)
+    - User accounts for testing
+        - hypertars (both username and password)
+        - milvus (both username and password)
+        - eclipse (both username and password)
 
 ## Designs
 ### Coding Style
