@@ -34,6 +34,7 @@ jobs:
       run: |
         python3 -V
         pip -V
+        pip3 install flask-mongoengine
     - name: Install Dependencies
       run: make dev_env
     - name: Run Tests
