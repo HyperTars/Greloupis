@@ -143,7 +143,6 @@
     - Coveralls
 
         ![coveralls](coveralls.png)
-        ![coveralls files](coveralls-files.png)
 
 ## Stage Dockerize
 - To dockerize our project, we wrote Dockerfile for both [frontend](../frontend/Dockerfile) and [backend](../backend/Dockerfile). And we also have a [docker-compose](../docker-compose.yml) in case you want to run both frontend and backend locally with only one command in one terminal.
