@@ -25,36 +25,51 @@
     - [Heroku Backend Metrics Monitor](https://metrics.librato.com/s/public/reo8fj68x)
     - [Docker Backend Repo](https://hub.docker.com/r/hypertars/greloupis-backend/tags)
 
-### Setup Guide
+## Table of Content
+- [Setup Guide](#Setup-Guide)
+  * [Environment Requirement & Configs](#Environment-Requirement-And-Configs)
+  * [Install Dependencies](#Install-Dependencies)
+  * [Run Test](#Run-Test)
+  * [Run](#Run)
+  * [Dockerize](#Dockerize)
+  * [Deploy](#Deploy)
+- [Features & Designs](#Designs)
+  * [Models Design](#Models-Design)
+  * [Database Design](#Database-Design)
+  * [APIs Design](#APIs-Design)
+  * [Components Design](#Components-Design)
+  * [Web Server Design](#Web-Server-Design)
+  * [Coding Style](#Coding-Style)
+- [Tests](#Tests)
+- [Contributors](#Contributors)
 
-#### Before Running: Environment Requirement & Configs
-- Python 3.7 / 3.8 **(3.6 or below and 3.9 are not supported)**
-- Set up [Environment Variable](../documents/env.sh)
+## Setup Guide
+
+### Environment Requirement And Configs
+- **Please make sure the following dependencies are installed and configured before running**
+    - Python 3.7 / 3.8 **(3.6 or below and 3.9 are not supported)**
+    - Set up [Environment Variable](../documents/env.sh)
+
+- Configurations
     - If you run locally, makefile will set the PROFILE as dev, you can change it in [makefile](makefile)
-- You should configure variables like MongoDB endpoint, AWS endpoint, loggins, and other settings in [BaseConfig](configs/config_base.py), [DevConfig](configs/config_dev.py), [TestConfig](configs/config_test.py), [ProdConfig](configs/config_prod.py)
-    - Note that [TestConfig](configs/config_test.py) is only used for `make tests` and Continuous Integration Test. You'd better create a independent MongoDB Table for it. For developemt use, we recommend you configure [DevConfig](configs/config_dev.py)
-    - See how it is related to environment variables [Settings](settings.py)
-- Other settings like [Logging Settings](configs/logging.yml) and [uWSGI Settings](configs/uwsgi.ini)(for docker use)
+    - You should configure variables like MongoDB endpoint, AWS endpoint, loggins, and other settings in [BaseConfig](configs/config_base.py), [DevConfig](configs/config_dev.py), [TestConfig](configs/config_test.py), [ProdConfig](configs/config_prod.py)
+        - Note that [TestConfig](configs/config_test.py) is only used for `make tests` and Continuous Integration Test. You'd better create a independent MongoDB Table for it. For developemt use, we recommend you configure [DevConfig](configs/config_dev.py)
+        - See how it is related to environment variables [Settings](settings.py)
+    - Other settings like [Logging Settings](configs/logging.yml) and [uWSGI Settings](configs/uwsgi.ini)(for docker use)
 
-#### Install Dependencies
+### Install Dependencies
 - To install dependencies, run
 ```bash
 make dev_env_backend
 ```
 
-#### Run Test
+### Run Test
 - To run test, run
 ```bash
 make tests
 ```
 
-#### Make Prod
-- To make prod, run
-```bash
-make prod
-```
-
-#### Run
+### Run
 - To run backend (SwaggerUI: http://localhost:5000 or http://0.0.0.0:5000)
     - From Docker Hub 
         ```bash
@@ -73,7 +88,8 @@ make prod
         make run_python
         ```
 
-#### Dockerize
+### Dockerize
+- This section is for you to dockerize manually. Normally, Travis-CI will do the dockerize job once master branch is updated.
 - Before dockerize, make sure you've set up [environment variable](../documents/env.sh)
     - PROFILE (you can also change it in [makefile](makefile))
     - BACKEND_BUILD
@@ -83,7 +99,8 @@ make prod
 make docker_build docker_push
 ```
 
-#### Deploy
+### Deploy
+- This section is for you to deploy manually. Normally, Travis-CI will do the deploy job once master branch is updated.
 - Before deploy, make sure you've set up [environment variable](../documents/env.sh)
     - PROFILE (you can also change it in [makefile](makefile))
     - BACKEND_BUILD
@@ -96,20 +113,17 @@ make heroku
 ```
 
 
-### Designs
-#### Coding Style
-- Python: [PEP8](https://www.python.org/dev/peps/pep-0008/)
-
-#### Models Design (Entity)
+## Designs
+### Models Design (Entity)
 - See full [Models Design](../documents/Models.md)
 
-#### Database Design
+### Database Design
 - See full [Database Design](../documents/Database.md)
 
-#### APIs Design
+### APIs Design
 - See full [APIs Design](../documents/APIs.md)
 
-#### Components Design
+### Components Design
 1. Processing Queue: Each uploaded video will be pushed to a processing queue to be de-queued later for encoding, thumbnail generation, and storage.
 2. Encoder: To encode each uploaded video into multiple formats.
 3. Thumbnails generator: To generate a few thumbnails for each video.
@@ -121,15 +135,18 @@ make heroku
 
     ![BackgroundDesign](../documents/BackgroundDesign.png)
 
-#### Web Server Design
+### Web Server Design
 - We use [uWSGI](configs/uwsgi.ini) as our frontend webserver. See how it is configured in [Dockerfile](Dockerfile)
 
-### Tests
+### Coding Style
+- Python: [PEP8](https://www.python.org/dev/peps/pep-0008/)
+
+## Tests
 - See full [Test Cases](../documents/Test.md)
 - Coverage
   - [CodeCov](https://codecov.io/gh/HyperTars/Online-Video-Platform)
 
-### Contributors
+## Contributors
   
   GitHub | Name | NetID
   --- | --- | ---

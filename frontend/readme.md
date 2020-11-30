@@ -26,7 +26,7 @@
     - [Docker Backend Repo](https://hub.docker.com/r/hypertars/greloupis-frontend/tags)
 
 ## Table of Content
-- [Features & Designs](#Features-&-Designs)
+- [Features & Designs](#Designs)
   * [Homepage Design](#Homepage-Design)
   * [Search Design](#Search-Design)
   * [Player Design](#Player-Design)
@@ -34,8 +34,9 @@
   * [Uploading Design](#Uploading-Design)
   * [Error Page Design](#Error-Page-Design)
   * [Web Server Design](#Web-Server-Design)
+  * [Coding Style](#Coding-Style)
 - [Setup Guide](#Setup-Guide)
-  * [Before Running: Environment Requirement](#Before-Running:-Environment-Requirement)
+  * [Environment Requirement](#Environment-Requirement)
   * [Install Dependencies](#Install-Dependencies)
   * [Run Test](#Run-Test)
   * [Run](#Run)
@@ -43,7 +44,7 @@
   * [Deploy](#Deploy)
 - [Contributors](#Contributors)
 
-## Features & Designs
+## Designs
 ### Homepage Design
 - We list Top 10 Hit Videos in our homepage.
 - Private videos are hidden (not listed here).
@@ -99,9 +100,11 @@
 
 ## Setup Guide
 
-### Before Running: Environment Requirement
-- npm (6.14.8)
-- node.js (14.15.0)
+### Environment Requirement
+- **Please make sure the following dependencies are installed and configured before running**
+    - npm (6.14.8)
+    - node.js (14.15.0)
+    - Set up [Environment Variable](../documents/env.sh)
 
 ### Install Dependencies
 - To install dependencies, run
