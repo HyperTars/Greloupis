@@ -45,7 +45,21 @@
 - **See more details about our [Frontend](frontend/readme.md)**
 - **See more details about our [Backend](backend/readme.md)**
 
-[TOC]
+- [Project Proposal](#Project%20Proposal)
+- [Setup Guid](#Setup%20Guide)
+  * [Environment Requirement](#Environment%20Requirement)
+  * [Install Dependencies](#Install%20Dependencies)
+  * [Run Test](#Run%20Test)
+  * [Make Prod](#Make%20Prod)
+  * [Run](#Run)
+  * [Test Users](#Test%20Users)
+- [Designs](#Designs)
+  * [Coding Styles](#Coding%20Style)
+  * [API Designs](#Test%20Users)
+  * [Component Design](#Components%20Design)
+- [Tests](#Tests)
+- [CI / CD](#CI%20/%20CD)
+- [Contributors](#Contributors)
 
 ### Project Proposal
 - [Proposal](documents/Proposal.md)
@@ -58,13 +72,13 @@
 - node.js (14.15.0)
 - [Environment Variables](documents/env.sh)
 
-#### Install dependencies
+#### Install Dependencies
 - To install dependencies, run
 ```bash
 make dev_env
 ```
 
-#### Run test
+#### Run Test
 - To run test, run
 ```bash
 make tests
