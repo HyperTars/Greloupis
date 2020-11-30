@@ -114,6 +114,7 @@ make prod
 
 ### APIs Design
 - See full [APIs Design](documents/APIs.md)
+- Or you can access our [backend Swagger UI website](https://greloupis-backend.herokuapp.com/)
 
 ### Components Design
 1. Processing Queue: Each uploaded video will be pushed to a processing queue to be de-queued later for encoding, thumbnail generation, and storage.
