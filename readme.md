@@ -59,7 +59,7 @@
   * [API Designs](#Test-Users)
   * [Component Design](#Components-Design)
 - [Tests](#Tests)
-- [CI CD](#CI-CD)
+- [CI/CD](#CI/CD)
 - [Contributors](#Contributors)
 
 ## Project Proposal
@@ -132,7 +132,7 @@ make prod
 - Coverage
   - [CodeCov](https://codecov.io/gh/HyperTars/Online-Video-Platform)
 
-## CI / CD 
+## CI/CD
 - We use `Travis-CI`, `Docker` and `Heroku` to do CI/CD works
   - Our [Travis Conf](.travis.yml) and [Travis-CI Status](https://travis-ci.com/github/HyperTars/Online-Video-Platform)
   - Our [Docker Conf](docker-compose.yml) and [Docker Frontend Repo](https://hub.docker.com/r/hypertars/greloupis-frontend/tags) | [Docker Backend Repo](https://hub.docker.com/r/hypertars/greloupis-backend/tags)
