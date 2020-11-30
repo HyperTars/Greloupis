@@ -22,19 +22,21 @@
     [![Heroku](https://pyheroku-badge.herokuapp.com/?app=greloupis-backend&style=flat)](https://greloupis-backend.herokuapp.com/)
 
 ## Table of Content
-- [Overview](#Overview)
-- [Stage Test](#Stage-Test)
-  * [Setup Test Environment](#Setup-Test-Environment)
-  * [Test Frontend](#Test-Frontend)
-  * [Test Backend](#Test-Backend)
-- [Stage Dockerize](#Stage-Dockerize)
-  * [Dockerize Frontend](#Dockerize-Frontend)
-  * [Dockerize Backend](#Dockerize-Backend)
-  * [Docker-Compose](#Docker-Compose)
-- [Stage Deploy](#Stage-Deploy)
-  * [Deploy Frontend](#Deploy-Frontend)
-  * [Deploy Backend](#Deploy-Backend)
-  * [Deploy Monintoring](#Deploy-Monintoring)
+- [Greloupis - CI / CD Workflow](#greloupis---ci--cd-workflow)
+  - [Table of Content](#table-of-content)
+  - [Overview](#overview)
+  - [Stage Test](#stage-test)
+    - [Setup Test Environment](#setup-test-environment)
+    - [Test Frontend](#test-frontend)
+    - [Test Backend](#test-backend)
+  - [Stage Dockerize](#stage-dockerize)
+    - [Dockerize Frontend](#dockerize-frontend)
+    - [Dockerize Backend](#dockerize-backend)
+    - [Docker-Compose](#docker-compose)
+  - [Stage Deploy](#stage-deploy)
+    - [Deploy Frontend](#deploy-frontend)
+    - [Deploy Backend](#deploy-backend)
+    - [Deploy Monintoring](#deploy-monintoring)
 
 ## Overview
 - We use [GitHub Action](https://github.com/HyperTars/Online-Video-Platform/actions) to do our CI/CD job.
@@ -129,7 +131,7 @@
 - `unit`: In unit test part, we use `PyTest` to test every file we wrote for background separately with lots of boundary cases. Since lots of tests need to interact with MongoDB, this might take some time (usually 20 sec ~ 60 sec)
 
     ![unit test](unittest.png)
-- `report`: Then we generate a coverage report for each file. Since some try-exception boundary cases cannot be reached, coverage for each file is usually less than 100%
+- `report`: Then we generate a coverage report for each file. Since some try-exception boundary cases cannot be reached, coverage of some files will be close to 100% but not exactly 100%.
 
     ![coverage](coverage.png)
 - `lint`: Finally, we use [Flake8](../backend/configs/flake8) to do lint test
