@@ -44,6 +44,7 @@
 
 - **See more details about our [Frontend](frontend/readme.md)**
 - **See more details about our [Backend](backend/readme.md)**
+- **See more details about our [CI / CD Workflow](documents/cicd.md)**
 
 ## Table of Content
 - [Project Proposal](#Project-Proposal)
