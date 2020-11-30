@@ -1,0 +1,54 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  workflow_dispatch:
+
+env:
+  COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+  CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+  DOCKER_USER: "hypertars"
+  DOCKER_EMAIL: "hypertars@gmail.com"
+  DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
+  BACKEND_BUILD: "greloupis-backend"
+  FRONTEND_BUILD: "greloupis-frontend"
+  HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+  HEROKU_APP_FRONTEND: "greloupis-frontend"
+  HEROKU_APP_BACKEND: "greloupis-backend"
+
+jobs:
+  test:
+    runs-on: ubuntu-18.04
+    strategy:
+      matrix:
+        python-version: ['3.7', '3.8']
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Display Python Version
+      run: python -c "import sys; print(sys.version)"
+    - name: Install Dependencies
+      run: make dev_env
+    - name: Run Tests
+      run: make tests
+    - name: Test Report
+      run: make coverage
+  dockerize:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Push To Dockerhub
+        run: make docker_push
+  deploy:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Deploy to Heroku
+        run: make heroku
+          
