@@ -823,7 +823,7 @@ class VideoVideoIdStarUserId(Resource):
 @video.response(400, 'Invalid video information', general_response)
 @video.response(405, 'Method not allowed', general_response)
 @video.response(500, 'Internal server error', general_response)
-class Video(Resource):
+class AWS(Resource):
 
     def post(self):
         """
