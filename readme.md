@@ -47,7 +47,7 @@
 
 ## Table of Content
 - [Project Proposal](#Project-Proposal)
-- [Setup Guid](#Setup-Guide)
+- [Setup Guide](#Setup-Guide)
   * [Environment Requirement](#Environment-Requirement)
   * [Install Dependencies](#Install-Dependencies)
   * [Run Test](#Run-Test)
