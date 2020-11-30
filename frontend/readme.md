@@ -32,23 +32,25 @@
     - [Docker Backend Repo](https://hub.docker.com/r/hypertars/greloupis-frontend/tags)
 
 ## Table of Content
-- [Features & Designs](#Designs)
-  * [Homepage Design](#Homepage-Design)
-  * [Search Design](#Search-Design)
-  * [Player Design](#Player-Design)
-  * [Dashboard Design](#Dashboard-Design)
-  * [Uploading Design](#Uploading-Design)
-  * [Error Page Design](#Error-Page-Design)
-  * [Web Server Design](#Web-Server-Design)
-  * [Coding Style](#Coding-Style)
-- [Setup Guide](#Setup-Guide)
-  * [Environment Requirement](#Environment-Requirement)
-  * [Install Dependencies](#Install-Dependencies)
-  * [Run Test](#Run-Test)
-  * [Run](#Run)
-  * [Dockerize](#Dockerize)
-  * [Deploy](#Deploy)
-- [Contributors](#Contributors)
+- [Greloupis - An online video sharing platform](#greloupis---an-online-video-sharing-platform)
+  - [Table of Content](#table-of-content)
+  - [Designs](#designs)
+    - [Homepage Design](#homepage-design)
+    - [Search Design](#search-design)
+    - [Player Design](#player-design)
+    - [Dashboard Design](#dashboard-design)
+    - [Uploading Design](#uploading-design)
+    - [Error Page Design](#error-page-design)
+    - [Web Server Design](#web-server-design)
+    - [Coding Style](#coding-style)
+  - [Setup Guide](#setup-guide)
+    - [Environment Requirement](#environment-requirement)
+    - [Install Dependencies](#install-dependencies)
+    - [Run Test](#run-test)
+    - [Run](#run)
+    - [Dockerize](#dockerize)
+    - [Deploy](#deploy)
+  - [Contributors](#contributors)
 
 ## Designs
 ### Homepage Design
@@ -59,7 +61,7 @@
 - We support multi attribute search, including
     - User: user name, user email, user state/country/zip, user street address, user phont number, etc.
     - Video: video title, video channel, video tag, video category, video description, etc.
-- Private videos & pending videos are hidden (unless logged in with author's account).
+- Private videos & pending videos(videos being transcoded and not ready for streaming) are hidden to all users except the video's author.
 
 ### Player Design
 - We support multi resolution video playback, you can select quality when you play video, including
@@ -73,12 +75,12 @@
     - ↓: volume down
     - num 0-9: redirect to position in percentage (0%, 10%, 20%, 30%, ... 90%)
 - If logged in, we remember your last playback position, you will be redirect to the position the next time you open the video.
-- You can like, dislike, start, and comment on videos.
-- Private & pending videos are not allowed to access unless logged in with author's account.
+- You can like, dislike, star, and comment on videos.
+- Private & pending videos are not allowed to be accessed unless logged in with author's account.
 
 ### Dashboard Design
 - You can manage your user profile
-- You can see all videos you uploaded and its status (pending, private, public), and you can manage them
+- You can see all videos you uploaded and their status (pending, private, public), and you can manage them (update video information or delete video)
 - You can see your playback history with playback date
 - You can see all the videos you starred, liked, commented.
 - Private users' detail information and their private videos are hidden unless logged in by themselves.
@@ -172,4 +174,3 @@ make heroku
   --- | --- | ---
   [HyperTars](https://github.com/HyperTars) | Wenzhou Li | [wl2154](mailto:wl2154@nyu.edu)
   [MikeYan01](https://github.com/MikeYan01) | Linyi Yan | [ly1333](mailto:ly1333@nyu.edu)
-  [FatBin](https://github.com/FatBin) | Xuanbin Luo | [xl2806](mailto:xl2806@nyu.edu)

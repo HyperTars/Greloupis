@@ -2,7 +2,7 @@
 
 # Greloupis - An online video sharing platform
 
-- Tech Stack & Compatibility
+- Main Tech Stack & Compatibility
 
     [![Python](https://img.shields.io/badge/python-3.7%20%7C%203.8-blue)](https://www.python.org/downloads/release/python-385/)
     [![npm](https://img.shields.io/badge/npm-6.14.8-blue)](https://blog.npmjs.org/post/626732790304686080/release-6148)
@@ -32,7 +32,6 @@
     [![docker build](https://img.shields.io/docker/cloud/automated/hypertars/greloupis-backend)](https://hub.docker.com/r/hypertars/greloupis-backend/builds)
     [![Heroku](https://pyheroku-badge.herokuapp.com/?app=greloupis-backend&style=flat)](https://greloupis-backend.herokuapp.com/)
 
-<!-- [Video.js](https://img.shields.io/badge/Video.js-7.8.4-blue) -->
 <!-- [![tested with jest](https://img.shields.io/badge/tested_with-jest-99424f.svg)](https://github.com/facebook/jest) -->
 <!-- [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier) -->
 <!-- [![stars](https://img.shields.io/github/stars/HyperTars/Online-Video-Platform.svg?style=plasticr)](https://github.com/HyperTars/Online-Video-Platform/stargazers) -->
@@ -44,23 +43,25 @@
     - Our [Heroku Frontend Metrics Monitor](https://metrics.librato.com/s/public/wxet4vyas) | [Heroku Backend Metrics Monitor](https://metrics.librato.com/s/public/reo8fj68x)
 
 ## Table of Content
-- [Documents](#Documents)
-  * [Project Proposal](documents/Proposal.md)
-  * [Frontend Details](frontend/readme.md)
-  * [Backend Details](backend/readme.md)
-  * [CI / CD Workflow](documents/cicd.md)
-- [Setup Guide](#Setup-Guide)
-  * [Environment Requirement](#Environment-Requirement)
-  * [Install Dependencies](#Install-Dependencies)
-  * [Run Test](#Run-Test)
-  * [Make Prod](#Make-Prod)
-  * [Run](#Run)
-- [Designs](#Designs)
-  * [Coding Styles](#Coding-Style)
-  * [API Designs](#Test-Users)
-  * [Component Design](#Components-Design)
-- [CI / CD](#CI-CD)
-- [Contributors](#Contributors)
+- [Greloupis - An online video sharing platform](#greloupis---an-online-video-sharing-platform)
+  - [Table of Content](#table-of-content)
+  - [Documents](#documents)
+    - [Project Proposal](#project-proposal)
+    - [Frontend Details](#frontend-details)
+    - [Backend Details](#backend-details)
+    - [CI / CD Workflow](#ci--cd-workflow)
+  - [Setup Guide](#setup-guide)
+      - [Environment Requirement](#environment-requirement)
+      - [Install Dependencies](#install-dependencies)
+      - [Run Test](#run-test)
+      - [Make Prod](#make-prod)
+      - [Run](#run)
+  - [Designs](#designs)
+    - [Coding Style](#coding-style)
+    - [APIs Design](#apis-design)
+    - [Components Design](#components-design)
+  - [CI CD](#ci-cd)
+  - [Contributors](#contributors)
 
 ## Documents
 ### [Project Proposal](documents/Proposal.md)
@@ -108,9 +109,9 @@ make prod
 - To test our project, you can try to register or log in with existed user for testing
     - For existed users, you can [search their username](https://greloupis-frontend.herokuapp.com/search?keyword=)
     - User accounts for testing
-        - hypertars (both username and password)
-        - milvus (both username and password)
-        - eclipse (both username and password)
+        - Username: hypertars, Password: hypertars
+        - Username: milvus, Password: milvus
+        - Username: eclipse, Password: eclipse
 
 ## Designs
 ### Coding Style

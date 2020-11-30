@@ -8,14 +8,12 @@
   - Highly available online video player
   - Efficient search system
   - User registration, login and authority system
-  - User reviews and scoring system
-  - (Extra) User-based recommendation system
+  - User reviews system
   
 - The primary purpose of this project is to create an online video viewing system. In addition, we have also thought and reflected on similar products already on the market. 
   - Netflix is a completely B2C video content provider. The video is completely uploaded by the provider and provided to users. Similarly, there are streaming media providers such as HBO Max and Disney+. They lack or essentially do not allow users to upload their own videos. However, in our opinion, users can produce very high-quality videos nowadays. Many vlog bloggers, short film teams, etc. have professional equipment, and they can shoot amazing pictures. They should have a way to directly show their works to other users without the engagement of publishers. 
-  - Regarding this problem, YouTube is such a platform that realizes C2C sharing while the B2C function is also complete. However, our team believes that the way user communicate in Youtube are not as efficient and effective as those bullet screen (danmaku, a live commenting system) video sites (such as niconico, JP. and bilibili, CN.). 
-  - Correspondingly, these bullet screen video websites do not have strong background transcoding algorithms, distributed content delivery system and online adaptive streaming coding algorithms like YouTube and Netflix. 
-  - Based on all points mentioned above, our long-term plan (because one semester is too short, it is difficult for us to fully realize them all) is to combine the advantages of all the above video sites to create an online video playback site that meets the needs of users' actual experience in an ultimate way.
+  - Some bullet screen video websites (such as niconico, JP. and bilibili, CN.) provide good user communication experience. However, they do not have strong background transcoding algorithms, distributed content delivery system and online adaptive streaming coding algorithms like YouTube and Netflix. 
+  - Based on both points mentioned above, our long-term plan is to combine the advantages of all the above video sites to create an online video playback site that meets the needs of users' actual experience in an ultimate way.
 
 ### Requirements and Goals of the System
 
@@ -26,7 +24,6 @@
     - Login the system.
     - Logout from the system.
     - Have own personal account page when logged in.
-    - Follow users when logged in.
     - Set account (profile) public and private when logged in.
     - Close account when logged in.
   - **Videos**
@@ -44,14 +41,14 @@
 - The system should be highly available. Consistency can take a hit (in the interest of availability); if a user doesn’t see a video for a while, it should be fine.
 - Users should have a real time experience while watching videos and should not feel any lag.
 
-- *Not in scope*: Video recommendations, most popular videos, channels, subscriptions, watch later, favorites, etc.
+- *Not in scope*: Video recommendations, subscriptions, watch later, etc.
 
 
 ## Assumptions
 
 - We assume that all videos we collect from the Internet are legal and valid
 - We assume that some users will actively contribute their experiences and reviews to the system after they watch a video
-- We assume that users will not arbitrarily give their ratings and reviews to a video
+- We assume that users will not arbitrarily give their reviews to a video
 
 ## Architecture Design
 
@@ -124,7 +121,5 @@ We will use external data from some mainstream online video platforms, including
 - [Bilibili](https://www.bilibili.com/)
 
 ## Future Works
-- We might allow users to upload their own videos.
 - We might allow users to post live comment (danmaku).
 - We might allow users to block certain users.
-- *To Be Continue ...*
