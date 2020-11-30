@@ -32,7 +32,9 @@ jobs:
     - name: Display Python Version
       run: python -c "import sys; print(sys.version)"
     - name: Install Dependencies
-      run: make dev_env
+      run: |
+        sudo pip3 install --upgrade setuptools
+        make dev_env
     - name: Run Tests
       run: make tests
     - name: Test Report
