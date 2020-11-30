@@ -62,7 +62,7 @@
 - [CI / CD](#CI%20/%20CD)
 - [Contributors](#Contributors)
 
-### Project Proposal
+## Project Proposal
 - [Proposal](documents/Proposal.md)
   
 ## Setup Guide
