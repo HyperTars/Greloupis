@@ -2,9 +2,7 @@ FRONTEND_REPO = hypertars/greloupis-frontend
 TAG ?= latest
 
 dev_env_frontend:
-	npm -g install react-scripts
 	npm install
-	npm run build
 
 run_frontend:
 	npm start
@@ -36,4 +34,4 @@ docker_hub:
 heroku:
 	- docker login --username _ --password=$(HEROKU_API_KEY) registry.heroku.com
 	- heroku container:push web --app $(FRONTEND_BUILD)
-	- heroku container:release web --app $(FRONTEND_BUILD)
+	- heroku container:release web --app $(HEROKU_APP_FRONTEND)

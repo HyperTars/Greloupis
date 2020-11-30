@@ -2,7 +2,8 @@
 # Greloupis - CI / CD Workflow
 - Continuous Integration
 
-    [![build](https://travis-ci.com/HyperTars/Online-Video-Platform.svg?token=btA3ungCKHqWzLxCoxT7&branch=master)](https://travis-ci.com/HyperTars/Online-Video-Platform)
+    <!--[![build](https://travis-ci.com/HyperTars/Online-Video-Platform.svg?token=btA3ungCKHqWzLxCoxT7&branch=master)](https://travis-ci.com/HyperTars/Online-Video-Platform)-->
+    [![CI/CD](https://github.com/HyperTars/Online-Video-Platform/workflows/CI/CD/badge.svg)](https://github.com/HyperTars/Online-Video-Platform/actions?query=workflow%3ATest)
     [![CodeCov Status](https://codecov.io/gh/HyperTars/Online-Video-Platform/branch/master/graph/badge.svg?token=8K7ODQK5BV)](https://codecov.io/gh/HyperTars/Online-Video-Platform)
     <!-- [![Coverall Status](https://coveralls.io/repos/github/HyperTars/Online-Video-Platform/badge.svg?t=dyCGTT)](https://coveralls.io/github/HyperTars/Online-Video-Platform) -->
     
@@ -24,9 +25,9 @@
 - [What we use](#What-we-use)
 - [How we do](#How-we-do)
   * [Overview](#Overview)
-  * [Continuous Integration: Stage Test](#Stage-Test)
-  * [Continuous Delivery: Stage Dockerize](#Stage-Dockerize)
-  * [Continuous Deploy: Stage Deploy](#Stage-Deploy)
+  * [Stage Test](#Stage-Test)
+  * [Stage Dockerize](#Stage-Dockerize)
+  * [Stage Deploy](#Stage-Deploy)
 
 ## What we use
 - We use [Travis-CI](https://travis-ci.com/github/HyperTars/Online-Video-Platform) to do our CI/CD job.
@@ -187,7 +188,7 @@
     - We also wrote a docker-compose file so that you can run both frontend and backend locally with one command in one terminal.
     - Like Dockerfile we mentioned before, we bind ports 3000 and 5000 manually so that you access frontend through http://localhost:3000 and backend through http://localhost:5000.
     - Run `make docker_run` to use [docker-compose](../docker-compose.yml) to run both frontend and backend locally.
-### Continuous Deploy: Stage Deploy
+### Stage Deploy
 ```yml
 - stage: deploy
   install: skip
@@ -213,3 +214,6 @@
         - heroku container:release web --app $(BACKEND_BUILD)
     ```
     - Note that if you want to push to heroku from local, you should configure the [environment variables](env.sh) first. These should also be set in Travis-CI so that the workflow could be executed automatically.
+- **Monintoring**
+    - [Heroku Frontend Metrics Monitor](https://metrics.librato.com/s/public/wxet4vyas)
+    - [Heroku Backend Metrics Monitor](https://metrics.librato.com/s/public/reo8fj68x)

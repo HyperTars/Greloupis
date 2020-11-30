@@ -39,7 +39,8 @@ def query_video_create(user_id: str):
     aws_mid = aws_uri + conf.AWS_STREAMING_MID + conf.AWS_STREAMING_FORMAT
     aws_high = aws_uri + conf.AWS_STREAMING_HIGH + conf.AWS_STREAMING_FORMAT
 
-    aws_thumbnail = conf.AWS_THUMBNAIL_FOLDER + str(video.id) + conf.AWS_THUMBNAIL_FORMAT
+    aws_thumbnail = conf.AWS_THUMBNAIL_FOLDER + \
+        str(video.id) + conf.AWS_THUMBNAIL_FORMAT
 
     Video.objects(id=video.id).update(video_uri__video_uri_low=aws_low)
     Video.objects(id=video.id).update(video_uri__video_uri_mid=aws_mid)
