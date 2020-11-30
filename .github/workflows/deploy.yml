@@ -11,25 +11,23 @@ jobs:
     name: Deploy Frontend
     runs-on: ubuntu-18.04
     steps:
-      - uses: actions/checkout@master
-      - uses: akhileshns/heroku-deploy@v3.6.8
-        with:
-          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "greloupis-frontend"
-          heroku_email: "hypertars@gmail.com"
-          appdir: "frontend"
-          usedocker: true
       - name: Deploy Frontend to Heroku
+      - uses: actions/checkout@master
+      - uses: mtsmachado8/heroku-deploy@v2.0.3
+        with:
+          email: "hypertars@gmail.com"
+          api_key: ${{secrets.HEROKU_API_KEY}}
+          app_name: "greloupis-frontend"
+          dockerfile_path: "frontend"
   deploy-backend:
     name: Deploy Backend
     runs-on: ubuntu-18.04
     steps:
-      - uses: actions/checkout@master
-      - uses: akhileshns/heroku-deploy@v3.6.8
-        with:
-          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "greloupis-backend"
-          heroku_email: "hypertars@gmail.com"
-          appdir: "backend"
-          usedocker: true
       - name: Deploy Backend to Heroku
+      - uses: actions/checkout@master
+      - uses: mtsmachado8/heroku-deploy@v2.0.3
+        with:
+          email: "hypertars@gmail.com"
+          api_key: ${{secrets.HEROKU_API_KEY}}
+          app_name: "greloupis-backend"
+          dockerfile_path: "backend"
