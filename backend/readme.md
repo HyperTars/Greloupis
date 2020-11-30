@@ -6,10 +6,18 @@
 
     [![Python](https://img.shields.io/badge/python-3.7%20%7C%203.8-blue)](https://www.python.org/downloads/release/python-385/)
     [![Flask](https://img.shields.io/badge/Flask-1.1.2-blue)](https://pypi.org/project/Flask/)
-    [![Flask-JWT](https://img.shields.io/badge/FlaskJWTExtended-3.24.1-blue)](https://flask-jwt-extended.readthedocs.io/en/stable/)
+    [![Flask-RestX](https://img.shields.io/badge/Flask_RestX-0.2.0-blue)](https://flask-restx.readthedocs.io/en/latest/)
+    [![Flask-MongoEngine](https://img.shields.io/badge/Flask_MongoEngine-0.9.5-blue)](http://docs.mongoengine.org/projects/flask-mongoengine/en/latest/)
+    [![Flask-CORS](https://img.shields.io/badge/Flask_CORS-3.0.9-blue)](https://flask-cors.readthedocs.io/en/latest/)
+    [![Flask-JWT](https://img.shields.io/badge/Flask_JWT_Extended-3.24.1-blue)](https://flask-jwt-extended.readthedocs.io/en/stable/)
     [![MongoDB](https://img.shields.io/badge/MongoDB-4.4-blue)](https://docs.mongodb.com/manual/release-notes/4.4/)
     [![uWSGI](https://img.shields.io/badge/uWSGI-2.0.19-blue)](https://uwsgi-docs.readthedocs.io/en/latest/)
     [![Flake8](https://img.shields.io/badge/Flake8-3.8.4-blue)](https://flake8.pycqa.org/en/latest/)
+    [![PyTest](https://img.shields.io/badge/PyTest-6.1.1-blue)](https://docs.pytest.org/en/stable/announce/release-6.1.1.html)
+    [![Coverage](https://img.shields.io/badge/Coverage-5.3-blue)](https://coverage.readthedocs.io/en/coverage-5.3/)
+    [![CodeCov](https://img.shields.io/badge/CodeCov-2.1.10-blue)](https://pypi.org/project/codecov/2.1.10/)
+    [![PyYAML](https://img.shields.io/badge/PyYAML-5.3.1-blue)](https://pypi.org/project/PyYAML/)
+    [![DNSPython](https://img.shields.io/badge/DNS_Python-2.0.0-blue)](https://www.dnspython.org/)
 
 - CI / CD
 

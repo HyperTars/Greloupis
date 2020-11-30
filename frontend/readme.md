@@ -5,8 +5,13 @@
 - Tech Stack & Compatibility
 
     [![npm](https://img.shields.io/badge/npm-6.14.8-blue)](https://blog.npmjs.org/post/626732790304686080/release-6148)
-    [![node.js](https://img.shields.io/badge/node.js-14.15.0-blue)](https://nodejs.org/dist/latest-v14.x/docs/api/)
-    [![nginx](https://img.shields.io/badge/nginx-14.15-blue)](https://www.nginx.com/)
+    [![node.js](https://img.shields.io/badge/Node.js-14.15.0-blue)](https://nodejs.org/dist/latest-v14.x/docs/api/)
+    [![React](https://img.shields.io/badge/React-17.0.1-blue)](https://reactjs.org/versions)
+    [![nginx](https://img.shields.io/badge/Nginx-14.15-blue)](https://www.nginx.com/)
+    [![ant design](https://img.shields.io/badge/Ant_Design-4.8.5-blue)](https://ant.design/)
+    [![material ui](https://img.shields.io/badge/Material_UI-4.11.0-blue)](https://material-ui.com/)
+    [![JW player](https://img.shields.io/badge/React_JW_Player-1.9.1-blue)](https://www.npmjs.com/package/react-jw-player)
+    [![aws](https://img.shields.io/badge/AWS_SDK-2.797.0-blue)](https://www.npmjs.com/package/aws-sdk)
 
 - CI / CD
 
