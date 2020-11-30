@@ -42,12 +42,12 @@
     - Our [Heroku Frontend Site](https://greloupis-frontend.herokuapp.com/) | [Heroku Backend Site](https://greloupis-backend.herokuapp.com/)
     - Our [Heroku Frontend Metrics Monitor](https://metrics.librato.com/s/public/wxet4vyas) | [Heroku Backend Metrics Monitor](https://metrics.librato.com/s/public/reo8fj68x)
 
-- **See more details about our [Frontend](frontend/readme.md)**
-- **See more details about our [Backend](backend/readme.md)**
-- **See more details about our [CI / CD Workflow](documents/cicd.md)**
-
 ## Table of Content
-- [Project Proposal](#Project-Proposal)
+- [Documents](#Documents)
+  * [Proposal](#Project-Proposal)
+  * [Frontend Details](#Frontend-Details)
+  * [Backend Details](#Backend-Details)
+  * [CI / CD Workflow](#CI-CD-Workflow)
 - [Setup Guide](#Setup-Guide)
   * [Environment Requirement](#Environment-Requirement)
   * [Install Dependencies](#Install-Dependencies)
@@ -63,8 +63,15 @@
 - [CI / CD](#CI-CD)
 - [Contributors](#Contributors)
 
-## Project Proposal
+## Documents
+### Project Proposal
 - [Proposal](documents/Proposal.md)
+### Frontend Details
+- [Frontend](frontend/readme.md)
+### Backend Details
+- [Backend](backend/readme.md)
+### CI CD Workflow
+- [CI / CD Workflow](documents/cicd.md)
   
 ## Setup Guide
 
