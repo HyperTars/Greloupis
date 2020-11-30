@@ -2,7 +2,8 @@ name: Dockerize
 
 on:
   push:
-    branches: [ master ]
+    branches:
+    - master
   workflow_dispatch:
 
 env:
@@ -16,6 +17,6 @@ jobs:
   dockerize:
     runs-on: ubuntu-18.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@master
       - name: Push To Dockerhub
         run: make docker_push
