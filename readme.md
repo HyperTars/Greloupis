@@ -45,7 +45,7 @@
 - **See more details about our [Frontend](frontend/readme.md)**
 - **See more details about our [Backend](backend/readme.md)**
 
-# Table of Content
+## Table of Content
 - [Project Proposal](#Project%20Proposal)
 - [Setup Guid](#Setup%20Guide)
   * [Environment Requirement](#Environment%20Requirement)
@@ -65,33 +65,33 @@
 ### Project Proposal
 - [Proposal](documents/Proposal.md)
   
-### Setup Guide
+## Setup Guide
 
-#### Environment Requirement
+### Environment Requirement
 - Python 3.7 / 3.8 **(3.6 or below and 3.9 are not supported)**
 - npm (6.14.8)
 - node.js (14.15.0)
 - [Environment Variables](documents/env.sh)
 
-#### Install Dependencies
+### Install Dependencies
 - To install dependencies, run
 ```bash
 make dev_env
 ```
 
-#### Run Test
+### Run Test
 - To run test, run
 ```bash
 make tests
 ```
 
-#### Make Prod
+### Make Prod
 - To make prod, run
 ```bash
 make prod
 ```
 
-#### Run
+### Run
 - To run both frontend(http://localhost:3000) and backend (http://localhost:5000)
     - Start (build from docker-compose.yml)
         ```bash
@@ -102,20 +102,20 @@ make prod
         make docker_run
         ```
 
-#### Test Users
+### Test Users
 - hypertars (both username and password)
 - milvus (both username and password)
 - eclipse (both username and password)
 
-### Designs
-#### Coding Style
+## Designs
+### Coding Style
 - Python: [PEP8](https://www.python.org/dev/peps/pep-0008/)
 - React: [JSX](https://reactjs.org/docs/introducing-jsx.html)
 
-#### APIs Design
+### APIs Design
 - See full [APIs Design](documents/APIs.md)
 
-#### Components Design
+### Components Design
 1. Processing Queue: Each uploaded video will be pushed to a processing queue to be de-queued later for encoding, thumbnail generation, and storage.
 2. Encoder: To encode each uploaded video into multiple formats.
 3. Thumbnails generator: To generate a few thumbnails for each video.
@@ -127,19 +127,19 @@ make prod
     
     ![Architecture Design Diagram](documents/ArchitectureDesign_resize.png)
 
-### Tests
+## Tests
 - See full [Test Cases](documents/Test.md)
 - Coverage
   - [CodeCov](https://codecov.io/gh/HyperTars/Online-Video-Platform)
 
-### CI / CD 
+## CI / CD 
 - We use `Travis-CI`, `Docker` and `Heroku` to do CI/CD works
   - Our [Travis Conf](.travis.yml) and [Travis-CI Status](https://travis-ci.com/github/HyperTars/Online-Video-Platform)
   - Our [Docker Conf](docker-compose.yml) and [Docker Frontend Repo](https://hub.docker.com/r/hypertars/greloupis-frontend/tags) | [Docker Backend Repo](https://hub.docker.com/r/hypertars/greloupis-backend/tags)
   - Our [Heroku Frontend](https://greloupis-frontend.herokuapp.com/) and [Heroku Backend](https://greloupis-backend.herokuapp.com/)
   - Our [Heroku Frontend Metrics Monitor](https://metrics.librato.com/s/public/wxet4vyas) and [Heroku Backend Metrics Monitor](https://metrics.librato.com/s/public/reo8fj68x)
 
-### Contributors
+## Contributors
   
   GitHub | Name | NetID
   --- | --- | ---
