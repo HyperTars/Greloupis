@@ -16,7 +16,7 @@
     <!--[![build](https://travis-ci.com/HyperTars/Online-Video-Platform.svg?token=btA3ungCKHqWzLxCoxT7&branch=master)](https://travis-ci.com/HyperTars/Online-Video-Platform)-->
     [![CI/CD](https://github.com/HyperTars/Online-Video-Platform/workflows/CI/CD/badge.svg)](https://github.com/HyperTars/Online-Video-Platform/actions?query=workflow%3ACI%2FCD)
     [![CodeCov Status](https://codecov.io/gh/HyperTars/Online-Video-Platform/branch/master/graph/badge.svg?token=8K7ODQK5BV)](https://codecov.io/gh/HyperTars/Online-Video-Platform)
-    <!-- [![Coverall Status](https://coveralls.io/repos/github/HyperTars/Online-Video-Platform/badge.svg?t=dyCGTT)](https://coveralls.io/github/HyperTars/Online-Video-Platform) -->
+    [![Coveralls Status](https://coveralls.io/repos/github/HyperTars/Online-Video-Platform/badge.svg?t=dyCGTT)](https://coveralls.io/github/HyperTars/Online-Video-Platform)
     
 - Continuous Delivery & Deploy (Frontend)
 
@@ -132,7 +132,7 @@ make prod
 ## CI CD
 - We use `GitHub Action`, `Docker` and `Heroku` to do CI/CD works
   - Full [Test Cases](documents/Test.md)
-  - Coverage (test results) [CodeCov](https://codecov.io/gh/HyperTars/Online-Video-Platform)
+  - Coverage (test results) [CodeCov](https://codecov.io/gh/HyperTars/Online-Video-Platform) | [Coverall](https://coveralls.io/github/HyperTars/Online-Video-Platform)
   - [GitHub Action Conf](.github/workflows/cicd.yml) | [Github Action Status](https://github.com/HyperTars/Online-Video-Platform/actions?query=workflow%3ACI%2FCD)
   - [Docker Conf](docker-compose.yml) | [Docker Frontend Repo](https://hub.docker.com/r/hypertars/greloupis-frontend/tags) | [Docker Backend Repo](https://hub.docker.com/r/hypertars/greloupis-backend/tags)
   - [Heroku Frontend](https://greloupis-frontend.herokuapp.com/) | [Heroku Backend](https://greloupis-backend.herokuapp.com/)
