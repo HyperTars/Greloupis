@@ -213,3 +213,6 @@
         - heroku container:release web --app $(BACKEND_BUILD)
     ```
     - Note that if you want to push to heroku from local, you should configure the [environment variables](env.sh) first. These should also be set in Travis-CI so that the workflow could be executed automatically.
+- **Monintoring**
+    - [Heroku Frontend Metrics Monitor](https://metrics.librato.com/s/public/wxet4vyas)
+    - [Heroku Backend Metrics Monitor](https://metrics.librato.com/s/public/reo8fj68x)
