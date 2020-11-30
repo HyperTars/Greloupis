@@ -1,4 +1,4 @@
-name: CD
+name: Dockerize
 
 on:
   push:
@@ -24,10 +24,3 @@ jobs:
       - uses: actions/checkout@v2
       - name: Push To Dockerhub
         run: make docker_push
-  deploy:
-    runs-on: ubuntu-18.04
-    steps:
-      - uses: actions/checkout@v2
-      - name: Deploy to Heroku
-        run: make heroku
-          
