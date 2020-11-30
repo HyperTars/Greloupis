@@ -45,6 +45,7 @@
 - **See more details about our [Frontend](frontend/readme.md)**
 - **See more details about our [Backend](backend/readme.md)**
 
+# Table of Content
 - [Project Proposal](#Project%20Proposal)
 - [Setup Guid](#Setup%20Guide)
   * [Environment Requirement](#Environment%20Requirement)
