@@ -34,7 +34,7 @@ class BaseConfig(object):
 
     AWS_THUMBNAIL_FOLDER = "https://vod-xuanbinmediabucket." \
         "s3-us-west-1.amazonaws.com/assets/Thumbnails/"
-    AWS_THUMBNAIL_FORMAT = ".0000000.jpg"
+    AWS_THUMBNAIL_FORMAT = ".0000001.jpg"
 
 
     @staticmethod

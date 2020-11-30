@@ -1,6 +1,6 @@
 LINTER = flake8
-TAG = latest
-BACKEND_REPO = hypertars/greloupis-backend
+TAG ?= latest
+BACKEND_REPO ?= hypertars/greloupis-backend
 PROFILE ?= prod
 
 dev_env_backend:
