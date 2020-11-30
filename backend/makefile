@@ -1,5 +1,5 @@
 LINTER = flake8
-TAG = latest
+TAG ?= latest
 BACKEND_REPO ?= hypertars/greloupis-backend
 PROFILE ?= prod
 

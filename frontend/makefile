@@ -1,5 +1,5 @@
 FRONTEND_REPO = hypertars/greloupis-frontend
-TAG = latest
+TAG ?= latest
 
 dev_env_frontend:
 	npm -g install react-scripts
