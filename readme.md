@@ -59,7 +59,6 @@
   * [Coding Styles](#Coding-Style)
   * [API Designs](#Test-Users)
   * [Component Design](#Components-Design)
-- [Tests](#Tests)
 - [CI / CD](#CI-CD)
 - [Contributors](#Contributors)
 
@@ -135,17 +134,15 @@ make prod
     
     ![Architecture Design Diagram](documents/ArchitectureDesign_resize.png)
 
-## Tests
-- See full [Test Cases](documents/Test.md)
-- Coverage
-  - [CodeCov](https://codecov.io/gh/HyperTars/Online-Video-Platform)
-
 ## CI CD
 - We use `Travis-CI`, `Docker` and `Heroku` to do CI/CD works
-  - Our [Travis Conf](.travis.yml) and [Travis-CI Status](https://travis-ci.com/github/HyperTars/Online-Video-Platform)
-  - Our [Docker Conf](docker-compose.yml) and [Docker Frontend Repo](https://hub.docker.com/r/hypertars/greloupis-frontend/tags) | [Docker Backend Repo](https://hub.docker.com/r/hypertars/greloupis-backend/tags)
-  - Our [Heroku Frontend](https://greloupis-frontend.herokuapp.com/) and [Heroku Backend](https://greloupis-backend.herokuapp.com/)
-  - Our [Heroku Frontend Metrics Monitor](https://metrics.librato.com/s/public/wxet4vyas) and [Heroku Backend Metrics Monitor](https://metrics.librato.com/s/public/reo8fj68x)
+  - Full [Test Cases](documents/Test.md)
+  - Coverage (test results) [CodeCov](https://codecov.io/gh/HyperTars/Online-Video-Platform)
+  - [Travis Conf](.travis.yml) | [Travis-CI Status](https://travis-ci.com/github/HyperTars/Online-Video-Platform)
+  - [Docker Conf](docker-compose.yml) | [Docker Frontend Repo](https://hub.docker.com/r/hypertars/greloupis-frontend/tags) | [Docker Backend Repo](https://hub.docker.com/r/hypertars/greloupis-backend/tags)
+  - [Heroku Frontend](https://greloupis-frontend.herokuapp.com/) | [Heroku Backend](https://greloupis-backend.herokuapp.com/)
+  - [Heroku Frontend Metrics Monitor](https://metrics.librato.com/s/public/wxet4vyas) | [Heroku Backend Metrics Monitor](https://metrics.librato.com/s/public/reo8fj68x)
+- See more details about our [CI / CD Workflow](documents/cicd.md)
 
 ## Contributors
   
