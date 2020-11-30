@@ -98,7 +98,7 @@ make tests
         ```
 
 ### Dockerize
-- This section is for you to dockerize manually. Normally, Travis-CI will do the dockerize job once master branch is updated.
+- This section is for you to dockerize manually. Normally, GitHub Action will do the dockerize job once master branch is updated.
 - Before dockerize, make sure you've set up [environment variable](../documents/env.sh)
     - PROFILE (you can also change it in [makefile](makefile))
     - BACKEND_BUILD
@@ -109,7 +109,7 @@ make docker_build docker_push
 ```
 
 ### Deploy
-- This section is for you to deploy manually. Normally, Travis-CI will do the deploy job once master branch is updated.
+- This section is for you to deploy manually. Normally, GitHub Action will do the deploy job once master branch is updated.
 - Before deploy, make sure you've set up [environment variable](../documents/env.sh)
     - PROFILE (you can also change it in [makefile](makefile))
     - BACKEND_BUILD
