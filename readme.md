@@ -45,6 +45,8 @@
 - **See more details about our [Frontend](frontend/readme.md)**
 - **See more details about our [Backend](backend/readme.md)**
 
+[TOC]
+
 ### Project Proposal
 - [Proposal](documents/Proposal.md)
   
