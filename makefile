@@ -89,6 +89,10 @@ dev_env_frontend:
 	cd $(FRONTEND_DIR); make dev_env_frontend
 
 # Heroku
-heroku:
+heroku:	heroku_frontend heroku_backend
+
+heroku_frontend:
 	cd $(FRONTEND_DIR); make heroku
+
+heroku_backend:
 	cd $(BACKEND_DIR); make heroku

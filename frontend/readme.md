@@ -16,7 +16,7 @@
 - CI / CD
 
     <!--[![build](https://travis-ci.com/HyperTars/Online-Video-Platform.svg?token=btA3ungCKHqWzLxCoxT7&branch=master)](https://travis-ci.com/HyperTars/Online-Video-Platform)-->
-    [![CI/CD](https://github.com/HyperTars/Online-Video-Platform/workflows/CI/CD/badge.svg)](https://github.com/HyperTars/Online-Video-Platform/actions?query=workflow%3ATest)
+    [![CI/CD](https://github.com/HyperTars/Online-Video-Platform/workflows/CI/CD/badge.svg)](https://github.com/HyperTars/Online-Video-Platform/actions?query=workflow%3ACI%2FCD)
     [![docker status](https://img.shields.io/docker/cloud/build/hypertars/greloupis-frontend)](https://hub.docker.com/r/hypertars/greloupis-frontend)
     [![docker image size](https://img.shields.io/docker/image-size/hypertars/greloupis-frontend)](https://hub.docker.com/r/hypertars/greloupis-frontend/tags)
     [![docker build](https://img.shields.io/docker/cloud/automated/hypertars/greloupis-frontend)](https://hub.docker.com/r/hypertars/greloupis-frontend/builds)
@@ -144,7 +144,7 @@ make tests
         ```
 
 ### Dockerize
-- This section is for you to dockerize manually. Normally, Travis-CI will do the dockerize job once master branch is updated.
+- This section is for you to dockerize manually. Normally, GitHub Action will do the dockerize job once master branch is updated.
 - Before dockerize, make sure you've set up [environment variable](../documents/env.sh)
     - FRONTEND_BUILD
     - FRONTEND_REPO (you can also change it in [makefile](makefile))
@@ -154,7 +154,7 @@ make docker_build docker_push
 ```
 
 ### Deploy
-- This section is for you to deploy manually. Normally, Travis-CI will do the deploy job once master branch is updated.
+- This section is for you to deploy manually. Normally, GitHub Action will do the deploy job once master branch is updated.
 - Before deploy, make sure you've set up [environment variable](../documents/env.sh)
     - FRONTEND_BUILD
     - FRONTEND_REPO (you can also change it in [makefile](makefile))

@@ -109,7 +109,7 @@
 
 ### CI/CD
 
-- We will use `Travis CI`, which provides convenient continuous integration & deployment services.
+- We will use `GitHub Action`, which provides convenient continuous integration & deployment services.
 
 ### Deploy and Monitor
 

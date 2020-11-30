@@ -30,38 +30,49 @@
   * [Stage Deploy](#Stage-Deploy)
 
 ## What we use
-- We use [Travis-CI](https://travis-ci.com/github/HyperTars/Online-Video-Platform) to do our CI/CD job.
-- See our [Travis Configuration](../.travis.yml)
+- We use [GitHub Action](https://github.com/HyperTars/Online-Video-Platform/actions) to do our CI/CD job.
+- See our [GitHub Action Configuration](../.github/workflows/cicd.yml)
 - We set our running environment as Ubuntu Bionic
 
 ## How we do
 ### Overview
-- We divide our CI/CD workflow into 3 stages: test, dockerize, and deploy as coded in [Travis Configuration](../.travis.yml)
+- We divide our CI/CD workflow into 3 stages: test, dockerize, and deploy as coded in [GitHub Action Configuration](../.github/workflows/cicd.yml)
     - `Stage Test`: run when any branch is pushed to Github
     - `Stage Dockerize`: run only when `master` branch is pushed to Github
     - `Stage Deploy`: run only when `master` branch is pushed to Github
     - Note that we enabled **branch protection rule for master** so that only **reviewed pull request** can be pushed (merged) into master
-    ```yml
-    stages:
-    - test
-    - name: dockerize
-        if: branch = master AND type = push AND fork = false
-    - name: deploy
-        if: branch = master AND type = push AND fork = false
-    ```
 
     ![Travis-CI](travis-ci.png)
 
 ### Stage Test
 ```yml
-- stage: test
-  install: skip
-  script:
-    - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.36.0/install.sh | bash
-    - nvm install 14.15.0
-    - nvm use 14.15.0
-    - make dev_env
-    - make tests
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    steps:
+    - uses: actions/checkout@v2
+    - uses: technote-space/auto-cancel-redundant-workflow@v1
+    - name: Set up Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: 14.15
+    - name: Set up Python3 ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - name: Display Python Version
+      run: |
+        python3 -V
+        pip3 -V
+    - name: Install Dependencies
+      run: make dev_env
+    - name: Run Tests
+      run: make tests
+    - name: Test Report
+      run: |
+        make report
+        make coverage
 ```
 - First of all, we install nvm version we need
 - Then we execute `make_env` to install depenencies
@@ -99,10 +110,21 @@
 
 ### Stage Dockerize
 ```yml
-- stage: dockerize
-  install: skip
-  script:
-    - make docker_push
+  dockerize:
+    name: Dockerize
+    runs-on: ubuntu-18.04
+    needs: [test]
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - uses: actions/checkout@master
+      - name: Dockerize Frontend
+        run: make docker_build_frontend
+      - name: Push Frontend To Dockerhub
+        run: make docker_push_frontend
+      - name: Dockerize Backend
+        run: make docker_build_backend
+      - name: Push Backend To Dockerhub
+        run: make docker_push_backend
 ```
 - To dockerize our project, we wrote Dockerfile for both [frontend](../frontend/Dockerfile) and [backend](../backend/Dockerfile). And we also have a [docker-compose](../docker-compose.yml) in case you want to run both frontend and backend locally with only one command in one terminal.
 - **Frontend**
@@ -190,10 +212,17 @@
     - Run `make docker_run` to use [docker-compose](../docker-compose.yml) to run both frontend and backend locally.
 ### Stage Deploy
 ```yml
-- stage: deploy
-  install: skip
-  script:
-    - make heroku
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-18.04
+    needs: [dockerize]
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - uses: actions/checkout@master
+      - name: Deploy Frontend
+        run: make heroku_frontend
+      - name: Deploy Backend
+        run: make heroku_backend
 ```
 - We use **Heroku** to deploy our [Frontend Site](https://greloupis-frontend.herokuapp.com/) and [Backend Site](https://greloupis-backend.herokuapp.com/)
 - **Frontend**
