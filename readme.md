@@ -45,6 +45,10 @@
 
 ## Table of Content
 - [Documents](#Documents)
+  * [Project Proposal](documents/Proposal.md)
+  * [Frontend Details](frontend/readme.md)
+  * [Backend Details](backend/readme.md)
+  * [CI / CD Workflow](documents/cicd.md)
 - [Setup Guide](#Setup-Guide)
   * [Environment Requirement](#Environment-Requirement)
   * [Install Dependencies](#Install-Dependencies)
@@ -59,10 +63,10 @@
 - [Contributors](#Contributors)
 
 ## Documents
-- **[Project Proposal](documents/Proposal.md)**
-- **[Frontend Details](frontend/readme.md)**
-- **[Backend Details](backend/readme.md)**
-- **[CI / CD Workflow](documents/cicd.md)**
+### [Project Proposal](documents/Proposal.md)
+### [Frontend Details](frontend/readme.md)
+### [Backend Details](backend/readme.md)
+### [CI / CD Workflow](documents/cicd.md)
   
 ## Setup Guide
 
