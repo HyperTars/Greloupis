@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import { dateConvert, loginCheck, getSubstr } from "../util";
 import {
   createUserVideoLike,
@@ -15,26 +15,31 @@ import ReactJWPlayer from "react-jw-player";
 
 const VIDEO_INFO_LIMIT = 1000;
 
-class MainVideo extends Component {
+class MainVideo extends PureComponent {
   state = {
     isLike: false,
     isDislike: false,
     isStar: false,
     showMore: false,
     showLess: false,
-    videoPlayTime: 0,
+    likeNum: 0,
+    dislikeNum: 0,
   };
 
   static getDerivedStateFromProps(props, state) {
     if (
       state.isLike !== props.videoLike ||
-      state.isDislike !== props.videoDislike ||
-      state.isStar !== props.videoStar
+      state.isDislike !== props.videoDisLike ||
+      state.isStar !== props.videoStar ||
+      state.likeNum !== props.mainVideo.video_like ||
+      state.dislikeNum !== props.mainVideo.video_dislike
     ) {
       return {
         isLike: props.videoLike,
-        isDislike: props.videoDislike,
+        isDislike: props.videoDisLike,
         isStar: props.videoStar,
+        likeNum: props.mainVideo.video_like,
+        dislikeNum: props.mainVideo.video_dislike,
       };
     }
 
@@ -96,106 +101,145 @@ class MainVideo extends Component {
   likeHandler = () => {
     loginCheck();
 
+    if (this.state.isDislike) {
+      let originNum = this.state.dislikeNum;
+      // eslint-disable-next-line
+      this.state.isDislike = false;
+      // eslint-disable-next-line
+      this.state.dislikeNum = originNum - 1;
+
+      document.getElementById("dislike-image").src = "/Assets/dislike.svg";
+      document.getElementById(
+        "dislike-number"
+      ).innerHTML = this.state.dislikeNum;
+    }
+
     // like a video
-    if (!this.props.videoLike && this.props.mainVideo.video_id) {
+    if (!this.state.isLike && this.props.mainVideo.video_id) {
       createUserVideoLike(
         this.props.mainVideo.video_id,
         getSubstr(localStorage.getItem("user_id"))
       )
         .then(() => {
-          this.setState({
-            isLike: true,
-          });
+          let originNum = this.state.likeNum;
+          // eslint-disable-next-line
+          this.state.isLike = true;
+          // eslint-disable-next-line
+          this.state.likeNum = originNum + 1;
+
+          document.getElementById("like-image").src = "/Assets/like-black.svg";
+          document.getElementById("like-number").innerHTML = this.state.likeNum;
         })
-        .then(() => {
-          window.location.reload();
-        });
+        .catch(() => {});
     }
 
     // undo a like
-    else if (this.props.videoLike && this.props.mainVideo.video_id) {
+    else if (this.state.isLike && this.props.mainVideo.video_id) {
       deleteUserVideoLike(
         this.props.mainVideo.video_id,
         getSubstr(localStorage.getItem("user_id"))
       )
         .then(() => {
-          this.setState({
-            isLike: false,
-          });
+          let originNum = this.state.likeNum;
+          // eslint-disable-next-line
+          this.state.isLike = false;
+          // eslint-disable-next-line
+          this.state.likeNum = originNum - 1;
+
+          document.getElementById("like-image").src = "/Assets/like.svg";
+          document.getElementById("like-number").innerHTML = this.state.likeNum;
         })
-        .then(() => {
-          window.location.reload();
-        });
+        .catch(() => {});
     }
   };
   dislikeHandler = () => {
     loginCheck();
 
+    if (this.state.isLike) {
+      let originNum = this.state.likeNum;
+      // eslint-disable-next-line
+      this.state.isLike = false;
+      // eslint-disable-next-line
+      this.state.likeNum = originNum - 1;
+
+      document.getElementById("like-image").src = "/Assets/like.svg";
+      document.getElementById("like-number").innerHTML = this.state.likeNum;
+    }
+
     // dislike a video
-    if (!this.props.videoDisLike && this.props.mainVideo.video_id) {
+    if (!this.state.isDislike && this.props.mainVideo.video_id) {
       createUserVideoDislike(
         this.props.mainVideo.video_id,
         getSubstr(localStorage.getItem("user_id"))
       )
         .then(() => {
-          this.setState({
-            isDislike: true,
-          });
+          let originNum = this.state.dislikeNum;
+          // eslint-disable-next-line
+          this.state.isDislike = true;
+          // eslint-disable-next-line
+          this.state.dislikeNum = originNum + 1;
+
+          document.getElementById("dislike-image").src =
+            "/Assets/dislike-black.svg";
+          document.getElementById(
+            "dislike-number"
+          ).innerHTML = this.state.dislikeNum;
         })
-        .then(() => {
-          window.location.reload();
-        });
+        .catch(() => {});
     }
 
     // undo a dislike
-    else if (this.props.videoDisLike && this.props.mainVideo.video_id) {
+    else if (this.state.isDislike && this.props.mainVideo.video_id) {
       deleteUserVideoDislike(
         this.props.mainVideo.video_id,
         getSubstr(localStorage.getItem("user_id"))
       )
         .then(() => {
-          this.setState({
-            isDislike: false,
-          });
+          let originNum = this.state.dislikeNum;
+          // eslint-disable-next-line
+          this.state.isDislike = false;
+          // eslint-disable-next-line
+          this.state.dislikeNum = originNum - 1;
+
+          document.getElementById("dislike-image").src = "/Assets/dislike.svg";
+          document.getElementById(
+            "dislike-number"
+          ).innerHTML = this.state.dislikeNum;
         })
-        .then(() => {
-          window.location.reload();
-        });
+        .catch(() => {});
     }
   };
   starHandler = () => {
     loginCheck();
 
     // star a video
-    if (!this.props.videoStar && this.props.mainVideo.video_id) {
+    if (!this.state.isStar && this.props.mainVideo.video_id) {
       createUserVideoStar(
         this.props.mainVideo.video_id,
         getSubstr(localStorage.getItem("user_id"))
       )
         .then(() => {
-          this.setState({
-            isStar: true,
-          });
+          // eslint-disable-next-line
+          this.state.isStar = true;
+
+          document.getElementById("star-image").src = "/Assets/star-black.svg";
         })
-        .then(() => {
-          window.location.reload();
-        });
+        .catch(() => {});
     }
 
     // undo a star
-    else if (this.props.videoStar && this.props.mainVideo.video_id) {
+    else if (this.state.isStar && this.props.mainVideo.video_id) {
       deleteUserVideoStar(
         this.props.mainVideo.video_id,
         getSubstr(localStorage.getItem("user_id"))
       )
         .then(() => {
-          this.setState({
-            isStar: false,
-          });
+          // eslint-disable-next-line
+          this.state.isStar = false;
+
+          document.getElementById("star-image").src = "/Assets/star.svg";
         })
-        .then(() => {
-          window.location.reload();
-        });
+        .catch(() => {});
     }
   };
 
@@ -323,8 +367,9 @@ class MainVideo extends Component {
                         : "/Assets/like.svg"
                     }
                     alt="Icon"
+                    id="like-image"
                   />
-                  <span>{video_like}</span>
+                  <span id="like-number">{video_like}</span>
                 </button>
                 <span className="tooltip likes__tooltip">Like this</span>
               </div>
@@ -337,8 +382,9 @@ class MainVideo extends Component {
                         : "/Assets/dislike.svg"
                     }
                     alt="Icon"
+                    id="dislike-image"
                   />
-                  <span>{video_dislike}</span>
+                  <span id="dislike-number">{video_dislike}</span>
                 </button>
                 <span className="tooltip dislikes__tooltip">Dislike this</span>
               </div>
@@ -351,6 +397,7 @@ class MainVideo extends Component {
                         : "/Assets/star.svg"
                     }
                     alt="Icon"
+                    id="star-image"
                   />
                   <span>Star</span>
                 </button>
