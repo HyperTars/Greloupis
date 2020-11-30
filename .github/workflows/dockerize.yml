@@ -14,10 +14,3 @@ env:
   FRONTEND_BUILD: "greloupis-frontend"
 
 jobs:
-  dockerize:
-    name: Dockerize
-    runs-on: ubuntu-18.04
-    steps:
-      - uses: actions/checkout@master
-      - name: Push To Dockerhub
-        run: make docker_push

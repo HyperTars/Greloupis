@@ -10,6 +10,8 @@ jobs:
   deploy-frontend:
     name: Deploy Frontend
     runs-on: ubuntu-18.04
+    needs: [dockerize]
+    if: github.ref == 'refs/heads/master'
     steps:
       - uses: actions/checkout@master
       - name: Deploy Frontend to Heroku
@@ -22,6 +24,8 @@ jobs:
   deploy-backend:
     name: Deploy Backend
     runs-on: ubuntu-18.04
+    needs: [dockerize]
+    if: github.ref == 'refs/heads/master'
     steps:
       - uses: actions/checkout@master
       - name: Deploy Backend to Heroku
