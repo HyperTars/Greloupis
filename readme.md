@@ -46,23 +46,23 @@
 - **See more details about our [Backend](backend/readme.md)**
 
 ## Table of Content
-- [Project Proposal](#Project%20Proposal)
-- [Setup Guid](#Setup%20Guide)
-  * [Environment Requirement](#Environment%20Requirement)
-  * [Install Dependencies](#Install%20Dependencies)
-  * [Run Test](#Run%20Test)
-  * [Make Prod](#Make%20Prod)
+- [Project Proposal](#Project-Proposal)
+- [Setup Guid](#Setup-Guide)
+  * [Environment Requirement](#Environment-Requirement)
+  * [Install Dependencies](#Install-Dependencies)
+  * [Run Test](#Run-Test)
+  * [Make Prod](#Make-Prod)
   * [Run](#Run)
-  * [Test Users](#Test%20Users)
+  * [Test Users](#Test-Users)
 - [Designs](#Designs)
-  * [Coding Styles](#Coding%20Style)
-  * [API Designs](#Test%20Users)
-  * [Component Design](#Components%20Design)
+  * [Coding Styles](#Coding-Style)
+  * [API Designs](#Test-Users)
+  * [Component Design](#Components-Design)
 - [Tests](#Tests)
-- [CI / CD](#CI%20/%20CD)
+- [CI / CD](#CI-/-CD)
 - [Contributors](#Contributors)
 
-### Project Proposal
+## Project Proposal
 - [Proposal](documents/Proposal.md)
   
 ## Setup Guide
