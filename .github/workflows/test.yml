@@ -2,7 +2,7 @@ name: Test
 
 on:
   push:
-  pull_request:
+  # pull_request:
   workflow_dispatch:
 
 env:
@@ -22,7 +22,7 @@ jobs:
     runs-on: macos-latest
     strategy:
       matrix:
-        python-version: ['3.7', '3.8']
+        python-version: ['3.8']
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
@@ -34,7 +34,6 @@ jobs:
       run: |
         python3 -V
         pip -V
-        pip3 install flask-mongoengine
     - name: Install Dependencies
       run: make dev_env
     - name: Run Tests

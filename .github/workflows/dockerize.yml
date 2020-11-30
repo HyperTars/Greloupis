@@ -6,16 +6,11 @@ on:
   workflow_dispatch:
 
 env:
-  COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
-  CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
   DOCKER_USER: "hypertars"
   DOCKER_EMAIL: "hypertars@gmail.com"
   DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
   BACKEND_BUILD: "greloupis-backend"
   FRONTEND_BUILD: "greloupis-frontend"
-  HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-  HEROKU_APP_FRONTEND: "greloupis-frontend"
-  HEROKU_APP_BACKEND: "greloupis-backend"
 
 jobs:
   dockerize:
