@@ -3,7 +3,6 @@ TAG ?= latest
 
 dev_env_frontend:
 	npm install
-	npm run build
 
 run_frontend:
 	npm start
