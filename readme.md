@@ -10,7 +10,6 @@
     [![Flask](https://img.shields.io/badge/Flask-1.1.2-blue)](https://pypi.org/project/Flask/)
     [![React](https://img.shields.io/badge/React-17.0.1-blue)](https://reactjs.org/versions)
     [![MongoDB](https://img.shields.io/badge/MongoDB-4.4-blue)](https://docs.mongodb.com/manual/release-notes/4.4/)
-    [![uWSGI](https://img.shields.io/badge/uWSGI-2.0.19-blue)](https://uwsgi-docs.readthedocs.io/en/latest/)
 
 - Continuous Integration
 
@@ -43,23 +42,42 @@
     - Our [Heroku Frontend Site](https://greloupis-frontend.herokuapp.com/) | [Heroku Backend Site](https://greloupis-backend.herokuapp.com/)
     - Our [Heroku Frontend Metrics Monitor](https://metrics.librato.com/s/public/wxet4vyas) | [Heroku Backend Metrics Monitor](https://metrics.librato.com/s/public/reo8fj68x)
 
-### Project Proposal
-- [Proposal](documents/Proposal.md)
+## Table of Content
+- [Documents](#Documents)
+- [Setup Guide](#Setup-Guide)
+  * [Environment Requirement](#Environment-Requirement)
+  * [Install Dependencies](#Install-Dependencies)
+  * [Run Test](#Run-Test)
+  * [Make Prod](#Make-Prod)
+  * [Run](#Run)
+- [Designs](#Designs)
+  * [Coding Styles](#Coding-Style)
+  * [API Designs](#Test-Users)
+  * [Component Design](#Components-Design)
+- [CI / CD](#CI-CD)
+- [Contributors](#Contributors)
+
+## Documents
+- **[Project Proposal](documents/Proposal.md)**
+- **[Frontend Details](frontend/readme.md)**
+- **[Backend Details](backend/readme.md)**
+- **[CI / CD Workflow](documents/cicd.md)**
   
-### Setup Guide
+## Setup Guide
 
 #### Environment Requirement
 - Python 3.7 / 3.8 **(3.6 or below and 3.9 are not supported)**
 - npm (6.14.8)
 - node.js (14.15.0)
+- [Environment Variables](documents/env.sh)
 
-#### Install dependencies
+#### Install Dependencies
 - To install dependencies, run
 ```bash
 make dev_env
 ```
 
-#### Run test
+#### Run Test
 - To run test, run
 ```bash
 make tests
@@ -72,8 +90,8 @@ make prod
 ```
 
 #### Run
-- To run both frontend(http://localhost:3000) and backend (http://localhost:5000)
-    - Start (build from docker-compose.yml)
+- To run both frontend(http://localhost:3000) and backend (http://localhost:5000) locally
+    - Start (build from [docker-compose.yml](docker-compose.yml))
         ```bash
         make docker_build
         ```
@@ -81,59 +99,24 @@ make prod
         ```bash
         make docker_run
         ```
+- Or you can access our [website deployed on Heroku](https://greloupis-frontend.herokuapp.com/)
+- To test our project, you can try to register or log in with existed user for testing
+    - For existed users, you can [search their username](https://greloupis-frontend.herokuapp.com/search?keyword=)
+    - User accounts for testing
+        - hypertars (both username and password)
+        - milvus (both username and password)
+        - eclipse (both username and password)
 
-- To run backend only (http://localhost:5000 or http://0.0.0.0:5000)
-    - From Docker Hub 
-        ```bash
-        make docker_run_backend (including build and run)
-        ```
-    - From local docker build
-        ```bash
-        make docker_build_backend
-        ```
-    - From uWSGI (use uWSGI to replace flask WSGI)
-        ```bash
-        make run_backend
-        ```
-    - From native python flask
-        ```bash
-        python3 backend/app.py FLASK_APP=app flask run --host=0.0.0.0 --port=5000
-        ```
-
-- To run frontend only (http://localhost:3000 or http://0.0.0.0:3000)
-    - From Docker Hub
-        ```bash
-        make docker_run_frontend
-        ```
-    - From local docker build
-        ```bash
-        make docker_build_frontend
-        ```
-    - From native npm
-        ```bash
-        make run_frontend
-        ```
-
-#### Test Users
-- hypertars (both username and password)
-- milvus (both username and password)
-- eclipse (both username and password)
-
-### Designs
-#### Coding Style
+## Designs
+### Coding Style
 - Python: [PEP8](https://www.python.org/dev/peps/pep-0008/)
-- React: [ES6](http://es6-features.org/)
+- React: [JSX](https://reactjs.org/docs/introducing-jsx.html)
 
-#### Models Design (Entity)
-- See full [Models Design](documents/Models.md)
-
-#### Database Design
-- See full [Database Design](documents/Database.md)
-
-#### APIs Design
+### APIs Design
 - See full [APIs Design](documents/APIs.md)
+- Or you can access our [backend Swagger UI website](https://greloupis-backend.herokuapp.com/)
 
-#### Components Design
+### Components Design
 1. Processing Queue: Each uploaded video will be pushed to a processing queue to be de-queued later for encoding, thumbnail generation, and storage.
 2. Encoder: To encode each uploaded video into multiple formats.
 3. Thumbnails generator: To generate a few thumbnails for each video.
@@ -144,25 +127,18 @@ make prod
 - Architecture Design
     
     ![Architecture Design Diagram](documents/ArchitectureDesign_resize.png)
-    
-- Background Design
 
-    ![BackgroundDesign](documents/BackgroundDesign.png)
-
-### Tests
-- See full [Test Cases](documents/Test.md)
-- Coverage
-  - [CodeCov](https://codecov.io/gh/HyperTars/Online-Video-Platform)
-  - [Coveralls](https://coveralls.io/github/HyperTars/Online-Video-Platform)
-
-### CI / CD 
+## CI CD
 - We use `Travis-CI`, `Docker` and `Heroku` to do CI/CD works
-  - Our [Travis Conf](.travis.yml) and [Travis-CI Status](https://travis-ci.com/github/HyperTars/Online-Video-Platform)
-  - Our [Docker Conf](docker-compose.yml) and [Docker Frontend Repo](https://hub.docker.com/r/hypertars/greloupis-frontend/tags) | [Docker Backend Repo](https://hub.docker.com/r/hypertars/greloupis-backend/tags)
-  - Our [Heroku Frontend](https://greloupis-frontend.herokuapp.com/) and [Heroku Backend](https://greloupis-backend.herokuapp.com/)
-  - Our [Heroku Frontend Metrics Monitor](https://metrics.librato.com/s/public/wxet4vyas) and [Heroku Backend Metrics Monitor](https://metrics.librato.com/s/public/reo8fj68x)
+  - Full [Test Cases](documents/Test.md)
+  - Coverage (test results) [CodeCov](https://codecov.io/gh/HyperTars/Online-Video-Platform)
+  - [Travis Conf](.travis.yml) | [Travis-CI Status](https://travis-ci.com/github/HyperTars/Online-Video-Platform)
+  - [Docker Conf](docker-compose.yml) | [Docker Frontend Repo](https://hub.docker.com/r/hypertars/greloupis-frontend/tags) | [Docker Backend Repo](https://hub.docker.com/r/hypertars/greloupis-backend/tags)
+  - [Heroku Frontend](https://greloupis-frontend.herokuapp.com/) | [Heroku Backend](https://greloupis-backend.herokuapp.com/)
+  - [Heroku Frontend Metrics Monitor](https://metrics.librato.com/s/public/wxet4vyas) | [Heroku Backend Metrics Monitor](https://metrics.librato.com/s/public/reo8fj68x)
+- See more details about our [CI / CD Workflow](documents/cicd.md)
 
-### Contributors
+## Contributors
   
   GitHub | Name | NetID
   --- | --- | ---
