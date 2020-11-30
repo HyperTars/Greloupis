@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Header from "./Header";
 import { createVideo, updateVideoInfo } from "./FetchData";
-import { message } from "antd";
+import { message, Progress } from "antd";
 
 let AWS = require("aws-sdk");
 
@@ -15,6 +15,7 @@ export default class VideoUpload extends Component {
       video_duration: 0,
       video_raw_size: 0,
       fileObj: "",
+      percent: 0,
     };
   }
 
@@ -57,8 +58,6 @@ export default class VideoUpload extends Component {
 
   submitHandler = () => {
     if (this.state.fileObj) {
-      message.loading("Uploading, please wait...", 0);
-
       // acquire video ID
       createVideo()
         .then((res) => {
@@ -82,6 +81,12 @@ export default class VideoUpload extends Component {
               ACL: "public-read",
             },
           });
+          upload.on("httpUploadProgress", (event) => {
+            this.setState({
+              percent: ((event.loaded * 100) / event.total).toFixed(2),
+            });
+          });
+
           upload
             .promise()
             .then(() => {
@@ -98,9 +103,7 @@ export default class VideoUpload extends Component {
                 video_title: this.state.video_id,
               };
               updateVideoInfo(this.state.video_id, updateData).then(() => {
-                message.destroy();
                 alert("Successfully uploaded video!");
-
                 let path = {
                   pathname: `/video/update/${this.state.video_id}`,
                 };
@@ -109,6 +112,7 @@ export default class VideoUpload extends Component {
             })
             .catch((e) => {
               message.error("Upload failed!" + e.message.slice(3));
+              upload.abort.bind(upload);
             });
         })
         .catch((e) => {
@@ -144,6 +148,10 @@ export default class VideoUpload extends Component {
                     onChange={this.uploadHandler}
                   />
                 </label>
+                <div className="upload-info__basicInfo">
+                  <h4>Upload Progress</h4>
+                  <Progress percent={this.state.percent} />
+                </div>
                 <video style={{ display: "none" }} id="test_video"></video>
               </div>
             </div>
