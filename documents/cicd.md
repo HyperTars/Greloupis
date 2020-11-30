@@ -24,9 +24,9 @@
 - [What we use](#What-we-use)
 - [How we do](#How-we-do)
   * [Overview](#Overview)
-  * [Continuous Integration: Stage Test](#Stage-Test)
-  * [Continuous Delivery: Stage Dockerize](#Stage-Dockerize)
-  * [Continuous Deploy: Stage Deploy](#Stage-Deploy)
+  * [Stage Test](#Stage-Test)
+  * [Stage Dockerize](#Stage-Dockerize)
+  * [Stage Deploy](#Stage-Deploy)
 
 ## What we use
 - We use [Travis-CI](https://travis-ci.com/github/HyperTars/Online-Video-Platform) to do our CI/CD job.
@@ -187,7 +187,7 @@
     - We also wrote a docker-compose file so that you can run both frontend and backend locally with one command in one terminal.
     - Like Dockerfile we mentioned before, we bind ports 3000 and 5000 manually so that you access frontend through http://localhost:3000 and backend through http://localhost:5000.
     - Run `make docker_run` to use [docker-compose](../docker-compose.yml) to run both frontend and backend locally.
-### Continuous Deploy: Stage Deploy
+### Stage Deploy
 ```yml
 - stage: deploy
   install: skip
