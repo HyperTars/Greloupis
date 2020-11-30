@@ -15,6 +15,7 @@ env:
 
 jobs:
   dockerize:
+    name: Dockerize
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@master

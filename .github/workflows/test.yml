@@ -19,17 +19,18 @@ env:
 
 jobs:
   test:
+    name: Test
     runs-on: macos-latest
     strategy:
       matrix:
         python-version: ['3.8']
     steps:
     - uses: actions/checkout@v2
+    - uses: technote-space/auto-cancel-redundant-workflow@v1
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
-        architecture: 'x64'
     - name: Display Python Version
       run: |
         python3 -V

@@ -8,6 +8,7 @@ on:
 
 jobs:
   deploy-frontend:
+    name: Deploy Frontend
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@master
@@ -20,6 +21,7 @@ jobs:
           usedocker: true
       - name: Deploy Frontend to Heroku
   deploy-backend:
+    name: Deploy Backend
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@master
