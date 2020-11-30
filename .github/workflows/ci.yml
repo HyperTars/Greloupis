@@ -61,9 +61,9 @@ jobs:
       - name: Deploy Frontend to Heroku
         uses: mtsmachado8/heroku-deploy@v2.0.3
         with:
-          email: ${{ HEROKU_EMAIL }}
-          api_key: ${{ HEROKU_API_KEY }}
-          app_name: ${{ HEROKU_APP_FRONTEND }}
+          email: $HEROKU_EMAIL
+          api_key: $HEROKU_API_KEY
+          app_name: $HEROKU_APP_FRONTEND
           dockerfile_path: "frontend"
   deploy-backend:
     name: Deploy Backend
@@ -75,7 +75,7 @@ jobs:
       - name: Deploy Backend to Heroku
         uses: mtsmachado8/heroku-deploy@v2.0.3
         with:
-          email: ${{ HEROKU_EMAIL }}
-          api_key: ${{ HEROKU_API_KEY }}
-          app_name: ${{ HEROKU_APP_BACKEND }}
+          email: $HEROKU_EMAIL
+          api_key: $HEROKU_API_KEY
+          app_name: $HEROKU_APP_BACKEND
           dockerfile_path: "backend"
