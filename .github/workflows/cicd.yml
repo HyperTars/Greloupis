@@ -22,7 +22,6 @@ jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
     steps:
     - uses: actions/checkout@v2
     - uses: technote-space/auto-cancel-redundant-workflow@v1
