@@ -1,10 +1,8 @@
-# This is a basic workflow to help you get started with Actions
-
 name: CI
 
 on:
   push:
-    branches: [ master ]
+  pull_request:
   workflow_dispatch:
 
 env:
@@ -39,16 +37,3 @@ jobs:
       run: make tests
     - name: Test Report
       run: make coverage
-  dockerize:
-    runs-on: ubuntu-18.04
-    steps:
-      - uses: actions/checkout@v2
-      - name: Push To Dockerhub
-        run: make docker_push
-  deploy:
-    runs-on: ubuntu-18.04
-    steps:
-      - uses: actions/checkout@v2
-      - name: Deploy to Heroku
-        run: make heroku
-          
