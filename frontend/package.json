@@ -16,6 +16,7 @@
     "aws-sdk": "^2.797.0",
     "bootstrap": "^4.5.3",
     "build": "^0.1.4",
+    "jest-localstorage-mock": "^2.4.3",
     "logger": "0.0.1",
     "node-uuid": "^1.4.8",
     "react": "^17.0.1",

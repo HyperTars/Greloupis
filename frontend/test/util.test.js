@@ -1,5 +1,6 @@
 import * as func from "../src/util";
 import moment from "moment";
+require("jest-localstorage-mock");
 
 test("convert timestamp to relative time", () => {
   const result = func.convertToRelativeTime("2020-01-01");
@@ -7,8 +8,11 @@ test("convert timestamp to relative time", () => {
 });
 
 test("convert second to hour:minute:second format", () => {
-  const result = func.secondTimeConvert(3661);
-  expect(result).toBe("01:01:01");
+  const result1 = func.secondTimeConvert(601);
+  expect(result1).toBe("10:01");
+
+  const result2 = func.secondTimeConvert(3661);
+  expect(result2).toBe("01:01:01");
 });
 
 test("convert timestamp to yy:mm:dd", () => {
@@ -24,6 +28,29 @@ test("getSubstr should slice the first and last character of the string", () => 
 test("set the max display length of given string", () => {
   const result = func.ellipsifyStr("abcdefghijkl", 5);
   expect(result).toBe("abcde...");
+});
+
+test("check local storage", () => {
+  const result = func.isStorageEmpty();
+  expect(result).toBe(true);
+});
+
+test("check avatar", () => {
+  const result = func.generateAvatar();
+  expect(result).toBe(
+    "https://greloupis-images.s3.amazonaws.com/avatar-default-1.svg"
+  );
+
+  localStorage.setItem("user_thumbnail", "'abc'");
+  const result2 = func.generateAvatar();
+  expect(result2).toBe("abc");
+});
+
+test("check thumbnail", () => {
+  const result = func.generateThumbnail("");
+  expect(result).toBe(
+    "https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
+  );
 });
 
 test("generate uuid", () => {
