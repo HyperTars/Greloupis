@@ -4,20 +4,7 @@ require("jest-localstorage-mock");
 const TEST_NAME = "hypertars";
 const TEST_ID = "5f88f883e6ac4f89900ac983";
 
-const OLD_ENV = process.env;
-
-beforeEach(() => {
-  jest.resetModules(); // most important - it clears the cache
-  process.env = { ...OLD_ENV }; // make a copy
-});
-
-afterAll(() => {
-  process.env = OLD_ENV; // restore old env
-});
-
 test("user endpoints", async () => {
-  process.env.NODE_ENV = "production";
-
   // user login
   const loginResult = await func.userLogin({
     user: TEST_NAME, // support both name and email
@@ -33,8 +20,6 @@ test("user endpoints", async () => {
 });
 
 test("video endpoints", async () => {
-  process.env.NODE_ENV = "production";
-
   // getVideoInfo
   const getVideoResult = await func.getVideoInfo("5fc3fc847c5e2989dac5dbd4");
   expect(getVideoResult.body.video_id).toBe("5fc3fc847c5e2989dac5dbd4");
@@ -42,8 +27,6 @@ test("video endpoints", async () => {
 });
 
 test("search endpoints", async () => {
-  process.env.NODE_ENV = "production";
-
   // search user
   const searchUserResult = await func.searchUser("hypertars");
   expect(searchUserResult["body"][0]["user_name"]).toBe("hypertars");
