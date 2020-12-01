@@ -34,7 +34,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "jest NODE_ENV='production'" ,
+    "test": "jest",
     "eject": "react-scripts eject",
     "format": "prettier --write 'src/**/*' 'functions/src/**/*' '!src/**/*.svg' '!src/**/.DS_Store'"
   },
