@@ -2,6 +2,15 @@ import * as func from "../src/util";
 import moment from "moment";
 require("jest-localstorage-mock");
 
+let replaceMock = jest.fn();
+
+delete window.location;
+window.location = { replace: replaceMock };
+
+afterEach(() => {
+  replaceMock.mockClear();
+});
+
 test("convert timestamp to relative time", () => {
   const result = func.convertToRelativeTime("2020-01-01");
   expect(result).toBe(moment("2020-01-01").startOf("minutes").fromNow());
@@ -33,6 +42,14 @@ test("set the max display length of given string", () => {
 test("check local storage", () => {
   const result = func.isStorageEmpty();
   expect(result).toBe(true);
+});
+
+test("login check", () => {
+  jest.spyOn(window, "alert").mockImplementation(() => {});
+
+  func.loginCheck();
+  expect(window.alert).toBeCalled();
+  expect(window.location.replace).toBeCalled();
 });
 
 test("check avatar", () => {

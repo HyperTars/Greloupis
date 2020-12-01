@@ -112,11 +112,6 @@ export function userLogin(data = {}) {
   return fetchJsonWithErrorHandling(url, "POST", data);
 }
 
-export function userLogout(data = {}) {
-  const url = `${CURRENT_ENDPOINT}/user/logout`;
-  return fetchJsonWithErrorHandling(url, "POST", data);
-}
-
 export function updateUserInfo(id, data = {}) {
   const url = `${CURRENT_ENDPOINT}/user/${id}`;
   return fetchJsonWithErrorHandling(url, "PUT", data);
