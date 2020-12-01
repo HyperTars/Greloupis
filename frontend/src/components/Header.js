@@ -43,8 +43,8 @@ class Header extends Component {
   }
 
   render() {
-    const logoPath = "/Assets/logo/greloupis-horizontal-blue-fill-b.svg"
-    // const logoPath = "/Assets/logo/greloupis-horizontal.png";
+    //const logoPath = "/Assets/logo/greloupis-horizontal-blue-fill-b.svg"
+    const logoPath = "/Assets/logo/greloupis-horizontal.png";
     const avatarPath = generateAvatar();
 
     return (
