@@ -10,7 +10,7 @@ from models.model_errors import ErrorCode, MongoError, ServiceError, \
 class TestUserModel(unittest.TestCase):
 
     @classmethod
-    def setUpClass(cls) -> None:        
+    def setUpClass(cls) -> None:
         cls.data = util_tests_load_data() \
             if util_tests_python_version() else exit()
 
