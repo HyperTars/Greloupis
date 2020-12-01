@@ -10,10 +10,9 @@ from models.model_errors import ErrorCode, MongoError, ServiceError, \
 class TestUserModel(unittest.TestCase):
 
     @classmethod
-    def setUpClass(cls) -> None:
-        cls.data = util_tests_load_data()
-        if util_tests_python_version() is False:
-            exit()
+    def setUpClass(cls) -> None:        
+        cls.data = util_tests_load_data() \
+            if util_tests_python_version() else exit()
 
     def test_user_model_load(self):
         temp_user = self.data['temp_user'][2]
@@ -30,8 +29,8 @@ class TestErrorModel(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        if util_tests_python_version() is False:
-            exit()
+        cls.data = util_tests_load_data() \
+            if util_tests_python_version() else exit()
 
     def test_error_class(self):
         imp.load_source('__main__', 'models/model_errors.py')

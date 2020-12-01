@@ -46,9 +46,7 @@ class TestQueryUser(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.data = util_tests_load_data()
-        if util_tests_python_version() is False:
-            exit()
-        util_tests_clean_database()
+        util_tests_clean_database() if util_tests_python_version() else exit()
 
     def test_a_user_create(self):
         # Create successfully
@@ -384,6 +382,12 @@ class TestQueryUser(unittest.TestCase):
         self.assertEqual(new_model['user_detail']['user_country'],
                          new_user_country)
         self.assertEqual(new_model['user_detail']['user_zip'], new_user_zip)
+
+        # Raise Error: ErrorCode.MONGODB_MISSING_USER_ID
+        with self.assertRaises(MongoError) as e:
+            query_user_update_details()
+        self.assertEqual(e.exception.error_code,
+                         ErrorCode.MONGODB_MISSING_USER_ID)
 
         # Raise Error: ErrorCode.MONGODB_STR_EXPECTED
         with self.assertRaises(MongoError) as e:
@@ -762,9 +766,7 @@ class TestQueryVideo(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.data = util_tests_load_data()
-        if util_tests_python_version() is False:
-            exit()
-        util_tests_clean_database()
+        util_tests_clean_database() if util_tests_python_version() else exit()
 
     def test_a_query_video_create(self):
         temp_data = self.data['temp_video'][0]
@@ -1016,15 +1018,14 @@ class TestQueryVideo(unittest.TestCase):
                          ErrorCode.MONGODB_VIDEO_INVALID_STATUS)
 
     def test_h_query_video_delete(self):
-        temp_video_id_0 = \
-            query_video_get_by_title(
-                self.data['temp_video'][0]['video_title'])[
-                0].to_dict()['video_id']
+        temp_title = self.data['temp_video'][0]['video_title']
+        temp_video = query_video_get_by_title(temp_title)
+        temp_video_id_0 = temp_video[0].to_dict()['video_id']
         self.assertEqual(query_video_delete(temp_video_id_0), 1)
 
         # Raise Error: ErrorCode.MONGODB_VIDEO_NOT_FOUND
         with self.assertRaises(MongoError) as e:
-            query_video_update("123456781234567812345678")
+            query_video_delete("123456781234567812345678")
         self.assertEqual(e.exception.error_code,
                          ErrorCode.MONGODB_VIDEO_NOT_FOUND)
 
@@ -1232,9 +1233,7 @@ class TestQueryVideoOp(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.data = util_tests_load_data()
-        if util_tests_python_version() is False:
-            exit()
-        util_tests_clean_database()
+        util_tests_clean_database() if util_tests_python_version() else exit()
 
     def test_a_query_video_op_create(self):
         vid = self.data['temp_video_op'][0]['video_id']

@@ -48,10 +48,8 @@ class TestServiceSearchUser(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        if util_tests_python_version() is False:
-            exit()
+        util_tests_clean_database() if util_tests_python_version() else exit()
         cls.data = util_tests_load_data()
-        util_tests_clean_database()
 
     def test_search_user(self):
         # Search successfully with ignore_case
@@ -239,10 +237,8 @@ class TestServiceSearchVideo(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        if util_tests_python_version() is False:
-            exit()
+        util_tests_clean_database() if util_tests_python_version() else exit()
         cls.data = util_tests_load_data()
-        util_tests_clean_database()
 
     def test_search_video(self):
         self.assertEqual(
@@ -375,10 +371,8 @@ class TestServiceUser(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        if util_tests_python_version() is False:
-            exit()
+        util_tests_clean_database() if util_tests_python_version() else exit()
         cls.data = util_tests_load_data()
-        util_tests_clean_database()
 
     def test_a_service_user_reg(self):
         # Register successfully
@@ -576,10 +570,8 @@ class TestServiceVideo(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        if util_tests_python_version() is False:
-            exit()
+        util_tests_clean_database() if util_tests_python_version() else exit()
         cls.data = util_tests_load_data()
-        util_tests_clean_database()
 
         cls.temp_video_title = "test video title"
         cls.temp_video_raw_content = \
@@ -769,10 +761,8 @@ class TestServiceVideoOp(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        if util_tests_python_version() is False:
-            exit()
+        util_tests_clean_database() if util_tests_python_version() else exit()
         cls.data = util_tests_load_data()
-        util_tests_clean_database()
 
         # create a temp video
         cls.temp_video_title = "video op test"

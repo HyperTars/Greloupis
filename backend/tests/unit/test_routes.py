@@ -10,7 +10,7 @@ from werkzeug.datastructures import Headers
 
 from settings import config
 from utils.util_error_handler import util_error_handler
-from utils.util_jwt import blacklist, util_get_formated_response
+from utils.util_jwt import blacklist
 from utils.util_tests import util_tests_load_data, \
     util_tests_python_version, util_tests_clean_database
 from models.model_errors import ErrorCode, ServiceError
@@ -42,18 +42,6 @@ with app.app_context():
 def check_if_token_in_blacklist(decrypted_token):
     jti = decrypted_token['jti']
     return jti in blacklist
-
-
-@jwt.expired_token_loader
-def expired_token_callback():
-    return util_get_formated_response(code=-10000,
-                                      msg='The token has expired')
-
-
-@jwt.revoked_token_loader
-def revoked_token_callback():
-    return util_get_formated_response(code=-10000,
-                                      msg='The token has been revoked')
 
 
 class TestUserRoute(unittest.TestCase):

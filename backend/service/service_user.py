@@ -19,7 +19,6 @@ def service_user_reg(**kw):
     """
     Register user
 
-    :param conf: config
     :param kw: keyword
     :keyword:
         :key user_name: (required) str
