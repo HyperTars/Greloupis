@@ -5,7 +5,7 @@ from utils.util_time import get_time_now_utc
 from settings import config
 import re
 
-conf = config['base']
+conf = config['default']
 VALID_VIDEO_STATUS = conf.VIDEO_STATUS
 VALID_VIDEO_RAW_STATUS = conf.VIDEO_RAW_STATUS
 VALID_VIDEO_CNT = conf.VIDEO_CNT

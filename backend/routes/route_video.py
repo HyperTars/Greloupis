@@ -31,7 +31,7 @@ from models.model_errors import ServiceError, RouteError, MongoError, \
     ErrorCode
 
 
-conf = config['base']
+conf = config['default']
 
 video = Namespace('video', description='Video APIs')
 
@@ -175,8 +175,7 @@ class VideoVideoId(Resource):
             if request.form != {}:
                 kw = dict(request.form)
             else:
-                raw_data = request.data.decode("utf-8")
-                kw = ast.literal_eval(raw_data)
+                kw = ast.literal_eval(request.data.decode("utf-8"))
 
             video_id = request.url.split('/')[-1]
             token = get_jwt_identity()
@@ -441,8 +440,7 @@ class VideoVideoIdCommentUserId(Resource):
             if request.form != {}:
                 kw = dict(request.form)
             else:
-                raw_data = request.data.decode("utf-8")
-                kw = ast.literal_eval(raw_data)
+                kw = ast.literal_eval(request.data.decode("utf-8"))
             video_id = request.url.split('/')[-3]
             user_id = request.url.split('/')[-1]
             token = get_jwt_identity()
@@ -468,8 +466,7 @@ class VideoVideoIdCommentUserId(Resource):
             if request.form != {}:
                 kw = dict(request.form)
             else:
-                raw_data = request.data.decode("utf-8")
-                kw = ast.literal_eval(raw_data)
+                kw = ast.literal_eval(request.data.decode("utf-8"))
 
             video_id = request.url.split('/')[-3]
             user_id = request.url.split('/')[-1]
@@ -559,8 +556,7 @@ class VideoVideoIdProcessUserId(Resource):
             if request.form != {}:
                 kw = dict(request.form)
             else:
-                raw_data = request.data.decode("utf-8")
-                kw = ast.literal_eval(raw_data)
+                kw = ast.literal_eval(request.data.decode("utf-8"))
 
             video_id = request.url.split('/')[-3]
             user_id = request.url.split('/')[-1]
@@ -590,8 +586,7 @@ class VideoVideoIdProcessUserId(Resource):
             if request.form != {}:
                 kw = dict(request.form)
             else:
-                raw_data = request.data.decode("utf-8")
-                kw = ast.literal_eval(raw_data)
+                kw = ast.literal_eval(request.data.decode("utf-8"))
             video_id = request.url.split('/')[-3]
             user_id = request.url.split('/')[-1]
             token = get_jwt_identity()
@@ -834,8 +829,7 @@ class AWS(Resource):
             if request.form != {}:
                 kw = dict(request.form)
             else:
-                raw_data = request.data.decode("utf-8")
-                kw = ast.literal_eval(raw_data)
+                kw = ast.literal_eval(request.data.decode("utf-8"))
 
             # check authority
             if 'aws_auth_key' not in kw:

@@ -8,6 +8,7 @@ from utils.util_pattern import util_pattern_build, \
     util_pattern_format_param, util_pattern_slice
 from utils.util_serializer import util_serializer_mongo_results_to_array
 from models.model_errors import ServiceError, ErrorCode
+conf = config['default']
 
 
 #########################
@@ -20,7 +21,6 @@ from models.model_errors import ServiceError, ErrorCode
 # Search User Caller
 def service_search_user(**kw):
 
-    conf = config['base']
     kw['service'] = 'user'
     kw = util_pattern_format_param(**kw)
 
@@ -52,7 +52,6 @@ def service_search_user(**kw):
 # Search Video Caller
 def service_search_video(**kw):
 
-    conf = config['base']
     kw['service'] = 'video'
     kw = util_pattern_format_param(**kw)
 

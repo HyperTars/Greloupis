@@ -285,12 +285,9 @@ class UserLogin(Resource):
             else:
                 kw = ast.literal_eval(request.data.decode("utf-8"))
             print(kw)
-            kw['ip'] = "0.0.0.0"
-            if request.headers.getlist("X-Forwarded-For"):
-                kw['ip'] = request.headers.getlist("X-Forwarded-For")[0]
-            else:
-                kw['ip'] = request.environ.get(
-                    'HTTP_X_REAL_IP', request.remote_addr)
+            kw['ip'] = request.headers.getlist('X-Forwarded-For')[0] \
+                if request.headers.getlist('X-Forwarded-For') \
+                else request.environ.get('HTTP_X_REAL_IP', request.remote_addr)
             user = service_user_login(**kw)
             # expires = datetime.timedelta(seconds=20)
             expires = datetime.timedelta(hours=24)
