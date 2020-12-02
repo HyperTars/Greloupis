@@ -163,12 +163,9 @@ class User(Resource):
         try:
             if request.form != {}:
                 kw = dict(request.form)
-                print(kw)
             else:
-                raw_data = request.data.decode("utf-8")
-                kw = ast.literal_eval(raw_data)
-                print(kw)
-
+                kw = ast.literal_eval(request.data.decode("utf-8"))
+            print(kw)
             user = service_user_reg(**kw)
             print(user)
             # default: login
@@ -210,9 +207,8 @@ class UserUserId(Resource):
             # remove deleted video
             video = []
             for v in vid:
-                if v['video_status'] == 'deleted':
-                    continue
-                video.append(v)
+                if v['video_status'] != 'deleted':
+                    video.append(v)
 
             result['user'] = user
             result['video'] = video
@@ -242,11 +238,8 @@ class UserUserId(Resource):
             print(request.form)
             if request.form != {}:
                 kw = dict(request.form)
-                print(kw)
             else:
-                raw_data = request.data.decode("utf-8")
-                kw = ast.literal_eval(raw_data)
-                print(kw)
+                kw = ast.literal_eval(request.data.decode("utf-8"))
             kw['user_id'] = user_id
             print(kw)
             if not service_auth_user_modify(get_jwt_identity(), kw['user_id']):
@@ -290,8 +283,7 @@ class UserLogin(Resource):
             if request.form != {}:
                 kw = dict(request.form)
             else:
-                raw_data = request.data.decode("utf-8")
-                kw = ast.literal_eval(raw_data)
+                kw = ast.literal_eval(request.data.decode("utf-8"))
             print(kw)
             kw['ip'] = "0.0.0.0"
             if request.headers.getlist("X-Forwarded-For"):
