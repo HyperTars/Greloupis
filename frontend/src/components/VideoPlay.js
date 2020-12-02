@@ -40,8 +40,11 @@ function VideoPlay({ videoId }) {
             "The video is being transcoded and cannot be played now. Check back later."
           );
         }
+
+        setIsLoading(false);
       })
       .catch((e) => {
+        setIsLoading(false);
         setErrorCode(e.message.slice(0, 2));
         setErrorMsg(e.message.slice(3));
       });
@@ -111,7 +114,6 @@ function VideoPlay({ videoId }) {
           setVideoStars(true);
         }
       });
-      setIsLoading(false);
     });
   }, [videoId]);
 
