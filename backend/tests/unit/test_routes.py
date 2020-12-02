@@ -302,7 +302,8 @@ class TestRouteUser(unittest.TestCase):
                 json_dict['user_name'],
                 self.data['const_user'][0]['user_name'])
 
-        headers = Headers({'X-Forward-For': '127.0.0.0'})
+        ip_list = ['127.0.0.0']
+        headers = Headers({'X-Forward-For': ip_list})
         data = {'user_name': self.data['const_user'][1]['user_name'],
                 'user_password': self.data['const_user'][1]['user_name']}
         with app.test_client() as client:
@@ -312,6 +313,14 @@ class TestRouteUser(unittest.TestCase):
             self.assertEquals(
                 json_dict['user_name'],
                 self.data['const_user'][1]['user_name'])
+
+        data = {'user_name': self.data['const_user'][2]['user_name'],
+                'user_password': '123123'}
+        with app.test_client() as client:
+            response = client.post(url, data=data)
+            json_data = response.data
+            json_dict = json.loads(json_data)
+            self.assertTrue('error_code' in json_dict)
 
     def test_b_route_user_logout(self):
         url = '/user/login'
@@ -329,7 +338,7 @@ class TestRouteUser(unittest.TestCase):
             json_dict = json.loads(json_data)
             self.assertEqual(200, json_dict['code'], json_dict['message'])
 
-    def test_b_route_user_get(self):
+    def test_c_route_user_get(self):
         uid = self.data['const_user'][0]['_id']['$oid']
         url = '/user/' + uid
         with app.test_request_context(url, data={}):
@@ -352,7 +361,15 @@ class TestRouteUser(unittest.TestCase):
                     ServiceError(
                         ErrorCode.SERVICE_INVALID_ID_OBJ)).status_code)
 
-    def test_c_route_user_token_workflow(self):
+        # test deleted video
+        url = '/user/' + self.data['const_user'][2]['_id']['$oid']
+        with app.test_client() as client:
+            response = client.get(url)
+            json_data = response.data
+            json_dict = json.loads(json_data)
+            self.assertEquals(len(json_dict['body']['video']), 0)
+
+    def test_d_route_user_token_workflow(self):
         # post (register)
         url = '/user'
         data = {'user_name': self.data['temp_user'][0]['user_name'],
@@ -397,6 +414,56 @@ class TestRouteUser(unittest.TestCase):
         # get (delete user)
         with app.test_client() as client:
             response = client.get(url)
+            json_data = response.data
+            json_dict = json.loads(json_data)
+            self.assertTrue('error_code' in json_dict)
+
+    def test_e_route_user_register(self):
+        # post (register) failed
+        url = '/user'
+        data = {'user_name': self.data['temp_user'][0]['user_name']}
+        with app.test_client() as client:
+            response = client.post(url, data=data)
+            json_data = response.data
+            json_dict = json.loads(json_data)
+            self.assertTrue('error_code' in json_dict)
+
+    def test_f_route_user_put(self):
+        # update (put) wrong token failed
+        url = '/user/login'
+        data = {'user_name': self.data['const_user'][0]['user_name'],
+                'user_password': self.data['const_user'][0]['user_name']}
+        with app.test_client() as client:
+            response = client.post(url, data=data)
+        json_data = response.data
+        json_dict = json.loads(json_data)
+        token = json_dict['user_token']
+        headers = Headers({'Authorization': 'Bearer ' + token})
+
+        url = '/user/' + self.data['const_user'][1]['user_name']
+        data = {'user_status': 'private'}
+        with app.test_client() as client:
+            response = client.put(url, data=data, headers=headers)
+            json_data = response.data
+            json_dict = json.loads(json_data)
+            self.assertTrue('error_code' in json_dict)
+
+    def test_g_route_user_delete(self):
+        # update (put) wrong token failed
+        url = '/user/login'
+        data = {'user_name': self.data['const_user'][0]['user_name'],
+                'user_password': self.data['const_user'][0]['user_name']}
+        with app.test_client() as client:
+            response = client.post(url, data=data)
+        json_data = response.data
+        json_dict = json.loads(json_data)
+        token = json_dict['user_token']
+        headers = Headers({'Authorization': 'Bearer ' + token})
+
+        url = '/user/' + self.data['const_user'][1]['user_name']
+        data = {'user_status': 'private'}
+        with app.test_client() as client:
+            response = client.delete(url, data=data, headers=headers)
             json_data = response.data
             json_dict = json.loads(json_data)
             self.assertTrue('error_code' in json_dict)
