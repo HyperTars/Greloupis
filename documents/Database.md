@@ -1,7 +1,7 @@
 # Database Design
 
 - Database: MongoDB 4.4.0
-- Database name: online_video_platform
+- Database name: greloupis
 
 ## Table / Collection (MongoDB)
 
@@ -14,7 +14,7 @@
     user_email | String | - | - | user input | NO | user's email
     user_name | String | - | - | user input | NO | user's nick name
     user_password | String | - | - | user input | NO | user's password, encoded
-    user_detail | Object | first_name | string | user input | NO | user's first name
+    user_detail | Object | user_first_name | string | user input | NO | user's first name
      | | | user_last_name | String | user input | NO | user's last name
      | | | user_phone | String | user input | NO | user's phone number
      | | | user_street1 | string| usre input | YES | user's detail address
