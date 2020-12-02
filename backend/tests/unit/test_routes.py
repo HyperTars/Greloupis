@@ -27,6 +27,7 @@ from service.service_video import service_video_get_by_user
 from service.service_video_op import service_video_op_get_by_user
 
 app = Flask(__name__)
+app.testing = True
 blueprint = Blueprint('api', __name__, url_prefix='/')
 app.config.from_object(config['test'])
 api = Api(blueprint)
@@ -282,40 +283,6 @@ class TestRouteSearch(unittest.TestCase):
         self.assertEqual(response_json["error_code"], error_code)
 
 
-class TestUserRoute(unittest.TestCase):
-    def setUp(self):
-        self.app = app
-        app.config['TESTING'] = True
-        self.client = app.test_client()
-
-    def test_route_login(self):
-        response = self.client.post('/user/login', data={
-            'user_name': 'fatbin',
-            'user_password': 'fatbin_pass'
-        })
-
-        json_data = response.data
-        json_dict = json.loads(json_data)
-        print(json_dict)
-        # self.assertEqual('fatbin', json_dict['user_name'],
-        #                  "login succeed, user name matched")
-
-    def test_route_logout(self):
-        with self.app.app_context():
-            expires = datetime.timedelta(hours=20)
-            token = create_access_token(
-                identity='fatbin', expires_delta=expires, fresh=True)
-            headers = Headers({'Authorization': 'Bearer ' + token})
-            response = self.client.post('/user/logout', data={
-                'user_name': 'fatbin',
-                'user_password': 'fatbin_pass'
-            }, headers=headers)
-            json_data = response.data
-            json_dict = json.loads(json_data)
-            # print("test", json_dict)
-            self.assertEqual(200, json_dict['code'], json_dict['message'])
-
-
 class TestRouteUser(unittest.TestCase):
 
     @classmethod
@@ -323,8 +290,44 @@ class TestRouteUser(unittest.TestCase):
         cls.data = util_tests_load_data()
         util_tests_clean_database()
 
-    def test_a_route_user_post(self):
-        pass
+    def test_a_route_user_login(self):
+        url = '/user/login'
+        data = {'user_name': self.data['const_user'][0]['user_name'],
+                'user_password': self.data['const_user'][0]['user_name']}
+        with app.test_client() as client:
+            response = client.post(url, data=data)
+            json_data = response.data
+            json_dict = json.loads(json_data)
+            self.assertEquals(
+                json_dict['user_name'],
+                self.data['const_user'][0]['user_name'])
+
+        headers = Headers({'X-Forward-For': '127.0.0.0'})
+        data = {'user_name': self.data['const_user'][1]['user_name'],
+                'user_password': self.data['const_user'][1]['user_name']}
+        with app.test_client() as client:
+            response = client.post(url, data=data, headers=headers)
+            json_data = response.data
+            json_dict = json.loads(json_data)
+            self.assertEquals(
+                json_dict['user_name'],
+                self.data['const_user'][1]['user_name'])
+
+    def test_b_route_user_logout(self):
+        url = '/user/login'
+        data = {'user_name': self.data['const_user'][0]['user_name'],
+                'user_password': self.data['const_user'][0]['user_name']}
+        headers = {'X-Forward-For': '127.0.0.0'}
+        with app.test_client() as client:
+            response = client.post(url, data=data, headers=headers)
+            json_data = response.data
+            json_dict = json.loads(json_data)
+            token = json_dict['user_token']
+            headers = Headers({'Authorization': 'Bearer ' + token})
+            response = client.post('/user/logout', headers=headers)
+            json_data = response.data
+            json_dict = json.loads(json_data)
+            self.assertEqual(200, json_dict['code'], json_dict['message'])
 
     def test_b_route_user_get(self):
         uid = self.data['const_user'][0]['_id']['$oid']
@@ -349,17 +352,54 @@ class TestRouteUser(unittest.TestCase):
                     ServiceError(
                         ErrorCode.SERVICE_INVALID_ID_OBJ)).status_code)
 
-    def test_c_route_user_put(self):
-        pass
+    def test_c_route_user_token_workflow(self):
+        # post (register)
+        url = '/user'
+        data = {'user_name': self.data['temp_user'][0]['user_name'],
+                'user_email': self.data['temp_user'][0]['user_email'],
+                'user_password': self.data['temp_user'][0]['user_name']}
+        with app.test_client() as client:
+            response = client.post(url, data=data)
+            json_data = response.data
+            json_dict = json.loads(json_data)
+            self.assertEquals(
+                json_dict['user_name'],
+                self.data['temp_user'][0]['user_name'])
 
-    def test_d_route_user_delete(self):
-        pass
+        user_id = json_dict['user_id']
+        token = json_dict['user_token']
+        headers = Headers({'Authorization': 'Bearer ' + token})
+        url = '/user/' + user_id
 
-    def test_e_route_user_login(self):
-        pass
+        # update (put, private user)
+        data = {'user_status': 'private'}
+        with app.test_client() as client:
+            response = client.put(url, data=data, headers=headers)
+            json_data = response.data
+            json_dict = json.loads(json_data)
+            self.assertEquals(json_dict['body']['user_status'], 'private')
 
-    def test_f_route_user_logout(self):
-        pass
+        # get (private user)
+        with app.test_client() as client:
+            response = client.get(url)
+            json_data = response.data
+            json_dict = json.loads(json_data)
+            self.assertEquals(json_dict['body']['user']['user_status'],
+                              'private')
+
+        # delete (deleted user)
+        with app.test_client() as client:
+            response = client.delete(url, headers=headers)
+            json_data = response.data
+            json_dict = json.loads(json_data)
+            self.assertEqual(200, json_dict['code'], json_dict['message'])
+
+        # get (delete user)
+        with app.test_client() as client:
+            response = client.get(url)
+            json_data = response.data
+            json_dict = json.loads(json_data)
+            self.assertTrue('error_code' in json_dict)
 
 
 '''
