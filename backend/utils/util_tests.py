@@ -35,12 +35,8 @@ def util_tests_load_data():
     os_ver = pf.system()
     cwd = os.getcwd()
 
-    if os_ver == 'Darwin' or os_ver == 'Linux':
-        path = cwd + '/tests/test_data/'
-    elif os_ver == 'Windows':
-        path = cwd + '\\tests\\test_data\\'
-    else:
-        print("System not supported.")
+    path = cwd + '\\tests\\test_data\\' if os_ver == 'windows' \
+        else cwd + '/tests/test_data/'
 
     data = {}
     data['temp_user'] = util_tests_get_json(path + "temp_user.json")

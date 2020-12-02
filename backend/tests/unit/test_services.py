@@ -23,6 +23,11 @@ from service.service_video_op import service_video_op_add_comment, \
     service_video_op_get_view, service_video_op_update_comment, \
     service_video_op_update_process, query_video_op_get_by_user_video, \
     query_video_op_create, service_video_op_get_by_user
+from service.service_auth import service_auth_user_get, \
+    service_auth_user_modify, service_auth_video_get, \
+    service_auth_video_modify, service_auth_video_op_get, \
+    service_auth_video_op_post, service_auth_video_op_modify, \
+    service_auth_hide_video, service_auth_hide_user
 from settings import config
 from utils.util_tests import util_tests_python_version, \
     util_tests_load_data, util_tests_clean_database
@@ -605,6 +610,12 @@ class TestServiceVideo(unittest.TestCase):
             user_id=self.data['const_user'][1]['_id']['$oid'],
             video_id=vid,
             init_time=get_time_now_utc())
+
+        # Raise Error: ErrorCode.SERVICE_INVALID_ID_OBJ
+        with self.assertRaises(ServiceError) as e:
+            service_video_upload("1234")
+        self.assertEqual(e.exception.error_code,
+                         ErrorCode.SERVICE_INVALID_ID_OBJ)
 
     def test_b_service_video_info(self):
         temp_video_id = query_video_get_by_title(
@@ -1418,6 +1429,50 @@ class TestServiceVideoOp(unittest.TestCase):
             self.temp_video_title)[0].to_dict()['video_id']
         service_video_delete(video_id=temp_video_id)
 
+
+class TestServiceUser(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        util_tests_clean_database() if util_tests_python_version() else exit()
+        cls.data = util_tests_load_data()
+    
+    def test_a_service_auth_user_get(self):
+        uid = self.data['const_user'][2]['_id']['$oid']
+        fake = '123456781234567812345678'
+        self.assertEqual(service_auth_user_get(uid, uid), True)
+        self.assertEqual(service_auth_user_get(fake, uid), False)
+        with self.assertRaises(ServiceError) as e:
+            service_auth_user_get(uid, fake)
+        self.assertEqual(e.exception.error_code,
+                         ErrorCode.SERVICE_USER_NOT_FOUND)
+
+    def test_b_service_auth_user_modify(self):
+        uid = self.data['const_user'][0]['_id']['$oid']
+        self.assertEqual(service_auth_user_modify(uid, uid), True)
+
+    def test_c_service_auth_video_get(self):
+        uid = self.data['const_user'][0]['_id']['$oid']
+        vid = self.data['const_video'][0]['_id']['$oid']
+        self.assertEqual(service_auth_video_get(uid, vid), True)
+    
+    def test_d_service_auth_video_modify(self):
+        pass
+
+    def test_e_service_auth_video_op_get(self):
+        pass
+
+    def test_f_service_auth_video_op_post(self):
+        pass
+
+    def test_g_service_auth_video_op_modify(self):
+        pass
+
+    def test_h_service_auth_hide_video(self):
+        pass
+
+    def test_i_service_auth_hide_user(self):
+        pass
 
 """
 if __name__ == "__main__":

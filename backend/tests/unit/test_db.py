@@ -323,12 +323,12 @@ class TestQueryUser(unittest.TestCase):
                          old_email)
         # Raise Error: ErrorCode.MONGODB_STR_EXPECTED
         with self.assertRaises(MongoError) as e:
-            query_user_update_thumbnail(123, 123)
+            query_user_update_email(123, 123)
         self.assertEqual(e.exception.error_code,
                          ErrorCode.MONGODB_STR_EXPECTED)
         # Raise Error: ErrorCode.MONGODB_USER_NOT_FOUND
         with self.assertRaises(MongoError) as e:
-            query_user_update_thumbnail("123456781234567812345678", "kkk")
+            query_user_update_email("123456781234567812345678", "kkk")
         self.assertEqual(e.exception.error_code,
                          ErrorCode.MONGODB_USER_NOT_FOUND)
 
@@ -1038,9 +1038,15 @@ class TestQueryVideo(unittest.TestCase):
         self.assertEqual(e.exception.error_code,
                          ErrorCode.MONGODB_LIST_EXPECTED)
 
-        # Raise Error: ErrorCode.MONGODB_LIST_EXPECTED
+        # Raise Error: ErrorCode.MONGODB_VIDEO_INVALID_STATUS
         with self.assertRaises(MongoError) as e:
             query_video_update(temp_video_id, video_status="test")
+        self.assertEqual(e.exception.error_code,
+                         ErrorCode.MONGODB_VIDEO_INVALID_STATUS)
+
+        # Raise Error: ErrorCode.MONGODB_VIDEO_INVALID_STATUS
+        with self.assertRaises(MongoError) as e:
+            query_video_update(temp_video_id, video_raw_status="test")
         self.assertEqual(e.exception.error_code,
                          ErrorCode.MONGODB_VIDEO_INVALID_STATUS)
 
