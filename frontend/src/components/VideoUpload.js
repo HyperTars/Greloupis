@@ -67,10 +67,8 @@ export default class VideoUpload extends Component {
           });
           // upload to s3
           AWS.config.update({
-            // accessKeyId: AWS.config.credentials.accessKeyId,
-            // secretAccessKey: AWS.config.credentials.secretAccessKey,
-            accessKeyId: "AKIA4KCXIGUZXUOBYG3E",
-            secretAccessKey: "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",
+            accessKeyId: process.env.REACT_APP_ACCESS_KEY_ID1,
+            secretAccessKey: process.env.REACT_APP_SECRET_KEY1,
             region: "us-west-1",
           });
           let upload = new AWS.S3.ManagedUpload({
