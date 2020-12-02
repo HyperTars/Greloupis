@@ -84,10 +84,20 @@ class TestUtilPattern(unittest.TestCase):
         kw = util_pattern_format_param(service="user", id=temp_str)
         self.assertEqual(kw['user_id'], temp_str)
 
+        kw = util_pattern_format_param(service="user", username=temp_str)
+        self.assertEqual(kw['user_name'], temp_str)
+
         kw = util_pattern_format_param(service="user", password=temp_str)
         self.assertEqual(kw['user_password'], temp_str)
 
+        kw = {'pass': temp_str}
+        kw = util_pattern_format_param(service="user", **kw)
+        self.assertEqual(kw['user_password'], temp_str)
+
         kw = util_pattern_format_param(service="user", email=temp_str)
+        self.assertEqual(kw['user_email'], temp_str)
+
+        kw = util_pattern_format_param(service="user", useremail=temp_str)
         self.assertEqual(kw['user_email'], temp_str)
 
         kw = util_pattern_format_param(service="user", reg_date=temp_str)
@@ -155,19 +165,19 @@ class TestUtilRequestFilter(unittest.TestCase):
 class TestUtilSerializer(unittest.TestCase):
 
     def test_util_serializer_dict_to_json_ymd_hms(self):
-        data = {"time": "2020-09-26 17:56:42"}
+        data = {"$time": "2020-09-26 17:56:42"}
         js = util_serializer_dict_to_json(data)
-        self.assertEqual(js, '{"time": "2020-09-26 17:56:42"}')
+        self.assertEqual(js, '{"$time": "2020-09-26 17:56:42"}')
 
     def test_util_serializer_dict_to_json_ymd(self):
-        data = {"time": "2020-09-26"}
+        data = {"$date": "2020-09-26"}
         js = util_serializer_dict_to_json(data)
-        self.assertEqual(js, '{"time": "2020-09-26"}')
+        self.assertEqual(js, '{"$date": "2020-09-26"}')
 
     def test_util_serializer_dict_to_json(self):
-        data = {"time": "1-2-3"}
+        data = {"attr": "1-2-3"}
         js = util_serializer_dict_to_json(data)
-        self.assertEqual(js, '{"time": "1-2-3"}')
+        self.assertEqual(js, '{"attr": "1-2-3"}')
 
 
 class TestUtilTime(unittest.TestCase):

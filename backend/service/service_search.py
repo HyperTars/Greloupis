@@ -6,8 +6,7 @@ from db.query_video import query_video_search_by_contains, \
     query_video_search_by_aggregate, query_video_search_by_pattern
 from utils.util_pattern import util_pattern_build, \
     util_pattern_format_param, util_pattern_slice
-from utils.util_serializer import util_serializer_mongo_results_to_array, \
-    util_serializer_dict_to_json
+from utils.util_serializer import util_serializer_mongo_results_to_array
 from models.model_errors import ServiceError, ErrorCode
 
 
@@ -47,15 +46,7 @@ def service_search_user(**kw):
     else:
         res_search = service_search_user_by_contains(**kw)
 
-    # Convert to json (if format="json")
-    if 'json' in kw and kw['json'] is True \
-            or 'dict' in kw and kw['dict'] is False \
-            or 'format' in kw and kw['format'] == "json":
-        res_array = util_serializer_mongo_results_to_array(
-            res_search, format="json")
-    else:
-        res_array = util_serializer_mongo_results_to_array(res_search)
-    return res_array
+    return util_serializer_mongo_results_to_array(res_search)
 
 
 # Search Video Caller
@@ -106,11 +97,6 @@ def service_search_video(**kw):
     for res in res_array:
         user = query_user_get_by_id(res['user_id'])[0]
         res['user_name'] = user.user_name
-    # Convert to json (if format="json")
-    if 'json' in kw and kw['json'] is True \
-            or 'dict' in kw and kw['dict'] is False \
-            or 'format' in kw and kw['format'] == "json":
-        return util_serializer_dict_to_json(res_array)
 
     # default format="dict"
     return res_array

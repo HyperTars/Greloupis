@@ -52,19 +52,16 @@ def service_video_op_add_view(**kw):
         raise ServiceError(ErrorCode.SERVICE_INVALID_ID_OBJ)
 
     # perform db operations and get result
-    result_mongo = query_video_cnt_incr_by_one(kw["video_id"], "video_view")
+    query_video_cnt_incr_by_one(kw["video_id"], "video_view")
 
-    if result_mongo == 1:
-        search_result = util_serializer_mongo_results_to_array(
-            query_video_get_by_video_id(kw["video_id"]))
-        video_view = search_result[0]["video_view"]
-        return_body = {
-            "video_id": kw["video_id"],
-            "view_count": video_view
-        }
-        return return_body
-    else:
-        raise MongoError(ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND)
+    search_result = util_serializer_mongo_results_to_array(
+        query_video_get_by_video_id(kw["video_id"]))
+    video_view = search_result[0]["video_view"]
+    return_body = {
+        "video_id": kw["video_id"],
+        "view_count": video_view
+    }
+    return return_body
 
 
 def service_video_op_get_view(**kw):
@@ -80,18 +77,18 @@ def service_video_op_get_view(**kw):
         raise ServiceError(ErrorCode.SERVICE_INVALID_ID_OBJ)
 
     # perform db operations and get result
-    search_mongo = query_video_get_by_video_id(kw["video_id"])
+    videos = query_video_get_by_video_id(kw["video_id"])
 
-    if len(search_mongo) == 1:
-        search_result = util_serializer_mongo_results_to_array(search_mongo)
-        video_view = search_result[0]["video_view"]
-        return_body = {
-            "video_id": kw["video_id"],
-            "view_count": video_view
-        }
-        return return_body
-    else:
-        raise MongoError(ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND)
+    if len(videos) == 0:
+        raise ServiceError(ErrorCode.SERVICE_VIDEO_NOT_FOUND)
+
+    search_result = util_serializer_mongo_results_to_array(videos)
+    video_view = search_result[0]["video_view"]
+    return_body = {
+        "video_id": kw["video_id"],
+        "view_count": video_view
+    }
+    return return_body
 
 
 def service_video_op_add_comment(**kw):

@@ -55,6 +55,8 @@ def service_video_get_by_user(**kw):
     # keyword check and formatting
     if 'user_id' not in kw:
         raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
+    if not is_valid_id(kw["user_id"]):
+        raise ServiceError(ErrorCode.SERVICE_INVALID_ID_OBJ)
     videos = query_video_get_by_user_id(kw['user_id'])
     if len(videos) == 0:
         return []
