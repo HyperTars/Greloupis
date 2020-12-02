@@ -934,9 +934,3 @@ class TestRouteVideo(unittest.TestCase):
             self.assertEqual(len(delete_search), 1)
 
         query_video_delete(temp_video_id, silent=True)
-
-
-"""
-if __name__ == '__main__':
-    unittest.main()
-"""

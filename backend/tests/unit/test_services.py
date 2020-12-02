@@ -24,10 +24,10 @@ from service.service_video_op import service_video_op_add_comment, \
     service_video_op_update_process, query_video_op_get_by_user_video, \
     query_video_op_create, service_video_op_get_by_user
 from service.service_auth import service_auth_user_get, \
-    service_auth_user_modify, service_auth_video_get, \
-    service_auth_video_modify, service_auth_video_op_get, \
-    service_auth_video_op_post, service_auth_video_op_modify, \
-    service_auth_hide_video, service_auth_hide_user
+    service_auth_user_modify, service_auth_video_get
+#    service_auth_video_modify, service_auth_video_op_get, \
+#    service_auth_video_op_post, service_auth_video_op_modify, \
+#    service_auth_hide_video, service_auth_hide_user
 from settings import config
 from utils.util_tests import util_tests_python_version, \
     util_tests_load_data, util_tests_clean_database
@@ -246,7 +246,7 @@ class TestServiceSearchVideo(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        util_tests_clean_database() if util_tests_python_version() else exit()
+        util_tests_clean_database()
         cls.data = util_tests_load_data()
 
     def test_search_video(self):
@@ -384,7 +384,7 @@ class TestServiceUser(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        util_tests_clean_database() if util_tests_python_version() else exit()
+        util_tests_clean_database()
         cls.data = util_tests_load_data()
 
     def test_a_service_user_reg(self):
@@ -583,7 +583,7 @@ class TestServiceVideo(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        util_tests_clean_database() if util_tests_python_version() else exit()
+        util_tests_clean_database()
         cls.data = util_tests_load_data()
 
         cls.temp_video_title = "test video title"
@@ -809,7 +809,7 @@ class TestServiceVideoOp(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        util_tests_clean_database() if util_tests_python_version() else exit()
+        util_tests_clean_database()
         cls.data = util_tests_load_data()
 
         # create a temp video
@@ -1430,13 +1430,13 @@ class TestServiceVideoOp(unittest.TestCase):
         service_video_delete(video_id=temp_video_id)
 
 
-class TestServiceUser(unittest.TestCase):
+class TestServiceAuth(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        util_tests_clean_database() if util_tests_python_version() else exit()
+        util_tests_clean_database()
         cls.data = util_tests_load_data()
-    
+
     def test_a_service_auth_user_get(self):
         uid = self.data['const_user'][2]['_id']['$oid']
         fake = '123456781234567812345678'
@@ -1455,7 +1455,7 @@ class TestServiceUser(unittest.TestCase):
         uid = self.data['const_user'][0]['_id']['$oid']
         vid = self.data['const_video'][0]['_id']['$oid']
         self.assertEqual(service_auth_video_get(uid, vid), True)
-    
+
     def test_d_service_auth_video_modify(self):
         pass
 
@@ -1473,8 +1473,3 @@ class TestServiceUser(unittest.TestCase):
 
     def test_i_service_auth_hide_user(self):
         pass
-
-"""
-if __name__ == "__main__":
-    unittest.main()
-"""

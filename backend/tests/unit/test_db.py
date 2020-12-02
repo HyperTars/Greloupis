@@ -787,7 +787,7 @@ class TestQueryVideo(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.data = util_tests_load_data()
-        util_tests_clean_database() if util_tests_python_version() else exit()
+        util_tests_clean_database()
 
     def test_a_query_video_create(self):
         temp_data = self.data['temp_video'][0]
@@ -1266,7 +1266,7 @@ class TestQueryVideoOp(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.data = util_tests_load_data()
-        util_tests_clean_database() if util_tests_python_version() else exit()
+        util_tests_clean_database()
 
     def test_a_query_video_op_create(self):
         vid = self.data['temp_video_op'][0]['video_id']
@@ -1510,9 +1510,3 @@ class TestQueryVideoOp(unittest.TestCase):
             query_video_op_search_comment_by_pattern("abc")
         self.assertEqual(e.exception.error_code,
                          ErrorCode.MONGODB_RE_PATTERN_EXPECTED)
-
-
-"""
-if __name__ == "__main__":
-    unittest.main()
-"""

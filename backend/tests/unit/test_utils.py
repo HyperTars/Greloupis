@@ -197,9 +197,3 @@ class TestValidator(unittest.TestCase):
 #
 #     def test_util_get_formated_response(self):
 # }))
-
-
-"""
-if __name__ == '__main__':
-    unittest.main()
-"""

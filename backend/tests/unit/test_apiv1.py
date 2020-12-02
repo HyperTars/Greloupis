@@ -15,9 +15,3 @@ class TestApiV1(unittest.TestCase):
                          "Blueprint video namespace check")
         self.assertEqual(api.namespaces[3].name, "search",
                          "Blueprint search namespace check")
-
-
-"""
-if __name__ == '__main__':
-    unittest.main()
-"""
