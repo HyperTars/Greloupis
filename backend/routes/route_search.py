@@ -44,7 +44,6 @@ class RouteSearchUser(Resource):
             Search users by keyword
         """
         # TODO
-        print("get user name", get_jwt_identity())
         try:
             req_dict = util_serializer_request(request.args)
 
@@ -98,9 +97,6 @@ class RouteSearchUser(Resource):
             elif param == 'last_name' or param == 'user_last_name':
                 search_result = service_search_user(
                     last_name=req_dict['keyword'], ignore_case=True)
-            elif param == 'phone' or param == 'user_phone':
-                search_result = service_search_user(
-                    phone=req_dict['keyword'], ignore_case=True)
             elif param == 'street1' or param == 'user_street1':
                 search_result = service_search_user(
                     street1=req_dict['keyword'], ignore_case=True)
@@ -119,9 +115,6 @@ class RouteSearchUser(Resource):
             elif param == 'zip' or param == 'user_zip':
                 search_result = service_search_user(
                     zip=req_dict['keyword'], ignore_case=True)
-            elif param == 'status' or param == 'user_status':
-                search_result = service_search_user(
-                    status=req_dict['keyword'], ignore_case=True)
             else:
                 raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
 

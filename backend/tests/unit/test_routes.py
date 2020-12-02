@@ -17,7 +17,8 @@ from models.model_errors import ErrorCode, ServiceError
 from db.query_video import query_video_get_by_video_id, \
     query_video_get_by_title, query_video_delete, \
     query_video_update
-from routes.route_search import RouteSearchUser, RouteSearchVideo
+from routes.route_search import RouteSearchUser, \
+    RouteSearchVideo, RouteSearchTopVideos
 from routes.route_video import VideoVideoId
 from routes.route_user import UserUserId, user
 from routes.route_video import video
@@ -42,6 +43,243 @@ with app.app_context():
 def check_if_token_in_blacklist(decrypted_token):
     jti = decrypted_token['jti']
     return jti in blacklist
+
+
+class TestRouteSearch(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        util_tests_clean_database() if util_tests_python_version() else exit()
+        cls.data = util_tests_load_data()
+        util_tests_clean_database()
+
+    def test_route_search_user(self):
+        # Test search user by keyword
+        url = '/search/user?keyword='
+        request = url + self.data['const_user'][0]['user_name']
+        with app.test_request_context(request, data={}):
+            response_json = RouteSearchUser().get().get_json()
+            self.assertEqual(response_json["body"][0]["user_id"],
+                             self.data['const_user'][0]['_id']['$oid'],
+                             msg="First matched user id")
+            self.assertEqual(response_json["body"][0]["user_email"],
+                             self.data['const_user'][0]['user_email'],
+                             msg="First matched user email")
+            self.assertEqual(response_json["body"][0]["user_name"],
+                             self.data['const_user'][0]['user_name'],
+                             msg="First matched user name")
+
+        # With Param
+        request = request + '&param=name'
+        with app.test_request_context(request, data={}):
+            response_json = RouteSearchUser().get().get_json()
+            self.assertEqual(response_json["body"][0]["user_id"],
+                             self.data['const_user'][0]['_id']['$oid'])
+
+        request = url + \
+            self.data['const_user'][0]['user_email'] + \
+            '&param=email'
+        with app.test_request_context(request, data={}):
+            response_json = RouteSearchUser().get().get_json()
+            self.assertEqual(response_json["body"][0]["user_id"],
+                             self.data['const_user'][0]['_id']['$oid'])
+
+        request = url + \
+            self.data['const_user'][0]['user_detail']['user_first_name'] + \
+            '&param=first_name'
+        with app.test_request_context(request, data={}):
+            response_json = RouteSearchUser().get().get_json()
+            self.assertEqual(response_json["body"][0]["user_id"],
+                             self.data['const_user'][0]['_id']['$oid'])
+
+        request = url + \
+            self.data['const_user'][0]['user_detail']['user_last_name'] + \
+            '&param=last_name'
+        with app.test_request_context(request, data={}):
+            response_json = RouteSearchUser().get().get_json()
+            self.assertEqual(response_json["body"][0]["user_id"],
+                             self.data['const_user'][0]['_id']['$oid'])
+
+        request = url + \
+            self.data['const_user'][0]['user_detail']['user_street1'] + \
+            '&param=street1'
+        with app.test_request_context(request, data={}):
+            response_json = RouteSearchUser().get().get_json()
+            self.assertEqual(response_json["body"][0]["user_id"],
+                             self.data['const_user'][0]['_id']['$oid'])
+
+        request = url + \
+            self.data['const_user'][0]['user_detail']['user_street2'] + \
+            '&param=street2'
+        with app.test_request_context(request, data={}):
+            response_json = RouteSearchUser().get().get_json()
+            self.assertEqual(response_json["body"][0]["user_id"],
+                             self.data['const_user'][0]['_id']['$oid'])
+
+        request = url + \
+            self.data['const_user'][0]['user_detail']['user_city'] + \
+            '&param=city'
+        with app.test_request_context(request, data={}):
+            response_json = RouteSearchUser().get().get_json()
+            self.assertEqual(response_json["body"][0]["user_id"],
+                             self.data['const_user'][0]['_id']['$oid'])
+
+        request = url + \
+            self.data['const_user'][0]['user_detail']['user_state'] + \
+            '&param=state'
+        with app.test_request_context(request, data={}):
+            response_json = RouteSearchUser().get().get_json()
+            self.assertEqual(response_json["body"][0]["user_id"],
+                             self.data['const_user'][0]['_id']['$oid'])
+
+        request = url + \
+            self.data['const_user'][0]['user_detail']['user_country'] + \
+            '&param=country'
+        with app.test_request_context(request, data={}):
+            response_json = RouteSearchUser().get().get_json()
+            self.assertEqual(response_json["body"][0]["user_id"],
+                             self.data['const_user'][0]['_id']['$oid'])
+
+        request = url + \
+            self.data['const_user'][0]['user_detail']['user_zip'] + \
+            '&param=zip'
+        with app.test_request_context(request, data={}):
+            response_json = RouteSearchUser().get().get_json()
+            self.assertEqual(response_json["body"][0]["user_id"],
+                             self.data['const_user'][0]['_id']['$oid'])
+
+        # Raise Error: ErrorCode.ROUTE_INVALID_REQUEST_PARAM
+        error_code = str(ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_code())
+        with app.test_request_context('/search/user', data={}):
+            response_json = RouteSearchUser().get().get_json()
+        self.assertEqual(response_json["error_code"], error_code)
+
+        # Raise Error: ErrorCode.ROUTE_INVALID_REQUEST_PARAM
+        error_code = str(ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_code())
+        request = '/search/user?keyword=fake&param=fake'
+        with app.test_request_context(request, data={}):
+            response_json = RouteSearchUser().get().get_json()
+        self.assertEqual(response_json["error_code"], error_code)
+
+    def test_route_search_video(self):
+        # Test search video by keyword
+        url = '/search/video?keyword='
+        request = url + self.data['const_video'][0]['video_title']
+        with app.test_request_context(request, data={}):
+            response_json = RouteSearchVideo().get().get_json()
+            self.assertEqual(response_json["body"][0]["video_id"],
+                             self.data['const_video'][0]['_id']['$oid'],
+                             msg="First matched video id")
+            self.assertEqual(response_json["body"][0]["video_title"],
+                             self.data['const_video'][0]['video_title'],
+                             msg="First matched video title")
+            self.assertEqual(response_json["body"][0]["video_raw_content"],
+                             self.data['const_video'][0]['video_raw_content'],
+                             msg="First matched video content")
+
+        # With Param
+        request = request + '&param=title'
+        with app.test_request_context(request, data={}):
+            response_json = RouteSearchVideo().get().get_json()
+            self.assertEqual(response_json["body"][0]["video_id"],
+                             self.data['const_video'][0]['_id']['$oid'])
+
+        request = url + \
+            self.data['const_video'][0]['video_channel'] + \
+            '&param=channel'
+        with app.test_request_context(request, data={}):
+            response_json = RouteSearchVideo().get().get_json()
+            self.assertEqual(response_json["body"][0]["video_id"],
+                             self.data['const_video'][0]['_id']['$oid'])
+
+        request = url + \
+            self.data['const_video'][0]['video_description'] + \
+            '&param=description'
+        with app.test_request_context(request, data={}):
+            response_json = RouteSearchVideo().get().get_json()
+            self.assertEqual(response_json["body"][0]["video_id"],
+                             self.data['const_video'][0]['_id']['$oid'])
+
+        request = url + \
+            self.data['const_video'][0]['video_category'][0] + \
+            '&param=category'
+        with app.test_request_context(request, data={}):
+            response_json = RouteSearchVideo().get().get_json()
+            self.assertEqual(response_json["body"][0]["video_id"],
+                             self.data['const_video'][0]['_id']['$oid'])
+
+        request = url + \
+            self.data['const_video'][0]['video_tag'][0] + \
+            '&param=tag'
+        with app.test_request_context(request, data={}):
+            response_json = RouteSearchVideo().get().get_json()
+            self.assertEqual(response_json["body"][0]["video_id"],
+                             self.data['const_video'][0]['_id']['$oid'])
+
+        # Raise Error: ErrorCode.ROUTE_INVALID_REQUEST_PARAM
+        error_code = str(ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_code())
+        with app.test_request_context('/search/video', data={}):
+            response_json = RouteSearchVideo().get().get_json()
+        self.assertEqual(response_json["error_code"], error_code)
+
+        # Raise Error: ErrorCode.ROUTE_INVALID_REQUEST_PARAM
+        error_code = str(ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_code())
+        request = '/search/video?keyword=fake&param=fake'
+        with app.test_request_context(request, data={}):
+            response_json = RouteSearchVideo().get().get_json()
+        self.assertEqual(response_json["error_code"], error_code)
+
+    def test_route_search_top_videos(self):
+        # Test search video by keyword
+        url = '/search/video/top?keyword='
+        request = url + 'video_upload_time'
+        with app.test_request_context(request, data={}):
+            response_json = RouteSearchTopVideos().get().get_json()
+            self.assertEqual(response_json["body"][0]["video_id"],
+                             self.data['const_video'][0]['_id']['$oid'])
+
+        request = url + 'video_like'
+        with app.test_request_context(request, data={}):
+            response_json = RouteSearchTopVideos().get().get_json()
+            self.assertEqual(response_json["body"][0]["video_id"],
+                             self.data['const_video'][0]['_id']['$oid'])
+
+        request = url + 'video_share'
+        with app.test_request_context(request, data={}):
+            response_json = RouteSearchTopVideos().get().get_json()
+            self.assertEqual(response_json["body"][0]["video_id"],
+                             self.data['const_video'][0]['_id']['$oid'])
+
+        request = url + 'video_star'
+        with app.test_request_context(request, data={}):
+            response_json = RouteSearchTopVideos().get().get_json()
+            self.assertEqual(response_json["body"][0]["video_id"],
+                             self.data['const_video'][0]['_id']['$oid'])
+
+        request = url + 'video_view'
+        with app.test_request_context(request, data={}):
+            response_json = RouteSearchTopVideos().get().get_json()
+            self.assertEqual(response_json["body"][0]["video_id"],
+                             self.data['const_video'][0]['_id']['$oid'])
+
+        request = url + 'video_duration'
+        with app.test_request_context(request, data={}):
+            response_json = RouteSearchTopVideos().get().get_json()
+            self.assertEqual(response_json["body"][0]["video_id"],
+                             self.data['const_video'][0]['_id']['$oid'])
+
+        # Raise Error: ErrorCode.ROUTE_INVALID_REQUEST_PARAM
+        error_code = str(ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_code())
+        with app.test_request_context('/search/video/top', data={}):
+            response_json = RouteSearchTopVideos().get().get_json()
+        self.assertEqual(response_json["error_code"], error_code)
+
+        # Raise Error: ErrorCode.ROUTE_INVALID_REQUEST_PARAM
+        error_code = str(ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_code())
+        request = '/search/video/top?keyword=fake'
+        with app.test_request_context(request, data={}):
+            response_json = RouteSearchTopVideos().get().get_json()
+        self.assertEqual(response_json["error_code"], error_code)
 
 
 class TestUserRoute(unittest.TestCase):
@@ -78,52 +316,10 @@ class TestUserRoute(unittest.TestCase):
             self.assertEqual(200, json_dict['code'], json_dict['message'])
 
 
-class TestRouteSearch(unittest.TestCase):
-
-    @classmethod
-    def setUpClass(cls) -> None:
-        if util_tests_python_version() is False:
-            exit()
-        cls.data = util_tests_load_data()
-        util_tests_clean_database()
-
-    def test_route_search_user(self):
-        # Test search user by keyword
-        with app.test_request_context(
-                '/search/user?keyword=' + self.data['const_user'][0][
-                    'user_name'], data={}):
-            response_json = RouteSearchUser().get().get_json()
-            self.assertEqual(response_json["body"][0]["user_id"],
-                             self.data['const_user'][0]['_id']['$oid'],
-                             msg="First matched user id")
-            self.assertEqual(response_json["body"][0]["user_email"],
-                             self.data['const_user'][0]['user_email'],
-                             msg="First matched user email")
-            self.assertEqual(response_json["body"][0]["user_name"],
-                             self.data['const_user'][0]['user_name'],
-                             msg="First matched user name")
-
-    def test_route_search_video(self):
-        # Test search video by keyword
-        with app.test_request_context(
-                '/search/video?keyword=xixihaha', data={}):
-            response_json = RouteSearchVideo().get().get_json()
-            self.assertEqual(response_json["body"][0]["video_id"],
-                             "5f88c0307a6eb86b0eccc8d2",
-                             msg="First matched video id")
-            self.assertEqual(response_json["body"][0]["video_title"],
-                             "XiXiHaHa", msg="First matched video title")
-            self.assertEqual(response_json["body"][0]["video_raw_content"],
-                             "https://s3.amazon.com/54asd56a4d5asdasd.mp4",
-                             msg="First matched video content")
-
-
 class TestRouteUser(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        if util_tests_python_version() is False:
-            exit()
         cls.data = util_tests_load_data()
         util_tests_clean_database()
 
@@ -318,8 +514,6 @@ class TestRouteVideo(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        if util_tests_python_version() is False:
-            exit()
         cls.data = util_tests_load_data()
         util_tests_clean_database()
         cls.test_user_id = cls.data['temp_video'][0]["user_id"]
