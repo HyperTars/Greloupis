@@ -77,7 +77,7 @@
 - Python 3.7 / 3.8 **(3.6 or below and 3.9 are not supported)**
 - npm (6.14.8)
 - node.js (14.15.0)
-- [Environment Variables](../documents/EnvironmentSettings.md)
+- [Environment Variables](documents/EnvironmentSettings.md)
 - Make sure MongoDB & AWS Endpoints are all set, see more details in [Backend Setup Guide](backend/readme.md#Environment-Requirement-And-Configs)
 #### Install Dependencies
 - To install dependencies, run
