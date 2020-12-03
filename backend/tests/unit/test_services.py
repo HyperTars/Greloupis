@@ -423,6 +423,10 @@ class TestServiceUser(unittest.TestCase):
             user=test_name, user_password=test_password)
         self.assertEqual(user['user_name'], test_name)
 
+        user = service_user_login(
+            user=test_email, user_password=test_password)
+        self.assertEqual(user['user_name'], test_name)
+
         # Password Wrong
         with self.assertRaises(ServiceError) as e:
             service_user_login(user_name=test_name,
@@ -1030,6 +1034,12 @@ class TestServiceVideoOp(unittest.TestCase):
             query_video_get_by_title(self.temp_video_title)[0].to_dict()[
                 'video_id']
 
+        # Raise Error: ErrorCode.SERVICE_INVALID_ID_OBJ
+        with self.assertRaises(ServiceError) as e:
+            service_video_op_get_comment(user_id="111", video_id="111")
+        self.assertEqual(e.exception.error_code,
+                         ErrorCode.SERVICE_INVALID_ID_OBJ)
+
         # Raise Error: ErrorCode.SERVICE_MISSING_PARAM
         with self.assertRaises(ServiceError) as e:
             service_video_op_get_comment()
@@ -1090,6 +1100,15 @@ class TestServiceVideoOp(unittest.TestCase):
             service_video_op_cancel_comment()
         self.assertEqual(e.exception.error_code,
                          ErrorCode.SERVICE_MISSING_PARAM)
+
+        # Raise Error: ErrorCode.SERVICE_VIDEO_OP_NOT_FOUND
+        with self.assertRaises(ServiceError) as e:
+            service_video_op_cancel_comment(
+                user_id=self.data['const_user'][2]['_id']['$oid'],
+                video_id=self.data['const_video'][1]['_id']['$oid']
+            )
+        self.assertEqual(e.exception.error_code,
+                         ErrorCode.SERVICE_VIDEO_OP_NOT_FOUND)
 
         # Raise Error: ErrorCode.ROUTE_INVALID_REQUEST_PARAM
         with self.assertRaises(ServiceError) as e:
@@ -1557,9 +1576,14 @@ class TestServiceAuth(unittest.TestCase):
 
     def test_f_service_auth_video_op_post(self):
         uid = self.data['const_user'][0]['_id']['$oid']
-        vid = self.data['const_video'][0]['_id']['$oid'][1:]
+        vid = self.data['const_video'][0]['_id']['$oid']
         with self.assertRaises(ServiceError) as e:
-            service_auth_video_op_get(uid, uid, '1' + vid)
+            service_auth_video_op_get(uid, uid, '1' + vid[1:])
+        self.assertEqual(e.exception.error_code,
+                         ErrorCode.SERVICE_VIDEO_NOT_FOUND)
+
+        with self.assertRaises(ServiceError) as e:
+            service_auth_video_op_get(uid, uid, vid[:-2] + '00')
         self.assertEqual(e.exception.error_code,
                          ErrorCode.SERVICE_VIDEO_NOT_FOUND)
 
