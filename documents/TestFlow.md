@@ -30,3 +30,8 @@
 - Comment
     - Delete comment
 
+### Error Pages
+- Access private video (403)
+- Access deleted video (404)
+    - Access public then access again after deleting it
+- Run local without backend (500)
