@@ -868,7 +868,7 @@ class TestRouteVideo(unittest.TestCase):
 
         with app.app_context():
             response = self.client.get(
-                '/video/' + private_id + '/comment/' + temp_user_id,
+                '/video/' + private_id + '/comment/' + wrong_id,
                 headers=self.headers)
             error_json = json.loads(response.data)
             self.assertTrue('error_code' in error_json)

@@ -110,14 +110,11 @@ class Video(Resource):
         """
             User upload a video
         """
-
         try:
             video_id = service_video_upload(get_jwt_identity())
-
             return util_serializer_api_response(
                     200, body={'video_id': video_id},
-                    msg="Successfully uploaded video")
-
+                    msg="Successfully created a temp video instance")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
@@ -796,10 +793,7 @@ class AWS(Resource):
         """
 
         try:
-            if request.form != {}:
-                kw = dict(request.form)
-            else:
-                kw = ast.literal_eval(request.data.decode("utf-8"))
+            kw = util_serializer_request(request)
 
             # check authority
             if 'aws_auth_key' not in kw:
