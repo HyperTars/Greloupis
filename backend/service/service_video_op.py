@@ -9,7 +9,13 @@ from utils.util_validator import is_valid_id
 from utils.util_serializer import util_serializer_mongo_results_to_array
 from utils.util_pattern import util_pattern_format_param
 from utils.util_time import get_time_now_utc
-from models.model_errors import ErrorCode, MongoError, ServiceError
+from models.model_errors import ErrorCode, ServiceError
+
+
+def service_video_op_create(user_id: str, video_id: str):
+    if len(query_video_op_get_by_user_video(user_id, video_id)) == 0:
+        query_video_op_create(user_id, video_id)
+    return query_video_op_get_by_user_video(user_id, video_id)
 
 
 def service_video_op_get_by_user(**kw):
@@ -52,19 +58,16 @@ def service_video_op_add_view(**kw):
         raise ServiceError(ErrorCode.SERVICE_INVALID_ID_OBJ)
 
     # perform db operations and get result
-    result_mongo = query_video_cnt_incr_by_one(kw["video_id"], "video_view")
+    query_video_cnt_incr_by_one(kw["video_id"], "video_view")
 
-    if result_mongo == 1:
-        search_result = util_serializer_mongo_results_to_array(
-            query_video_get_by_video_id(kw["video_id"]))
-        video_view = search_result[0]["video_view"]
-        return_body = {
-            "video_id": kw["video_id"],
-            "view_count": video_view
-        }
-        return return_body
-    else:
-        raise MongoError(ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND)
+    search_result = util_serializer_mongo_results_to_array(
+        query_video_get_by_video_id(kw["video_id"]))
+    video_view = search_result[0]["video_view"]
+    return_body = {
+        "video_id": kw["video_id"],
+        "view_count": video_view
+    }
+    return return_body
 
 
 def service_video_op_get_view(**kw):
@@ -80,18 +83,18 @@ def service_video_op_get_view(**kw):
         raise ServiceError(ErrorCode.SERVICE_INVALID_ID_OBJ)
 
     # perform db operations and get result
-    search_mongo = query_video_get_by_video_id(kw["video_id"])
+    videos = query_video_get_by_video_id(kw["video_id"])
 
-    if len(search_mongo) == 1:
-        search_result = util_serializer_mongo_results_to_array(search_mongo)
-        video_view = search_result[0]["video_view"]
-        return_body = {
-            "video_id": kw["video_id"],
-            "view_count": video_view
-        }
-        return return_body
-    else:
-        raise MongoError(ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND)
+    if len(videos) == 0:
+        raise ServiceError(ErrorCode.SERVICE_VIDEO_NOT_FOUND)
+
+    search_result = util_serializer_mongo_results_to_array(videos)
+    video_view = search_result[0]["video_view"]
+    return_body = {
+        "video_id": kw["video_id"],
+        "view_count": video_view
+    }
+    return return_body
 
 
 def service_video_op_add_comment(**kw):
@@ -111,35 +114,32 @@ def service_video_op_add_comment(**kw):
                                                       kw["video_id"])
     if len(query_video_op) == 0:
         # create a new video_op object for current user and video
-        query_video_op_create(kw["user_id"], kw["video_id"])
-        query_video_op = query_video_op_get_by_user_video(kw["user_id"],
-                                                          kw["video_id"])
+        query_video_op = service_video_op_create(kw["user_id"], kw["video_id"])
 
     video_op_result = util_serializer_mongo_results_to_array(query_video_op)
     video_op_id = video_op_result[0]["video_op_id"]
 
     # check if successfully update comment
-    update_result = query_video_op_update_comment(video_op_id,
-                                                  kw["video_op_comment"],
-                                                  get_time_now_utc())
+    query_video_op_update_comment(
+        video_op_id, kw["video_op_comment"], get_time_now_utc())
 
-    if update_result == 1:
-        query_video_cnt_incr_by_one(kw["video_id"], "video_comment")
+    query_video_cnt_incr_by_one(kw["video_id"], "video_comment")
 
-        query_video_op = query_video_op_get_by_user_video(kw["user_id"],
-                                                          kw["video_id"])
-        video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[
-            0]
+    query_video_op = query_video_op_get_by_user_video(
+        kw["user_id"], kw["video_id"])
 
-        return_body = {
-            "user_id": video_op_obj["user_id"],
-            "video_id": video_op_obj["video_id"],
-            "comment": video_op_obj["comment"],
-            "comment_date": str(video_op_obj["comment_date"])
-        }
-        return return_body
-    else:
-        raise MongoError(ErrorCode.MONGODB_VIDEO_COMMENT_UPDATE_FAILURE)
+    if len(query_video_op) == 0:
+        raise ServiceError(ErrorCode.SERVICE_VIDEO_OP_NOT_FOUND)
+
+    video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[0]
+
+    return_body = {
+        "user_id": video_op_obj["user_id"],
+        "video_id": video_op_obj["video_id"],
+        "comment": video_op_obj["comment"],
+        "comment_date": str(video_op_obj["comment_date"])
+    }
+    return return_body
 
 
 def service_video_op_get_comment(**kw):
@@ -157,18 +157,19 @@ def service_video_op_get_comment(**kw):
     # check if the video_op object exists
     query_video_op = query_video_op_get_by_user_video(kw["user_id"],
                                                       kw["video_id"])
-    if len(query_video_op) == 1:
-        video_op_result = util_serializer_mongo_results_to_array(
+
+    if len(query_video_op) == 0:
+        raise ServiceError(ErrorCode.SERVICE_VIDEO_OP_NOT_FOUND)
+
+    video_op_result = util_serializer_mongo_results_to_array(
             query_video_op)
-        return_body = {
-            "user_id": video_op_result[0]["user_id"],
-            "video_id": video_op_result[0]["video_id"],
-            "comment": video_op_result[0]["comment"],
-            "comment_date": str(video_op_result[0]["comment_date"])
-        }
-        return return_body
-    else:
-        raise MongoError(ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND)
+    return_body = {
+        "user_id": video_op_result[0]["user_id"],
+        "video_id": video_op_result[0]["video_id"],
+        "comment": video_op_result[0]["comment"],
+        "comment_date": str(video_op_result[0]["comment_date"])
+    }
+    return return_body
 
 
 def service_video_op_update_comment(**kw):
@@ -188,33 +189,30 @@ def service_video_op_update_comment(**kw):
                                                       kw["video_id"])
     if len(query_video_op) == 0:
         # create a new video_op object for current user and video
-        query_video_op_create(kw["user_id"], kw["video_id"])
-        query_video_op = query_video_op_get_by_user_video(kw["user_id"],
-                                                          kw["video_id"])
+        query_video_op = service_video_op_create(kw["user_id"], kw["video_id"])
 
     video_op_result = util_serializer_mongo_results_to_array(query_video_op)
     video_op_id = video_op_result[0]["video_op_id"]
 
     # check if successfully update comment
-    update_result = query_video_op_update_comment(video_op_id,
-                                                  kw["video_op_comment"],
-                                                  get_time_now_utc())
+    query_video_op_update_comment(
+        video_op_id,  kw["video_op_comment"], get_time_now_utc())
 
-    if update_result == 1:
-        query_video_op = query_video_op_get_by_user_video(kw["user_id"],
-                                                          kw["video_id"])
-        video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[
-            0]
+    if len(query_video_op) == 0:
+        raise ServiceError(ErrorCode.SERVICE_VIDEO_OP_NOT_FOUND)
 
-        return_body = {
-            "user_id": video_op_obj["user_id"],
-            "video_id": video_op_obj["video_id"],
-            "comment": video_op_obj["comment"],
-            "comment_date": str(video_op_obj["comment_date"])
-        }
-        return return_body
-    else:
-        raise MongoError(ErrorCode.MONGODB_VIDEO_COMMENT_UPDATE_FAILURE)
+    query_video_op = query_video_op_get_by_user_video(
+        kw["user_id"], kw["video_id"])
+
+    video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[0]
+
+    return_body = {
+        "user_id": video_op_obj["user_id"],
+        "video_id": video_op_obj["video_id"],
+        "comment": video_op_obj["comment"],
+        "comment_date": str(video_op_obj["comment_date"])
+    }
+    return return_body
 
 
 def service_video_op_cancel_comment(**kw):
@@ -232,33 +230,31 @@ def service_video_op_cancel_comment(**kw):
     # check if the video_op object exists
     query_video_op = query_video_op_get_by_user_video(kw["user_id"],
                                                       kw["video_id"])
-    if len(query_video_op) == 1:
-        video_op_result = util_serializer_mongo_results_to_array(
-            query_video_op)
-        video_op_id = video_op_result[0]["video_op_id"]
+    if len(query_video_op) == 0:
+        raise ServiceError(ErrorCode.SERVICE_VIDEO_OP_NOT_FOUND)
 
-        update_result = query_video_op_update_comment(video_op_id, "",
-                                                      get_time_now_utc())
+    video_op_result = util_serializer_mongo_results_to_array(
+        query_video_op)
+    video_op_id = video_op_result[0]["video_op_id"]
 
-        if update_result == 1:
-            query_video_cnt_decr_by_one(kw["video_id"], "video_comment")
+    query_video_op_update_comment(
+        video_op_id, "", get_time_now_utc())
 
-            query_video_op = query_video_op_get_by_user_video(kw["user_id"],
-                                                              kw["video_id"])
-            video_op_obj = util_serializer_mongo_results_to_array(
-                query_video_op)[0]
+    query_video_cnt_decr_by_one(kw["video_id"], "video_comment")
 
-            return_body = {
-                "user_id": video_op_obj["user_id"],
-                "video_id": video_op_obj["video_id"],
-                "comment": video_op_obj["comment"],
-                "comment_date": str(video_op_obj["comment_date"])
-            }
-            return return_body
-        else:
-            raise MongoError(ErrorCode.MONGODB_VIDEO_COMMENT_DELETE_FAILURE)
-    else:
-        raise MongoError(ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND)
+    query_video_op = query_video_op_get_by_user_video(
+        kw["user_id"], kw["video_id"])
+
+    video_op_obj = util_serializer_mongo_results_to_array(
+        query_video_op)[0]
+
+    return_body = {
+        "user_id": video_op_obj["user_id"],
+        "video_id": video_op_obj["video_id"],
+        "comment": video_op_obj["comment"],
+        "comment_date": str(video_op_obj["comment_date"])
+        }
+    return return_body
 
 
 def service_video_op_add_process(**kw):
@@ -279,39 +275,32 @@ def service_video_op_add_process(**kw):
 
     if len(query_video_op) == 0:
         # create a new video_op object for current user and video
-        query_video_op_create(kw["user_id"], kw["video_id"])
-        query_video_op = query_video_op_get_by_user_video(kw["user_id"],
-                                                          kw["video_id"])
+        query_video_op = service_video_op_create(kw["user_id"], kw["video_id"])
 
     video_op_result = util_serializer_mongo_results_to_array(query_video_op)
     video_op_id = video_op_result[0]["video_op_id"]
 
     if video_op_result[0]["process"] != 0:
-        raise MongoError(ErrorCode.MONGODB_VIDEO_OP_EXISTS)
+        raise ServiceError(ErrorCode.SERVICE_VIDEO_OP_EXISTS)
 
     # check if successfully update process
     if int(kw["process"]) >= 0:
-        update_result = query_video_op_update_process(video_op_id,
-                                                      kw["process"],
-                                                      get_time_now_utc())
+        query_video_op_update_process(
+            video_op_id, kw["process"], get_time_now_utc())
     else:
         raise ServiceError(ErrorCode.SERVICE_INVALID_SEARCH_PARAM)
 
-    if update_result == 1:
-        query_video_op = query_video_op_get_by_user_video(kw["user_id"],
-                                                          kw["video_id"])
-        video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[
-            0]
+    query_video_op = query_video_op_get_by_user_video(
+        kw["user_id"], kw["video_id"])
+    video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[0]
 
-        return_body = {
-            "user_id": video_op_obj["user_id"],
-            "video_id": video_op_obj["video_id"],
-            "process": video_op_obj["process"],
-            "process_date": str(video_op_obj["process_date"])
-        }
-        return return_body
-    else:
-        raise MongoError(ErrorCode.MONGODB_VIDEO_PROCESS_UPDATE_FAILURE)
+    return_body = {
+        "user_id": video_op_obj["user_id"],
+        "video_id": video_op_obj["video_id"],
+        "process": video_op_obj["process"],
+        "process_date": str(video_op_obj["process_date"])
+    }
+    return return_body
 
 
 def service_video_op_get_process(**kw):
@@ -329,20 +318,20 @@ def service_video_op_get_process(**kw):
     # check if the video_op object exists
     query_video_op = query_video_op_get_by_user_video(kw["user_id"],
                                                       kw["video_id"])
-    if len(query_video_op) == 1:
-        video_op_result = util_serializer_mongo_results_to_array(
-            query_video_op)
-        video_op_obj = video_op_result[0]
+    if len(query_video_op) == 0:
+        raise ServiceError(ErrorCode.SERVICE_VIDEO_OP_NOT_FOUND)
 
-        return_body = {
-            "user_id": video_op_obj["user_id"],
-            "video_id": video_op_obj["video_id"],
-            "process": video_op_obj["process"],
-            "process_date": str(video_op_obj["process_date"])
-        }
-        return return_body
-    else:
-        raise MongoError(ErrorCode.MONGODB_VIDEO_OP_NOT_FOUND)
+    video_op_result = util_serializer_mongo_results_to_array(
+        query_video_op)
+    video_op_obj = video_op_result[0]
+
+    return_body = {
+        "user_id": video_op_obj["user_id"],
+        "video_id": video_op_obj["video_id"],
+        "process": video_op_obj["process"],
+        "process_date": str(video_op_obj["process_date"])
+    }
+    return return_body
 
 
 def service_video_op_update_process(**kw):
@@ -363,36 +352,29 @@ def service_video_op_update_process(**kw):
 
     if len(query_video_op) == 0:
         # create a new video_op object for current user and video
-        query_video_op_create(kw["user_id"], kw["video_id"])
-        query_video_op = query_video_op_get_by_user_video(kw["user_id"],
-                                                          kw["video_id"])
+        query_video_op = service_video_op_create(kw["user_id"], kw["video_id"])
 
     video_op_result = util_serializer_mongo_results_to_array(query_video_op)
     video_op_id = video_op_result[0]["video_op_id"]
 
     # check if successfully update process
     if int(kw["process"]) >= 0:
-        update_result = query_video_op_update_process(video_op_id,
-                                                      kw["process"],
-                                                      get_time_now_utc())
+        query_video_op_update_process(
+            video_op_id, kw["process"], get_time_now_utc())
     else:
         raise ServiceError(ErrorCode.SERVICE_INVALID_SEARCH_PARAM)
 
-    if update_result == 1:
-        query_video_op = query_video_op_get_by_user_video(kw["user_id"],
-                                                          kw["video_id"])
-        video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[
-            0]
+    query_video_op = query_video_op_get_by_user_video(
+        kw["user_id"], kw["video_id"])
+    video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[0]
 
-        return_body = {
-            "user_id": video_op_obj["user_id"],
-            "video_id": video_op_obj["video_id"],
-            "process": video_op_obj["process"],
-            "process_date": str(video_op_obj["process_date"])
-        }
-        return return_body
-    else:
-        raise MongoError(ErrorCode.MONGODB_VIDEO_PROCESS_UPDATE_FAILURE)
+    return_body = {
+        "user_id": video_op_obj["user_id"],
+        "video_id": video_op_obj["video_id"],
+        "process": video_op_obj["process"],
+        "process_date": str(video_op_obj["process_date"])
+    }
+    return return_body
 
 
 def service_video_op_cancel_process(**kw):
@@ -413,35 +395,29 @@ def service_video_op_cancel_process(**kw):
 
     if len(query_video_op) == 0:
         # create a new video_op object for current user and video
-        query_video_op_create(kw["user_id"], kw["video_id"])
-        query_video_op = query_video_op_get_by_user_video(kw["user_id"],
-                                                          kw["video_id"])
+        query_video_op = service_video_op_create(kw["user_id"], kw["video_id"])
 
     video_op_result = util_serializer_mongo_results_to_array(query_video_op)
     video_op_id = video_op_result[0]["video_op_id"]
 
     if video_op_result[0]["process"] == 0:
-        raise MongoError(ErrorCode.MONGODB_VIDEO_PROCESS_DELETE_FAILURE)
+        raise ServiceError(ErrorCode.SERVICE_VIDEO_PROCESS_DELETE_FAILURE)
 
     # check if successfully delete process
-    update_result = query_video_op_update_process(video_op_id, 0,
-                                                  get_time_now_utc())
+    query_video_op_update_process(
+        video_op_id, 0, get_time_now_utc())
 
-    if update_result == 1:
-        query_video_op = query_video_op_get_by_user_video(kw["user_id"],
-                                                          kw["video_id"])
-        video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[
-            0]
+    query_video_op = query_video_op_get_by_user_video(
+        kw["user_id"], kw["video_id"])
+    video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[0]
 
-        return_body = {
-            "user_id": video_op_obj["user_id"],
-            "video_id": video_op_obj["video_id"],
-            "process": video_op_obj["process"],
-            "process_date": str(video_op_obj["process_date"])
-        }
-        return return_body
-    else:
-        raise MongoError(ErrorCode.MONGODB_VIDEO_PROCESS_DELETE_FAILURE)
+    return_body = {
+        "user_id": video_op_obj["user_id"],
+        "video_id": video_op_obj["video_id"],
+        "process": video_op_obj["process"],
+        "process_date": str(video_op_obj["process_date"])
+    }
+    return return_body
 
 
 def service_video_op_add_like(**kw):
@@ -462,16 +438,14 @@ def service_video_op_add_like(**kw):
 
     if len(query_video_op) == 0:
         # create a new video_op object for current user and video
-        query_video_op_create(kw["user_id"], kw["video_id"])
-        query_video_op = query_video_op_get_by_user_video(kw["user_id"],
-                                                          kw["video_id"])
+        query_video_op = service_video_op_create(kw["user_id"], kw["video_id"])
 
     video_op_result = util_serializer_mongo_results_to_array(query_video_op)
     video_op_id = video_op_result[0]["video_op_id"]
 
     # If already liked, like operation cannot be duplicated
     if video_op_result[0]["like"]:
-        raise MongoError(ErrorCode.MONGODB_VIDEO_LIKE_UPDATE_FAILURE)
+        raise ServiceError(ErrorCode.SERVICE_VIDEO_LIKE_UPDATE_FAILURE)
 
     # If already disliked, dislike operation should be set to False
     if video_op_result[0]["dislike"]:
@@ -479,28 +453,24 @@ def service_video_op_add_like(**kw):
         query_video_cnt_decr_by_one(kw["video_id"], "video_dislike")
 
     # check if successfully add like
-    update_result = query_video_op_update_like(video_op_id, True,
-                                               get_time_now_utc())
+    query_video_op_update_like(
+        video_op_id, True, get_time_now_utc())
 
-    if update_result == 1:
-        query_video_cnt_incr_by_one(kw["video_id"], "video_like")
+    query_video_cnt_incr_by_one(kw["video_id"], "video_like")
 
-        query_video_op = query_video_op_get_by_user_video(kw["user_id"],
-                                                          kw["video_id"])
-        video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[
-            0]
+    query_video_op = query_video_op_get_by_user_video(
+        kw["user_id"], kw["video_id"])
+    video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[0]
 
-        return_body = {
-            "user_id": video_op_obj["user_id"],
-            "video_id": video_op_obj["video_id"],
-            "like": video_op_obj["like"],
-            "like_date": str(video_op_obj["like_date"]),
-            "dislike": video_op_obj["dislike"],
-            "dislike_date": str(video_op_obj["dislike_date"])
-        }
-        return return_body
-    else:
-        raise MongoError(ErrorCode.MONGODB_VIDEO_LIKE_UPDATE_FAILURE)
+    return_body = {
+        "user_id": video_op_obj["user_id"],
+        "video_id": video_op_obj["video_id"],
+        "like": video_op_obj["like"],
+        "like_date": str(video_op_obj["like_date"]),
+        "dislike": video_op_obj["dislike"],
+        "dislike_date": str(video_op_obj["dislike_date"])
+    }
+    return return_body
 
 
 def service_video_op_cancel_like(**kw):
@@ -521,38 +491,32 @@ def service_video_op_cancel_like(**kw):
 
     if len(query_video_op) == 0:
         # create a new video_op object for current user and video
-        query_video_op_create(kw["user_id"], kw["video_id"])
-        query_video_op = query_video_op_get_by_user_video(kw["user_id"],
-                                                          kw["video_id"])
+        query_video_op = service_video_op_create(kw["user_id"], kw["video_id"])
 
     video_op_result = util_serializer_mongo_results_to_array(query_video_op)
     video_op_id = video_op_result[0]["video_op_id"]
 
     # Only perform the operation when like is True and dislike is False
     if video_op_result[0]["like"] and not video_op_result[0]["dislike"]:
-        update_result = query_video_op_update_like(video_op_id, False,
-                                                   get_time_now_utc())
-        if update_result == 1:
-            query_video_cnt_decr_by_one(kw["video_id"], "video_like")
+        query_video_op_update_like(video_op_id, False, get_time_now_utc())
+        query_video_cnt_decr_by_one(kw["video_id"], "video_like")
 
-            query_video_op = query_video_op_get_by_user_video(kw["user_id"],
-                                                              kw["video_id"])
-            video_op_obj = util_serializer_mongo_results_to_array(
-                query_video_op)[0]
+        query_video_op = query_video_op_get_by_user_video(
+            kw["user_id"], kw["video_id"])
+        video_op_obj = util_serializer_mongo_results_to_array(
+            query_video_op)[0]
 
-            return_body = {
-                "user_id": video_op_obj["user_id"],
-                "video_id": video_op_obj["video_id"],
-                "like": video_op_obj["like"],
-                "like_date": str(video_op_obj["like_date"]),
-                "dislike": video_op_obj["dislike"],
-                "dislike_date": str(video_op_obj["dislike_date"])
-            }
-            return return_body
-        else:
-            raise MongoError(ErrorCode.MONGODB_VIDEO_LIKE_UPDATE_FAILURE)
+        return_body = {
+            "user_id": video_op_obj["user_id"],
+            "video_id": video_op_obj["video_id"],
+            "like": video_op_obj["like"],
+            "like_date": str(video_op_obj["like_date"]),
+            "dislike": video_op_obj["dislike"],
+            "dislike_date": str(video_op_obj["dislike_date"])
+        }
+        return return_body
     else:
-        raise MongoError(ErrorCode.MONGODB_VIDEO_LIKE_UPDATE_FAILURE)
+        raise ServiceError(ErrorCode.SERVICE_VIDEO_LIKE_UPDATE_FAILURE)
 
 
 def service_video_op_add_dislike(**kw):
@@ -573,16 +537,14 @@ def service_video_op_add_dislike(**kw):
 
     if len(query_video_op) == 0:
         # create a new video_op object for current user and video
-        query_video_op_create(kw["user_id"], kw["video_id"])
-        query_video_op = query_video_op_get_by_user_video(kw["user_id"],
-                                                          kw["video_id"])
+        query_video_op = service_video_op_create(kw["user_id"], kw["video_id"])
 
     video_op_result = util_serializer_mongo_results_to_array(query_video_op)
     video_op_id = video_op_result[0]["video_op_id"]
 
     # If already disliked, dislike operation cannot be duplicated
     if video_op_result[0]["dislike"]:
-        raise MongoError(ErrorCode.MONGODB_VIDEO_DISLIKE_UPDATE_FAILURE)
+        raise ServiceError(ErrorCode.SERVICE_VIDEO_DISLIKE_UPDATE_FAILURE)
 
     # If already liked, like operation should be set to False
     if video_op_result[0]["like"]:
@@ -590,28 +552,23 @@ def service_video_op_add_dislike(**kw):
         query_video_cnt_decr_by_one(kw["video_id"], "video_like")
 
     # check if successfully add dislike
-    update_result = query_video_op_update_dislike(video_op_id, True,
-                                                  get_time_now_utc())
+    query_video_op_update_dislike(video_op_id, True, get_time_now_utc())
 
-    if update_result == 1:
-        query_video_cnt_incr_by_one(kw["video_id"], "video_dislike")
+    query_video_cnt_incr_by_one(kw["video_id"], "video_dislike")
 
-        query_video_op = query_video_op_get_by_user_video(kw["user_id"],
-                                                          kw["video_id"])
-        video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[
-            0]
+    query_video_op = query_video_op_get_by_user_video(
+        kw["user_id"], kw["video_id"])
+    video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[0]
 
-        return_body = {
-            "user_id": video_op_obj["user_id"],
-            "video_id": video_op_obj["video_id"],
-            "like": video_op_obj["like"],
-            "like_date": str(video_op_obj["like_date"]),
-            "dislike": video_op_obj["dislike"],
-            "dislike_date": str(video_op_obj["dislike_date"])
-        }
-        return return_body
-    else:
-        raise MongoError(ErrorCode.MONGODB_VIDEO_DISLIKE_UPDATE_FAILURE)
+    return_body = {
+        "user_id": video_op_obj["user_id"],
+        "video_id": video_op_obj["video_id"],
+        "like": video_op_obj["like"],
+        "like_date": str(video_op_obj["like_date"]),
+        "dislike": video_op_obj["dislike"],
+        "dislike_date": str(video_op_obj["dislike_date"])
+    }
+    return return_body
 
 
 def service_video_op_cancel_dislike(**kw):
@@ -632,38 +589,33 @@ def service_video_op_cancel_dislike(**kw):
 
     if len(query_video_op) == 0:
         # create a new video_op object for current user and video
-        query_video_op_create(kw["user_id"], kw["video_id"])
-        query_video_op = query_video_op_get_by_user_video(kw["user_id"],
-                                                          kw["video_id"])
+        query_video_op = service_video_op_create(kw["user_id"], kw["video_id"])
 
     video_op_result = util_serializer_mongo_results_to_array(query_video_op)
     video_op_id = video_op_result[0]["video_op_id"]
 
     # Only perform the operation when like is False and dislike is True
     if not video_op_result[0]["like"] and video_op_result[0]["dislike"]:
-        update_result = query_video_op_update_dislike(video_op_id, False,
-                                                      get_time_now_utc())
-        if update_result == 1:
-            query_video_cnt_decr_by_one(kw["video_id"], "video_dislike")
+        query_video_op_update_dislike(video_op_id, False, get_time_now_utc())
+        query_video_cnt_decr_by_one(kw["video_id"], "video_dislike")
 
-            query_video_op = query_video_op_get_by_user_video(kw["user_id"],
-                                                              kw["video_id"])
-            video_op_obj = util_serializer_mongo_results_to_array(
-                query_video_op)[0]
+        query_video_op = query_video_op_get_by_user_video(kw["user_id"],
+                                                          kw["video_id"])
+        video_op_obj = util_serializer_mongo_results_to_array(
+            query_video_op)[0]
 
-            return_body = {
-                "user_id": video_op_obj["user_id"],
-                "video_id": video_op_obj["video_id"],
-                "like": video_op_obj["like"],
-                "like_date": str(video_op_obj["like_date"]),
-                "dislike": video_op_obj["dislike"],
-                "dislike_date": str(video_op_obj["dislike_date"])
-            }
-            return return_body
-        else:
-            raise MongoError(ErrorCode.MONGODB_VIDEO_DISLIKE_UPDATE_FAILURE)
+        return_body = {
+            "user_id": video_op_obj["user_id"],
+            "video_id": video_op_obj["video_id"],
+            "like": video_op_obj["like"],
+            "like_date": str(video_op_obj["like_date"]),
+            "dislike": video_op_obj["dislike"],
+            "dislike_date": str(video_op_obj["dislike_date"])
+        }
+        return return_body
+
     else:
-        raise MongoError(ErrorCode.MONGODB_VIDEO_DISLIKE_UPDATE_FAILURE)
+        raise ServiceError(ErrorCode.SERVICE_VIDEO_DISLIKE_UPDATE_FAILURE)
 
 
 def service_video_op_add_star(**kw):
@@ -684,38 +636,31 @@ def service_video_op_add_star(**kw):
 
     if len(query_video_op) == 0:
         # create a new video_op object for current user and video
-        query_video_op_create(kw["user_id"], kw["video_id"])
-        query_video_op = query_video_op_get_by_user_video(kw["user_id"],
-                                                          kw["video_id"])
+        query_video_op = service_video_op_create(kw["user_id"], kw["video_id"])
 
     video_op_result = util_serializer_mongo_results_to_array(query_video_op)
     video_op_id = video_op_result[0]["video_op_id"]
 
     # If already starred, star operation cannot be duplicated
     if video_op_result[0]["star"]:
-        raise MongoError(ErrorCode.MONGODB_VIDEO_STAR_UPDATE_FAILURE)
+        raise ServiceError(ErrorCode.SERVICE_VIDEO_STAR_UPDATE_FAILURE)
 
     # check if successfully add star
-    update_result = query_video_op_update_star(video_op_id, True,
-                                               get_time_now_utc())
+    query_video_op_update_star(video_op_id, True, get_time_now_utc())
 
-    if update_result == 1:
-        query_video_cnt_incr_by_one(kw["video_id"], "video_star")
+    query_video_cnt_incr_by_one(kw["video_id"], "video_star")
 
-        query_video_op = query_video_op_get_by_user_video(kw["user_id"],
-                                                          kw["video_id"])
-        video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[
-            0]
+    query_video_op = query_video_op_get_by_user_video(
+        kw["user_id"], kw["video_id"])
+    video_op_obj = util_serializer_mongo_results_to_array(query_video_op)[0]
 
-        return_body = {
-            "user_id": video_op_obj["user_id"],
-            "video_id": video_op_obj["video_id"],
-            "star": video_op_obj["star"],
-            "star_date": str(video_op_obj["star_date"])
-        }
-        return return_body
-    else:
-        raise MongoError(ErrorCode.MONGODB_VIDEO_STAR_UPDATE_FAILURE)
+    return_body = {
+        "user_id": video_op_obj["user_id"],
+        "video_id": video_op_obj["video_id"],
+        "star": video_op_obj["star"],
+        "star_date": str(video_op_obj["star_date"])
+    }
+    return return_body
 
 
 def service_video_op_cancel_star(**kw):
@@ -736,33 +681,27 @@ def service_video_op_cancel_star(**kw):
 
     if len(query_video_op) == 0:
         # create a new video_op object for current user and video
-        query_video_op_create(kw["user_id"], kw["video_id"])
-        query_video_op = query_video_op_get_by_user_video(kw["user_id"],
-                                                          kw["video_id"])
+        query_video_op = service_video_op_create(kw["user_id"], kw["video_id"])
 
     video_op_result = util_serializer_mongo_results_to_array(query_video_op)
     video_op_id = video_op_result[0]["video_op_id"]
 
     # Only perform the operation when star is True
     if video_op_result[0]["star"]:
-        update_result = query_video_op_update_star(video_op_id, False,
-                                                   get_time_now_utc())
-        if update_result == 1:
-            query_video_cnt_decr_by_one(kw["video_id"], "video_star")
+        query_video_op_update_star(video_op_id, False, get_time_now_utc())
+        query_video_cnt_decr_by_one(kw["video_id"], "video_star")
 
-            query_video_op = query_video_op_get_by_user_video(kw["user_id"],
-                                                              kw["video_id"])
-            video_op_obj = util_serializer_mongo_results_to_array(
-                query_video_op)[0]
+        query_video_op = query_video_op_get_by_user_video(
+            kw["user_id"], kw["video_id"])
+        video_op_obj = util_serializer_mongo_results_to_array(
+            query_video_op)[0]
 
-            return_body = {
-                "user_id": video_op_obj["user_id"],
-                "video_id": video_op_obj["video_id"],
-                "star": video_op_obj["star"],
-                "star_date": str(video_op_obj["star_date"])
-            }
-            return return_body
-        else:
-            raise MongoError(ErrorCode.MONGODB_VIDEO_STAR_UPDATE_FAILURE)
+        return_body = {
+            "user_id": video_op_obj["user_id"],
+            "video_id": video_op_obj["video_id"],
+            "star": video_op_obj["star"],
+            "star_date": str(video_op_obj["star_date"])
+        }
+        return return_body
     else:
-        raise MongoError(ErrorCode.MONGODB_VIDEO_STAR_UPDATE_FAILURE)
+        raise ServiceError(ErrorCode.SERVICE_VIDEO_STAR_UPDATE_FAILURE)

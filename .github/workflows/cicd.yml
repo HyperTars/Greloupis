@@ -17,6 +17,11 @@ env:
   HEROKU_APP_FRONTEND: "greloupis-frontend"
   HEROKU_APP_BACKEND: "greloupis-backend"
   HEROKU_EMAIL: "hypertars@gmail.com"
+  ACCESS_KEY_ID1: ${{ secrets.ACCESS_KEY_ID1 }}
+  ACCESS_KEY_ID2: ${{ secrets.ACCESS_KEY_ID2 }}
+  SECRET_KEY1: ${{ secrets.SECRET_KEY1 }}
+  SECRET_KEY2: ${{ secrets.SECRET_KEY2 }}
+  AWS_AUTH_KEY: ${{ secrets.AWS_AUTH_KEY }}
 
 jobs:
   test:

@@ -113,5 +113,30 @@
       "5f89ad4f02139585a94eaab2"
     ],
     "user_follower": []
+  },
+  {
+    "_id": {
+        "$oid": "5fc8d7cc0f5dc6456904ca5b"
+    },
+    "user_email": "dltd@gmail.com",
+    "user_name": "dltd",
+    "user_password": "1a6e70f943c5c68b5c34e06220e3af5fd972a440a283e7591f184afebf94fdf4b85eee25b7ddf57924f30304f4beddb3cddbd94b28b566c7876ae6f0eefb28cf",
+    "user_detail": {
+        "user_first_name": "",
+        "user_last_name": "",
+        "user_phone": "",
+        "user_street1": "",
+        "user_street2": "",
+        "user_city": "",
+        "user_state": "",
+        "user_country": "",
+        "user_zip": ""
+    },
+    "user_status": "closed",
+    "user_thumbnail": "https://dltd.png",
+    "user_reg_date": "2019-09-11 16:31:57",
+    "user_login": [],
+    "user_following": [],
+    "user_follower": []
   }
 ]

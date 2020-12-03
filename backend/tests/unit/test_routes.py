@@ -2,6 +2,7 @@ import datetime
 import json
 import unittest
 import copy
+import os
 from flask import Flask, Blueprint, g
 from flask_jwt_extended import JWTManager, create_access_token
 from flask_restx import Api
@@ -10,14 +11,15 @@ from werkzeug.datastructures import Headers
 
 from settings import config
 from utils.util_error_handler import util_error_handler
-from utils.util_jwt import blacklist, util_get_formated_response
+from utils.util_jwt import blacklist
 from utils.util_tests import util_tests_load_data, \
     util_tests_python_version, util_tests_clean_database
 from models.model_errors import ErrorCode, ServiceError
 from db.query_video import query_video_get_by_video_id, \
     query_video_get_by_title, query_video_delete, \
     query_video_update
-from routes.route_search import RouteSearchUser, RouteSearchVideo
+from routes.route_search import RouteSearchUser, \
+    RouteSearchVideo, RouteSearchTopVideos
 from routes.route_video import VideoVideoId
 from routes.route_user import UserUserId, user
 from routes.route_video import video
@@ -26,6 +28,7 @@ from service.service_video import service_video_get_by_user
 from service.service_video_op import service_video_op_get_by_user
 
 app = Flask(__name__)
+app.testing = True
 blueprint = Blueprint('api', __name__, url_prefix='/')
 app.config.from_object(config['test'])
 api = Api(blueprint)
@@ -44,66 +47,19 @@ def check_if_token_in_blacklist(decrypted_token):
     return jti in blacklist
 
 
-@jwt.expired_token_loader
-def expired_token_callback():
-    return util_get_formated_response(code=-10000,
-                                      msg='The token has expired')
-
-
-@jwt.revoked_token_loader
-def revoked_token_callback():
-    return util_get_formated_response(code=-10000,
-                                      msg='The token has been revoked')
-
-
-class TestUserRoute(unittest.TestCase):
-    def setUp(self):
-        self.app = app
-        app.config['TESTING'] = True
-        self.client = app.test_client()
-
-    def test_route_login(self):
-        response = self.client.post('/user/login', data={
-            'user_name': 'fatbin',
-            'user_password': 'fatbin_pass'
-        })
-
-        json_data = response.data
-        json_dict = json.loads(json_data)
-        print(json_dict)
-        # self.assertEqual('fatbin', json_dict['user_name'],
-        #                  "login succeed, user name matched")
-
-    def test_route_logout(self):
-        with self.app.app_context():
-            expires = datetime.timedelta(hours=20)
-            token = create_access_token(
-                identity='fatbin', expires_delta=expires, fresh=True)
-            headers = Headers({'Authorization': 'Bearer ' + token})
-            response = self.client.post('/user/logout', data={
-                'user_name': 'fatbin',
-                'user_password': 'fatbin_pass'
-            }, headers=headers)
-            json_data = response.data
-            json_dict = json.loads(json_data)
-            # print("test", json_dict)
-            self.assertEqual(200, json_dict['code'], json_dict['message'])
-
-
 class TestRouteSearch(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        if util_tests_python_version() is False:
-            exit()
+        util_tests_clean_database() if util_tests_python_version() else exit()
         cls.data = util_tests_load_data()
         util_tests_clean_database()
 
     def test_route_search_user(self):
         # Test search user by keyword
-        with app.test_request_context(
-                '/search/user?keyword=' + self.data['const_user'][0][
-                    'user_name'], data={}):
+        url = '/search/user?keyword='
+        request = url + self.data['const_user'][0]['user_name']
+        with app.test_request_context(request, data={}):
             response_json = RouteSearchUser().get().get_json()
             self.assertEqual(response_json["body"][0]["user_id"],
                              self.data['const_user'][0]['_id']['$oid'],
@@ -115,34 +71,275 @@ class TestRouteSearch(unittest.TestCase):
                              self.data['const_user'][0]['user_name'],
                              msg="First matched user name")
 
+        # With Param
+        request = request + '&param=name'
+        with app.test_request_context(request, data={}):
+            response_json = RouteSearchUser().get().get_json()
+            self.assertEqual(response_json["body"][0]["user_id"],
+                             self.data['const_user'][0]['_id']['$oid'])
+
+        request = url + \
+            self.data['const_user'][0]['user_email'] + \
+            '&param=email'
+        with app.test_request_context(request, data={}):
+            response_json = RouteSearchUser().get().get_json()
+            self.assertEqual(response_json["body"][0]["user_id"],
+                             self.data['const_user'][0]['_id']['$oid'])
+
+        request = url + \
+            self.data['const_user'][0]['user_detail']['user_first_name'] + \
+            '&param=first_name'
+        with app.test_request_context(request, data={}):
+            response_json = RouteSearchUser().get().get_json()
+            self.assertEqual(response_json["body"][0]["user_id"],
+                             self.data['const_user'][0]['_id']['$oid'])
+
+        request = url + \
+            self.data['const_user'][0]['user_detail']['user_last_name'] + \
+            '&param=last_name'
+        with app.test_request_context(request, data={}):
+            response_json = RouteSearchUser().get().get_json()
+            self.assertEqual(response_json["body"][0]["user_id"],
+                             self.data['const_user'][0]['_id']['$oid'])
+
+        request = url + \
+            self.data['const_user'][0]['user_detail']['user_street1'] + \
+            '&param=street1'
+        with app.test_request_context(request, data={}):
+            response_json = RouteSearchUser().get().get_json()
+            self.assertEqual(response_json["body"][0]["user_id"],
+                             self.data['const_user'][0]['_id']['$oid'])
+
+        request = url + \
+            self.data['const_user'][0]['user_detail']['user_street2'] + \
+            '&param=street2'
+        with app.test_request_context(request, data={}):
+            response_json = RouteSearchUser().get().get_json()
+            self.assertEqual(response_json["body"][0]["user_id"],
+                             self.data['const_user'][0]['_id']['$oid'])
+
+        request = url + \
+            self.data['const_user'][0]['user_detail']['user_city'] + \
+            '&param=city'
+        with app.test_request_context(request, data={}):
+            response_json = RouteSearchUser().get().get_json()
+            self.assertEqual(response_json["body"][0]["user_id"],
+                             self.data['const_user'][0]['_id']['$oid'])
+
+        request = url + \
+            self.data['const_user'][0]['user_detail']['user_state'] + \
+            '&param=state'
+        with app.test_request_context(request, data={}):
+            response_json = RouteSearchUser().get().get_json()
+            self.assertEqual(response_json["body"][0]["user_id"],
+                             self.data['const_user'][0]['_id']['$oid'])
+
+        request = url + \
+            self.data['const_user'][0]['user_detail']['user_country'] + \
+            '&param=country'
+        with app.test_request_context(request, data={}):
+            response_json = RouteSearchUser().get().get_json()
+            self.assertEqual(response_json["body"][0]["user_id"],
+                             self.data['const_user'][0]['_id']['$oid'])
+
+        request = url + \
+            self.data['const_user'][0]['user_detail']['user_zip'] + \
+            '&param=zip'
+        with app.test_request_context(request, data={}):
+            response_json = RouteSearchUser().get().get_json()
+            self.assertEqual(response_json["body"][0]["user_id"],
+                             self.data['const_user'][0]['_id']['$oid'])
+
+        # Raise Error: ErrorCode.ROUTE_INVALID_REQUEST_PARAM
+        error_code = str(ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_code())
+        with app.test_request_context('/search/user', data={}):
+            response_json = RouteSearchUser().get().get_json()
+        self.assertEqual(response_json["error_code"], error_code)
+
+        # Raise Error: ErrorCode.ROUTE_INVALID_REQUEST_PARAM
+        error_code = str(ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_code())
+        request = '/search/user?keyword=fake&param=fake'
+        with app.test_request_context(request, data={}):
+            response_json = RouteSearchUser().get().get_json()
+        self.assertEqual(response_json["error_code"], error_code)
+
     def test_route_search_video(self):
         # Test search video by keyword
-        with app.test_request_context(
-                '/search/video?keyword=xixihaha', data={}):
+        url = '/search/video?keyword='
+        request = url + self.data['const_video'][0]['video_title']
+        with app.test_request_context(request, data={}):
             response_json = RouteSearchVideo().get().get_json()
             self.assertEqual(response_json["body"][0]["video_id"],
-                             "5f88c0307a6eb86b0eccc8d2",
+                             self.data['const_video'][0]['_id']['$oid'],
                              msg="First matched video id")
             self.assertEqual(response_json["body"][0]["video_title"],
-                             "XiXiHaHa", msg="First matched video title")
+                             self.data['const_video'][0]['video_title'],
+                             msg="First matched video title")
             self.assertEqual(response_json["body"][0]["video_raw_content"],
-                             "https://s3.amazon.com/54asd56a4d5asdasd.mp4",
+                             self.data['const_video'][0]['video_raw_content'],
                              msg="First matched video content")
+
+        # With Param
+        request = request + '&param=title'
+        with app.test_request_context(request, data={}):
+            response_json = RouteSearchVideo().get().get_json()
+            self.assertEqual(response_json["body"][0]["video_id"],
+                             self.data['const_video'][0]['_id']['$oid'])
+
+        request = url + \
+            self.data['const_video'][0]['video_channel'] + \
+            '&param=channel'
+        with app.test_request_context(request, data={}):
+            response_json = RouteSearchVideo().get().get_json()
+            self.assertEqual(response_json["body"][0]["video_id"],
+                             self.data['const_video'][0]['_id']['$oid'])
+
+        request = url + \
+            self.data['const_video'][0]['video_description'] + \
+            '&param=description'
+        with app.test_request_context(request, data={}):
+            response_json = RouteSearchVideo().get().get_json()
+            self.assertEqual(response_json["body"][0]["video_id"],
+                             self.data['const_video'][0]['_id']['$oid'])
+
+        request = url + \
+            self.data['const_video'][0]['video_category'][0] + \
+            '&param=category'
+        with app.test_request_context(request, data={}):
+            response_json = RouteSearchVideo().get().get_json()
+            self.assertEqual(response_json["body"][0]["video_id"],
+                             self.data['const_video'][0]['_id']['$oid'])
+
+        request = url + \
+            self.data['const_video'][0]['video_tag'][0] + \
+            '&param=tag'
+        with app.test_request_context(request, data={}):
+            response_json = RouteSearchVideo().get().get_json()
+            self.assertEqual(response_json["body"][0]["video_id"],
+                             self.data['const_video'][0]['_id']['$oid'])
+
+        # Raise Error: ErrorCode.ROUTE_INVALID_REQUEST_PARAM
+        error_code = str(ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_code())
+        with app.test_request_context('/search/video', data={}):
+            response_json = RouteSearchVideo().get().get_json()
+        self.assertEqual(response_json["error_code"], error_code)
+
+        # Raise Error: ErrorCode.ROUTE_INVALID_REQUEST_PARAM
+        error_code = str(ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_code())
+        request = '/search/video?keyword=fake&param=fake'
+        with app.test_request_context(request, data={}):
+            response_json = RouteSearchVideo().get().get_json()
+        self.assertEqual(response_json["error_code"], error_code)
+
+    def test_route_search_top_videos(self):
+        # Test search video by keyword
+        url = '/search/video/top?keyword='
+        request = url + 'video_upload_time'
+        with app.test_request_context(request, data={}):
+            response_json = RouteSearchTopVideos().get().get_json()
+            self.assertEqual(response_json["body"][0]["video_id"],
+                             self.data['const_video'][0]['_id']['$oid'])
+
+        request = url + 'video_like'
+        with app.test_request_context(request, data={}):
+            response_json = RouteSearchTopVideos().get().get_json()
+            self.assertEqual(response_json["body"][0]["video_id"],
+                             self.data['const_video'][0]['_id']['$oid'])
+
+        request = url + 'video_share'
+        with app.test_request_context(request, data={}):
+            response_json = RouteSearchTopVideos().get().get_json()
+            self.assertEqual(response_json["body"][0]["video_id"],
+                             self.data['const_video'][0]['_id']['$oid'])
+
+        request = url + 'video_star'
+        with app.test_request_context(request, data={}):
+            response_json = RouteSearchTopVideos().get().get_json()
+            self.assertEqual(response_json["body"][0]["video_id"],
+                             self.data['const_video'][0]['_id']['$oid'])
+
+        request = url + 'video_view'
+        with app.test_request_context(request, data={}):
+            response_json = RouteSearchTopVideos().get().get_json()
+            self.assertEqual(response_json["body"][0]["video_id"],
+                             self.data['const_video'][0]['_id']['$oid'])
+
+        request = url + 'video_duration'
+        with app.test_request_context(request, data={}):
+            response_json = RouteSearchTopVideos().get().get_json()
+            self.assertEqual(response_json["body"][0]["video_id"],
+                             self.data['const_video'][0]['_id']['$oid'])
+
+        # Raise Error: ErrorCode.ROUTE_INVALID_REQUEST_PARAM
+        error_code = str(ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_code())
+        with app.test_request_context('/search/video/top', data={}):
+            response_json = RouteSearchTopVideos().get().get_json()
+        self.assertEqual(response_json["error_code"], error_code)
+
+        # Raise Error: ErrorCode.ROUTE_INVALID_REQUEST_PARAM
+        error_code = str(ErrorCode.ROUTE_INVALID_REQUEST_PARAM.get_code())
+        request = '/search/video/top?keyword=fake'
+        with app.test_request_context(request, data={}):
+            response_json = RouteSearchTopVideos().get().get_json()
+        self.assertEqual(response_json["error_code"], error_code)
 
 
 class TestRouteUser(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        if util_tests_python_version() is False:
-            exit()
         cls.data = util_tests_load_data()
         util_tests_clean_database()
 
-    def test_a_route_user_post(self):
-        pass
+    def test_a_route_user_login(self):
+        url = '/user/login'
+        data = {'user_name': self.data['const_user'][0]['user_name'],
+                'user_password': self.data['const_user'][0]['user_name']}
+        with app.test_client() as client:
+            response = client.post(url, data=data)
+            json_data = response.data
+            json_dict = json.loads(json_data)
+            self.assertEquals(
+                json_dict['user_name'],
+                self.data['const_user'][0]['user_name'])
 
-    def test_b_route_user_get(self):
+        ip_list = ['127.0.0.0']
+        headers = Headers({'X-Forward-For': ip_list})
+        data = {'user_name': self.data['const_user'][1]['user_name'],
+                'user_password': self.data['const_user'][1]['user_name']}
+        with app.test_client() as client:
+            response = client.post(url, data=data, headers=headers)
+            json_data = response.data
+            json_dict = json.loads(json_data)
+            self.assertEquals(
+                json_dict['user_name'],
+                self.data['const_user'][1]['user_name'])
+
+        data = {'user_name': self.data['const_user'][2]['user_name'],
+                'user_password': '123123'}
+        with app.test_client() as client:
+            response = client.post(url, data=data)
+            json_data = response.data
+            json_dict = json.loads(json_data)
+            self.assertTrue('error_code' in json_dict)
+
+    def test_b_route_user_logout(self):
+        url = '/user/login'
+        data = {'user_name': self.data['const_user'][0]['user_name'],
+                'user_password': self.data['const_user'][0]['user_name']}
+        headers = {'X-Forward-For': '127.0.0.0'}
+        with app.test_client() as client:
+            response = client.post(url, data=data, headers=headers)
+            json_data = response.data
+            json_dict = json.loads(json_data)
+            token = json_dict['user_token']
+            headers = Headers({'Authorization': 'Bearer ' + token})
+            response = client.post('/user/logout', headers=headers)
+            json_data = response.data
+            json_dict = json.loads(json_data)
+            self.assertEqual(200, json_dict['code'], json_dict['message'])
+
+    def test_c_route_user_get(self):
         uid = self.data['const_user'][0]['_id']['$oid']
         url = '/user/' + uid
         with app.test_request_context(url, data={}):
@@ -165,17 +362,112 @@ class TestRouteUser(unittest.TestCase):
                     ServiceError(
                         ErrorCode.SERVICE_INVALID_ID_OBJ)).status_code)
 
-    def test_c_route_user_put(self):
-        pass
+        # test deleted video
+        url = '/user/' + self.data['const_user'][2]['_id']['$oid']
+        with app.test_client() as client:
+            response = client.get(url)
+            json_data = response.data
+            json_dict = json.loads(json_data)
+            self.assertEquals(len(json_dict['body']['video']), 0)
 
-    def test_d_route_user_delete(self):
-        pass
+    def test_d_route_user_token_workflow(self):
+        # post (register)
+        url = '/user'
+        data = {'user_name': self.data['temp_user'][0]['user_name'],
+                'user_email': self.data['temp_user'][0]['user_email'],
+                'user_password': self.data['temp_user'][0]['user_name']}
+        with app.test_client() as client:
+            response = client.post(url, data=data)
+            json_data = response.data
+            json_dict = json.loads(json_data)
+            self.assertEquals(
+                json_dict['user_name'],
+                self.data['temp_user'][0]['user_name'])
 
-    def test_e_route_user_login(self):
-        pass
+        user_id = json_dict['user_id']
+        token = json_dict['user_token']
+        headers = Headers({'Authorization': 'Bearer ' + token})
+        url = '/user/' + user_id
 
-    def test_f_route_user_logout(self):
-        pass
+        # update (put, private user)
+        data = {'user_status': 'private'}
+        with app.test_client() as client:
+            response = client.put(url, data=data, headers=headers)
+            json_data = response.data
+            json_dict = json.loads(json_data)
+            self.assertEquals(json_dict['body']['user_status'], 'private')
+
+        # get (private user)
+        with app.test_client() as client:
+            response = client.get(url)
+            json_data = response.data
+            json_dict = json.loads(json_data)
+            self.assertEquals(json_dict['body']['user']['user_status'],
+                              'private')
+
+        # delete (deleted user)
+        with app.test_client() as client:
+            response = client.delete(url, headers=headers)
+            json_data = response.data
+            json_dict = json.loads(json_data)
+            self.assertEqual(200, json_dict['code'], json_dict['message'])
+
+        # get (delete user)
+        with app.test_client() as client:
+            response = client.get(url)
+            json_data = response.data
+            json_dict = json.loads(json_data)
+            self.assertTrue('error_code' in json_dict)
+
+    def test_e_route_user_register(self):
+        # post (register) failed
+        url = '/user'
+        data = {'user_name': self.data['temp_user'][0]['user_name']}
+        with app.test_client() as client:
+            response = client.post(url, data=data)
+            json_data = response.data
+            json_dict = json.loads(json_data)
+            self.assertTrue('error_code' in json_dict)
+
+    def test_f_route_user_put(self):
+        # update (put) wrong token failed
+        url = '/user/login'
+        data = {'user_name': self.data['const_user'][0]['user_name'],
+                'user_password': self.data['const_user'][0]['user_name']}
+        with app.test_client() as client:
+            response = client.post(url, data=data)
+        json_data = response.data
+        json_dict = json.loads(json_data)
+        token = json_dict['user_token']
+        headers = Headers({'Authorization': 'Bearer ' + token})
+
+        url = '/user/' + self.data['const_user'][1]['user_name']
+        data = {'user_status': 'private'}
+        with app.test_client() as client:
+            response = client.put(url, data=data, headers=headers)
+            json_data = response.data
+            json_dict = json.loads(json_data)
+            self.assertTrue('error_code' in json_dict)
+
+    def test_g_route_user_delete(self):
+        # update (put) wrong token failed
+        url = '/user/login'
+        data = {'user_name': self.data['const_user'][0]['user_name'],
+                'user_password': self.data['const_user'][0]['user_name']}
+        with app.test_client() as client:
+            response = client.post(url, data=data)
+        json_data = response.data
+        json_dict = json.loads(json_data)
+        token = json_dict['user_token']
+        headers = Headers({'Authorization': 'Bearer ' + token})
+
+        url = '/user/' + self.data['const_user'][1]['user_name']
+        data = {'user_status': 'private'}
+        with app.test_client() as client:
+            response = client.delete(url, data=data, headers=headers)
+            json_data = response.data
+            json_dict = json.loads(json_data)
+            self.assertTrue('error_code' in json_dict)
 
 
 '''
@@ -330,8 +622,6 @@ class TestRouteVideo(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        if util_tests_python_version() is False:
-            exit()
         cls.data = util_tests_load_data()
         util_tests_clean_database()
         cls.test_user_id = cls.data['temp_video'][0]["user_id"]
@@ -385,6 +675,18 @@ class TestRouteVideo(unittest.TestCase):
             self.assertEqual(error_json["code"], 404)
             self.assertEqual(error_json["message"],
                              ErrorCode.SERVICE_VIDEO_NOT_FOUND.get_msg())
+
+        # deleted video
+        video_id = self.data['const_video'][1]['_id']['$oid']
+        with app.test_request_context('/video/' + video_id, data={}):
+            error_json = VideoVideoId().get(video_id).get_json()
+            self.assertTrue('error_code' in error_json)
+
+        # private video
+        video_id = self.data['const_video'][2]['_id']['$oid']
+        with app.test_request_context('/video/' + video_id, data={}):
+            error_json = VideoVideoId().get(video_id).get_json()
+            self.assertTrue('error_code' in error_json)
 
     def test_c_video_update(self):
         temp_video_title = self.data['temp_video'][0]['video_title']
@@ -448,12 +750,22 @@ class TestRouteVideo(unittest.TestCase):
             self.assertEqual(error_json["message"],
                              ErrorCode.SERVICE_VIDEO_NOT_FOUND.get_msg())
 
+        # auth failed
+        video_id = self.data['const_video'][2]['_id']['$oid']
+        with app.app_context():
+            response = self.client.put('/video/' + video_id,
+                                       data=update_video,
+                                       headers=self.headers)
+            response_json = json.loads(response.data)
+            self.assertTrue('error_code' in response_json)
+
     def test_d_video_view(self):
         temp_video_title = self.data['temp_video'][0]['video_title']
         temp_video = query_video_get_by_title(temp_video_title)[0].to_dict()
         temp_video_id = temp_video["video_id"]
 
         wrong_id = "5f88f883e6ac4f89900ac984"
+        private_id = self.data['const_video'][2]['_id']['$oid']
 
         # get view successful case
         with app.app_context():
@@ -471,7 +783,13 @@ class TestRouteVideo(unittest.TestCase):
                                        data={},
                                        headers=self.headers)
             error_json = json.loads(response.data)
-            self.assertEqual(error_json["code"], 404)
+            self.assertTrue('error_code' in error_json)
+
+        with app.app_context():
+            response = self.client.get('/video/' + private_id + '/view',
+                                       headers=self.headers)
+            error_json = json.loads(response.data)
+            self.assertTrue('error_code' in error_json)
 
         # add view successful case
         with app.app_context():
@@ -488,7 +806,7 @@ class TestRouteVideo(unittest.TestCase):
                                        data={},
                                        headers=self.headers)
             error_json = json.loads(response.data)
-            self.assertEqual(error_json["code"], 404)
+            self.assertTrue('error_code' in error_json)
 
     def test_e_video_comment(self):
         temp_video_title = self.data['temp_video'][0]['video_title']
@@ -499,6 +817,7 @@ class TestRouteVideo(unittest.TestCase):
         temp_comment_updated = "really nice video"
 
         wrong_id = "5f88f883e6ac4f89900ac984"
+        private_id = self.data['const_video'][2]['_id']['$oid']
 
         # post comment successful case
         with app.app_context():
@@ -518,7 +837,15 @@ class TestRouteVideo(unittest.TestCase):
                 data={"comment": temp_comment},
                 headers=self.headers)
             error_json = json.loads(response.data)
-            self.assertEqual(error_json["code"], 404)
+            self.assertTrue('error_code' in error_json)
+
+        with app.app_context():
+            response = self.client.post(
+                '/video/' + temp_video_id + '/comment/' + private_id,
+                data={"comment": temp_comment},
+                headers=self.headers)
+            error_json = json.loads(response.data)
+            self.assertTrue('error_code' in error_json)
 
         # get comment successful case
         with app.app_context():
@@ -535,10 +862,16 @@ class TestRouteVideo(unittest.TestCase):
         with app.app_context():
             response = self.client.get(
                 '/video/' + temp_video_id + '/comment/' + wrong_id,
-                data={},
                 headers=self.headers)
             error_json = json.loads(response.data)
-            self.assertEqual(error_json["code"], 404)
+            self.assertTrue('error_code' in error_json)
+
+        with app.app_context():
+            response = self.client.get(
+                '/video/' + private_id + '/comment/' + wrong_id,
+                headers=self.headers)
+            error_json = json.loads(response.data)
+            self.assertTrue('error_code' in error_json)
 
         # update comment successful case
         with app.app_context():
@@ -580,11 +913,16 @@ class TestRouteVideo(unittest.TestCase):
         with app.app_context():
             response = self.client.get(
                 '/video/' + wrong_id + '/comment',
-                data={},
                 headers=self.headers)
             error_json = json.loads(response.data)
+            self.assertTrue('error_code' in error_json)
 
-            self.assertEqual(error_json["code"], 404)
+        with app.app_context():
+            response = self.client.get(
+                '/video/' + private_id + '/comment',
+                headers=self.headers)
+            error_json = json.loads(response.data)
+            self.assertTrue('error_code' in error_json)
 
         # delete comment successful case
         with app.app_context():
@@ -615,6 +953,7 @@ class TestRouteVideo(unittest.TestCase):
         temp_process_updated = 60
 
         wrong_id = "5f88f883e6ac4f89900ac984"
+        private_id = self.data['const_video'][2]['_id']['$oid']
 
         # post process successful case
         with app.app_context():
@@ -645,7 +984,7 @@ class TestRouteVideo(unittest.TestCase):
                 data={"process": -1},
                 headers=self.headers)
             error_json = json.loads(response.data)
-            self.assertEqual(error_json["code"], 500)
+            self.assertTrue('error_code' in error_json)
 
         # get process successful case
         with app.app_context():
@@ -663,10 +1002,16 @@ class TestRouteVideo(unittest.TestCase):
         with app.app_context():
             response = self.client.get(
                 '/video/' + temp_video_id + '/process/' + wrong_id,
-                data={},
                 headers=self.headers)
             error_json = json.loads(response.data)
-            self.assertEqual(error_json["code"], 404)
+            self.assertTrue('error_code' in error_json)
+
+        with app.app_context():
+            response = self.client.get(
+                '/video/' + private_id + '/process/' + wrong_id,
+                headers=self.headers)
+            error_json = json.loads(response.data)
+            self.assertTrue('error_code' in error_json)
 
         # update process successful case
         with app.app_context():
@@ -717,7 +1062,15 @@ class TestRouteVideo(unittest.TestCase):
                 data={},
                 headers=self.headers)
             error_json = json.loads(response.data)
-            self.assertEqual(error_json["code"], 500)
+            self.assertTrue('error_code' in error_json)
+
+        with app.app_context():
+            uid = self.data['const_user'][2]['_id']['$oid']
+            response = self.client.delete(
+                '/video/' + temp_video_id + '/process/' + uid,
+                headers=self.headers)
+            error_json = json.loads(response.data)
+            self.assertTrue('error_code' in error_json)
 
     def test_g_video_like(self):
         temp_video_title = self.data['temp_video'][0]['video_title']
@@ -725,6 +1078,7 @@ class TestRouteVideo(unittest.TestCase):
         temp_video_id = temp_video["video_id"]
         temp_user_id = temp_video["user_id"]
         wrong_id = "5f88f883e6ac4f89900ac984"
+        private_id = self.data['const_video'][2]['_id']['$oid']
 
         # post like successful case
         with app.app_context():
@@ -744,8 +1098,14 @@ class TestRouteVideo(unittest.TestCase):
                 data={},
                 headers=self.headers)
             error_json = json.loads(response.data)
+            self.assertTrue('error_code' in error_json)
 
-            self.assertEqual(error_json["code"], 500)
+        with app.app_context():
+            response = self.client.post(
+                '/video/' + private_id + '/like/' + temp_user_id,
+                headers=self.headers)
+            error_json = json.loads(response.data)
+            self.assertTrue('error_code' in error_json)
 
         # get all likes of the video successful case
         with app.app_context():
@@ -762,10 +1122,16 @@ class TestRouteVideo(unittest.TestCase):
         with app.app_context():
             response = self.client.get(
                 '/video/' + wrong_id + '/like',
-                data={},
                 headers=self.headers)
             error_json = json.loads(response.data)
-            self.assertEqual(error_json["code"], 404)
+            self.assertTrue('error_code' in error_json)
+
+        with app.app_context():
+            response = self.client.get(
+                '/video/' + private_id + '/like',
+                headers=self.headers)
+            error_json = json.loads(response.data)
+            self.assertTrue('error_code' in error_json)
 
         # cancel like successful case
         with app.app_context():
@@ -783,11 +1149,20 @@ class TestRouteVideo(unittest.TestCase):
         with app.app_context():
             response = self.client.delete(
                 '/video/' + temp_video_id + '/like/' + temp_user_id,
-                data={},
+                headers=self.headers)
+        with app.app_context():
+            response = self.client.delete(
+                '/video/' + temp_video_id + '/like/' + temp_user_id,
                 headers=self.headers)
             error_json = json.loads(response.data)
+            self.assertTrue('error_code' in error_json)
 
-            self.assertEqual(error_json["code"], 500)
+        with app.app_context():
+            response = self.client.delete(
+                '/video/' + temp_video_id + '/like/' + temp_user_id[1:],
+                headers=self.headers)
+            error_json = json.loads(response.data)
+            self.assertTrue('error_code' in error_json)
 
     def test_h_video_dislike(self):
         temp_video_title = self.data['temp_video'][0]['video_title']
@@ -795,6 +1170,7 @@ class TestRouteVideo(unittest.TestCase):
         temp_video_id = temp_video["video_id"]
         temp_user_id = temp_video["user_id"]
         wrong_id = "5f88f883e6ac4f89900ac984"
+        private_id = self.data['const_video'][2]['_id']['$oid']
 
         # post dislike successful case
         with app.app_context():
@@ -815,8 +1191,15 @@ class TestRouteVideo(unittest.TestCase):
                 data={},
                 headers=self.headers)
             error_json = json.loads(response.data)
+            self.assertTrue('error_code' in error_json)
 
-            self.assertEqual(error_json["code"], 404)
+        with app.app_context():
+            response = self.client.post(
+                '/video/' + private_id + '/dislike/' + wrong_id,
+                data={},
+                headers=self.headers)
+            error_json = json.loads(response.data)
+            self.assertTrue('error_code' in error_json)
 
         # get all dislikes of the video successful case
         with app.app_context():
@@ -834,11 +1217,16 @@ class TestRouteVideo(unittest.TestCase):
         with app.app_context():
             response = self.client.get(
                 '/video/' + wrong_id + '/dislike',
-                data={},
                 headers=self.headers)
             error_json = json.loads(response.data)
+            self.assertTrue('error_code' in error_json)
 
-            self.assertEqual(error_json["code"], 404)
+        with app.app_context():
+            response = self.client.get(
+                '/video/' + private_id + '/dislike',
+                headers=self.headers)
+            error_json = json.loads(response.data)
+            self.assertTrue('error_code' in error_json)
 
         # cancel dislike successful case
         with app.app_context():
@@ -868,6 +1256,7 @@ class TestRouteVideo(unittest.TestCase):
         temp_video_id = temp_video["video_id"]
         temp_user_id = temp_video["user_id"]
         wrong_id = "5f88f883e6ac4f89900ac984"
+        private_id = self.data['const_video'][2]['_id']['$oid']
 
         # post star successful case
         with app.app_context():
@@ -885,10 +1274,16 @@ class TestRouteVideo(unittest.TestCase):
         with app.app_context():
             response = self.client.post(
                 '/video/' + temp_video_id + '/star/' + wrong_id,
-                data={},
                 headers=self.headers)
             error_json = json.loads(response.data)
-            self.assertEqual(error_json["code"], 404)
+            self.assertTrue('error_code' in error_json)
+
+        with app.app_context():
+            response = self.client.post(
+                '/video/' + private_id + '/star/' + wrong_id,
+                headers=self.headers)
+            error_json = json.loads(response.data)
+            self.assertTrue('error_code' in error_json)
 
         # get all stars of the video successful case
         with app.app_context():
@@ -906,10 +1301,16 @@ class TestRouteVideo(unittest.TestCase):
         with app.app_context():
             response = self.client.get(
                 '/video/' + wrong_id + '/star',
-                data={},
                 headers=self.headers)
             error_json = json.loads(response.data)
-            self.assertEqual(error_json["code"], 404)
+            self.assertTrue('error_code' in error_json)
+
+        with app.app_context():
+            response = self.client.get(
+                '/video/' + private_id + '/star',
+                headers=self.headers)
+            error_json = json.loads(response.data)
+            self.assertTrue('error_code' in error_json)
 
         # cancel star successful case
         with app.app_context():
@@ -932,6 +1333,47 @@ class TestRouteVideo(unittest.TestCase):
 
             self.assertEqual(error_json["code"], 404)
 
+    def test_j_aws(self):
+        url = '/video/aws'
+        vid = self.data['const_video'][2]['_id']['$oid']
+        AWS_AUTH_KEY = os.environ.get('AWS_AUTH_KEY')
+        data = {'aws_auth_key': AWS_AUTH_KEY,
+                'video_id': vid}
+        print(data)
+        with app.test_client() as client:
+            response = client.post(url, data=data)
+            json_data = response.data
+            json_dict = json.loads(json_data)
+            print(json_dict)
+            self.assertEquals(json_dict['body'][0]['video_raw_status'],
+                              'streaming')
+
+        # failed case
+        url = '/video/aws'
+        data = {'video_id': vid}
+        with app.test_client() as client:
+            response = client.post(url, data=data)
+            json_data = response.data
+            json_dict = json.loads(json_data)
+            print(json_dict)
+            self.assertTrue('error_code' in json_dict)
+
+        url = '/video/aws'
+        data = {'aws_auth_key': AWS_AUTH_KEY}
+        with app.test_client() as client:
+            response = client.post(url, data=data)
+            json_data = response.data
+            json_dict = json.loads(json_data)
+            self.assertTrue('error_code' in json_dict)
+
+        url = '/video/aws'
+        data = {'aws_auth_key': AWS_AUTH_KEY[1:]}
+        with app.test_client() as client:
+            response = client.post(url, data=data)
+            json_data = response.data
+            json_dict = json.loads(json_data)
+            self.assertTrue('error_code' in json_dict)
+
     def test_z_video_delete(self):
         temp_video_title = self.data['temp_video'][0]['video_title']
         temp_video = query_video_get_by_title(temp_video_title)[0].to_dict()
@@ -945,10 +1387,12 @@ class TestRouteVideo(unittest.TestCase):
             delete_search = query_video_get_by_video_id(temp_video_id)
             self.assertEqual(len(delete_search), 1)
 
+        # auth failed
+        video_id = self.data['const_video'][2]['_id']['$oid']
+        with app.app_context():
+            response = self.client.delete(
+                '/video/' + video_id, headers=self.headers)
+            response_json = json.loads(response.data)
+            self.assertTrue('error_code' in response_json)
+
         query_video_delete(temp_video_id, silent=True)
-
-
-"""
-if __name__ == '__main__':
-    unittest.main()
-"""
