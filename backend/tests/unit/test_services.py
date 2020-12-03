@@ -38,7 +38,7 @@ from db.query_video import query_video_get_by_title, \
     query_video_update
 from db.query_video_op import query_video_op_get_by_video_id
 from db.mongo import init_db
-from models.model_errors import ErrorCode, MongoError, ServiceError
+from models.model_errors import ErrorCode, ServiceError
 from utils.util_time import get_time_now_utc
 from utils.util_serializer import util_serializer_mongo_results_to_array
 

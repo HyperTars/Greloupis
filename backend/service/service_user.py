@@ -121,20 +121,18 @@ def service_user_close(**kw):
     if 'method' in kw and kw['method'] == 'status':
         res = query_user_update_status(kw['user_id'], 'closed')
         for video in videos:
-            vid = video.to_dict()['video_id']
-            service_video_delete(video_id=vid, method='status')
+            service_video_delete(video_id=video.to_dict()['video_id'],
+                                 method='status')
 
     # delete by removing from databse
     else:
         res = query_user_delete_by_id(kw['user_id'])
         for video in videos:
-            vid = video.to_dict()['video_id']
-            service_video_delete(video_id=vid)
+            service_video_delete(video_id=video.to_dict()['video_id'])
 
     # delete all op created by this user immediately
     for op in ops:
-        opid = op.to_dict()['video_op_id']
-        query_video_op_delete(opid, silent=True)
+        query_video_op_delete(op.to_dict()['video_op_id'], silent=True)
 
     return res
 
