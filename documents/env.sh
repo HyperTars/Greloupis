@@ -1,4 +1,4 @@
-# Greloupis - Online Video Platform
+# Greloupis - Environment Variables
 export COVERALLS_REPO_TOKEN="d0uSUWTxdI9YRQNQOEQ9IxTjwgcjnYaGl"
 export CODECOV_TOKEN="a767bea5-9464-4229-b6f4-e420874311b3"
 export PROFILE="dev"

@@ -1,8 +1,7 @@
 name: CI/CD
 
 on:
-  # push:
-  # pull_request:
+  push:
   workflow_dispatch:
 
 env:
@@ -14,9 +13,9 @@ env:
   BACKEND_BUILD: "greloupis-backend"
   FRONTEND_BUILD: "greloupis-frontend"
   HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+  HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
   HEROKU_APP_FRONTEND: "greloupis-frontend"
-  HEROKU_APP_BACKEND: "greloupis-backend"
-  HEROKU_EMAIL: "hypertars@gmail.com"
+  HEROKU_APP_BACKEND: "greloupis-backend"  
   ACCESS_KEY_ID1: ${{ secrets.ACCESS_KEY_ID1 }}
   ACCESS_KEY_ID2: ${{ secrets.ACCESS_KEY_ID2 }}
   SECRET_KEY1: ${{ secrets.SECRET_KEY1 }}

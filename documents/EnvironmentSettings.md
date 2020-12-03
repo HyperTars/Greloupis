@@ -38,6 +38,8 @@ We have lots of environment variables used in our project, which you should set 
 ## CI / CD Workflow Environment Variables
 
 ### GitHub Action Secrets (CI)
+[GitHub Action Settings](../.github/workflows/cicd.yml)
+
 #### Coverage Service
 - COVERALLS_REPO_TOKEN
 - CODECOV_TOKEN
