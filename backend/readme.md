@@ -116,7 +116,7 @@ make docker_build docker_push
     - BACKEND_BUILD
     - BACKEND_REPO (you can also change it in [makefile](makefile))
     - HEROKU_API_KEY
-    - HEROKU_APP_NAME
+    - HEROKU_APP_BACKEND
 - To deploy to heroku, run
 ```bash
 make heroku

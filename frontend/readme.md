@@ -161,7 +161,7 @@ make docker_build docker_push
     - FRONTEND_BUILD
     - FRONTEND_REPO (you can also change it in [makefile](makefile))
     - HEROKU_API_KEY
-    - HEROKU_APP_NAME
+    - HEROKU_APP_FRONTEND
 - To deploy to heroku, run
 ```bash
 make heroku

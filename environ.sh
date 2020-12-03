@@ -33,4 +33,4 @@ export SECRET_KEY2=<aws s3 image bucket secret key>
 
 # AWS - Backend Post Key (after transcoding finished, post {AWS_AUTH_KEY=$AWS_AUTH_KEY, video_id=$video_id} to /video/aws)
 # Backend: configs/config_base.py, routes/route_video.py
-export AWS_AUTH_KEY=<self defined aws-backend communicate key>
+export AWS_AUTH_KEY=<self defined aws-backend communication auth key>
