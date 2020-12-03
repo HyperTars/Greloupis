@@ -65,8 +65,6 @@ export default class VideoUpload extends Component {
           this.setState({
             video_id: res.body.video_id,
           });
-          console.log(process.env.REACT_APP_ACCESS_KEY_ID1)
-          console.log(process.env.REACT_APP_SECRET_KEY1)
           // upload to s3
           AWS.config.update({
             accessKeyId: process.env.REACT_APP_ACCESS_KEY_ID1,
