@@ -112,7 +112,7 @@
 - **Please make sure the following dependencies are installed and configured before running**
     - npm (6.14.8)
     - node.js (14.15.0)
-    - Set up [Environment Variable](../documents/env.sh)
+    - Set up [Environment Variable](../documents/EnvironmentSettings.md)
 
 ### Install Dependencies
 - To install dependencies, run
@@ -147,7 +147,7 @@ make tests
 
 ### Dockerize
 - This section is for you to dockerize manually. Normally, GitHub Action will do the dockerize job once master branch is updated.
-- Before dockerize, make sure you've set up [environment variable](../documents/env.sh)
+- Before dockerize, make sure you've set up [environment variable](../documents/EnvironmentSettings.md)
     - FRONTEND_BUILD
     - FRONTEND_REPO (you can also change it in [makefile](makefile))
 - To dockerize backend, run
@@ -157,7 +157,7 @@ make docker_build docker_push
 
 ### Deploy
 - This section is for you to deploy manually. Normally, GitHub Action will do the deploy job once master branch is updated.
-- Before deploy, make sure you've set up [environment variable](../documents/env.sh)
+- Before deploy, make sure you've set up [environment variable](../documents/EnvironmentSettings.md)
     - FRONTEND_BUILD
     - FRONTEND_REPO (you can also change it in [makefile](makefile))
     - HEROKU_API_KEY

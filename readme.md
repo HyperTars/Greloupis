@@ -50,6 +50,7 @@
     - [Frontend Details](#frontend-details)
     - [Backend Details](#backend-details)
     - [CI / CD Workflow](#ci--cd-workflow)
+    - [Environment Settings](#Environment-Settings)
   - [Setup Guide](#setup-guide)
       - [Environment Requirement](#environment-requirement)
       - [Install Dependencies](#install-dependencies)
@@ -68,14 +69,15 @@
 ### [Frontend Details](frontend/readme.md)
 ### [Backend Details](backend/readme.md)
 ### [CI / CD Workflow](documents/cicd.md)
-  
+### [Environment Settings](documents/EnvironmentSettings.md)
+
 ## Setup Guide
 
 #### Environment Requirement
 - Python 3.7 / 3.8 **(3.6 or below and 3.9 are not supported)**
 - npm (6.14.8)
 - node.js (14.15.0)
-- [Environment Variables](documents/env.sh)
+- [Environment Variables](../documents/EnvironmentSettings.md)
 - Make sure MongoDB & AWS Endpoints are all set, see more details in [Backend Setup Guide](backend/readme.md#Environment-Requirement-And-Configs)
 #### Install Dependencies
 - To install dependencies, run

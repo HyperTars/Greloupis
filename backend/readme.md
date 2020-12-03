@@ -58,7 +58,7 @@
 ### Environment Requirement And Configs
 - **Please make sure the following dependencies are installed and configured before running**
     - Python 3.7 / 3.8 **(3.6 or below and 3.9 are not supported)**
-    - Set up [Environment Variable](../documents/env.sh)
+    - Set up [Environment Variable](../documents/EnvironmentSettings.md)
 
 - Configurations
     - If you run locally, makefile will set the PROFILE as dev, you can change it in [makefile](makefile)
@@ -100,7 +100,7 @@ make tests
 
 ### Dockerize
 - This section is for you to dockerize manually. Normally, GitHub Action will do the dockerize job once master branch is updated.
-- Before dockerize, make sure you've set up [environment variable](../documents/env.sh)
+- Before dockerize, make sure you've set up [environment variable](../documents/EnvironmentSettings.md)
     - PROFILE (you can also change it in [makefile](makefile))
     - BACKEND_BUILD
     - BACKEND_REPO (you can also change it in [makefile](makefile))
@@ -111,7 +111,7 @@ make docker_build docker_push
 
 ### Deploy
 - This section is for you to deploy manually. Normally, GitHub Action will do the deploy job once master branch is updated.
-- Before deploy, make sure you've set up [environment variable](../documents/env.sh)
+- Before deploy, make sure you've set up [environment variable](../documents/EnvironmentSettings.md)
     - PROFILE (you can also change it in [makefile](makefile))
     - BACKEND_BUILD
     - BACKEND_REPO (you can also change it in [makefile](makefile))

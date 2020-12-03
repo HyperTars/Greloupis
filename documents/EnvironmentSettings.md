@@ -1,6 +1,7 @@
 # Greloupis - Environment Settings
 
-We have lots of environment variables used in our project, which you should set before running.
+- We have lots of environment variables used in our project, which you should set before running.
+- You can set by using [Environment Variable Checklist](../environ.sh)
 
 ## Table of Content
 - [Greloupis - Envoronment Settings](#Greloupis---Environment-Settings)

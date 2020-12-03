@@ -48,10 +48,10 @@
     - `Stage Deploy`: run only when `master` branch is pushed to Github
     - Note that we enabled **branch protection rule for master** so that only **reviewed pull request** can be pushed (merged) into master
 
-    ![GitHub Action](GitHubAction.png)
+    ![GitHub Action](images/GitHubAction.png)
 
 ## Stage Test
-- To test our project, we need to setup the environment (node.js & python), install dependencies, then run tests and generate test report.
+- To test our project, you need to setup the environment (node.js & python) and [variables](EnvironmentSettings.md), install dependencies, then run tests and generate test report.
     ```yml
     test:
         name: Test
@@ -81,10 +81,10 @@
             make report
             make coverage
     ```
-    ![Stage Test](GitHubAction-Test.png)
+    ![Stage Test](images/GitHubAction-Test.png)
 
 ### Setup Test Environment
-- First of all, we setup the environment we need: Node.js 14.15 & Python 3.8
+- First of all, we setup the environment we need: Node.js 14.15 & Python 3.8 and [variables](EnvironmentSettings.md)
 - Then we execute `make_env` to install depenencies
     - In [makefile](../makefile), we execute `dev_env_backend` and `dev_env_frontend`
     - `dev_env_frontend`: open frontend folder and execute [frontend makefile](../frontend/makefile)
@@ -111,7 +111,7 @@
 - `npm run test`: For frontend, we use [jest](../frontend/jest.config.js) to test our React files.
 - `report`: After testing, we can generate a test report
 
-    ![jest report](jest.png)
+    ![jest report](images/jest.png)
 
 ### Test Backend
 - We run `make tests` in [backend makefile](../backend/makefile)
@@ -130,21 +130,20 @@
     ```
 - `unit`: In unit test part, we use `PyTest` to test every file we wrote for background separately with lots of boundary cases. Since lots of tests need to interact with MongoDB, this might take some time (usually 20 sec ~ 60 sec)
 
-    ![unit test](unittest.png)
+    ![unit test](images/unittest.png)
 - `report`: Then we generate a coverage report for each file. Since some try-exception boundary cases cannot be reached, coverage of some files will be close to 100% but not exactly 100%.
 
-    ![coverage](coverage.png)
+    ![coverage](images/coverage.png)
 - `lint`: Finally, we use [Flake8](../backend/configs/flake8) to do lint test
 
     ![lint](lint.png)
 - Finally, we upload our test results to [CodeCov](https://codecov.io/gh/HyperTars/Online-Video-Platform) and [Coveralls](https://coveralls.io/github/HyperTars/Online-Video-Platform) so that we can see our visualized coverage report.
     - CodeCov
 
-        ![codecov sunburst](codecov-sunburst.png)
-        ![codecov files](codecov-files.png)
+        ![codecov](images/codecov.png)
     - Coveralls
 
-        ![coveralls](coveralls.png)
+        ![coveralls](images/coveralls.png)
 
 ## Stage Dockerize
 - To dockerize our project, we wrote Dockerfile for both [frontend](../frontend/Dockerfile) and [backend](../backend/Dockerfile). And we also have a [docker-compose](../docker-compose.yml) in case you want to run both frontend and backend locally with only one command in one terminal.
@@ -165,14 +164,14 @@
         - name: Push Backend To Dockerhub
             run: make docker_push_backend
     ```
-    ![Stage Dockerize](GitHubAction-Dockerize.png)
+    ![Stage Dockerize](images/GitHubAction-Dockerize.png)
 
 
 ### Dockerize Frontend
 - We run `make docker_build docker_push` in [frontend makefile](../frontend/makefile)
     ```makefile
     docker_build:
-        - docker build -f Dockerfile -t $(FRONTEND_BUILD):$(TAG) .
+	- docker build --build-arg ACCESS_KEY_ID1=$(ACCESS_KEY_ID1) --build-arg ACCESS_KEY_ID2=$(ACCESS_KEY_ID2) --build-arg SECRET_KEY1=$(SECRET_KEY1) --build-arg SECRET_KEY2=$(SECRET_KEY2) -f Dockerfile -t $(FRONTEND_BUILD):$(TAG) .
     docker_push:
         - docker login --username $(DOCKER_USER) --password $(DOCKER_PASS)
         - docker tag $(FRONTEND_BUILD) $(FRONTEND_REPO)
@@ -185,7 +184,7 @@
     ```
 - We set up instructions for building, running [Dockerfile](../frontend/Dockerfile) and pushing to, retrieving and running from [Dockerhub](https://hub.docker.com/r/hypertars/greloupis-frontend)
 - We use `--env` to bind the 3000 port in case running locally, which will be decided automatically in [heroku](https://greloupis-frontend.herokuapp.com)
-- Note that if you want to tag and push locally, you should configure the [environment variables](env.sh) first. These should also be set in **GitHub Action Secret Keys** so that the workflow could be executed automatically.
+- Note that if you want to tag and push locally, you should configure the [environment variables](EnvironmentSettings.md) first. [These](../environ.sh) should also be set in **GitHub Action Secret Keys** so that the workflow could be executed automatically.
 - You can set `$(TAG)` in environment if you wish, the default value is `latest`
 - Run `make docker_run_frontend` to use [Dockerfile](../frontend/Dockerfile) to run frontend locally.
 
@@ -193,19 +192,19 @@
 - We run `make docker_build docker_push` in [backend makefile](../backend/makefile)
     ```makefile
     docker_build:
-    - docker build -f Dockerfile -t $(BACKEND_BUILD):$(TAG) .
+        - docker build -f Dockerfile -t $(BACKEND_BUILD):$(TAG) .
     docker_run:
-        - docker run -p 5000:5000 --env PORT=5000 --env PROFILE=$(PROFILE) $(BACKEND_BUILD)
+        - docker run -p 5000:5000 --env PORT=5000 --env AWS_AUTH_KEY=$(AWS_AUTH_KEY) --env PROFILE=$(PROFILE) $(BACKEND_BUILD)
     docker_push:
         - docker login --username $(DOCKER_USER) --password $(DOCKER_PASS)
         - docker tag $(BACKEND_BUILD) $(BACKEND_REPO)
         - docker push $(BACKEND_REPO)
     docker_hub:
-        - docker run -p 5000:5000 --env PORT=5000 --rm -it $(BACKEND_REPO):$(TAG)
+        - docker run -p 5000:5000 --env PORT=5000 --env AWS_AUTH_KEY=$(AWS_AUTH_KEY) --env PROFILE=$(PROFILE) --rm -it $(BACKEND_REPO):$(TAG)
     ```
 - We set up instructions for building, running [Dockerfile](../backend/Dockerfile) and pushing to, retrieving and running from [Dockerhub](https://hub.docker.com/r/hypertars/greloupis-backend)
 - We use `--env` to bind the 5000 port in case running locally, which will be decided automatically in [heroku](https://greloupis-frontend.herokuapp.com)
-- Note that if you want to tag and push locally, you should configure the [environment variables](env.sh) first. These should also be set in **GitHub Action Secret Keys** so that the workflow could be executed automatically.
+- Note that if you want to tag and push locally, you should configure the [environment variables](EnvironmentSettings.md) first. [These](../environ.sh) should also be set in **GitHub Action Secret Keys** so that the workflow could be executed automatically.
 - You can set `$(TAG)` in environment if you wish, the default value is `latest`
 - Run `make docker_run_backend` to use [Dockerfile](../backend/Dockerfile) to run backend locally.
 
@@ -220,6 +219,11 @@
         build:
         context: ./frontend
         dockerfile: Dockerfile
+        args:
+            - ACCESS_KEY_ID1=${ACCESS_KEY_ID1}
+            - SECRET_KEY1=${SECRET_KEY1}
+            - ACCESS_KEY_ID2=${ACCESS_KEY_ID2}
+            - SECRET_KEY2=${SECRET_KEY2}
         ports:
         - 80:80
         - 443:443
@@ -244,7 +248,8 @@
         - ./backend:/usr/src/app
         environment:
         - PORT=5000
-        - PROFILE=prod
+        - PROFILE="prod"
+        - AWS_AUTH_KEY=${AWS_AUTH_KEY}
         image: hypertars/greloupis-backend:latest
     ```
 
@@ -266,7 +271,7 @@
         - name: Deploy Backend
             run: make heroku_backend
     ```
-    ![Stage Deploy](GitHubAction-Deploy.png)
+    ![Stage Deploy](images/GitHubAction-Deploy.png)
 
 
 ### Deploy Frontend
@@ -274,10 +279,11 @@
     ```makefile
     heroku:
         - docker login --username _ --password=$(HEROKU_API_KEY) registry.heroku.com
-        - heroku container:push web --app $(FRONTEND_BUILD)
-        - heroku container:release web --app $(FRONTEND_BUILD)
+        - heroku container:push web --arg ACCESS_KEY_ID1=$(ACCESS_KEY_ID1),ACCESS_KEY_ID2=$(ACCESS_KEY_ID2),SECRET_KEY1=$(SECRET_KEY1),SECRET_KEY2=$(SECRET_KEY2) --app $(FRONTEND_BUILD)
+        - heroku container:release web --app $(HEROKU_APP_FRONTEND)
     ```
-- Note that if you want to tag and push locally, you should configure the [environment variables](env.sh) first. These should also be set in **GitHub Action Secret Keys** so that the workflow could be executed automatically.
+- We use `--arg` to set up **Dockerfile building environment variables**
+- Note that if you want to tag and push locally, you should configure the [environment variables](EnvironmentSettings.md) first. [These](../environ.sh) should also be set in **GitHub Action Secret Keys** so that the workflow could be executed automatically.
 
 ### Deploy Backend
 - We run `make heroku` in [backend makefile](../backend/makefile)
@@ -287,7 +293,7 @@
         - heroku container:push web --app $(BACKEND_BUILD)
         - heroku container:release web --app $(BACKEND_BUILD)
     ```
-- Note that if you want to tag and push locally, you should configure the [environment variables](env.sh) first. These should also be set in **GitHub Action Secret Keys** so that the workflow could be executed automatically.
+- Note that if you want to tag and push locally, you should configure the [environment variables](EnvironmentSettings.md) first. [These](../environ.sh) should also be set in **GitHub Action Secret Keys** so that the workflow could be executed automatically.
 
 ### Deploy Monintoring
 - [Heroku Frontend Metrics Monitor](https://metrics.librato.com/s/public/wxet4vyas)
