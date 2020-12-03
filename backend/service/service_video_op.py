@@ -13,7 +13,8 @@ from models.model_errors import ErrorCode, ServiceError
 
 
 def service_video_op_create(user_id: str, video_id: str):
-    query_video_op_create(user_id, video_id)
+    if len(query_video_op_get_by_user_video(user_id, video_id)) == 0:
+        query_video_op_create(user_id, video_id)
     return query_video_op_get_by_user_video(user_id, video_id)
 
 
