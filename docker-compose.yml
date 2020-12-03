@@ -5,6 +5,11 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      args:
+        - ACCESS_KEY_ID1=${ACCESS_KEY_ID1}
+        - SECRET_KEY1=${SECRET_KEY1}
+        - ACCESS_KEY_ID2=${ACCESS_KEY_ID2}
+        - SECRET_KEY2=${SECRET_KEY2}
     ports:
       - 80:80
       - 443:443
@@ -15,10 +20,6 @@ services:
       - ./frontend/configs/nginx.conf:/etc/nginx/nginx/conf
     environment:
       - PORT=3000
-      - ACCESS_KEY_ID1=${ACCESS_KEY_ID1}
-      - SECRET_KEY1=${SECRET_KEY1}
-      - ACCESS_KEY_ID2=${ACCESS_KEY_ID2}
-      - SECRET_KEY2=${SECRET_KEY2}
     image: hypertars/greloupis-frontend:latest
 
   backend:
