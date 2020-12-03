@@ -15,45 +15,43 @@ user_delete | Delete user account | DELETE | /user/{user_id}
 
 ### User Create
 - **Function**
-  - user_create (user_name, user_email, user_password, first_name, last_name, phone)
+  - user_create (user_name, user_email, user_password)
 
 - **Parameters**
   ```
-  "body": {
-    "user_name": string,
-    "user_email": string,
-    "user_password": string,
-    "user_details": UserDetail {
-        "first_name": string,
-        "last_name": string,
-        "phone": string
-      }
-  }
+  "user_name": string,
+  "user_email": string,
+  "user_password": string,
   ```
   
 - **Returns**
   - 200 (default): successful operation
     ```
-    "body": {
-      "user_id": string,
-      "user_name": string,
-      "user_email": string,
-      "user_password": string,
-      "user_status": enum,
-      "user_thumbnail": Thumbnail {
-        "thumbnail_uri": string,
-        "thumbnail_type": enum
-      }
-      "user_details": UserDetail {
-        "first_name": string,
-        "last_name": string,
-        "phone": string
-      }
-      "user_followers": big int,
-      "user_reg_date": date-type,
-      "user_recent_login": LoginDetail {
-        "login_ip": string,
-        "login_time": date-type
+    {
+      "code": "string",
+      "body": {
+        "user_id": "string",
+        "user_name": "string",
+        "user_email": "string",
+        "user_password": "string",
+        "user_detail": {
+          "user_first_name": "string",
+          "user_last_name": "string",
+          "user_phone": "string",
+          "user_street1": "string",
+          "user_street2": "string",
+          "user_city": "string",
+          "user_state": "string",
+          "user_country": "string",
+          "user_zip": "string"
+        },
+        "user_status": "string",
+        "user_thumbnail": "string",
+        "user_follower": 0,
+        "user_reg_date": "2020-12-02T20:46:49.404Z",
+        "user_recent_login": [
+          "string"
+        ]
       }
     }
     ```
@@ -62,16 +60,14 @@ user_delete | Delete user account | DELETE | /user/{user_id}
 
 ### User Login
 - **Function**
-  - user_login (api_dev_key, user_name, user_email, user_password)
+  - user_login (user_name, user_email, user_password)
   - Either `user_name` or `user_email` must exist
 
 - **Parameters**
   ```
-  "body": {
-    "user_name": string,
-    "user_email": string,
-    "user_password": string
-  }
+  "user_name": string,
+  "user_email": string,
+  "user_password": string
   ```
   Either `user_name` or `email` must be input; `password` is required.
 
@@ -84,10 +80,12 @@ user_delete | Delete user account | DELETE | /user/{user_id}
 
 ### User Logout
 - **Function**
-  - user_logout (api_dev_key)
+  - user_logout (jwt_token)
 
 - **Parameters**
-  - None
+  ```
+  "jwt_token": string
+  ```
 
 - **Returns**
   - 200 (default): successful operation
@@ -96,36 +94,41 @@ user_delete | Delete user account | DELETE | /user/{user_id}
 
 ### User Get
 - **Function**
-  - user_get (api_dev_key, user_id)
+  - user_get (user_id)
 
 - **Parameters**
-  - "body": {
-      "user_id": string
-    }
+  ```
+  "user_id": string
+  ```
 
 - **Returns**
   - 200 (default): successful operation
     ```
-    "body": {
-      "user_id": string,
-      "user_name": string,
-      "user_email": string,
-      "user_password": string,
-      "user_status": enum,
-      "user_thumbnail": Thumbnail {
-        "thumbnail_uri": string,
-        "thumbnail_type": enum
-      }
-      "user_details": UserDetail {
-        "first_name": string,
-        "last_name": string,
-        "phone": string
-      }
-      "user_followers": big int,
-      "user_reg_date": date-type,
-      "user_recent_login": LoginDetail {
-        "login_ip": string,
-        "login_time": date-type
+    {
+      "code": "string",
+      "body": {
+        "user_id": "string",
+        "user_name": "string",
+        "user_email": "string",
+        "user_password": "string",
+        "user_detail": {
+          "user_first_name": "string",
+          "user_last_name": "string",
+          "user_phone": "string",
+          "user_street1": "string",
+          "user_street2": "string",
+          "user_city": "string",
+          "user_state": "string",
+          "user_country": "string",
+          "user_zip": "string"
+        },
+        "user_status": "string",
+        "user_thumbnail": "string",
+        "user_follower": 0,
+        "user_reg_date": "2020-12-02T20:46:49.404Z",
+        "user_recent_login": [
+          "string"
+        ]
       }
     }
     ```
@@ -135,45 +138,56 @@ user_delete | Delete user account | DELETE | /user/{user_id}
 
 ### User Update
 - **Function**
-  - user_update(api_dev_key, user_id, user_name, user_email, user_password, first_name, last_name, phone)
+  - user_update(jwt_token, user_id, user_name, user_email, user_password, user_first_name, user_last_name, user_phone, user_street1, user_street2, user_city, user_state, user_country, user_zip, user_status)
 
 - **Parameters**
   ```
   "user_id": string,
-  "body": {
-    "user_name": string,
-    "user_email": string,
-    "user_password": string,
-    "user_details": UserDetail {
-        "first_name": string,
-        "last_name": string,
-        "phone": string
-      }
-  }
+  "user_name": string,
+  "user_email": string,
+  "user_password": string,
+  "user_first_name": string,
+  "user_last_name": string,
+  "user_phone": string,
+  "user_street1": string,
+  "user_street2": string,
+  "user_city": string,
+  "user_state": string,
+  "user_country": string,
+  "user_zip": string,
+  "user_status": string,
   ```
+
+  `user_id` is required, while others are optional.
+
 - **Returns**
   - 200 (default): successful operation
     ```
-    "body": {
-      "user_id": string,
-      "user_name": string,
-      "user_email": string,
-      "user_password": string,
-      "user_status": enum,
-      "user_thumbnail": Thumbnail {
-        "thumbnail_uri": string,
-        "thumbnail_type": enum
-      }
-      "user_details": UserDetail {
-        "first_name": string,
-        "last_name": string,
-        "phone": string
-      }
-      "user_followers": big int,
-      "user_reg_date": date-type,
-      "user_recent_login": LoginDetail {
-        "login_ip": string,
-        "login_time": date-type
+    {
+      "code": "string",
+      "body": {
+        "user_id": "string",
+        "user_name": "string",
+        "user_email": "string",
+        "user_password": "string",
+        "user_detail": {
+          "user_first_name": "string",
+          "user_last_name": "string",
+          "user_phone": "string",
+          "user_street1": "string",
+          "user_street2": "string",
+          "user_city": "string",
+          "user_state": "string",
+          "user_country": "string",
+          "user_zip": "string"
+        },
+        "user_status": "string",
+        "user_thumbnail": "string",
+        "user_follower": 0,
+        "user_reg_date": "2020-12-02T20:46:49.404Z",
+        "user_recent_login": [
+          "string"
+        ]
       }
     }
     ```
@@ -184,16 +198,19 @@ user_delete | Delete user account | DELETE | /user/{user_id}
 
 ### User Delete
 - **Function**
-  - user_delete(api_dev_key)
+  - user_delete(jwt_token, user_id)
 
 - **Parameters**
-  - None
+  ```
+  "jwt_token": string,
+  "user_id": string,
+  ```
 
 - **Returns**
   - 200 (default): successful operation
     ```
     "body": {
-      "message": "..."
+      "message": "Successfully deleted user"
     }
     ```
   - 400: invalid username supplied
@@ -209,81 +226,163 @@ video_upload | upload video | POST | /user/{user_id}/video
 video_update | update video information | PUT | /user/{user_id}/video/{video_id}
 video_delete | delete video | DELETE | /user/{user_id}/video/{video_id}
 video_get | get video content cache | GET | /video/{video_id}
+video_aws | AWS update video status after transcoding and streaming | POST | /video/{video_id}
 
 ### Video Upload
 - **Function**
-  - video_upload (api_dev_key, video_title, video_channel, video_tag, video_category, video_description, video_language, video_status, video_contents)
+  - video_upload (jwt_token)
 
 - **Parameters**
   Name | Type | Description
     --- | --- | ---
-    api_dev_key | string | This will be used to, among other things, throttle users based on their allocated quota.
-    video_title | string | video title
-    video_channel | string | video channel
-    video_tag | string[] | (optional) video tags
-    video_category | string[] | category of video, e.g., Movie, Vlog, Song, News, Tech, etc.
-    video_description | string | (optional) video description
-    video_language | string | e.g., English, Mandarin, Hindi, etc.
-    video_status | string | (optional, default public) e.g., public, private, limited share.
-    video_contents | stream | video to be uploaded.
+    jwt_token | string | Verify which user is currently logged in
 
 - **Returns**
-  - (default) 202 (request accepted), once the video encoding is completed the user is notified through email with a link to access the video. We can also expose a queryable API to let users know the current status of their uploaded video.
+  - (default) 200 (request accepted), return the ID of the video.
 
 ### Video Get
 - **Function**
-  - video_get(api_dev_key, video_id, offset, codec, resolution)
+  - video_get(video_id)
 
 - **Parameters**
-  - api_dev_key (string): The API developer key of a registered account of our service.
-  - video_id (string): A string to identify the video.
-  - offset (number): We should be able to stream video from any offset; this offset would be a time in seconds from the beginning of the video. If we support playing/pausing a video from multiple devices, we will need to store the offset on the server. This will enable the users to start watching a video on any device from the same point where they left off. 
-  - codec (string) & resolution(string): We should send the codec andresolution info in the API from the client to support play/pause from multiple devices. Imagine you are watching a video on your TV’s Netflix app, paused it, and started watching it on your phone’s Netflix app. In this case, you would need codec and resolution, as both these devices have a different resolution and use a different codec.
 
-- **Returns: (STREAM)**
-  - A media stream (a video chunk) from the given offset.
+  ```
+  "video_id": A string to identify the video.
+  ```
+
+- **Returns**
+  
+  - 200 (default): successful operation
+  ```
+  {
+    "video_id": "string",
+    "user_id": "string",
+    "video_title": "string",
+    "video_raw_content": "string",
+    "video_raw_status": "string",
+    "video_raw_size": 0,
+    "video_duration": 0,
+    "video_channel": "string",
+    "video_tag": [
+      "string"
+    ],
+    "video_category": [
+      "string"
+    ],
+    "video_description": "string",
+    "video_language": "string",
+    "video_status": "string",
+    "video_view": 0,
+    "video_comment": 0,
+    "video_like": 0,
+    "video_dislike": 0,
+    "video_star": 0,
+    "video_thumbnail": "string",
+    "video_upload_date": "2020-12-02T21:06:32.485Z",
+    "video_uri": {
+      "video_low": "string",
+      "video_mid": "string",
+      "video_high": "string"
+    }
+  }
+  ```
 
 ### Video Update
 - **Function**
-  - video_update (api_dev_key, video_title, video_channel, video_tag, video_category, video_description, video_language, video_status)
+  - video_update (jwt_token, video_title, video_thumbnail, video_channel, video_tag, video_category, video_description, video_language, video_status)
 
 - **Parameters**
   ```
-  "body": {
-    "video_title": string,
-    "video_channel": string,
-    "video_tag": string[],
-    "video_category": string[],
-    "video_description": string,
-    "video_language": enum,
-    "video_status": enum
-  }
+  "video_title": string,
+  "video_thumbnail": string,
+  "video_channel": enum,
+  "video_tag": string[],
+  "video_category": string[],
+  "video_description": string,
+  "video_language": enum,
+  "video_status": enum
   ```
 - **Returns**
   - 200 (default): successful operation
     ```
-      "body": {
-        "video_id": string,
-        "user_id": string,
-        "video_title": string,
-        "video_channel": string
-        "video_tag": string[],
-        "video_category": string[],
-        "video_description": string,
-        "video_language": enum,
-        "video_status": enum,
-        "video_contents": stream,
-        "video_content_status": enum,
-        "video_size": float,
-        "video_views": big int,
-        "video_likes": big int,
-        "video_dislikes": big int,
-        "video_comments": big int,
-        "video_stars": big int,
-        "video_shares": big int,
-        "video_thumbnail": Thumbnail,
-        "video_upload_date": date-type,
-        "video_uri": VideoURI
+    {
+      "video_id": "string",
+      "user_id": "string",
+      "video_title": "string",
+      "video_raw_content": "string",
+      "video_raw_status": "string",
+      "video_raw_size": 0,
+      "video_duration": 0,
+      "video_channel": "string",
+      "video_tag": [
+        "string"
+      ],
+      "video_category": [
+        "string"
+      ],
+      "video_description": "string",
+      "video_language": "string",
+      "video_status": "string",
+      "video_view": 0,
+      "video_comment": 0,
+      "video_like": 0,
+      "video_dislike": 0,
+      "video_star": 0,
+      "video_thumbnail": "string",
+      "video_upload_date": "2020-12-02T21:06:32.485Z",
+      "video_uri": {
+        "video_low": "string",
+        "video_mid": "string",
+        "video_high": "string"
+      }
+    }
+    ```
+  - 400: bad request
+  - 405: method not allowed
+  - 50x: internal server error
+
+### AWS Update
+
+- **Function**
+  - aws_update (jwt_token, video_status)
+
+- **Parameters**
+  ```
+  "video_status": enum
+  ```
+- **Returns**
+  - 200 (default): successful operation
+    ```
+    {
+      "video_id": "string",
+      "user_id": "string",
+      "video_title": "string",
+      "video_raw_content": "string",
+      "video_raw_status": "string",
+      "video_raw_size": 0,
+      "video_duration": 0,
+      "video_channel": "string",
+      "video_tag": [
+        "string"
+      ],
+      "video_category": [
+        "string"
+      ],
+      "video_description": "string",
+      "video_language": "string",
+      "video_status": "string",
+      "video_view": 0,
+      "video_comment": 0,
+      "video_like": 0,
+      "video_dislike": 0,
+      "video_star": 0,
+      "video_thumbnail": "string",
+      "video_upload_date": "2020-12-02T21:06:32.485Z",
+      "video_uri": {
+        "video_low": "string",
+        "video_mid": "string",
+        "video_high": "string"
+      }
     }
     ```
   - 400: bad request
@@ -292,20 +391,17 @@ video_get | get video content cache | GET | /video/{video_id}
 
 ### Video Delete
 - **Function**
-  - video_delete (api_dev_key, video_id)
+  - video_delete (jwt_token, video_id)
 
 - **Parameters**
   ```
-  "body": {
-    "video_id": string
-  }
+  "video_id": string
   ```
 - **Returns**
   
   Need to check if user has permission to delete video. Returns:
 
   - HTTP response 200 (OK)
-  - 202 (Accepted) if the action has been queued
   - 204 (No Content) based on your response
   - 400: bad request
   - 404: `user_id` or `video_id` not found
@@ -318,21 +414,16 @@ Function | Description | Type | Path (Endpoint)
 --- | --- | --- | ---
 search_video | Search video list by keyword | GET | /search/video?q={keyword}
 search_user | Search user list by keyword | GET | /search/user?q={keyword}
+search_top_videos | Search top videos by keyword | GET | /search/video/top
 
 ### Search Video
 - **Function**
-  - search_video (api_dev_key, search_query, user_location, maximum_videos_to_return, page_token)
-    - api_dev_key (string): The API developer key of a registered account of our service.
-    - search_query (string): A string containing the search terms. 
-    - user_location (string): Optional location of the user performing the search.
-    - maximum_videos_to_return (number): Maximum number of results returned in one request.
-    - page_token (string): This token will specify a page in the result set that should be returned.
+  - search_video (keyword)
+    - keyword (string): A string containing the search terms, can be video title, channels, tags, categories, etc.
 
 - **Parameters**
   ```
-  "body": {
-    "keyword": string
-  }
+  "keyword": string
   ```
 
 - **Returns**
@@ -342,155 +433,80 @@ search_user | Search user list by keyword | GET | /search/user?q={keyword}
 
 ### Search User
 - **Function**
-  - search_user ()
+  - search_user (keyword)
+    - keyword (string): A string containing the search terms, can be user name, email, etc.
 
 - **Parameters**
   ```
-  "body": {
-    "keyword": string
-  }
+  "keyword": string
   ```
 - **Returns**
   - 200: successful operation
   - 400: bad request
   - 50x: internal server error
-  
-## Watch History
-### Overview
-Function | Description | Type | Path (Endpoint)
---- | --- | --- | ---
-history_create | Add a video to history list | POST | /user/{user_id}/history/{video_id}
-history_update | Update history list | PUT | /user/{user_id}/history/{video_id}
-history_get | Get history list by user id | GET | /user/{user_id}/history/
-history_delete | Delete a video from history list | DELETE | /user/{user_id}/history/{video_id}
 
-### History Create
+### Search Top Videos
 - **Function**
-  - history_create()
+  - search_top_video (keyword)
+    - keyword (string): A default string which specifies the top search result soring indicators. Defaultly set as "video_view".
 
 - **Parameters**
   ```
-  "body": {
-    "user_id": string,
-    "video_id": string
-  }
+  "keyword": string
   ```
 - **Returns**
-  - 200 (default): successful operation
-    ```
-    "body": {
-      "message": "..."
-    }
-    ```
-  - 400: invalid `user_id` or `video_id` supplied
-  - 404: `user_id` or `video_id` not found
-  - 405: method not allowed
+  - 200: successful operation
+  - 400: bad request
   - 50x: internal server error
-
-### History Update
-- **Function**
-  - history_update()
-
-- **Parameters**
-  ```
-  "body": {
-    "user_id": string,
-    "video_id": string
-  }
-  ```
-- **Returns**
-  - 200 (default): successful operation
-    ```
-    "body": {
-      "message": "..."
-    }
-    ```
-  - 400: invalid `user_id` or `video_id` supplied
-  - 404: `user_id` or `video_id` not found
-  - 405: method not allowed
-  - 50x: internal server error
-
-### History Get
-- **Function**
-  - history_get()
-
-- **Parameters**
-  ```
-  "body": {
-    "user_id": string
-  }
-  ```
-- **Returns**
-  - 200 (default): successful operation
-    ```
-    "body": {
-      "message": "..."
-    }
-    ```
-  - 400: invalid `user_id` supplied
-  - 404: `user_id` not found
-  - 50x: internal server error
-
-### History Delete
-- **Function**
-  - history_delete()
-
-- **Parameters**
-  ```
-  "body": {
-    "user_id": string,
-    "video_id": string
-  }
-  ```
-- **Returns**
-  - 200 (default): successful operation
-    ```
-    "body": {
-      "message": "..."
-    }
-    ```
-  - 400: invalid `user_id` or `video_id` supplied
-  - 404: `user_id` or `video_id` not found
-  - 405: method not allowed
-  - 50x: internal server error
-
 
 ## Video Op
-### Overview
+
+### Comment
+
+Function | Description | Type | Path (Endpoint)
+--- | --- | --- | ---
+comment_post | Post video comment | POST | /video/{video_id}/comment/{user_id}
+comment_list_by_video | Get comment list by video | GET | /video/{video_id}/comment
+comment_get | Get specified comment by video and user | GET | /video/{video_id}/comment/{user_id}
+comment_update | Update specified comment by video and user | PUT | /video/{video_id}/comment/{user_id}
+comment_delete | Delete specified comment by video and user | DELETE | /video/{video_id}/comment/{user_id}
+
+### Like
+
 Function | Description | Type | Path (Endpoint)
 --- | --- | --- | ---
 like_post | Post video like | POST | /video/{video_id}/like/{user_id}
 like_list_by_video | Get like list by video | GET | /video/{video_id}/like/
-like_list_by_user | Get like list by user | GET | /user/{user_id}/like/
 like_delete | Delete specified like by video and user | DELETE | /video/{video_id}/like/{user_id}
-  | | | 
-dislike_post | Post video dislike | POST | /video/{video_id}/dislike/{user_id}
-dislike_list_by_video | Get dislike list by video | GET | /video/{video_id}/dislike/
-dislike_list_by_user | Get dislike list by user | GET | /user/{user_id}/dislike/
-dislike_delete | Delete specified dislike by video and user | DELETE | /video/{video_id}/dislike/{user_id}
-  | | |  
-comment_post | Post video comment | POST | /video/{video_id}/comment/{user_id}
-comment_list_by_video | Get comment list by video | GET | /video/{video_id}/comment/
-comment_list_by_user | Get comment list by user | GET | /user/{user_id}/comment/
-comment_get | Get specified comment by video and user | GET | /video/{video_id}/comment/{user_id}
-comment_update | Update specified comment by video and user | PUT | /video/{video_id}/comment/{user_id}
-comment_delete | Delete specified comment by video and user | DELETE | /video/{video_id}/comment/{user_id}
-  | | |
-star_post | Post video star by video and user | POST | /video/{video_id}/star/{user_id}
-star_list_by_video | Get star list by video | GET | /video/{video_id}/star/
-star_list_by_user | Get star list by user | GET | /user/{user_id}/star/
-star_delete | Delete star by video and user | DELETE | /video/{video_id}/star/{user_id}
-  | | |
-view_add | Add video views | PUT | /video/{video_id}/view/
-view_get | Get video views | GET | /video/{video_id}/view/
 
-<!-- ## Follow
-### Overview
+### Dislike
+
 Function | Description | Type | Path (Endpoint)
 --- | --- | --- | ---
-follow | Follow an uploader | POST | /{user_id}`(follower)`/follow/{user_id}`(uploader)`
-unfollow | Unfollow an uploader | DELETE | /{user_id}`(follower)`/follow/{user_id}`(uploader)`
-following_list | Get all following uploader | GET | /{user_id}/follow/following
-followers_list | Get all followers list | GET | /{user_id}/follow/followers
+dislike_post | Post video dislike | POST | /video/{video_id}/dislike/{user_id}
+dislike_list_by_video | Get dislike list by video | GET | /video/{video_id}/dislike/
+dislike_delete | Delete specified dislike by video and user | DELETE | /video/{video_id}/dislike/{user_id}
 
-## (TBD) Recommendation -->
+### Star
+
+Function | Description | Type | Path (Endpoint)
+--- | --- | --- | ---
+star_post | Post video star by video and user | POST | /video/{video_id}/star/{user_id}
+star_list_by_video | Get star list by video | GET | /video/{video_id}/star/
+star_delete | Delete star by video and user | DELETE | /video/{video_id}/star/{user_id}
+
+### Process
+
+Function | Description | Type | Path (Endpoint)
+--- | --- | --- | ---
+process_create | Add a video to process list | POST | /user/{user_id}/process/{video_id}
+process_update | Update a video's process | PUT | /user/{user_id}/process/{video_id}
+process_get | Get process list by user id | GET | /user/{user_id}/process/
+process_delete | Delete a video's process | DELETE | /user/{user_id}/process/{video_id}
+
+### View
+
+Function | Description | Type | Path (Endpoint)
+--- | --- | --- | ---
+view_add | Add video views by 1 | PUT | /video/{video_id}/view/
+view_get | Get video views by 1 | GET | /video/{video_id}/view/
