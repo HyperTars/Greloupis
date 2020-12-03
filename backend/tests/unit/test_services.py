@@ -8,7 +8,8 @@ from service.service_search import service_search_video, \
 from service.service_user import service_user_reg, \
     service_user_get_star, service_user_get_process, service_user_get_like, \
     service_user_get_user, service_user_get_dislike, \
-    service_user_get_comment, service_user_close  # , service_user_login
+    service_user_get_comment, service_user_close, service_user_login, \
+    service_user_update_info
 from service.service_video import service_video_info, \
     service_video_delete, service_video_comments, service_video_dislikes, \
     service_video_likes, service_video_stars, service_video_update, \
@@ -24,14 +25,14 @@ from service.service_video_op import service_video_op_add_comment, \
     service_video_op_update_process, query_video_op_get_by_user_video, \
     query_video_op_create, service_video_op_get_by_user
 from service.service_auth import service_auth_user_get, \
-    service_auth_user_modify, service_auth_video_get
-#    service_auth_video_modify, service_auth_video_op_get, \
-#    service_auth_video_op_post, service_auth_video_op_modify, \
-#    service_auth_hide_video, service_auth_hide_user
+    service_auth_user_modify, service_auth_video_get, \
+    service_auth_video_op_get, service_auth_hide_video, \
+    service_auth_hide_user
 from settings import config
 from utils.util_tests import util_tests_python_version, \
     util_tests_load_data, util_tests_clean_database
-from db.query_user import query_user_get_by_name
+from db.query_user import query_user_get_by_name, \
+    query_user_get_by_id
 from db.query_video import query_video_get_by_title, \
     query_video_get_by_video_id, query_video_create, \
     query_video_update
@@ -39,6 +40,7 @@ from db.query_video_op import query_video_op_get_by_video_id
 from db.mongo import init_db
 from models.model_errors import ErrorCode, MongoError, ServiceError
 from utils.util_time import get_time_now_utc
+from utils.util_serializer import util_serializer_mongo_results_to_array
 
 
 app = Flask(__name__)
@@ -59,7 +61,7 @@ class TestServiceSearchUser(unittest.TestCase):
     def test_search_user(self):
         # Search successfully with ignore_case
         self.assertEqual(
-            service_search_user(name="t", ignore_case=False)[0]['user_name'],
+            service_search_user(name="ta", ignore_case=False)[0]['user_name'],
             self.data['const_user'][0]['user_name'])
 
         # Search successfully with exact (result = 0)
@@ -74,7 +76,7 @@ class TestServiceSearchUser(unittest.TestCase):
 
         # Search successfully with custom pattern (pattern=True)
         self.assertEqual(
-            service_search_user(name=".*t.*", pattern=True)[0][
+            service_search_user(name=".*ta.*", pattern=True)[0][
                 'user_name'],
             self.data['const_user'][0]['user_name'])
 
@@ -402,41 +404,92 @@ class TestServiceUser(unittest.TestCase):
         self.assertEqual(e.exception.error_code,
                          ErrorCode.SERVICE_MISSING_PARAM)
 
-    # def test_b_service_user_check_password(self):
-    #     # Check successfully with user name
-    #     test_name = self.data['temp_user'][0]['user_name']
-    #     test_password = self.data['temp_user'][0]['user_password']
-    #     test_email = self.data['temp_user'][0]['user_email']
+    def test_b_service_user_login(self):
+        # Check successfully with user name
+        test_name = self.data['temp_user'][0]['user_name']
+        test_password = self.data['temp_user'][0]['user_password']
+        test_email = self.data['temp_user'][0]['user_email']
 
-    #     self.assertTrue(
-    #         service_user_check_password(user_name=test_name,
-    #                                     user_password=test_password))
+        # Check successfully with user email
+        user = service_user_login(
+            user_name=test_name, user_password=test_password)
+        self.assertEqual(user['user_name'], test_name)
 
-    #     # Check successfully with user email
-    #     self.assertTrue(
-    #         service_user_check_password(user_email=test_email,
-    #                                     user_password=test_password))
+        user = service_user_login(
+            user_email=test_email, user_password=test_password)
+        self.assertEqual(user['user_name'], test_name)
 
-    #     # Password Wrong
-    #     self.assertFalse(
-    #         service_user_check_password(user_name=test_name,
-    #                                     user_password="xxx"))
+        user = service_user_login(
+            user=test_name, user_password=test_password)
+        self.assertEqual(user['user_name'], test_name)
 
-    #     # Raise Error: ErrorCode.SERVICE_MISSING_PARAM
-    #     with self.assertRaises(ServiceError) as e:
-    #         service_user_check_password
-    #     self.assertEqual(e.exception.error_code,
-    #                      ErrorCode.SERVICE_MISSING_PARAM)
+        # Password Wrong
+        with self.assertRaises(ServiceError) as e:
+            service_user_login(user_name=test_name,
+                               user_password="xxx")
+        self.assertEqual(e.exception.error_code,
+                         ErrorCode.SERVICE_USER_PASS_WRONG)
 
-    #     test2_name = self.data['temp_user'][1]['user_name']
-    #     test2_password = self.data['temp_user'][1]['user_password']
+        with self.assertRaises(ServiceError) as e:
+            service_user_login(user_email=test_email,
+                               user_password="xxx")
+        self.assertEqual(e.exception.error_code,
+                         ErrorCode.SERVICE_USER_PASS_WRONG)
 
-    #     # Raise Error: ErrorCode.SERVICE_USER_NOT_FOUND
-    #     with self.assertRaises(ServiceError) as e:
-    #         service_user_check_password(user_name=test2_name,
-    #                                     user_password=test2_password)
-    #     self.assertEqual(e.exception.error_code,
-    #                      ErrorCode.SERVICE_USER_NOT_FOUND)
+        with self.assertRaises(ServiceError) as e:
+            service_user_login(user=test_name,
+                               user_password="xxx")
+        self.assertEqual(e.exception.error_code,
+                         ErrorCode.SERVICE_USER_PASS_WRONG)
+
+        # Raise Error: ErrorCode.SERVICE_MISSING_PARAM
+        with self.assertRaises(ServiceError) as e:
+            service_user_login()
+        self.assertEqual(e.exception.error_code,
+                         ErrorCode.SERVICE_MISSING_PARAM)
+
+        # Raise Error: ErrorCode.SERVICE_USER_NOT_FOUND
+        test2_name = self.data['temp_user'][1]['user_name']
+        test2_password = self.data['temp_user'][1]['user_password']
+        test2_email = self.data['temp_user'][1]['user_email']
+        with self.assertRaises(ServiceError) as e:
+            service_user_login(user_name=test2_name,
+                               user_password=test2_password)
+        self.assertEqual(e.exception.error_code,
+                         ErrorCode.SERVICE_USER_NOT_FOUND)
+
+        with self.assertRaises(ServiceError) as e:
+            service_user_login(user_email=test2_email,
+                               user_password=test2_password)
+        self.assertEqual(e.exception.error_code,
+                         ErrorCode.SERVICE_USER_NOT_FOUND)
+
+        with self.assertRaises(ServiceError) as e:
+            service_user_login(user=test2_email,
+                               user_password=test2_password)
+        self.assertEqual(e.exception.error_code,
+                         ErrorCode.SERVICE_USER_NOT_FOUND)
+
+        # Raise Error: ErrorCode.SERVICE_USER_CLOSED
+        test3_name = self.data['const_user'][3]['user_name']
+        test3_email = self.data['const_user'][3]['user_email']
+        with self.assertRaises(ServiceError) as e:
+            service_user_login(user_name=test3_name,
+                               user_password=test3_name)
+        self.assertEqual(e.exception.error_code,
+                         ErrorCode.SERVICE_USER_CLOSED)
+
+        with self.assertRaises(ServiceError) as e:
+            service_user_login(user_email=test3_email,
+                               user_password=test3_name)
+        self.assertEqual(e.exception.error_code,
+                         ErrorCode.SERVICE_USER_CLOSED)
+
+        with self.assertRaises(ServiceError) as e:
+            service_user_login(user=test3_name,
+                               user_password=test3_name)
+        self.assertEqual(e.exception.error_code,
+                         ErrorCode.SERVICE_USER_CLOSED)
 
     def test_c_service_user_get_user(self):
         # Get successfully
@@ -460,7 +513,7 @@ class TestServiceUser(unittest.TestCase):
     def test_d_service_user_get_like(self):
         # Get successfully
         res = service_user_get_like(self.data['const_user'][0]['_id']['$oid'])
-        self.assertEqual(len(res), 0)
+        self.assertEqual(len(res), 1)
 
         # no video op
         res = service_user_get_like(self.data['const_user'][1]['_id']['$oid'])
@@ -570,11 +623,47 @@ class TestServiceUser(unittest.TestCase):
         self.assertEqual(e.exception.error_code,
                          ErrorCode.SERVICE_USER_NOT_FOUND)
 
+    def test_i_service_user_update_info(self):
+        test_name = self.data['temp_user'][0]['user_name']
+        test_password = self.data['temp_user'][0]['user_password']
+        test_email = self.data['temp_user'][0]['user_email']
+
+        with self.assertRaises(ServiceError) as e:
+            service_user_update_info(
+                user_name=test_name, user_password="xxx")
+        self.assertEqual(e.exception.error_code,
+                         ErrorCode.SERVICE_MISSING_USER_ID)
+
+        user = query_user_get_by_name(test_name)[0].to_dict()
+        service_user_update_info(
+            user_id=user['user_id'],
+            user_name="lolo",
+            user_email="lolo@gmail.com",
+            user_password="lolo",
+            user_thumbnail="thumbnail"
+        )
+        user = query_user_get_by_id(user['user_id'])[0].to_dict()
+        self.assertEqual(user['user_name'], "lolo")
+        service_user_update_info(
+            user_id=user['user_id'],
+            user_name=test_name,
+            user_email=test_email,
+            user_password=test_password,
+            user_thumbnail="thumbnail"
+        )
+        user = query_user_get_by_id(user['user_id'])[0].to_dict()
+        self.assertEqual(user['user_name'], test_name)
+
     def test_z_service_user_close(self):
-        user_id = query_user_get_by_name(
-            user_name=self.data['temp_user'][0]['user_name'])[0].to_dict()[
-            'user_id']
+        users = query_user_get_by_name(
+            user_name=self.data['temp_user'][0]['user_name'])
+        user_id = users[0].to_dict()['user_id']
         self.assertEqual(service_user_close(user_id=user_id), 1)
+
+        with self.assertRaises(ServiceError) as e:
+            service_user_close()
+        self.assertEqual(e.exception.error_code,
+                         ErrorCode.SERVICE_MISSING_USER_ID)
 
 
 class TestServiceVideo(unittest.TestCase):
@@ -732,7 +821,7 @@ class TestServiceVideo(unittest.TestCase):
 
         # Successful case
         self.assertEqual(len(service_video_likes(
-            video_id=self.const_vid)), 0)
+            video_id=self.const_vid)), 1)
 
         self.assertEqual(len(service_video_likes(
             video_id="123456781234567812345678")), 0)
@@ -1171,13 +1260,13 @@ class TestServiceVideoOp(unittest.TestCase):
         self.assertEqual(response["dislike"], False)
         self.assertEqual(original_like + 1, current_like)
 
-        # Raise Error: ErrorCode.MONGODB_VIDEO_LIKE_UPDATE_FAILURE
-        with self.assertRaises(MongoError) as e:
+        # Raise Error: ErrorCode.SERVICE_VIDEO_LIKE_UPDATE_FAILURE
+        with self.assertRaises(ServiceError) as e:
             test_id = self.data['const_user'][1]['_id']['$oid']
             service_video_op_add_like(video_id=temp_video_id,
                                       user_id=test_id)
         self.assertEqual(e.exception.error_code,
-                         ErrorCode.MONGODB_VIDEO_LIKE_UPDATE_FAILURE)
+                         ErrorCode.SERVICE_VIDEO_LIKE_UPDATE_FAILURE)
 
         # If already dislike, can switch to like
         original_like = \
@@ -1233,13 +1322,13 @@ class TestServiceVideoOp(unittest.TestCase):
         self.assertEqual(response["dislike"], False)
         self.assertEqual(original_like - 1, current_like)
 
-        # Raise Error: ErrorCode.MONGODB_VIDEO_LIKE_UPDATE_FAILURE
-        with self.assertRaises(MongoError) as e:
+        # Raise Error: ErrorCode.SERVICE_VIDEO_LIKE_UPDATE_FAILURE
+        with self.assertRaises(ServiceError) as e:
             test_id = self.data['const_user'][1]['_id']['$oid']
             service_video_op_cancel_like(video_id=temp_video_id,
                                          user_id=test_id)
         self.assertEqual(e.exception.error_code,
-                         ErrorCode.MONGODB_VIDEO_LIKE_UPDATE_FAILURE)
+                         ErrorCode.SERVICE_VIDEO_LIKE_UPDATE_FAILURE)
 
     def test_m_service_video_op_add_dislike(self):
         temp_video_id = \
@@ -1273,13 +1362,13 @@ class TestServiceVideoOp(unittest.TestCase):
         self.assertEqual(response["dislike"], True)
         self.assertEqual(original_dislike + 1, current_dislike)
 
-        # Raise Error: ErrorCode.MONGODB_VIDEO_DISLIKE_UPDATE_FAILURE
-        with self.assertRaises(MongoError) as e:
+        # Raise Error: ErrorCode.SERVICE_VIDEO_DISLIKE_UPDATE_FAILURE
+        with self.assertRaises(ServiceError) as e:
             test_id = self.data['const_user'][1]['_id']['$oid']
             service_video_op_add_dislike(video_id=temp_video_id,
                                          user_id=test_id)
         self.assertEqual(e.exception.error_code,
-                         ErrorCode.MONGODB_VIDEO_DISLIKE_UPDATE_FAILURE)
+                         ErrorCode.SERVICE_VIDEO_DISLIKE_UPDATE_FAILURE)
 
         # If already like, can switch to dislike
         original_like = \
@@ -1335,13 +1424,13 @@ class TestServiceVideoOp(unittest.TestCase):
         self.assertEqual(response["dislike"], False)
         self.assertEqual(original_dislike - 1, current_dislike)
 
-        # Raise Error: ErrorCode.MONGODB_VIDEO_DISLIKE_UPDATE_FAILURE
-        with self.assertRaises(MongoError) as e:
+        # Raise Error: ErrorCode.SERVICE_VIDEO_DISLIKE_UPDATE_FAILURE
+        with self.assertRaises(ServiceError) as e:
             test_id = self.data['const_user'][1]['_id']['$oid']
             service_video_op_cancel_dislike(video_id=temp_video_id,
                                             user_id=test_id)
         self.assertEqual(e.exception.error_code,
-                         ErrorCode.MONGODB_VIDEO_DISLIKE_UPDATE_FAILURE)
+                         ErrorCode.SERVICE_VIDEO_DISLIKE_UPDATE_FAILURE)
 
     def test_o_service_video_op_add_star(self):
         temp_video_id = \
@@ -1373,13 +1462,13 @@ class TestServiceVideoOp(unittest.TestCase):
         self.assertEqual(response["star"], True)
         self.assertEqual(original_star + 1, current_star)
 
-        # Raise Error: ErrorCode.MONGODB_VIDEO_DISLIKE_UPDATE_FAILURE
-        with self.assertRaises(MongoError) as e:
+        # Raise Error: ErrorCode.SERVICE_VIDEO_DISLIKE_UPDATE_FAILURE
+        with self.assertRaises(ServiceError) as e:
             test_id = self.data['const_user'][1]['_id']['$oid']
             service_video_op_add_star(video_id=temp_video_id,
                                       user_id=test_id)
         self.assertEqual(e.exception.error_code,
-                         ErrorCode.MONGODB_VIDEO_STAR_UPDATE_FAILURE)
+                         ErrorCode.SERVICE_VIDEO_STAR_UPDATE_FAILURE)
 
     def test_p_service_video_op_cancel_star(self):
         temp_video_id = \
@@ -1411,13 +1500,13 @@ class TestServiceVideoOp(unittest.TestCase):
         self.assertEqual(response["star"], False)
         self.assertEqual(original_star - 1, current_star)
 
-        # Raise Error: ErrorCode.MONGODB_VIDEO_DISLIKE_UPDATE_FAILURE
-        with self.assertRaises(MongoError) as e:
+        # Raise Error: ErrorCode.SERVICE_VIDEO_DISLIKE_UPDATE_FAILURE
+        with self.assertRaises(ServiceError) as e:
             test_id = self.data['const_user'][1]['_id']['$oid']
             service_video_op_cancel_star(video_id=temp_video_id,
                                          user_id=test_id)
         self.assertEqual(e.exception.error_code,
-                         ErrorCode.MONGODB_VIDEO_STAR_UPDATE_FAILURE)
+                         ErrorCode.SERVICE_VIDEO_STAR_UPDATE_FAILURE)
 
     def test_z_delete_testing_data(self):
         temp_video_id = query_video_get_by_title(
@@ -1451,20 +1540,48 @@ class TestServiceAuth(unittest.TestCase):
         vid = self.data['const_video'][0]['_id']['$oid']
         self.assertEqual(service_auth_video_get(uid, vid), True)
 
+        uid = self.data['const_user'][0]['_id']['$oid']
+        vid = self.data['const_video'][3]['_id']['$oid']
+        self.assertEqual(service_auth_video_get(uid, vid), False)
+
     def test_d_service_auth_video_modify(self):
         pass
 
     def test_e_service_auth_video_op_get(self):
-        pass
+        uid = self.data['const_user'][0]['_id']['$oid']
+        vid = self.data['const_video'][0]['_id']['$oid'][1:]
+        with self.assertRaises(ServiceError) as e:
+            service_auth_video_op_get(uid, uid, '1' + vid)
+        self.assertEqual(e.exception.error_code,
+                         ErrorCode.SERVICE_VIDEO_NOT_FOUND)
 
     def test_f_service_auth_video_op_post(self):
-        pass
+        uid = self.data['const_user'][0]['_id']['$oid']
+        vid = self.data['const_video'][0]['_id']['$oid'][1:]
+        with self.assertRaises(ServiceError) as e:
+            service_auth_video_op_get(uid, uid, '1' + vid)
+        self.assertEqual(e.exception.error_code,
+                         ErrorCode.SERVICE_VIDEO_NOT_FOUND)
 
     def test_g_service_auth_video_op_modify(self):
         pass
 
     def test_h_service_auth_hide_video(self):
-        pass
+        uid = self.data['const_user'][0]['_id']['$oid']
+        vid = self.data['const_video'][3]['_id']['$oid']
+        res = query_video_get_by_video_id(vid)
+        res = util_serializer_mongo_results_to_array(res)
+        vid = self.data['const_video'][3]['_id']['$oid']
+        res2 = query_video_get_by_video_id(vid)
+        res2 = util_serializer_mongo_results_to_array(res2)
+        res.append(res2[0])
+        res = service_auth_hide_video(uid, res)
+        self.assertEqual(len(res), 0)
 
     def test_i_service_auth_hide_user(self):
-        pass
+        uid = self.data['const_user'][3]['_id']['$oid']
+        res = query_user_get_by_id(uid)
+        res = util_serializer_mongo_results_to_array(res)
+        uid = self.data['const_user'][0]['_id']['$oid']
+        res = service_auth_hide_user(uid, res)
+        self.assertEqual(len(res), 0)

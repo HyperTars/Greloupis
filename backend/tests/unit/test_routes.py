@@ -1150,6 +1150,10 @@ class TestRouteVideo(unittest.TestCase):
             response = self.client.delete(
                 '/video/' + temp_video_id + '/like/' + temp_user_id,
                 headers=self.headers)
+        with app.app_context():
+            response = self.client.delete(
+                '/video/' + temp_video_id + '/like/' + temp_user_id,
+                headers=self.headers)
             error_json = json.loads(response.data)
             self.assertTrue('error_code' in error_json)
 

@@ -136,5 +136,51 @@
         "video_uri_mid": "",
         "video_uri_low": "https://s3.amazon.com/private.mp4"
     }
+  },
+  {
+    "_id": {
+        "$oid": "5fc8d5b00f5dc64569044e82"
+    },
+    "user_id": "5f89aeaa6e95124396ca11fe",
+    "video_title": "Pending Video",
+    "video_raw_content": "https://s3.amazon.com/pending.mp4",
+    "video_raw_status": "pending",
+    "video_raw_size": {
+        "$numberDouble": "93.66"
+    },
+    "video_duration": {
+        "$numberInt": "0"
+    },
+    "video_channel": "pending",
+    "video_tag": [],
+    "video_category": [],
+    "video_description": "",
+    "video_language": "Mandarin",
+    "video_status": "public",
+    "video_view": {
+        "$numberInt": "0"
+    },
+    "video_comment": {
+        "$numberInt": "1"
+    },
+    "video_like": {
+        "$numberInt": "0"
+    },
+    "video_dislike": {
+        "$numberInt": "1"
+    },
+    "video_star": {
+        "$numberInt": "1"
+    },
+    "video_share": {
+        "$numberInt": "0"
+    },
+    "video_thumbnail": "https://s3.amazon.pending.png",
+    "video_upload_date": "1949-10-01 13:00:00",
+    "video_uri": {
+        "video_uri_high": "https://s3.amazon.com/pending.mp4",
+        "video_uri_mid": "",
+        "video_uri_low": "https://s3.amazon.com/pending.mp4"
+    }
   }
 ]

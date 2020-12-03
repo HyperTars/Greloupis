@@ -22,7 +22,7 @@ class ErrorCode(Enum):
     ROUTE_DELETED_USER = {
         2005: "Route Error: This user acoount has been deleted"}
     ROUTE_DELETED_VIDEO = {2006: "Route Error: This video has been deleted"}
-    ROUTE_USER_CLOSED = {2007: "Route Error: This account has been closed"}
+
     ROUTE_VIDEO_ID_REQUIRED = {2008: "Route Error: Video ID Not Provided"}
     ROUTE_VIDEO_PENDING = {2009: "Route Error: Video Pending"}
 
@@ -47,6 +47,17 @@ class ErrorCode(Enum):
     SERVICE_USER_PASS_WRONG = {3012: "Service Error: User Password Wrong"}
     SERVICE_MISSING_USER_ID = {3013: "Service Error: Missing user_id"}
     SERVICE_MISSING_USER_INFO = {3014: "Service Error: Missing user info"}
+    SERVICE_USER_CLOSED = {3015: "Service Error: This account has been closed"}
+    SERVICE_VIDEO_OP_NOT_FOUND = {3016: "Service Error: VideoOp Not Found"}
+    SERVICE_VIDEO_OP_EXISTS = {3017: "Service Error: VideoOp Exists"}
+    SERVICE_VIDEO_PROCESS_DELETE_FAILURE = {
+        3018: "Service Error: Video Process Delete Failure"}
+    SERVICE_VIDEO_LIKE_UPDATE_FAILURE = {
+        3019: "Service Error: Video Like Update Failure"}
+    SERVICE_VIDEO_DISLIKE_UPDATE_FAILURE = {
+        3020: "Service Error: Video Dislike Update Failure"}
+    SERVICE_VIDEO_STAR_UPDATE_FAILURE = {
+        3021: "Service Error: Video Star Update Failure"}
 
     # Database 4 Series
     MONGODB_CONNECTION_FAILURE = {4000: "MongoDB Connection Failure"}
@@ -106,15 +117,7 @@ class ErrorCode(Enum):
         4133: "MongoDB Error: Video Comment Delete Failure"}
     MONGODB_VIDEO_PROCESS_UPDATE_FAILURE = {
         4134: "MongoDB Error: Video Process Update Failure"}
-    MONGODB_VIDEO_PROCESS_DELETE_FAILURE = {
-        4135: "MongoDB Error: Video Process Delete Failure"}
-    MONGODB_VIDEO_LIKE_UPDATE_FAILURE = {
-        4136: "MongoDB Error: Video Like Update Failure"}
-    MONGODB_VIDEO_DISLIKE_UPDATE_FAILURE = {
-        4137: "MongoDB Error: Video Dislike Update Failure"}
-    MONGODB_VIDEO_STAR_UPDATE_FAILURE = {
-        4138: "MongoDB Error: Video Star Update Failure"}
-    MONGODB_MISSING_USER_ID = {4139: "MongoDB Error: Missing user_id"}
+    MONGODB_MISSING_USER_ID = {4135: "MongoDB Error: Missing user_id"}
 
     # Model Error 5 Series
     MODEL_PASS_NOT_READABLE = {5001: "Password Is Not Readable"}

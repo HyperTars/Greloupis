@@ -2,6 +2,7 @@ import unittest
 from apiv1 import api
 from utils.util_tests import util_tests_python_version
 
+
 class TestApiV1(unittest.TestCase):
 
     def test_api(self):
