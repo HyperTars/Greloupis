@@ -58,6 +58,8 @@ export default class VideoUpload extends Component {
 
   submitHandler = () => {
     if (this.state.fileObj) {
+      message.loading("Uploading, please wait...", 0);
+
       // acquire video ID
       createVideo()
         .then((res) => {
@@ -101,6 +103,7 @@ export default class VideoUpload extends Component {
                 video_title: this.state.video_id,
               };
               updateVideoInfo(this.state.video_id, updateData).then(() => {
+                message.destroy();
                 alert("Successfully uploaded video!");
                 let path = {
                   pathname: `/video/update/${this.state.video_id}`,
@@ -129,13 +132,12 @@ export default class VideoUpload extends Component {
           <form className="upload-page">
             <div className="upload-info">
               <div className="upload-info__progress">
-                <div className="upload-info__progress-bar"></div>
+                <h2>Video Upload</h2>
                 <div className="progress-text">
                   <p>Click "Publish" to upload your video!</p>
                 </div>
               </div>
               <div className="upload-info__basicInfo">
-                <h4>Video Upload</h4>
                 <label className="files">
                   Upload video file: (Format supported: .mp4, .rmvb, .avi, .mov)
                   <input
