@@ -9,7 +9,3 @@ def init_db():
     db_app.config = current_app.config
     db = MongoEngine(db_app)
     return db
-
-
-def close_db():
-    disconnect()

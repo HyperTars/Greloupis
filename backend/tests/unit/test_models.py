@@ -11,9 +11,8 @@ class TestUserModel(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.data = util_tests_load_data()
-        if util_tests_python_version() is False:
-            exit()
+        cls.data = util_tests_load_data() \
+            if util_tests_python_version() else exit()
 
     def test_user_model_load(self):
         temp_user = self.data['temp_user'][2]
@@ -30,8 +29,7 @@ class TestErrorModel(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        if util_tests_python_version() is False:
-            exit()
+        cls.data = util_tests_load_data()
 
     def test_error_class(self):
         imp.load_source('__main__', 'models/model_errors.py')
@@ -125,9 +123,3 @@ class TestErrorModel(unittest.TestCase):
                          ErrorCode.UTIL_INVALID_PATTERN_PARAM.get_code())
         self.assertEqual(e.exception.get_msg(),
                          ErrorCode.UTIL_INVALID_PATTERN_PARAM.get_msg())
-
-
-"""
-if __name__ == '__main__':
-    unittest.main()
-"""

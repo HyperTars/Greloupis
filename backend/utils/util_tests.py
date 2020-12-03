@@ -23,7 +23,6 @@ def util_tests_clean_database():
         VideoOp.objects(video_id=video['_id']['$oid']).delete()
 
     Video.objects(user_id=data['const_user'][1]['_id']['$oid']).delete()
-    Video.objects(user_id=data['const_user'][2]['_id']['$oid']).delete()
     Video.objects(video_title="new title").delete()
     Video.objects(video_title="").delete()
     VideoOp.objects(user_id=data['const_user'][1]['_id']['$oid']).delete()
@@ -35,12 +34,8 @@ def util_tests_load_data():
     os_ver = pf.system()
     cwd = os.getcwd()
 
-    if os_ver == 'Darwin' or os_ver == 'Linux':
-        path = cwd + '/tests/test_data/'
-    elif os_ver == 'Windows':
-        path = cwd + '\\tests\\test_data\\'
-    else:
-        print("System not supported.")
+    path = cwd + '\\tests\\test_data\\' if os_ver == 'windows' \
+        else cwd + '/tests/test_data/'
 
     data = {}
     data['temp_user'] = util_tests_get_json(path + "temp_user.json")
@@ -59,15 +54,11 @@ def util_tests_get_json(file_path):
 
 
 def util_tests_python_version():
-    if pf.python_version()[:3] != '3.7' and pf.python_version()[:3] != '3.8':
-        print("Your python ver." + pf.python_version() + "is not supported.")
-        print("Currently supported python version: 3.7 | 3.8")
-        return False
-    return True
-
-
-if __name__ == '__main__':
-    print(util_tests_load_data())
+    print("Your python version is: " + pf.python_version() + "."
+          "\nCurrently supported python version: 3.7 | 3.8")
+    return True if pf.python_version()[:3] == '3.7' \
+        or pf.python_version()[:3] == '3.8' \
+        else False
 
 
 '''

@@ -12,7 +12,7 @@ from db.query_user import query_user_get_by_id, \
     query_user_update_password, query_user_update_thumbnail, \
     query_user_add_login, query_user_delete_by_id, \
     query_user_search_by_contains, query_user_search_by_pattern, \
-    query_user_search_by_aggregate
+    query_user_search_by_aggregate, query_user_update_email
 from db.query_video import query_video_get_by_user_id, \
     query_video_cnt_incr_by_one, query_video_update, query_video_delete, \
     query_video_search_by_pattern, query_video_create, \
@@ -46,9 +46,7 @@ class TestQueryUser(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.data = util_tests_load_data()
-        if util_tests_python_version() is False:
-            exit()
-        util_tests_clean_database()
+        util_tests_clean_database() if util_tests_python_version() else exit()
 
     def test_a_user_create(self):
         # Create successfully
@@ -312,13 +310,34 @@ class TestQueryUser(unittest.TestCase):
         self.assertEqual(e.exception.error_code,
                          ErrorCode.MONGODB_UPDATE_SAME_PASS)
 
-    def test_j_user_update_thumbnail(self):
+    def test_j_user_update_email(self):
+        old_email = self.data['temp_user'][0]['user_email']
+        new_email = "somenewemail@gmail.com"
+        users = query_user_get_by_name(self.data['temp_user'][0]['user_name'])
+        temp_id = users[0].to_dict()['user_id']
+        query_user_update_email(temp_id, new_email)
+        self.assertEqual(query_user_get_by_id(temp_id)[0].user_email,
+                         new_email)
+        query_user_update_email(temp_id, old_email)
+        self.assertEqual(query_user_get_by_id(temp_id)[0].user_email,
+                         old_email)
+        # Raise Error: ErrorCode.MONGODB_STR_EXPECTED
+        with self.assertRaises(MongoError) as e:
+            query_user_update_email(123, 123)
+        self.assertEqual(e.exception.error_code,
+                         ErrorCode.MONGODB_STR_EXPECTED)
+        # Raise Error: ErrorCode.MONGODB_USER_NOT_FOUND
+        with self.assertRaises(MongoError) as e:
+            query_user_update_email("123456781234567812345678", "kkk")
+        self.assertEqual(e.exception.error_code,
+                         ErrorCode.MONGODB_USER_NOT_FOUND)
+
+    def test_k_user_update_thumbnail(self):
+
         # Update successfully
-        temp_model = \
-            query_user_get_by_name(self.data['temp_user'][0]['user_name'])[
-                0].to_dict()
-        temp_user_id = temp_model['user_id']
-        old_thumbnail = temp_model['user_thumbnail']
+        users = query_user_get_by_name(self.data['temp_user'][0]['user_name'])
+        temp_user_id = users[0].to_dict()['user_id']
+        old_thumbnail = users[0].to_dict()['user_thumbnail']
         new_thumbnail = "https://s3.amazon.com/just_a_new_thumbnail.png"
 
         query_user_update_thumbnail(temp_user_id, new_thumbnail)
@@ -341,7 +360,7 @@ class TestQueryUser(unittest.TestCase):
         self.assertEqual(e.exception.error_code,
                          ErrorCode.MONGODB_USER_NOT_FOUND)
 
-    def test_k_user_update_details(self):
+    def test_l_user_update_details(self):
         temp_model = \
             query_user_get_by_name(self.data['temp_user'][0]['user_name'])[
                 0].to_dict()
@@ -385,6 +404,12 @@ class TestQueryUser(unittest.TestCase):
                          new_user_country)
         self.assertEqual(new_model['user_detail']['user_zip'], new_user_zip)
 
+        # Raise Error: ErrorCode.MONGODB_MISSING_USER_ID
+        with self.assertRaises(MongoError) as e:
+            query_user_update_details()
+        self.assertEqual(e.exception.error_code,
+                         ErrorCode.MONGODB_MISSING_USER_ID)
+
         # Raise Error: ErrorCode.MONGODB_STR_EXPECTED
         with self.assertRaises(MongoError) as e:
             query_user_update_details(user_id=123)
@@ -403,7 +428,7 @@ class TestQueryUser(unittest.TestCase):
         self.assertEqual(e.exception.error_code,
                          ErrorCode.MONGODB_USER_NOT_FOUND)
 
-    def test_l_user_add_login(self):
+    def test_m_user_add_login(self):
         # Add successfully
         temp_model = \
             query_user_get_by_name(self.data['temp_user'][0]['user_name'])[
@@ -430,7 +455,7 @@ class TestQueryUser(unittest.TestCase):
         self.assertEqual(e.exception.error_code,
                          ErrorCode.MONGODB_USER_NOT_FOUND)
 
-    def test_m_user_delete_by_id(self):
+    def test_n_user_delete_by_id(self):
         # Delete successfully
         temp_model_0 = \
             query_user_get_by_name(self.data['temp_user'][0]['user_name'])[
@@ -449,7 +474,7 @@ class TestQueryUser(unittest.TestCase):
         self.assertEqual(e.exception.error_code,
                          ErrorCode.MONGODB_USER_NOT_FOUND)
 
-    def test_n_user_delete_by_name(self):
+    def test_o_user_delete_by_name(self):
         # Delete successfully
         self.assertEqual(
             query_user_delete_by_name(self.data['temp_user'][1]['user_name']),
@@ -467,7 +492,7 @@ class TestQueryUser(unittest.TestCase):
         self.assertEqual(e.exception.error_code,
                          ErrorCode.MONGODB_USER_NOT_FOUND)
 
-    def test_o_user_search_by_contains(self):
+    def test_p_user_search_by_contains(self):
         # Search successfully
         search_user_id = self.data['const_user'][0]['_id']['$oid']
         self.assertEqual(
@@ -565,7 +590,7 @@ class TestQueryUser(unittest.TestCase):
         self.assertEqual(e.exception.error_code,
                          ErrorCode.MONGODB_INVALID_SEARCH_PARAM)
 
-    def test_p_user_search_by_pattern(self):
+    def test_q_user_search_by_pattern(self):
         search_user_name = self.data['const_user'][0]['user_name']
 
         # PATTERN NAME #
@@ -722,7 +747,7 @@ class TestQueryUser(unittest.TestCase):
         self.assertEqual(e.exception.error_code,
                          ErrorCode.MONGODB_INVALID_SEARCH_PARAM)
 
-    def test_q_user_search_by_aggregate(self):
+    def test_r_user_search_by_aggregate(self):
         # Search successfully
         pipeline1 = [
             {
@@ -762,8 +787,6 @@ class TestQueryVideo(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.data = util_tests_load_data()
-        if util_tests_python_version() is False:
-            exit()
         util_tests_clean_database()
 
     def test_a_query_video_create(self):
@@ -773,6 +796,12 @@ class TestQueryVideo(unittest.TestCase):
         query_video_update(vid, video_title=title)
         self.assertEqual(type(vid), str)
         self.assertEqual(len(vid), 24)
+
+        # Raise Error: ErrorCode.MONGODB_USER_NOT_FOUND
+        with self.assertRaises(MongoError) as e:
+            query_video_create("123456781234567812345678")
+        self.assertEqual(e.exception.error_code,
+                         ErrorCode.MONGODB_USER_NOT_FOUND)
 
     def test_b_query_video_get_by_video_id(self):
         result = query_video_get_by_video_id(
@@ -1009,22 +1038,27 @@ class TestQueryVideo(unittest.TestCase):
         self.assertEqual(e.exception.error_code,
                          ErrorCode.MONGODB_LIST_EXPECTED)
 
-        # Raise Error: ErrorCode.MONGODB_LIST_EXPECTED
+        # Raise Error: ErrorCode.MONGODB_VIDEO_INVALID_STATUS
         with self.assertRaises(MongoError) as e:
             query_video_update(temp_video_id, video_status="test")
         self.assertEqual(e.exception.error_code,
                          ErrorCode.MONGODB_VIDEO_INVALID_STATUS)
 
+        # Raise Error: ErrorCode.MONGODB_VIDEO_INVALID_STATUS
+        with self.assertRaises(MongoError) as e:
+            query_video_update(temp_video_id, video_raw_status="test")
+        self.assertEqual(e.exception.error_code,
+                         ErrorCode.MONGODB_VIDEO_INVALID_STATUS)
+
     def test_h_query_video_delete(self):
-        temp_video_id_0 = \
-            query_video_get_by_title(
-                self.data['temp_video'][0]['video_title'])[
-                0].to_dict()['video_id']
+        temp_title = self.data['temp_video'][0]['video_title']
+        temp_video = query_video_get_by_title(temp_title)
+        temp_video_id_0 = temp_video[0].to_dict()['video_id']
         self.assertEqual(query_video_delete(temp_video_id_0), 1)
 
         # Raise Error: ErrorCode.MONGODB_VIDEO_NOT_FOUND
         with self.assertRaises(MongoError) as e:
-            query_video_update("123456781234567812345678")
+            query_video_delete("123456781234567812345678")
         self.assertEqual(e.exception.error_code,
                          ErrorCode.MONGODB_VIDEO_NOT_FOUND)
 
@@ -1232,8 +1266,6 @@ class TestQueryVideoOp(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.data = util_tests_load_data()
-        if util_tests_python_version() is False:
-            exit()
         util_tests_clean_database()
 
     def test_a_query_video_op_create(self):
@@ -1478,9 +1510,3 @@ class TestQueryVideoOp(unittest.TestCase):
             query_video_op_search_comment_by_pattern("abc")
         self.assertEqual(e.exception.error_code,
                          ErrorCode.MONGODB_RE_PATTERN_EXPECTED)
-
-
-"""
-if __name__ == "__main__":
-    unittest.main()
-"""

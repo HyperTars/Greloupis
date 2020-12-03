@@ -10,7 +10,7 @@ from utils.util_validator import is_valid_id
 from models.model_errors import ServiceError, ErrorCode
 from settings import config
 
-conf = config['base']
+conf = config['default']
 VALID_VIDEO_STATUS = conf.VIDEO_STATUS
 VALID_VIDEO_RAW_STATUS = conf.VIDEO_RAW_STATUS
 
@@ -55,6 +55,8 @@ def service_video_get_by_user(**kw):
     # keyword check and formatting
     if 'user_id' not in kw:
         raise ServiceError(ErrorCode.SERVICE_MISSING_PARAM)
+    if not is_valid_id(kw["user_id"]):
+        raise ServiceError(ErrorCode.SERVICE_INVALID_ID_OBJ)
     videos = query_video_get_by_user_id(kw['user_id'])
     if len(videos) == 0:
         return []

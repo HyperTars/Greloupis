@@ -7,7 +7,7 @@ from flask_jwt_extended import JWTManager
 
 from apiv1 import blueprint
 from routes.route_user import blacklist
-from settings import config
+from settings import get_config
 import os
 import logging.config
 from pathlib import Path
@@ -17,7 +17,7 @@ from db.mongo import init_db
 from utils.util_jwt import util_get_formated_response
 
 app = Flask(__name__)
-app.config.from_object(config['default'])
+app.config.from_object(get_config())
 app.register_blueprint(blueprint)
 jwt = JWTManager(app)
 
