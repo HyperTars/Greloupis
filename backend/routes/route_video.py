@@ -3,8 +3,6 @@ from __future__ import absolute_import, print_function
 from flask import request
 from flask_jwt_extended import jwt_required, jwt_optional, get_jwt_identity
 from flask_restx import Resource, fields, Namespace
-import ast
-
 from settings import config
 from .route_user import thumbnail, general_response, star, comment, like, \
     dislike, star_response_list, comment_response_list, like_response_list, \
@@ -26,7 +24,8 @@ from service.service_auth import service_auth_video_get, \
     service_auth_video_op_post, service_auth_video_op_modify
 from utils.util_error_handler import util_error_handler
 from utils.util_serializer import util_serializer_api_response, \
-    util_serializer_mongo_results_to_array
+    util_serializer_mongo_results_to_array, \
+    util_serializer_request
 from models.model_errors import ServiceError, RouteError, MongoError, \
     ErrorCode
 
@@ -164,10 +163,7 @@ class VideoVideoId(Resource):
         """
 
         try:
-            if request.form != {}:
-                kw = dict(request.form)
-            else:
-                kw = ast.literal_eval(request.data.decode("utf-8"))
+            kw = util_serializer_request(request)
 
             video_id = request.url.split('/')[-1]
             token = get_jwt_identity()
@@ -425,10 +421,7 @@ class VideoVideoIdCommentUserId(Resource):
         """
 
         try:
-            if request.form != {}:
-                kw = dict(request.form)
-            else:
-                kw = ast.literal_eval(request.data.decode("utf-8"))
+            kw = util_serializer_request(request)
             video_id = request.url.split('/')[-3]
             user_id = request.url.split('/')[-1]
             token = get_jwt_identity()
@@ -451,11 +444,7 @@ class VideoVideoIdCommentUserId(Resource):
         """
 
         try:
-            if request.form != {}:
-                kw = dict(request.form)
-            else:
-                kw = ast.literal_eval(request.data.decode("utf-8"))
-
+            kw = util_serializer_request(request)
             video_id = request.url.split('/')[-3]
             user_id = request.url.split('/')[-1]
             token = get_jwt_identity()
@@ -541,11 +530,7 @@ class VideoVideoIdProcessUserId(Resource):
         """
 
         try:
-            if request.form != {}:
-                kw = dict(request.form)
-            else:
-                kw = ast.literal_eval(request.data.decode("utf-8"))
-
+            kw = util_serializer_request(request)
             video_id = request.url.split('/')[-3]
             user_id = request.url.split('/')[-1]
             token = get_jwt_identity()
@@ -571,10 +556,7 @@ class VideoVideoIdProcessUserId(Resource):
         """
 
         try:
-            if request.form != {}:
-                kw = dict(request.form)
-            else:
-                kw = ast.literal_eval(request.data.decode("utf-8"))
+            kw = util_serializer_request(request)
             video_id = request.url.split('/')[-3]
             user_id = request.url.split('/')[-1]
             token = get_jwt_identity()

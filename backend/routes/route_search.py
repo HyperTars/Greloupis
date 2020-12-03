@@ -9,8 +9,7 @@ from service.service_search import service_search_user, \
     service_search_video
 from service.service_auth import service_auth_hide_user, \
     service_auth_hide_video
-from utils.util_serializer import util_serializer_request, \
-    util_serializer_api_response
+from utils.util_serializer import util_serializer_api_response
 from utils.util_error_handler import util_error_handler
 from models.model_errors import ErrorCode, RouteError, ServiceError, MongoError
 
@@ -45,7 +44,7 @@ class RouteSearchUser(Resource):
         """
         # TODO
         try:
-            req_dict = util_serializer_request(request.args)
+            req_dict = request.args.to_dict()
 
             if 'keyword' not in req_dict:
                 raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
@@ -142,7 +141,7 @@ class RouteSearchVideo(Resource):
             Search videos by keyword
         """
         try:
-            req_dict = util_serializer_request(request.args)
+            req_dict = request.args.to_dict()
             if 'keyword' not in req_dict:
                 raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
             if 'param' not in req_dict:
@@ -206,7 +205,7 @@ class RouteSearchTopVideos(Resource):
     def get(self):
 
         try:
-            req_dict = util_serializer_request(request.args)
+            req_dict = request.args.to_dict()
             if 'keyword' not in req_dict:
                 raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
             if req_dict['keyword'] == 'video_upload_time' or \

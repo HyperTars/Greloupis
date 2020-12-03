@@ -1,11 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, print_function
-
-import ast
 import datetime
-
 from flask import request, jsonify
-
 from flask_jwt_extended import create_access_token, \
     jwt_required, get_raw_jwt, jwt_optional, get_jwt_identity
 from flask_restx import Resource, fields, Namespace
@@ -23,7 +19,8 @@ from service.service_auth import service_auth_user_get, \
     service_auth_user_modify, service_auth_hide_video
 from utils.util_jwt import blacklist, util_get_formated_response
 from utils.util_error_handler import util_error_handler
-from utils.util_serializer import util_serializer_api_response
+from utils.util_serializer import util_serializer_api_response, \
+    util_serializer_request
 from models.model_errors import MongoError, RouteError, ServiceError, \
     ErrorCode
 
@@ -161,10 +158,7 @@ class User(Resource):
         # print("sign up1", get_jwt_identity())
         # print("sign up", get_raw_jwt(), blacklist)
         try:
-            if request.form != {}:
-                kw = dict(request.form)
-            else:
-                kw = ast.literal_eval(request.data.decode("utf-8"))
+            kw = util_serializer_request(request)
             print(kw)
             user = service_user_reg(**kw)
             print(user)
@@ -234,12 +228,7 @@ class UserUserId(Resource):
             Update user information by id
         """
         try:
-            kw = ""
-            print(request.form)
-            if request.form != {}:
-                kw = dict(request.form)
-            else:
-                kw = ast.literal_eval(request.data.decode("utf-8"))
+            kw = util_serializer_request(request)
             kw['user_id'] = user_id
             print(kw)
             if not service_auth_user_modify(get_jwt_identity(), kw['user_id']):
@@ -280,10 +269,7 @@ class UserLogin(Resource):
             User sign in
         """
         try:
-            if request.form != {}:
-                kw = dict(request.form)
-            else:
-                kw = ast.literal_eval(request.data.decode("utf-8"))
+            kw = util_serializer_request(request)
             print(kw)
             kw['ip'] = request.headers.getlist('X-Forwarded-For')[0] \
                 if request.headers.getlist('X-Forwarded-For') \

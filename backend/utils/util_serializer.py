@@ -1,6 +1,7 @@
 from flask import Response
 import json
 import datetime
+import ast
 
 
 def util_serializer_mongo_results_to_array(results, format="dict"):
@@ -19,7 +20,12 @@ def util_serializer_dict_to_json(d):
 
 
 def util_serializer_request(request):
-    return request.to_dict()
+    kw = {}
+    if request.form != {}:
+        kw = dict(request.form)
+    else:
+        kw = ast.literal_eval(request.data.decode("utf-8"))
+    return kw
 
 
 def extract_error_msg(message):
