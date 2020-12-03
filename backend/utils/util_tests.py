@@ -54,11 +54,11 @@ def util_tests_get_json(file_path):
 
 
 def util_tests_python_version():
-    if pf.python_version()[:3] != '3.7' and pf.python_version()[:3] != '3.8':
-        print("Your python ver." + pf.python_version() + "is not supported."
-              "\nCurrently supported python version: 3.7 | 3.8")
-        return False
-    return True
+    print("Your python version is: " + pf.python_version() + "."
+          "\nCurrently supported python version: 3.7 | 3.8")
+    return True if pf.python_version()[:3] == '3.7' \
+        or pf.python_version()[:3] == '3.8' \
+        else False
 
 
 '''

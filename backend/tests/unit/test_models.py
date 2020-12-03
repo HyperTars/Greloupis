@@ -29,8 +29,7 @@ class TestErrorModel(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.data = util_tests_load_data() \
-            if util_tests_python_version() else exit()
+        cls.data = util_tests_load_data()
 
     def test_error_class(self):
         imp.load_source('__main__', 'models/model_errors.py')
