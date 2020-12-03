@@ -135,7 +135,7 @@
     ![coverage](images/coverage.png)
 - `lint`: Finally, we use [Flake8](../backend/configs/flake8) to do lint test
 
-    ![lint](lint.png)
+    ![lint](images/lint.png)
 - Finally, we upload our test results to [CodeCov](https://codecov.io/gh/HyperTars/Online-Video-Platform) and [Coveralls](https://coveralls.io/github/HyperTars/Online-Video-Platform) so that we can see our visualized coverage report.
     - CodeCov
 
