@@ -12,14 +12,13 @@ from db.query_video import query_video_get_by_user_id
 from db.query_video_op import query_video_op_get_by_user_id, \
     query_video_op_delete
 from service.service_video import service_video_delete
-from models.model_errors import ServiceError, RouteError, ErrorCode
+from models.model_errors import ServiceError, ErrorCode
 
 
 def service_user_reg(**kw):
     """
     Register user
 
-    :param conf: config
     :param kw: keyword
     :keyword:
         :key user_name: (required) str
@@ -53,19 +52,19 @@ def service_user_login(**kw):
         if len(users) == 0:
             raise ServiceError(ErrorCode.SERVICE_USER_NOT_FOUND)
         user = users[0]
+        if user.to_dict()["user_status"] == "closed":
+            raise ServiceError(ErrorCode.SERVICE_USER_CLOSED)
         if util_hash_encode(kw['user_password']) != user.user_password:
             raise ServiceError(ErrorCode.SERVICE_USER_PASS_WRONG)
-        if user.to_dict()["user_status"] == "closed":
-            raise RouteError(ErrorCode.ROUTE_USER_CLOSED)
     elif 'user_email' in kw and 'user_password' in kw:
         users = query_user_get_by_email(kw['user_email'])
         if len(users) == 0:
             raise ServiceError(ErrorCode.SERVICE_USER_NOT_FOUND)
         user = users[0]
+        if user.to_dict()["user_status"] == "closed":
+            raise ServiceError(ErrorCode.SERVICE_USER_CLOSED)
         if util_hash_encode(kw['user_password']) != user.user_password:
             raise ServiceError(ErrorCode.SERVICE_USER_PASS_WRONG)
-        if user.to_dict()["user_status"] == "closed":
-            raise RouteError(ErrorCode.ROUTE_USER_CLOSED)
     elif 'user' in kw and 'user_password' in kw:
         user_names = query_user_get_by_name(kw['user'])
         user_emails = query_user_get_by_email(kw['user'])
@@ -75,9 +74,8 @@ def service_user_login(**kw):
             user = user_emails[0]
         elif len(user_names) != 0:
             user = user_names[0]
-
         if user.to_dict()["user_status"] == "closed":
-            raise RouteError(ErrorCode.ROUTE_USER_CLOSED)
+            raise ServiceError(ErrorCode.SERVICE_USER_CLOSED)
         if util_hash_encode(kw['user_password']) != user.user_password:
             raise ServiceError(ErrorCode.SERVICE_USER_PASS_WRONG)
     else:
@@ -123,20 +121,18 @@ def service_user_close(**kw):
     if 'method' in kw and kw['method'] == 'status':
         res = query_user_update_status(kw['user_id'], 'closed')
         for video in videos:
-            vid = video.to_dict()['video_id']
-            service_video_delete(video_id=vid, method='status')
+            service_video_delete(video_id=video.to_dict()['video_id'],
+                                 method='status')
 
     # delete by removing from databse
     else:
         res = query_user_delete_by_id(kw['user_id'])
         for video in videos:
-            vid = video.to_dict()['video_id']
-            service_video_delete(video_id=vid)
+            service_video_delete(video_id=video.to_dict()['video_id'])
 
     # delete all op created by this user immediately
     for op in ops:
-        opid = op.to_dict()['video_op_id']
-        query_video_op_delete(opid, silent=True)
+        query_video_op_delete(op.to_dict()['video_op_id'], silent=True)
 
     return res
 

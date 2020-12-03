@@ -9,8 +9,7 @@ from service.service_search import service_search_user, \
     service_search_video
 from service.service_auth import service_auth_hide_user, \
     service_auth_hide_video
-from utils.util_serializer import util_serializer_request, \
-    util_serializer_api_response
+from utils.util_serializer import util_serializer_api_response
 from utils.util_error_handler import util_error_handler
 from models.model_errors import ErrorCode, RouteError, ServiceError, MongoError
 
@@ -44,9 +43,8 @@ class RouteSearchUser(Resource):
             Search users by keyword
         """
         # TODO
-        print("get user name", get_jwt_identity())
         try:
-            req_dict = util_serializer_request(request.args)
+            req_dict = request.args.to_dict()
 
             if 'keyword' not in req_dict:
                 raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
@@ -98,9 +96,6 @@ class RouteSearchUser(Resource):
             elif param == 'last_name' or param == 'user_last_name':
                 search_result = service_search_user(
                     last_name=req_dict['keyword'], ignore_case=True)
-            elif param == 'phone' or param == 'user_phone':
-                search_result = service_search_user(
-                    phone=req_dict['keyword'], ignore_case=True)
             elif param == 'street1' or param == 'user_street1':
                 search_result = service_search_user(
                     street1=req_dict['keyword'], ignore_case=True)
@@ -119,9 +114,6 @@ class RouteSearchUser(Resource):
             elif param == 'zip' or param == 'user_zip':
                 search_result = service_search_user(
                     zip=req_dict['keyword'], ignore_case=True)
-            elif param == 'status' or param == 'user_status':
-                search_result = service_search_user(
-                    status=req_dict['keyword'], ignore_case=True)
             else:
                 raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
 
@@ -149,7 +141,7 @@ class RouteSearchVideo(Resource):
             Search videos by keyword
         """
         try:
-            req_dict = util_serializer_request(request.args)
+            req_dict = request.args.to_dict()
             if 'keyword' not in req_dict:
                 raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
             if 'param' not in req_dict:
@@ -213,7 +205,7 @@ class RouteSearchTopVideos(Resource):
     def get(self):
 
         try:
-            req_dict = util_serializer_request(request.args)
+            req_dict = request.args.to_dict()
             if 'keyword' not in req_dict:
                 raise RouteError(ErrorCode.ROUTE_INVALID_REQUEST_PARAM)
             if req_dict['keyword'] == 'video_upload_time' or \

@@ -3,8 +3,6 @@ from __future__ import absolute_import, print_function
 from flask import request
 from flask_jwt_extended import jwt_required, jwt_optional, get_jwt_identity
 from flask_restx import Resource, fields, Namespace
-import ast
-
 from settings import config
 from .route_user import thumbnail, general_response, star, comment, like, \
     dislike, star_response_list, comment_response_list, like_response_list, \
@@ -26,12 +24,13 @@ from service.service_auth import service_auth_video_get, \
     service_auth_video_op_post, service_auth_video_op_modify
 from utils.util_error_handler import util_error_handler
 from utils.util_serializer import util_serializer_api_response, \
-    util_serializer_mongo_results_to_array
+    util_serializer_mongo_results_to_array, \
+    util_serializer_request
 from models.model_errors import ServiceError, RouteError, MongoError, \
     ErrorCode
 
 
-conf = config['base']
+conf = config['default']
 
 video = Namespace('video', description='Video APIs')
 
@@ -111,22 +110,11 @@ class Video(Resource):
         """
             User upload a video
         """
-
         try:
-            # check authority
-            if get_jwt_identity is None:
-                raise RouteError(ErrorCode.ROUTE_TOKEN_REQUIRED)
-
             video_id = service_video_upload(get_jwt_identity())
-
-            if type(video_id) != str or len(video_id) != 24:
-                return util_serializer_api_response(
-                    500, msg="Failed to create temp video instance")
-
             return util_serializer_api_response(
                     200, body={'video_id': video_id},
-                    msg="Successfully uploaded video")
-
+                    msg="Successfully created a temp video instance")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
@@ -172,11 +160,7 @@ class VideoVideoId(Resource):
         """
 
         try:
-            if request.form != {}:
-                kw = dict(request.form)
-            else:
-                raw_data = request.data.decode("utf-8")
-                kw = ast.literal_eval(raw_data)
+            kw = util_serializer_request(request)
 
             video_id = request.url.split('/')[-1]
             token = get_jwt_identity()
@@ -188,14 +172,10 @@ class VideoVideoId(Resource):
             kw["video_id"] = video_id
 
             update_result = service_video_update(**kw)
-            if len(update_result) == 1:
-                return_body = util_serializer_mongo_results_to_array(
-                    update_result, format="json")
-                return util_serializer_api_response(
-                    200, body=return_body, msg="Successfully updated video")
-            else:
-                return util_serializer_api_response(
-                    500, msg="Failed to update video")
+            return_body = util_serializer_mongo_results_to_array(
+                update_result, format="json")
+            return util_serializer_api_response(
+                200, body=return_body, msg="Successfully updated video")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
@@ -438,11 +418,7 @@ class VideoVideoIdCommentUserId(Resource):
         """
 
         try:
-            if request.form != {}:
-                kw = dict(request.form)
-            else:
-                raw_data = request.data.decode("utf-8")
-                kw = ast.literal_eval(raw_data)
+            kw = util_serializer_request(request)
             video_id = request.url.split('/')[-3]
             user_id = request.url.split('/')[-1]
             token = get_jwt_identity()
@@ -465,12 +441,7 @@ class VideoVideoIdCommentUserId(Resource):
         """
 
         try:
-            if request.form != {}:
-                kw = dict(request.form)
-            else:
-                raw_data = request.data.decode("utf-8")
-                kw = ast.literal_eval(raw_data)
-
+            kw = util_serializer_request(request)
             video_id = request.url.split('/')[-3]
             user_id = request.url.split('/')[-1]
             token = get_jwt_identity()
@@ -556,12 +527,7 @@ class VideoVideoIdProcessUserId(Resource):
         """
 
         try:
-            if request.form != {}:
-                kw = dict(request.form)
-            else:
-                raw_data = request.data.decode("utf-8")
-                kw = ast.literal_eval(raw_data)
-
+            kw = util_serializer_request(request)
             video_id = request.url.split('/')[-3]
             user_id = request.url.split('/')[-1]
             token = get_jwt_identity()
@@ -587,11 +553,7 @@ class VideoVideoIdProcessUserId(Resource):
         """
 
         try:
-            if request.form != {}:
-                kw = dict(request.form)
-            else:
-                raw_data = request.data.decode("utf-8")
-                kw = ast.literal_eval(raw_data)
+            kw = util_serializer_request(request)
             video_id = request.url.split('/')[-3]
             user_id = request.url.split('/')[-1]
             token = get_jwt_identity()
@@ -831,11 +793,7 @@ class AWS(Resource):
         """
 
         try:
-            if request.form != {}:
-                kw = dict(request.form)
-            else:
-                raw_data = request.data.decode("utf-8")
-                kw = ast.literal_eval(raw_data)
+            kw = util_serializer_request(request)
 
             # check authority
             if 'aws_auth_key' not in kw:
@@ -848,13 +806,9 @@ class AWS(Resource):
             update_result = service_video_update(
                 video_id=kw['video_id'], video_raw_status="streaming")
 
-            if len(update_result) == 1:
-                return_body = util_serializer_mongo_results_to_array(
-                    update_result, format="json")
-                return util_serializer_api_response(
-                    200, body=return_body, msg="Successfully updated video")
-            else:
-                return util_serializer_api_response(
-                    500, msg="Failed to update video")
+            return_body = util_serializer_mongo_results_to_array(
+                update_result, format="json")
+            return util_serializer_api_response(
+                200, body=return_body, msg="Successfully updated video")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)

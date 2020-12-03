@@ -164,10 +164,8 @@ function VideoUpdate({ videoId }) {
 
         // upload to s3
         AWS.config.update({
-          // accessKeyId: AWS.config.credentials.accessKeyId,
-          // secretAccessKey: AWS.config.credentials.secretAccessKey,
-          accessKeyId: "AKIA3OYIJQ4LRR5D4QMP",
-          secretAccessKey: "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",
+          accessKeyId: process.env.REACT_APP_ACCESS_KEY_ID2,
+          secretAccessKey: process.env.REACT_APP_SECRET_KEY2,
           region: AWS.config.region,
         });
 
