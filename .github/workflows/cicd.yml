@@ -2,21 +2,20 @@ name: CI/CD
 
 on:
   push:
-  # pull_request:
   workflow_dispatch:
 
 env:
   COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
   CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-  DOCKER_USER: "hypertars"
-  DOCKER_EMAIL: "hypertars@gmail.com"
+  DOCKER_USER: ${{ secrets.DOCKER_USER }}
+  DOCKER_EMAIL: ${{ secrets.DOCKER_EMAIL }}
   DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
   BACKEND_BUILD: "greloupis-backend"
   FRONTEND_BUILD: "greloupis-frontend"
   HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+  HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
   HEROKU_APP_FRONTEND: "greloupis-frontend"
-  HEROKU_APP_BACKEND: "greloupis-backend"
-  HEROKU_EMAIL: "hypertars@gmail.com"
+  HEROKU_APP_BACKEND: "greloupis-backend"  
   ACCESS_KEY_ID1: ${{ secrets.ACCESS_KEY_ID1 }}
   ACCESS_KEY_ID2: ${{ secrets.ACCESS_KEY_ID2 }}
   SECRET_KEY1: ${{ secrets.SECRET_KEY1 }}
