@@ -113,15 +113,7 @@ class Video(Resource):
         """
 
         try:
-            # check authority
-            if get_jwt_identity is None:
-                raise RouteError(ErrorCode.ROUTE_TOKEN_REQUIRED)
-
             video_id = service_video_upload(get_jwt_identity())
-
-            if type(video_id) != str or len(video_id) != 24:
-                return util_serializer_api_response(
-                    500, msg="Failed to create temp video instance")
 
             return util_serializer_api_response(
                     200, body={'video_id': video_id},
@@ -187,14 +179,10 @@ class VideoVideoId(Resource):
             kw["video_id"] = video_id
 
             update_result = service_video_update(**kw)
-            if len(update_result) == 1:
-                return_body = util_serializer_mongo_results_to_array(
-                    update_result, format="json")
-                return util_serializer_api_response(
-                    200, body=return_body, msg="Successfully updated video")
-            else:
-                return util_serializer_api_response(
-                    500, msg="Failed to update video")
+            return_body = util_serializer_mongo_results_to_array(
+                update_result, format="json")
+            return util_serializer_api_response(
+                200, body=return_body, msg="Successfully updated video")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)
 
@@ -842,13 +830,9 @@ class AWS(Resource):
             update_result = service_video_update(
                 video_id=kw['video_id'], video_raw_status="streaming")
 
-            if len(update_result) == 1:
-                return_body = util_serializer_mongo_results_to_array(
-                    update_result, format="json")
-                return util_serializer_api_response(
-                    200, body=return_body, msg="Successfully updated video")
-            else:
-                return util_serializer_api_response(
-                    500, msg="Failed to update video")
+            return_body = util_serializer_mongo_results_to_array(
+                update_result, format="json")
+            return util_serializer_api_response(
+                200, body=return_body, msg="Successfully updated video")
         except (ServiceError, MongoError, RouteError, Exception) as e:
             return util_error_handler(e)

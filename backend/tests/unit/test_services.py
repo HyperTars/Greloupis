@@ -255,14 +255,12 @@ class TestServiceSearchVideo(unittest.TestCase):
             self.data['const_video'][0]['video_title'],
             msg="Test Search Video: Title")
 
-        self.assertEqual(
-            len(service_search_video(title="xi",
-                                     ignore_case=False)),
-            0,
+        self.assertEqual(len(service_search_video(
+            title="xi", ignore_case=False)), 0,
             msg="Test Search Video: Title (not found)")
 
         self.assertEqual(
-            len(service_search_video(title="E")), 0,
+            len(service_search_video(title="Z")), 0,
             msg="Test Search Video: Title")
 
         self.assertEqual(
@@ -636,9 +634,6 @@ class TestServiceVideo(unittest.TestCase):
         self.assertEqual(
             service_video_get_by_user(user_id=temp_user_id)[0]['video_title'],
             self.temp_video_title)
-
-        self.assertEqual(len(service_video_get_by_user(
-            user_id=self.data['const_user'][2]['_id']['$oid'])), 0)
 
         # Raise Error: ErrorCode.SERVICE_MISSING_PARAM
         with self.assertRaises(ServiceError) as e:

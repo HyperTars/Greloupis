@@ -2,6 +2,7 @@ import datetime
 import json
 import unittest
 import copy
+import os
 from flask import Flask, Blueprint, g
 from flask_jwt_extended import JWTManager, create_access_token
 from flask_restx import Api
@@ -675,6 +676,18 @@ class TestRouteVideo(unittest.TestCase):
             self.assertEqual(error_json["message"],
                              ErrorCode.SERVICE_VIDEO_NOT_FOUND.get_msg())
 
+        # deleted video
+        video_id = self.data['const_video'][1]['_id']['$oid']
+        with app.test_request_context('/video/' + video_id, data={}):
+            error_json = VideoVideoId().get(video_id).get_json()
+            self.assertTrue('error_code' in error_json)
+
+        # private video
+        video_id = self.data['const_video'][2]['_id']['$oid']
+        with app.test_request_context('/video/' + video_id, data={}):
+            error_json = VideoVideoId().get(video_id).get_json()
+            self.assertTrue('error_code' in error_json)
+
     def test_c_video_update(self):
         temp_video_title = self.data['temp_video'][0]['video_title']
         temp_video = query_video_get_by_title(temp_video_title)[0].to_dict()
@@ -737,12 +750,22 @@ class TestRouteVideo(unittest.TestCase):
             self.assertEqual(error_json["message"],
                              ErrorCode.SERVICE_VIDEO_NOT_FOUND.get_msg())
 
+        # auth failed
+        video_id = self.data['const_video'][2]['_id']['$oid']
+        with app.app_context():
+            response = self.client.put('/video/' + video_id,
+                                       data=update_video,
+                                       headers=self.headers)
+            response_json = json.loads(response.data)
+            self.assertTrue('error_code' in response_json)
+
     def test_d_video_view(self):
         temp_video_title = self.data['temp_video'][0]['video_title']
         temp_video = query_video_get_by_title(temp_video_title)[0].to_dict()
         temp_video_id = temp_video["video_id"]
 
         wrong_id = "5f88f883e6ac4f89900ac984"
+        private_id = self.data['const_video'][2]['_id']['$oid']
 
         # get view successful case
         with app.app_context():
@@ -760,7 +783,13 @@ class TestRouteVideo(unittest.TestCase):
                                        data={},
                                        headers=self.headers)
             error_json = json.loads(response.data)
-            self.assertEqual(error_json["code"], 404)
+            self.assertTrue('error_code' in error_json)
+
+        with app.app_context():
+            response = self.client.get('/video/' + private_id + '/view',
+                                       headers=self.headers)
+            error_json = json.loads(response.data)
+            self.assertTrue('error_code' in error_json)
 
         # add view successful case
         with app.app_context():
@@ -777,7 +806,7 @@ class TestRouteVideo(unittest.TestCase):
                                        data={},
                                        headers=self.headers)
             error_json = json.loads(response.data)
-            self.assertEqual(error_json["code"], 404)
+            self.assertTrue('error_code' in error_json)
 
     def test_e_video_comment(self):
         temp_video_title = self.data['temp_video'][0]['video_title']
@@ -788,6 +817,7 @@ class TestRouteVideo(unittest.TestCase):
         temp_comment_updated = "really nice video"
 
         wrong_id = "5f88f883e6ac4f89900ac984"
+        private_id = self.data['const_video'][2]['_id']['$oid']
 
         # post comment successful case
         with app.app_context():
@@ -807,7 +837,15 @@ class TestRouteVideo(unittest.TestCase):
                 data={"comment": temp_comment},
                 headers=self.headers)
             error_json = json.loads(response.data)
-            self.assertEqual(error_json["code"], 404)
+            self.assertTrue('error_code' in error_json)
+
+        with app.app_context():
+            response = self.client.post(
+                '/video/' + temp_video_id + '/comment/' + private_id,
+                data={"comment": temp_comment},
+                headers=self.headers)
+            error_json = json.loads(response.data)
+            self.assertTrue('error_code' in error_json)
 
         # get comment successful case
         with app.app_context():
@@ -824,10 +862,16 @@ class TestRouteVideo(unittest.TestCase):
         with app.app_context():
             response = self.client.get(
                 '/video/' + temp_video_id + '/comment/' + wrong_id,
-                data={},
                 headers=self.headers)
             error_json = json.loads(response.data)
-            self.assertEqual(error_json["code"], 404)
+            self.assertTrue('error_code' in error_json)
+
+        with app.app_context():
+            response = self.client.get(
+                '/video/' + temp_video_id + '/comment/' + private_id,
+                headers=self.headers)
+            error_json = json.loads(response.data)
+            self.assertTrue('error_code' in error_json)
 
         # update comment successful case
         with app.app_context():
@@ -904,6 +948,7 @@ class TestRouteVideo(unittest.TestCase):
         temp_process_updated = 60
 
         wrong_id = "5f88f883e6ac4f89900ac984"
+        private_id = self.data['const_video'][2]['_id']['$oid']
 
         # post process successful case
         with app.app_context():
@@ -934,7 +979,7 @@ class TestRouteVideo(unittest.TestCase):
                 data={"process": -1},
                 headers=self.headers)
             error_json = json.loads(response.data)
-            self.assertEqual(error_json["code"], 500)
+            self.assertTrue('error_code' in error_json)
 
         # get process successful case
         with app.app_context():
@@ -952,10 +997,16 @@ class TestRouteVideo(unittest.TestCase):
         with app.app_context():
             response = self.client.get(
                 '/video/' + temp_video_id + '/process/' + wrong_id,
-                data={},
                 headers=self.headers)
             error_json = json.loads(response.data)
-            self.assertEqual(error_json["code"], 404)
+            self.assertTrue('error_code' in error_json)
+
+        with app.app_context():
+            response = self.client.get(
+                '/video/' + private_id + '/process/' + wrong_id,
+                headers=self.headers)
+            error_json = json.loads(response.data)
+            self.assertTrue('error_code' in error_json)
 
         # update process successful case
         with app.app_context():
@@ -1006,7 +1057,15 @@ class TestRouteVideo(unittest.TestCase):
                 data={},
                 headers=self.headers)
             error_json = json.loads(response.data)
-            self.assertEqual(error_json["code"], 500)
+            self.assertTrue('error_code' in error_json)
+
+        with app.app_context():
+            uid = self.data['const_user'][2]['_id']['$oid']
+            response = self.client.delete(
+                '/video/' + temp_video_id + '/process/' + uid,
+                headers=self.headers)
+            error_json = json.loads(response.data)
+            self.assertTrue('error_code' in error_json)
 
     def test_g_video_like(self):
         temp_video_title = self.data['temp_video'][0]['video_title']
@@ -1014,6 +1073,7 @@ class TestRouteVideo(unittest.TestCase):
         temp_video_id = temp_video["video_id"]
         temp_user_id = temp_video["user_id"]
         wrong_id = "5f88f883e6ac4f89900ac984"
+        private_id = self.data['const_video'][2]['_id']['$oid']
 
         # post like successful case
         with app.app_context():
@@ -1051,10 +1111,16 @@ class TestRouteVideo(unittest.TestCase):
         with app.app_context():
             response = self.client.get(
                 '/video/' + wrong_id + '/like',
-                data={},
                 headers=self.headers)
             error_json = json.loads(response.data)
-            self.assertEqual(error_json["code"], 404)
+            self.assertTrue('error_code' in error_json)
+
+        with app.app_context():
+            response = self.client.get(
+                '/video/' + private_id + '/like',
+                headers=self.headers)
+            error_json = json.loads(response.data)
+            self.assertTrue('error_code' in error_json)
 
         # cancel like successful case
         with app.app_context():
@@ -1084,6 +1150,7 @@ class TestRouteVideo(unittest.TestCase):
         temp_video_id = temp_video["video_id"]
         temp_user_id = temp_video["user_id"]
         wrong_id = "5f88f883e6ac4f89900ac984"
+        private_id = self.data['const_video'][2]['_id']['$oid']
 
         # post dislike successful case
         with app.app_context():
@@ -1104,8 +1171,15 @@ class TestRouteVideo(unittest.TestCase):
                 data={},
                 headers=self.headers)
             error_json = json.loads(response.data)
+            self.assertTrue('error_code' in error_json)
 
-            self.assertEqual(error_json["code"], 404)
+        with app.app_context():
+            response = self.client.post(
+                '/video/' + private_id + '/dislike/' + wrong_id,
+                data={},
+                headers=self.headers)
+            error_json = json.loads(response.data)
+            self.assertTrue('error_code' in error_json)
 
         # get all dislikes of the video successful case
         with app.app_context():
@@ -1123,11 +1197,16 @@ class TestRouteVideo(unittest.TestCase):
         with app.app_context():
             response = self.client.get(
                 '/video/' + wrong_id + '/dislike',
-                data={},
                 headers=self.headers)
             error_json = json.loads(response.data)
+            self.assertTrue('error_code' in error_json)
 
-            self.assertEqual(error_json["code"], 404)
+        with app.app_context():
+            response = self.client.get(
+                '/video/' + private_id + '/dislike',
+                headers=self.headers)
+            error_json = json.loads(response.data)
+            self.assertTrue('error_code' in error_json)
 
         # cancel dislike successful case
         with app.app_context():
@@ -1157,6 +1236,7 @@ class TestRouteVideo(unittest.TestCase):
         temp_video_id = temp_video["video_id"]
         temp_user_id = temp_video["user_id"]
         wrong_id = "5f88f883e6ac4f89900ac984"
+        private_id = self.data['const_video'][2]['_id']['$oid']
 
         # post star successful case
         with app.app_context():
@@ -1174,10 +1254,16 @@ class TestRouteVideo(unittest.TestCase):
         with app.app_context():
             response = self.client.post(
                 '/video/' + temp_video_id + '/star/' + wrong_id,
-                data={},
                 headers=self.headers)
             error_json = json.loads(response.data)
-            self.assertEqual(error_json["code"], 404)
+            self.assertTrue('error_code' in error_json)
+
+        with app.app_context():
+            response = self.client.post(
+                '/video/' + private_id + '/star/' + wrong_id,
+                headers=self.headers)
+            error_json = json.loads(response.data)
+            self.assertTrue('error_code' in error_json)
 
         # get all stars of the video successful case
         with app.app_context():
@@ -1195,10 +1281,16 @@ class TestRouteVideo(unittest.TestCase):
         with app.app_context():
             response = self.client.get(
                 '/video/' + wrong_id + '/star',
-                data={},
                 headers=self.headers)
             error_json = json.loads(response.data)
-            self.assertEqual(error_json["code"], 404)
+            self.assertTrue('error_code' in error_json)
+
+        with app.app_context():
+            response = self.client.get(
+                '/video/' + private_id + '/star',
+                headers=self.headers)
+            error_json = json.loads(response.data)
+            self.assertTrue('error_code' in error_json)
 
         # cancel star successful case
         with app.app_context():
@@ -1221,6 +1313,47 @@ class TestRouteVideo(unittest.TestCase):
 
             self.assertEqual(error_json["code"], 404)
 
+    def test_j_aws(self):
+        url = '/video/aws'
+        vid = self.data['const_video'][2]['_id']['$oid']
+        AWS_AUTH_KEY = os.environ.get('AWS_AUTH_KEY')
+        data = {'aws_auth_key': AWS_AUTH_KEY,
+                'video_id': vid}
+        print(data)
+        with app.test_client() as client:
+            response = client.post(url, data=data)
+            json_data = response.data
+            json_dict = json.loads(json_data)
+            print(json_dict)
+            self.assertEquals(json_dict['body'][0]['video_raw_status'],
+                              'streaming')
+
+        # failed case
+        url = '/video/aws'
+        data = {'video_id': vid}
+        with app.test_client() as client:
+            response = client.post(url, data=data)
+            json_data = response.data
+            json_dict = json.loads(json_data)
+            print(json_dict)
+            self.assertTrue('error_code' in json_dict)
+
+        url = '/video/aws'
+        data = {'aws_auth_key': AWS_AUTH_KEY}
+        with app.test_client() as client:
+            response = client.post(url, data=data)
+            json_data = response.data
+            json_dict = json.loads(json_data)
+            self.assertTrue('error_code' in json_dict)
+
+        url = '/video/aws'
+        data = {'aws_auth_key': AWS_AUTH_KEY[1:]}
+        with app.test_client() as client:
+            response = client.post(url, data=data)
+            json_data = response.data
+            json_dict = json.loads(json_data)
+            self.assertTrue('error_code' in json_dict)
+
     def test_z_video_delete(self):
         temp_video_title = self.data['temp_video'][0]['video_title']
         temp_video = query_video_get_by_title(temp_video_title)[0].to_dict()
@@ -1233,5 +1366,13 @@ class TestRouteVideo(unittest.TestCase):
                                headers=self.headers)
             delete_search = query_video_get_by_video_id(temp_video_id)
             self.assertEqual(len(delete_search), 1)
+
+        # auth failed
+        video_id = self.data['const_video'][2]['_id']['$oid']
+        with app.app_context():
+            response = self.client.delete(
+                '/video/' + video_id, headers=self.headers)
+            response_json = json.loads(response.data)
+            self.assertTrue('error_code' in response_json)
 
         query_video_delete(temp_video_id, silent=True)
