@@ -138,10 +138,6 @@ class ErrorCode(Enum):
         return list(self.value.values())[0]
 
 
-class ModelError(Exception):
-    pass
-
-
 class MongoError(Exception):
     def __init__(self, error_code, message='', *args, **kwargs):
         if not isinstance(error_code, ErrorCode):
@@ -151,12 +147,8 @@ class MongoError(Exception):
 
         self.error_code = error_code
         self.traceback = sys.exc_info()
-        try:
-            msg = '[{0}], {1}'.format(error_code.name,
-                                      message.format(*args, **kwargs))
-        except (IndexError, KeyError):
-            msg = '[{0}] {1}'.format(error_code.name, message)
-
+        msg = '[{0}], {1}'.format(error_code.name,
+                                  message.format(*args, **kwargs))
         super().__init__(msg)
 
     def get_code(self):
@@ -164,9 +156,6 @@ class MongoError(Exception):
 
     def get_msg(self):
         return self.error_code.get_msg()
-
-    def __str__(self):
-        return repr(self.error_code)
 
 
 class ServiceError(Exception):
@@ -178,11 +167,8 @@ class ServiceError(Exception):
 
         self.error_code = error_code
         self.traceback = sys.exc_info()
-        try:
-            msg = '[{0}], {1}'.format(error_code.name,
-                                      message.format(*args, **kwargs))
-        except (IndexError, KeyError):
-            msg = '[{0}] {1}'.format(error_code.name, message)
+        msg = '[{0}], {1}'.format(error_code.name,
+                                  message.format(*args, **kwargs))
 
         super().__init__(msg)
 
@@ -191,9 +177,6 @@ class ServiceError(Exception):
 
     def get_msg(self):
         return self.error_code.get_msg()
-
-    def __str__(self):
-        return repr(self.error_code)
 
 
 class RouteError(Exception):
@@ -205,11 +188,8 @@ class RouteError(Exception):
 
         self.error_code = error_code
         self.traceback = sys.exc_info()
-        try:
-            msg = '[{0}], {1}'.format(error_code.name,
-                                      message.format(*args, **kwargs))
-        except (IndexError, KeyError):
-            msg = '[{0}] {1}'.format(error_code.name, message)
+        msg = '[{0}], {1}'.format(error_code.name,
+                                  message.format(*args, **kwargs))
 
         super().__init__(msg)
 
@@ -218,9 +198,6 @@ class RouteError(Exception):
 
     def get_msg(self):
         return self.error_code.get_msg()
-
-    def __str__(self):
-        return repr(self.error_code)
 
 
 class UtilError(Exception):
@@ -232,11 +209,8 @@ class UtilError(Exception):
 
         self.error_code = error_code
         self.traceback = sys.exc_info()
-        try:
-            msg = '[{0}], {1}'.format(error_code.name,
-                                      message.format(*args, **kwargs))
-        except (IndexError, KeyError):
-            msg = '[{0}] {1}'.format(error_code.name, message)
+        msg = '[{0}], {1}'.format(error_code.name,
+                                  message.format(*args, **kwargs))
 
         super().__init__(msg)
 
@@ -245,16 +219,3 @@ class UtilError(Exception):
 
     def get_msg(self):
         return self.error_code.get_msg()
-
-    def __str__(self):
-        return repr(self.error_code)
-
-# print error code
-# code = ErrorCode.MONGODB_CONNECTION_FAILURE.get_code()
-# print("code:", code)
-# print error message
-# msg = ErrorCode.MONGODB_CONNECTION_FAILURE.get_msg()
-# print("msg:", msg)
-# Traverse enum
-# for status in ErrorCode:
-#    print(status.name, ":", status.value)
