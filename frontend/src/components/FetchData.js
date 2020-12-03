@@ -63,7 +63,6 @@ function fetchWithErrorHandling(url, method, data) {
         if (AuthService.isAuth()) {
           alert("Local user token has expired!");
           logout();
-          window.location.href = "/";
         }
       }
 
