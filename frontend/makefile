@@ -33,5 +33,5 @@ docker_hub:
 
 heroku:
 	- docker login --username _ --password=$(HEROKU_API_KEY) registry.heroku.com
-	- heroku container:push web --app $(FRONTEND_BUILD)
+	- heroku container:push web --arg ACCESS_KEY_ID1=$(ACCESS_KEY_ID1),ACCESS_KEY_ID2=$(ACCESS_KEY_ID2),SECRET_KEY1=$(SECRET_KEY1),SECRET_KEY2=$(SECRET_KEY2) --app $(FRONTEND_BUILD)
 	- heroku container:release web --app $(HEROKU_APP_FRONTEND)
