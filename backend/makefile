@@ -30,8 +30,12 @@ coverage:
 lint:
 	$(LINTER) --config configs/flake8 --exit-zero ./
 
-document:
-	pydoc -w ./
+docs:	pydoc #FORCE
+
+pydoc:
+	rm -rf docs/
+	mkdir docs/
+	pydoc3 -w ./
 	mv *.html docs
 
 docker_build:
