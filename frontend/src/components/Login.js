@@ -14,7 +14,7 @@ import { withStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import PropTypes from "prop-types";
 import AuthService from "../service/AuthService";
-import GITHUB_REPO from "./Endpoint";
+import { GITHUB_REPO } from "./Endpoint";
 
 function Copyright() {
   return (

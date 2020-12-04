@@ -3,7 +3,7 @@ import { getUserInfo, updateUserInfo, deleteUser } from "./FetchData";
 import ErrorPage from "./ErrorPage";
 import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
-import S3_THUMBNAIL_BUCKET from "./Endpoint";
+import { S3_AVATAR_BUCKET } from "./Endpoint";
 
 import {
   Form,

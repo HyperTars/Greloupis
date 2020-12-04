@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getVideoInfo, updateVideoInfo, deleteVideo } from "./FetchData";
 import ErrorPage from "./ErrorPage";
-import S3_VIDEO_THUMBNAIL_BUCKET from "./Endpoint";
+import { S3_VIDEO_THUMBNAIL_BUCKET } from "./Endpoint";
 
 import {
   Form,

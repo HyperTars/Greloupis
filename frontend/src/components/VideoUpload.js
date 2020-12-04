@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Header from "./Header";
 import { createVideo, updateVideoInfo } from "./FetchData";
 import { message, Progress } from "antd";
-import S3_RAW_VIDEO_BUCKET from "./Endpoint";
+import { S3_RAW_VIDEO_BUCKET } from "./Endpoint";
 
 let AWS = require("aws-sdk");
 
