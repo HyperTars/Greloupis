@@ -68,7 +68,7 @@ i (User create, login, logout) Now let’s create a new user called demoUser… 
 ii We may update some user information. For example lets upload an avatar, and also modify our user status to “public”, so other users can see my profile.
 
 (3. Video)
-i (Video upload) Suppose we want to upload a video now. We have listed all the video format we support, so please ensure that the uploaded video format is in the range. I upload a test video, and click “Publish”. You can see that we have a message box on the top and an upload progress bar… Now it’s finished. 
+i (Video upload) Suppose we want to upload a video now. We have listed all the video format we support, so please ensure that the uploaded video format is in the range. I upload a test video, and click “Publish”. You can see that we have a message box on the top and an upload progress bar below…Now it’s finished. 
 
 ii (Video update) So now, users will be prompted to update the video information immediately. Meanwhile, our video has been uploaded to AWS and it’s now being transcoded. We need to wait several minutes until the video is ready for streaming. Let’s not update but return to user profile to check our video status.. You can see that the video is marked as “pending”, and if we clicked into the video it will show that “the video is being transcoded and cannot be played now”. OK now back to the video update, click “manage video” to make some changes, notice that we have tooltips to instruct users how to correctly input information…
 
