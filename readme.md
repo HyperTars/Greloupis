@@ -57,10 +57,9 @@
       - [Make Prod](#make-prod)
       - [Run](#run)
   - [Designs](#designs)
-    - [Coding Style](#coding-style)
-    - [APIs Design](#apis-design)
-    - [Components Design](#components-design)
-  - [CI CD](#ci-cd)
+    - [APIs](#apis)
+    - [Architecture](#architecture)
+  - [CI / CD](#ci--cd)
   - [Contributors](#contributors)
 
 ## Documents
@@ -128,7 +127,7 @@ make prod
 
 ### [Backend](backend/readme.md)
 
-## CI CD
+## CI / CD
 - We use `GitHub Action`, `Docker` and `Heroku` to do CI/CD works
   - Full [Test Cases](documents/Test.md)
   - Coverage (test results) [CodeCov](https://codecov.io/gh/HyperTars/Online-Video-Platform) | [Coverall](https://coveralls.io/github/HyperTars/Online-Video-Platform)
