@@ -51,7 +51,9 @@ i Videos are typically transcoded and sent via content delivery network.
 
 ii Besides, users may not only want to watch videos, but also want to publish their own videos and share with others. People will make some operations, for example posting likes, leaving their comments or simply adding videos to their favorite lists. 
 
-iii Finally, users expect to have easy and clean video watching experience, typically this means that the UI of the website should be user-friendly, and there should not be any annoying advertisement. So, based on these points, we designed a great online video platform which satisfies all needs we mentioned before. Let’s have a look. 
+iii Finally, users expect to have easy and clean video watching experience, typically this means that the UI of the website should be user-friendly, and there should not be any annoying advertisement. 
+
+So, based on these points, we designed a great online video platform which satisfies all needs we mentioned before. Let’s have a look. 
 
 (1. Search)
 
