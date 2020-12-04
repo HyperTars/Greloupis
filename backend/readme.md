@@ -61,9 +61,10 @@
 
 - Configurations
     - If you run locally, makefile will set the PROFILE as dev, you can change it in [makefile](makefile)
-    - You should configure variables like **MongoDB endpoint**, **AWS endpoint**, loggings, and other settings in [BaseConfig](configs/config_base.py), [DevConfig](configs/config_dev.py), [TestConfig](configs/config_test.py), [ProdConfig](configs/config_prod.py)
+    - You should configure variables like **MongoDB endpoint**, **AWS settings**, loggings, and other settings in [BaseConfig](configs/config_base.py), [DevConfig](configs/config_dev.py), [TestConfig](configs/config_test.py), [ProdConfig](configs/config_prod.py)
         - Note that [TestConfig](configs/config_test.py) is only used for `make tests` and Continuous Integration Test. You'd better create a independent MongoDB Table for it. For developemt use, we recommend you configure [DevConfig](configs/config_dev.py)
         - See how it is related to environment variables [Settings](settings.py)
+        - AWS endpoint should be set in the [environment variables](../documents/EnvironmentSettings.md)
     - Other settings like [Logging Settings](configs/logging.yml) and [uWSGI Settings](configs/uwsgi.ini)(for docker use)
 
 ### Install Dependencies
