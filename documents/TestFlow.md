@@ -72,8 +72,14 @@ i (Video upload) Suppose we want to upload a video now. We have listed all the v
 
 ii (Video update) So now, users will be prompted to update the video information immediately. Meanwhile, our video has been uploaded to AWS and it’s now being transcoded. We need to wait several minutes until the video is ready for streaming. Let’s not update but return to user profile to check our video status.. You can see that the video is marked as “pending”, and if we clicked into the video it will show that “the video is being transcoded and cannot be played now”. OK now back to the video update, click “manage video” to make some changes, notice that we have tooltips to instruct users how to correctly input information…
 
-iii (Video play 1) Now we see that video status is “public”, which means that video is ready to be played and all users have access to this video. Click into the video. We can see the information we input just now. Let’s start to play…	i You can see that we are using video streaming so we will just retrieve part of the video.	ii We have several control buttons, like play / pause, rewind by 10 seconds, volume control, full screen, and resolution switching. Users can even customize keyboards shortcuts to control videos.
-	iii Our website can remember user’s watching process. For example we have now played {number} seconds... Let’s close this video and return back, the video will automatically switches to this number and is ready to be played from here. (We can even try again…)iv (Video play 2) Now lets talk about video operations. We open another video(Shanghai). Still you can see the video can be played smoothly. Users can post like, dislike, or they can star this video to their collections. They can even write some comments, and of course they can be deleted afterwards. We now get back to the user profile, and previous operations have been saved.
+iii (Video play 1) Now we see that video status is “public”, which means that video is ready to be played and all users have access to this video. Click into the video. We can see the information we input just now. Let’s start to play…	
+    i You can see that we are using video streaming so we will just retrieve part of the video.
+    
+    ii We have several control buttons, like play / pause, rewind by 10 seconds, volume control, full screen, and resolution switching. Users can even customize keyboards shortcuts to control videos.
+	
+    iii Our website can remember user’s watching process. For example we have now played {number} seconds... Let’s close this video and return back, the video will automatically switches to this number and is ready to be played from here. (We can even try again…)
+    
+iv (Video play 2) Now lets talk about video operations. We open another video(Shanghai). Still you can see the video can be played smoothly. Users can post like, dislike, or they can star this video to their collections. They can even write some comments, and of course they can be deleted afterwards. We now get back to the user profile, and previous operations have been saved.
 
 (4. Access)
 We now want to talk about accessibility, because we want to give user enough privacy and also ensure the safety of our website.
