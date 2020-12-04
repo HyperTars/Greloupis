@@ -15,7 +15,7 @@
 
     [![CI/CD](https://github.com/HyperTars/Online-Video-Platform/workflows/CI/CD/badge.svg)](https://github.com/HyperTars/Online-Video-Platform/actions?query=workflow%3ACI%2FCD)
     [![CodeCov Status](https://codecov.io/gh/HyperTars/Online-Video-Platform/branch/master/graph/badge.svg?token=8K7ODQK5BV)](https://codecov.io/gh/HyperTars/Online-Video-Platform)
-    [![Coveralls Status](https://coveralls.io/repos/github/HyperTars/Online-Video-Platform/badge.svg?t=dyCGTT)](https://coveralls.io/github/HyperTars/Online-Video-Platform)
+    <!-- [![Coveralls Status](https://coveralls.io/repos/github/HyperTars/Online-Video-Platform/badge.svg?t=dyCGTT)](https://coveralls.io/github/HyperTars/Online-Video-Platform) -->
     
 - Continuous Delivery & Deploy (Frontend)
 
@@ -49,7 +49,7 @@
     - [Frontend Details](#frontend-details)
     - [Backend Details](#backend-details)
     - [CI / CD Workflow](#ci--cd-workflow)
-    - [Environment Settings](#Environment-Settings)
+    - [Environment Settings](#environment-settings)
   - [Setup Guide](#setup-guide)
       - [Environment Requirement](#environment-requirement)
       - [Install Dependencies](#install-dependencies)
