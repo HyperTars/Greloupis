@@ -156,6 +156,7 @@ make heroku
 - See full [Test Cases](../documents/Test.md)
 - Coverage
   - [CodeCov](https://codecov.io/gh/HyperTars/Online-Video-Platform)
+  - [Coveralls](https://coveralls.io/github/HyperTars/Online-Video-Platform)
 
 ## Contributors
   
