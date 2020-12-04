@@ -35,7 +35,7 @@
   - [Stage Deploy](#stage-deploy)
     - [Deploy Frontend](#deploy-frontend)
     - [Deploy Backend](#deploy-backend)
-    - [Deploy Monintoring](#deploy-monintoring)
+    - [Deploy monitoring](#deploy-monitoring)
 
 ## Overview
 - We use [GitHub Action](https://github.com/HyperTars/Online-Video-Platform/actions) to do our CI/CD job.
@@ -294,6 +294,6 @@
     ```
 - Note that if you want to tag and push locally, you should configure the [environment variables](EnvironmentSettings.md) first. [These](../environ.sh) should also be set in **GitHub Action Secret Keys** so that the workflow could be executed automatically.
 
-### Deploy Monintoring
+### Deploy monitoring
 - [Heroku Frontend Metrics Monitor](https://metrics.librato.com/s/public/wxet4vyas)
 - [Heroku Backend Metrics Monitor](https://metrics.librato.com/s/public/reo8fj68x)

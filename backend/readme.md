@@ -145,7 +145,7 @@ make heroku
 
 - Background Design
 
-    ![BackgroundDesign](../documents/images/BackgroundDesign.svg)
+    ![GreloupisBackgroundDesign](../documents/images/GreloupisBackend.svg)
 
 ### Web Server Design
 - We use [uWSGI](configs/uwsgi.ini) as our frontend webserver. See how it is configured in [Dockerfile](Dockerfile)

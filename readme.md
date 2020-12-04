@@ -133,7 +133,7 @@ make prod
 
 - Architecture Design
     
-    ![Architecture Design Diagram](documents/ArchitectureDesign_resize.png)
+    ![Architecture Design Diagram](documents/images/GreloupisArchitecture.svg)
 
 ## CI CD
 - We use `GitHub Action`, `Docker` and `Heroku` to do CI/CD works
