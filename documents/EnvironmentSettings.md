@@ -14,27 +14,55 @@
 - Frontend: npm 14.15.0
 - Backend: python 3.7 | python 3.8
 
+- Docker-compose & docker.sh (run both frontend and backend in one terminal with one command)
+  - AWS_AUTH_KEY
+  - ACCESS_KEY_ID1
+  - ACCESS_KEY_ID2
+  - SECRET_KEY1
+  - SECRET_KEY2
+
 ## Local Running Environment Variables
 ### Frontend Environment Variables
+- React
+  - ACCESS_KEY_ID1
+  - ACCESS_KEY_ID2
+  - SECRET_KEY1
+  - SECRET_KEY2
+  - PROFILE
+  - [Backend and S3 Endpoints](../frontend/src/components/Endpoint.js)
 
-#### React
+- Dockerfile
+  - ACCESS_KEY_ID1
+  - ACCESS_KEY_ID2
+  - SECRET_KEY1
+  - SECRET_KEY2
 
-#### Dockerfile
-
-#### Makefile
-- You can run and test frontend only.
+- Makefile: You can run and test frontend separately.
+  - ACCESS_KEY_ID1
+  - ACCESS_KEY_ID2
+  - SECRET_KEY1
+  - SECRET_KEY2
+  - FRONTEND_BUILD
+  - FRONTEND_REPO
+  - TAG
+  - HEROKU_APP_FRONTEND
 
 ### Backend Environment Variables
 
-#### Python Flask
+- Python Flask
+  - AWS_AUTH_KEY
+  - PROFILE
+  - [MongoDB Endpoint](../backend/configs/config_dev.py)
+  - [AWS CloudFront & S3 Endpoints](../backend/configs/config_base.py)
 
-#### Dockerfile
-
-#### Makefile
-- You can run and test backend only.
-
-### Docker-Compose Environment Variables
-- With docker-compose, you can run both frontend and backend in one terminal with one command.
+- Makefile: You can run and test backend separately.
+  - CODECOV_TOKEN
+  - DOCKER_USER
+  - DOCKER_PASS
+  - BACKEND_BUILD
+  - BACKEND_REPO
+  - TAG
+  - HEROKU_APP_BACKEND
 
 ## CI / CD Workflow Environment Variables
 
@@ -59,11 +87,11 @@
 - HEROKU_API_KEY
 
 ### Heroku
-#### Heroku Frontend
+#### Heroku Frontend App
 - ACCESS_KEY_ID1
 - ACCESS_KEY_ID2
 - SECRET_KEY1
 - SECRET_KEY2
 
-#### Heroku Backend
+#### Heroku Backend App
 - AWS_AUTH_KEY

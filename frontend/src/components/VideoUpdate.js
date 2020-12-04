@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getVideoInfo, updateVideoInfo, deleteVideo } from "./FetchData";
 import ErrorPage from "./ErrorPage";
+import S3_VIDEO_THUMBNAIL_BUCKET from "./Endpoint";
 
 import {
   Form,
@@ -123,7 +124,7 @@ function VideoUpdate({ videoId }) {
 
       updateVideoInfo(videoId, {
         video_thumbnail: hasThumbnail
-          ? "https://greloupis-images.s3.amazonaws.com/thumbnail-" +
+          ? S3_VIDEO_THUMBNAIL_BUCKET +
             CURRENT_UUID +
             "-" +
             thumbnailName

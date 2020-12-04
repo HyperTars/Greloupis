@@ -3,6 +3,7 @@ import { getUserInfo, updateUserInfo, deleteUser } from "./FetchData";
 import ErrorPage from "./ErrorPage";
 import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
+import S3_THUMBNAIL_BUCKET from "./Endpoint";
 
 import {
   Form,
@@ -218,7 +219,7 @@ function UserProfile({ userId }) {
     const submitHandler = (values) => {
       let dataObj = {
         user_thumbnail: hasThumbnail
-          ? "https://greloupis-images.s3.amazonaws.com/avatar-" +
+          ? S3_AVATAR_BUCKET +
             CURRENT_UUID +
             "-" +
             thumbnailName

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Header from "./Header";
 import { createVideo, updateVideoInfo } from "./FetchData";
 import { message, Progress } from "antd";
+import S3_RAW_VIDEO_BUCKET from "./Endpoint";
 
 let AWS = require("aws-sdk");
 
@@ -95,7 +96,7 @@ export default class VideoUpload extends Component {
                 video_duration: this.state.video_duration,
                 video_id: this.state.video_id,
                 video_raw_content:
-                  "https://vod-watchfolder-ovs-lxb.s3-us-west-1.amazonaws.com/" +
+                  S3_RAW_VIDEO_BUCKET +
                   this.state.video_id +
                   "." +
                   this.state.fileObj.type.slice(6),
