@@ -62,9 +62,9 @@
 - Configurations
     - If you run locally, makefile will set the PROFILE as dev, you can change it in [makefile](makefile)
     - You should configure variables like **MongoDB endpoint**, **AWS settings**, loggings, and other settings in [BaseConfig](configs/config_base.py), [DevConfig](configs/config_dev.py), [TestConfig](configs/config_test.py), [ProdConfig](configs/config_prod.py)
-        - Note that [TestConfig](configs/config_test.py) is only used for `make tests` and Continuous Integration Test. You'd better create an independent **MongoDB Collection** for it. For developemt use, we recommend you configure [DevConfig](configs/config_dev.py)
+        - Note that [TestConfig](configs/config_test.py) is only used for `make tests` and Continuous Integration Test. You'd better create an independent **MongoDB Collection** for it. For developemt use, we recommend you configure [DevConfig](configs/config_dev.py), for production user, configure [ProdConfig](configs/config_prod.py)
         - See how it is related to environment variables [Settings](settings.py)
-        - AWS endpoint should be set in the [environment variables](../documents/EnvironmentSettings.md).
+        - AWS endpoint should be set to the [environment variables](../documents/EnvironmentSettings.md)
         - **`AWS_AUTH_KEY`** is a self-defined aws-backend communication authentication key that makes sure irrelevant post would not be executed. Here is how it is [used](routes/route_video.py) (`video.route('/aws')`) and [imported](configs/config_base.py)
     - Other settings like [Logging Settings](configs/logging.yml) and [uWSGI Settings](configs/uwsgi.ini)(for docker use)
 
