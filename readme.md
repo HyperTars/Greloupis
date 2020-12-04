@@ -115,25 +115,18 @@ make prod
         - Username: eclipse, Password: eclipse
 
 ## Designs
-### Coding Style
-- Python: [PEP8](https://www.python.org/dev/peps/pep-0008/)
-- React: [JSX](https://reactjs.org/docs/introducing-jsx.html)
 
-### APIs Design
+### APIs
 - See full [APIs Design](documents/APIs.md)
 - Or you can access our [backend Swagger UI website](https://greloupis-backend.herokuapp.com/)
 
-### Components Design
-1. Processing Queue: Each uploaded video will be pushed to a processing queue to be de-queued later for encoding, thumbnail generation, and storage.
-2. Encoder: To encode each uploaded video into multiple formats.
-3. Thumbnails generator: To generate a few thumbnails for each video.
-4. Video and Thumbnail storage: To store video and thumbnail files in some distributed file storage.
-5. User Database: To store user’s information, e.g., name, email, address, etc.
-6. Video metadata storage: A metadata database to store all the information about videos like title, file path in the system, uploading user, total views, likes, dislikes, etc. It will also be used to store all the video comments.
-
-- Architecture Design
+### Architecture
     
-    ![Architecture Design Diagram](documents/images/GreloupisArchitecture-2.svg)
+![Architecture Design Diagram](documents/images/GreloupisArchitecture-2.svg)
+
+### [Frontend](frontend/readme.md)
+
+### [Backend](backend/readme.md)
 
 ## CI CD
 - We use `GitHub Action`, `Docker` and `Heroku` to do CI/CD works
