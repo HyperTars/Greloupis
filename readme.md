@@ -48,6 +48,7 @@
     - [Project Proposal](#project-proposal)
     - [Frontend Details](#frontend-details)
     - [Backend Details](#backend-details)
+    - [Transcoder Details](#transcoder-details)
     - [CI / CD Workflow](#ci--cd-workflow)
     - [Environment Settings](#environment-settings)
   - [Setup Guide](#setup-guide)
@@ -66,6 +67,7 @@
 ### [Project Proposal](documents/Proposal.md)
 ### [Frontend Details](frontend/readme.md)
 ### [Backend Details](backend/readme.md)
+### [Transcoder Details](transcoder/readme.md)
 ### [CI / CD Workflow](documents/cicd.md)
 ### [Environment Settings](documents/EnvironmentSettings.md)
 
@@ -126,6 +128,8 @@ make prod
 ### [Frontend](frontend/readme.md)
 
 ### [Backend](backend/readme.md)
+
+### [Transcoder](transcoder/readme.md)
 
 ## CI / CD
 - We use `GitHub Action`, `Docker` and `Heroku` to do CI/CD works
