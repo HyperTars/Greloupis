@@ -111,7 +111,9 @@
 - **Please make sure the following dependencies are installed and configured before running**
     - npm (6.14.8)
     - node.js (14.15.0)
-    - Set up [Environment Variable](../documents/EnvironmentSettings.md)
+
+- **AWS Setup Guide**
+    - You should create S3 buckets for storing images and videos, set [URL Endpoints](src/components/Endpoint.js) and add auth keypair to [Environment Variable](../documents/EnvironmentSettings.md)
 
 ### Install Dependencies
 - To install dependencies, run
@@ -128,7 +130,7 @@ make tests
 ### Run
 - Before running
     - If you want to run frontend locally, we recommend you run backend locally at the same time
-    - Otherwise, you should configure [backend endpoint](src/components/Endpoint.js), set it to `HEROKU_ENDPOINT` manually
+    - Otherwise, you should configure [Endpoints](src/components/Endpoint.js), set it to `HEROKU_ENDPOINT` manually
 
 - To run frontend only (http://localhost:3000 or http://0.0.0.0:3000)
     - From Docker Hub

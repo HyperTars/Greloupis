@@ -79,6 +79,9 @@
 - node.js (14.15.0)
 - [Environment Variables](documents/EnvironmentSettings.md)
 - Make sure MongoDB & AWS Endpoints are all set, see more details in [Backend Setup Guide](backend/readme.md#Environment-Requirement-And-Configs)
+- Avatar and Thumbnail images requires you to configure AWS S3 Service, see more details in [Frontend Setup Guide](frontend/readme.md#Environment-Requirement)
+- Video upload and streaming requires you to configure AWS Transcoding Service, see more details in [Transcoder Setup Guide](transcoder/readme.md)
+
 #### Install Dependencies
 - To install dependencies, run
 ```bash
