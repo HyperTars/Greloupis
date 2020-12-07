@@ -1,4 +1,6 @@
 import moment from "moment";
+import { S3_AVATAR_BUCKET } from "./components/Endpoint";
+
 let Uuid = require("node-uuid");
 
 // convert timestamp to relative time
@@ -69,8 +71,7 @@ export function loginCheck() {
 // read user avatar from local storage, or use default avatar
 export function generateAvatar() {
   if (!localStorage.getItem("user_thumbnail"))
-    return "https://greloupis-images.s3.amazonaws.com/avatar-default-1.svg";
-
+    return S3_AVATAR_BUCKET + 'default-1.svg';
   return getSubstr(localStorage.getItem("user_thumbnail"));
 }
 

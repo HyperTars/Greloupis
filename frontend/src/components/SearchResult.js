@@ -52,7 +52,7 @@ function SearchResult() {
       })
       .catch((e) => {
         setLoading(false);
-        setErrorCode(e.message.slice(0, 2));
+        setErrorCode(e.message.slice(0, 3));
         setErrorMsg(e.message.slice(3));
       });
   }, [keyword]);

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Header from "./Header";
 import { createVideo, updateVideoInfo } from "./FetchData";
 import { message, Progress } from "antd";
+import { S3_RAW_VIDEO_BUCKET } from "./Endpoint";
 
 let AWS = require("aws-sdk");
 
@@ -58,6 +59,8 @@ export default class VideoUpload extends Component {
 
   submitHandler = () => {
     if (this.state.fileObj) {
+      message.loading("Uploading, please wait...", 0);
+
       // acquire video ID
       createVideo()
         .then((res) => {
@@ -65,8 +68,6 @@ export default class VideoUpload extends Component {
           this.setState({
             video_id: res.body.video_id,
           });
-          console.log(process.env.REACT_APP_ACCESS_KEY_ID1)
-          console.log(process.env.REACT_APP_SECRET_KEY1)
           // upload to s3
           AWS.config.update({
             accessKeyId: process.env.REACT_APP_ACCESS_KEY_ID1,
@@ -95,7 +96,7 @@ export default class VideoUpload extends Component {
                 video_duration: this.state.video_duration,
                 video_id: this.state.video_id,
                 video_raw_content:
-                  "https://vod-watchfolder-ovs-lxb.s3-us-west-1.amazonaws.com/" +
+                  S3_RAW_VIDEO_BUCKET +
                   this.state.video_id +
                   "." +
                   this.state.fileObj.type.slice(6),
@@ -103,6 +104,7 @@ export default class VideoUpload extends Component {
                 video_title: this.state.video_id,
               };
               updateVideoInfo(this.state.video_id, updateData).then(() => {
+                message.destroy();
                 alert("Successfully uploaded video!");
                 let path = {
                   pathname: `/video/update/${this.state.video_id}`,
@@ -131,13 +133,12 @@ export default class VideoUpload extends Component {
           <form className="upload-page">
             <div className="upload-info">
               <div className="upload-info__progress">
-                <div className="upload-info__progress-bar"></div>
+                <h2>Video Upload</h2>
                 <div className="progress-text">
                   <p>Click "Publish" to upload your video!</p>
                 </div>
               </div>
               <div className="upload-info__basicInfo">
-                <h4>Video Upload</h4>
                 <label className="files">
                   Upload video file: (Format supported: .mp4, .rmvb, .avi, .mov)
                   <input

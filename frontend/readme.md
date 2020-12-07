@@ -15,7 +15,6 @@
 
 - CI / CD
 
-    <!--[![build](https://travis-ci.com/HyperTars/Online-Video-Platform.svg?token=btA3ungCKHqWzLxCoxT7&branch=master)](https://travis-ci.com/HyperTars/Online-Video-Platform)-->
     [![CI/CD](https://github.com/HyperTars/Online-Video-Platform/workflows/CI/CD/badge.svg)](https://github.com/HyperTars/Online-Video-Platform/actions?query=workflow%3ACI%2FCD)
     [![docker status](https://img.shields.io/docker/cloud/build/hypertars/greloupis-frontend)](https://hub.docker.com/r/hypertars/greloupis-frontend)
     [![docker image size](https://img.shields.io/docker/image-size/hypertars/greloupis-frontend)](https://hub.docker.com/r/hypertars/greloupis-frontend/tags)
@@ -112,7 +111,9 @@
 - **Please make sure the following dependencies are installed and configured before running**
     - npm (6.14.8)
     - node.js (14.15.0)
-    - Set up [Environment Variable](../documents/env.sh)
+
+- **AWS Setup Guide**
+    - You should create S3 buckets for storing images and videos, set [URL Endpoints](src/components/Endpoint.js) and add auth keypair to [Environment Variable](../documents/EnvironmentSettings.md)
 
 ### Install Dependencies
 - To install dependencies, run
@@ -129,7 +130,7 @@ make tests
 ### Run
 - Before running
     - If you want to run frontend locally, we recommend you run backend locally at the same time
-    - Otherwise, you should configure [backend endpoint](src/components/Endpoint.js), set it to `HEROKU_ENDPOINT` manually
+    - Otherwise, you should configure [Endpoints](src/components/Endpoint.js), set it to `HEROKU_ENDPOINT` manually
 
 - To run frontend only (http://localhost:3000 or http://0.0.0.0:3000)
     - From Docker Hub
@@ -147,7 +148,7 @@ make tests
 
 ### Dockerize
 - This section is for you to dockerize manually. Normally, GitHub Action will do the dockerize job once master branch is updated.
-- Before dockerize, make sure you've set up [environment variable](../documents/env.sh)
+- Before dockerize, make sure you've set up [environment variable](../documents/EnvironmentSettings.md)
     - FRONTEND_BUILD
     - FRONTEND_REPO (you can also change it in [makefile](makefile))
 - To dockerize backend, run
@@ -157,11 +158,11 @@ make docker_build docker_push
 
 ### Deploy
 - This section is for you to deploy manually. Normally, GitHub Action will do the deploy job once master branch is updated.
-- Before deploy, make sure you've set up [environment variable](../documents/env.sh)
+- Before deploy, make sure you've set up [environment variable](../documents/EnvironmentSettings.md)
     - FRONTEND_BUILD
     - FRONTEND_REPO (you can also change it in [makefile](makefile))
     - HEROKU_API_KEY
-    - HEROKU_APP_NAME
+    - HEROKU_APP_FRONTEND
 - To deploy to heroku, run
 ```bash
 make heroku

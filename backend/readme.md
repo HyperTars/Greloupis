@@ -21,7 +21,6 @@
 
 - CI / CD
 
-    <!--[![build](https://travis-ci.com/HyperTars/Online-Video-Platform.svg?token=btA3ungCKHqWzLxCoxT7&branch=master)](https://travis-ci.com/HyperTars/Online-Video-Platform)-->
     [![CI/CD](https://github.com/HyperTars/Online-Video-Platform/workflows/CI/CD/badge.svg)](https://github.com/HyperTars/Online-Video-Platform/actions?query=workflow%3ACI%2FCD)
     [![CodeCov Status](https://codecov.io/gh/HyperTars/Online-Video-Platform/branch/master/graph/badge.svg?token=8K7ODQK5BV)](https://codecov.io/gh/HyperTars/Online-Video-Platform)
     [![Coveralls Status](https://coveralls.io/repos/github/HyperTars/Online-Video-Platform/badge.svg?t=dyCGTT)](https://coveralls.io/github/HyperTars/Online-Video-Platform)
@@ -58,13 +57,15 @@
 ### Environment Requirement And Configs
 - **Please make sure the following dependencies are installed and configured before running**
     - Python 3.7 / 3.8 **(3.6 or below and 3.9 are not supported)**
-    - Set up [Environment Variable](../documents/env.sh)
+    - Set up [Environment Variable](../documents/EnvironmentSettings.md)
 
 - Configurations
     - If you run locally, makefile will set the PROFILE as dev, you can change it in [makefile](makefile)
-    - You should configure variables like **MongoDB endpoint**, **AWS endpoint**, loggings, and other settings in [BaseConfig](configs/config_base.py), [DevConfig](configs/config_dev.py), [TestConfig](configs/config_test.py), [ProdConfig](configs/config_prod.py)
-        - Note that [TestConfig](configs/config_test.py) is only used for `make tests` and Continuous Integration Test. You'd better create a independent MongoDB Table for it. For developemt use, we recommend you configure [DevConfig](configs/config_dev.py)
+    - You should configure variables like **MongoDB endpoint**, **AWS settings**, loggings, and other settings in [BaseConfig](configs/config_base.py), [DevConfig](configs/config_dev.py), [TestConfig](configs/config_test.py), [ProdConfig](configs/config_prod.py)
+        - Note that [TestConfig](configs/config_test.py) is only used for `make tests` and Continuous Integration Test. You'd better create an independent **MongoDB Collection** for it. For developemt use, we recommend you configure [DevConfig](configs/config_dev.py), for production user, configure [ProdConfig](configs/config_prod.py)
         - See how it is related to environment variables [Settings](settings.py)
+        - AWS endpoint should be set to the [environment variables](../documents/EnvironmentSettings.md)
+        - **`AWS_AUTH_KEY`** is a self-defined aws-backend communication authentication key that makes sure irrelevant post would not be executed. Here is how it is [used](routes/route_video.py) (`video.route('/aws')`) and [imported](configs/config_base.py)
     - Other settings like [Logging Settings](configs/logging.yml) and [uWSGI Settings](configs/uwsgi.ini)(for docker use)
 
 ### Install Dependencies
@@ -100,7 +101,7 @@ make tests
 
 ### Dockerize
 - This section is for you to dockerize manually. Normally, GitHub Action will do the dockerize job once master branch is updated.
-- Before dockerize, make sure you've set up [environment variable](../documents/env.sh)
+- Before dockerize, make sure you've set up [environment variable](../documents/EnvironmentSettings.md)
     - PROFILE (you can also change it in [makefile](makefile))
     - BACKEND_BUILD
     - BACKEND_REPO (you can also change it in [makefile](makefile))
@@ -111,12 +112,12 @@ make docker_build docker_push
 
 ### Deploy
 - This section is for you to deploy manually. Normally, GitHub Action will do the deploy job once master branch is updated.
-- Before deploy, make sure you've set up [environment variable](../documents/env.sh)
+- Before deploy, make sure you've set up [environment variable](../documents/EnvironmentSettings.md)
     - PROFILE (you can also change it in [makefile](makefile))
     - BACKEND_BUILD
     - BACKEND_REPO (you can also change it in [makefile](makefile))
     - HEROKU_API_KEY
-    - HEROKU_APP_NAME
+    - HEROKU_APP_BACKEND
 - To deploy to heroku, run
 ```bash
 make heroku
@@ -145,7 +146,7 @@ make heroku
 
 - Background Design
 
-    ![BackgroundDesign](../documents/BackgroundDesign.png)
+    ![GreloupisBackgroundDesign](../documents/images/GreloupisBackend.svg)
 
 ### Web Server Design
 - We use [uWSGI](configs/uwsgi.ini) as our frontend webserver. See how it is configured in [Dockerfile](Dockerfile)
@@ -157,6 +158,7 @@ make heroku
 - See full [Test Cases](../documents/Test.md)
 - Coverage
   - [CodeCov](https://codecov.io/gh/HyperTars/Online-Video-Platform)
+  - [Coveralls](https://coveralls.io/github/HyperTars/Online-Video-Platform)
 
 ## Contributors
   
