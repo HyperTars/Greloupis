@@ -13,7 +13,6 @@
 
 - Continuous Integration
 
-    <!--[![build](https://travis-ci.com/HyperTars/Online-Video-Platform.svg?token=btA3ungCKHqWzLxCoxT7&branch=master)](https://travis-ci.com/HyperTars/Online-Video-Platform)-->
     [![CI/CD](https://github.com/HyperTars/Online-Video-Platform/workflows/CI/CD/badge.svg)](https://github.com/HyperTars/Online-Video-Platform/actions?query=workflow%3ACI%2FCD)
     [![CodeCov Status](https://codecov.io/gh/HyperTars/Online-Video-Platform/branch/master/graph/badge.svg?token=8K7ODQK5BV)](https://codecov.io/gh/HyperTars/Online-Video-Platform)
     [![Coveralls Status](https://coveralls.io/repos/github/HyperTars/Online-Video-Platform/badge.svg?t=dyCGTT)](https://coveralls.io/github/HyperTars/Online-Video-Platform)
@@ -49,7 +48,9 @@
     - [Project Proposal](#project-proposal)
     - [Frontend Details](#frontend-details)
     - [Backend Details](#backend-details)
+    - [Transcoder Details](#transcoder-details)
     - [CI / CD Workflow](#ci--cd-workflow)
+    - [Environment Settings](#environment-settings)
   - [Setup Guide](#setup-guide)
       - [Environment Requirement](#environment-requirement)
       - [Install Dependencies](#install-dependencies)
@@ -57,26 +58,30 @@
       - [Make Prod](#make-prod)
       - [Run](#run)
   - [Designs](#designs)
-    - [Coding Style](#coding-style)
-    - [APIs Design](#apis-design)
-    - [Components Design](#components-design)
-  - [CI CD](#ci-cd)
+    - [APIs](#apis)
+    - [Architecture](#architecture)
+  - [CI / CD](#ci--cd)
   - [Contributors](#contributors)
 
 ## Documents
 ### [Project Proposal](documents/Proposal.md)
 ### [Frontend Details](frontend/readme.md)
 ### [Backend Details](backend/readme.md)
+### [Transcoder Details](transcoder/readme.md)
 ### [CI / CD Workflow](documents/cicd.md)
-  
+### [Environment Settings](documents/EnvironmentSettings.md)
+
 ## Setup Guide
 
 #### Environment Requirement
 - Python 3.7 / 3.8 **(3.6 or below and 3.9 are not supported)**
 - npm (6.14.8)
 - node.js (14.15.0)
-- [Environment Variables](documents/env.sh)
+- [Environment Variables](documents/EnvironmentSettings.md)
 - Make sure MongoDB & AWS Endpoints are all set, see more details in [Backend Setup Guide](backend/readme.md#Environment-Requirement-And-Configs)
+- Avatar and Thumbnail images requires you to configure AWS S3 Service, see more details in [Frontend Setup Guide](frontend/readme.md#Environment-Requirement)
+- Video upload and streaming requires you to configure AWS Transcoding Service, see more details in [Transcoder Setup Guide](transcoder/readme.md)
+
 #### Install Dependencies
 - To install dependencies, run
 ```bash
@@ -114,27 +119,22 @@ make prod
         - Username: eclipse, Password: eclipse
 
 ## Designs
-### Coding Style
-- Python: [PEP8](https://www.python.org/dev/peps/pep-0008/)
-- React: [JSX](https://reactjs.org/docs/introducing-jsx.html)
 
-### APIs Design
+### APIs
 - See full [APIs Design](documents/APIs.md)
 - Or you can access our [backend Swagger UI website](https://greloupis-backend.herokuapp.com/)
 
-### Components Design
-1. Processing Queue: Each uploaded video will be pushed to a processing queue to be de-queued later for encoding, thumbnail generation, and storage.
-2. Encoder: To encode each uploaded video into multiple formats.
-3. Thumbnails generator: To generate a few thumbnails for each video.
-4. Video and Thumbnail storage: To store video and thumbnail files in some distributed file storage.
-5. User Database: To store user’s information, e.g., name, email, address, etc.
-6. Video metadata storage: A metadata database to store all the information about videos like title, file path in the system, uploading user, total views, likes, dislikes, etc. It will also be used to store all the video comments.
-
-- Architecture Design
+### Architecture
     
-    ![Architecture Design Diagram](documents/ArchitectureDesign_resize.png)
+![Architecture Design Diagram](documents/images/GreloupisArchitecture-2.svg)
 
-## CI CD
+### [Frontend](frontend/readme.md)
+
+### [Backend](backend/readme.md)
+
+### [Transcoder](transcoder/readme.md)
+
+## CI / CD
 - We use `GitHub Action`, `Docker` and `Heroku` to do CI/CD works
   - Full [Test Cases](documents/Test.md)
   - Coverage (test results) [CodeCov](https://codecov.io/gh/HyperTars/Online-Video-Platform) | [Coverall](https://coveralls.io/github/HyperTars/Online-Video-Platform)

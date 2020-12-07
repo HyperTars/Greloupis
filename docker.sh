@@ -15,8 +15,17 @@ instr() {
     echo "====================================================================="
 }
 
-command -v docker >/dev/null 2>&1 || { echo >&2 "docker is required but it's not installed or running.  Aborting."; exit 1; } 
+env() {
+    echo "====================================================================="
+    echo "Environment Variables Required for Running:"
+    echo "ACCESS_KEY_ID1, ACCESS_KEY_ID2, SECRET_KEY1, SECRET_KEY2, AWS_AUTH_KEY"
+    echo "See document: documents/EnvironmentSettings.md"
+    echo "====================================================================="
+}
 
+command -v docker >/dev/null 2>&1 || { echo >&2 "docker is required but it's not installed or running.  Aborting."; exit 1; } 
+if [[ -z "${ACCESS_KEY_ID1}" ]] || [[ -z "${ACCESS_KEY_ID2}" ]] || [[ -z "${SECRET_KEY1}" ]] || [[ -z "${SECRET_KEY2}" ]] || [[ -z "${AWS_AUTH_KEY}" ]];
+then env exit 0
 if [[ $1 = "--help" ]] || [[ $1 = "-h" ]]
 then instr exit 0
 elif [[ $1 = "--backend" ]] || [[ $1 = "-b" ]]

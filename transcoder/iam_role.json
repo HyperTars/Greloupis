@@ -1,0 +1,45 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+      ],
+      "Resource": "*",
+      "Effect": "Allow",
+      "Sid": "Logging"
+    },
+    {
+      "Action": [
+        "iam:PassRole"
+      ],
+      "Resource": [
+        "ARNforMediaConvertRole"
+      ],
+      "Effect": "Allow",
+      "Sid": "PassRole"
+    },
+    {
+      "Action": [
+        "mediaconvert:*"
+      ],
+      "Resource": [
+        "*"
+      ],
+      "Effect": "Allow",
+      "Sid": "MediaConvertService"
+    },
+    {
+      "Action": [
+        "s3:*"
+      ],
+      "Resource": [
+        "*"
+      ],
+      "Effect": "Allow",
+      "Sid": "S3Service"
+    }
+  ]
+}

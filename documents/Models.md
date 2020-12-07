@@ -1,6 +1,6 @@
 # Models Design
 
-## Basic Models
+## User Models
 - **UserDetail**
     AVP Name | Type | Description | Data Source
     --- | --- | --- | ---
@@ -20,15 +20,6 @@
     `user_login_ip` | string | last login ip address | system generate
     `user_login_time` | date-type | last login timestamp | system generate
 
-- **VideoURI**
-    AVP Name | Type | Description | Data Source
-    --- | --- | --- | ---
-    `video_low` | string | URI of low quality video (540p) | system generate
-    `video_mid` | string | URI of mid quality video (720p) | system generate
-    `video_high` | string | URI of high quality video (1080p) | system generate
-  - URI directed to CloudFront streaming
-
-## User Models
 - **User**
     AVP Name | Type | Description | Data Source
     --- | --- | --- | ---
@@ -45,6 +36,14 @@
     `user_login` | LoginDetail[] | array of user's recent login details | system generated
 
 ## Video Models
+- **VideoURI**
+    AVP Name | Type | Description | Data Source
+    --- | --- | --- | ---
+    `video_low` | string | URI of low quality video (540p) | system generate
+    `video_mid` | string | URI of mid quality video (720p) | system generate
+    `video_high` | string | URI of high quality video (1080p) | system generate
+  - URI directed to CloudFront streaming
+
 - **Video**
     AVP Name | Type | Description | Data Source
     --- | --- | --- | ---
@@ -71,6 +70,7 @@
     `video_upload_date` | date-type | video upload date | system generated
     `video_uri` | VideoURI | uploaded video URI | system generated
 
+## VideoOp Models
 - **Video Op**
     AVP Name | Type | Description | Data Source
     --- | --- | --- | ---

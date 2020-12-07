@@ -19,7 +19,7 @@ tests:
 	cd $(BACKEND_DIR); make tests
 	cd $(FRONTEND_DIR); make tests
 
-docs:	#FORCE
+docs:
 	cd $(BACKEND_DIR); make docs
 
 report:

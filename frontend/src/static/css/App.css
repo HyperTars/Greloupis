@@ -274,8 +274,6 @@
   }
   
   .upload-page .upload-info__progress {
-    border-top: #D4D4D4 0.46875rem solid;
-    margin-bottom: 3rem;
     font-size: 0.875rem;
     position: relative;
   }

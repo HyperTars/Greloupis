@@ -14,6 +14,7 @@ import { withStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import PropTypes from "prop-types";
 import AuthService from "../service/AuthService";
+import { GITHUB_REPO } from "./Endpoint";
 
 function Copyright() {
   return (
@@ -22,7 +23,7 @@ function Copyright() {
       <Link
         color="inherit"
         target="_blank"
-        href="https://github.com/HyperTars/Online-Video-Platform/"
+        href={GITHUB_REPO}
       >
         Greloupis
       </Link>{" "}
