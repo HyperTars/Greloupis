@@ -1,3 +1,5 @@
+[![logo](greloupis-horizontal.png)](https://greloupis-frontend.herokuapp.com/)
+
 # Database Design
 
 - Database: MongoDB 4.4.0

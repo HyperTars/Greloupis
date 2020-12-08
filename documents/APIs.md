@@ -1,3 +1,5 @@
+[![logo](greloupis-horizontal.png)](https://greloupis-frontend.herokuapp.com/)
+
 # APIs Design
 
 In this document, we list our all APIs for quick overview. 

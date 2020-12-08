@@ -1,3 +1,5 @@
+[![logo](greloupis-horizontal.png)](https://greloupis-frontend.herokuapp.com/)
+
 # Online Video Platform
 - Proposal of An Online Video Platform
 - NYU CS-GY 9223 DevOps

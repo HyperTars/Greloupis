@@ -1,3 +1,5 @@
+[![logo](greloupis-horizontal.png)](https://greloupis-frontend.herokuapp.com/)
+
 # Greloupis - Environment Settings
 
 - We have lots of environment variables used in our project, which you should set before running.
