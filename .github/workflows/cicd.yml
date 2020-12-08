@@ -24,6 +24,8 @@ env:
   AWS_CLOUD_FRONT: ${{ secrets.AWS_CLOUD_FRONT }}
   AWS_THUMBNAIL_FOLDER: ${{ secrets.AWS_THUMBNAIL_FOLDER }}
   MONGO_TEST: ${{ secrets.MONGO_TEST }}
+  MONGO_DEV: ${{ secrets.MONGO_DEV }}
+  MONG_PROD: ${{ secrets.MONGO_PROD }}
 
 jobs:
   test:
