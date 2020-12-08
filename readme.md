@@ -15,7 +15,7 @@
 
     [![CI/CD](https://github.com/HyperTars/Greloupis/workflows/CI/CD/badge.svg)](https://github.com/HyperTars/Greloupis/actions?query=workflow%3ACI%2FCD)
     [![CodeCov Status](https://codecov.io/gh/HyperTars/Greloupis/branch/master/graph/badge.svg?token=8K7ODQK5BV)](https://codecov.io/gh/HyperTars/Greloupis)
-    [![Coveralls Status](https://coveralls.io/repos/github/HyperTars/Greloupis/badge.svg?t=dyCGTT)](https://coveralls.io/github/HyperTars/Greloupis)
+    [![Coverage Status](https://coveralls.io/repos/github/HyperTars/Greloupis/badge.svg?branch=master)](https://coveralls.io/github/HyperTars/Greloupis?branch=master)
     
 - Continuous Delivery & Deploy (Frontend)
 
