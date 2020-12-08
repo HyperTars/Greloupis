@@ -31,11 +31,12 @@
     [![docker build](https://img.shields.io/docker/cloud/automated/hypertars/greloupis-backend)](https://hub.docker.com/r/hypertars/greloupis-backend/builds)
     [![Heroku](https://pyheroku-badge.herokuapp.com/?app=greloupis-backend&style=flat)](https://greloupis-backend.herokuapp.com/)
 
-<!-- [![tested with jest](https://img.shields.io/badge/tested_with-jest-99424f.svg)](https://github.com/facebook/jest) -->
-<!-- [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier) -->
-<!-- [![stars](https://img.shields.io/github/stars/HyperTars/Greloupis.svg?style=plasticr)](https://github.com/HyperTars/Greloupis/stargazers) -->
-<!-- [![commit activity](https://img.shields.io/github/commit-activity/y/HyperTars/Greloupis.svg?style=plasticr)](https://github.com/HyperTars/Greloupis/commits/master) -->
-<!-- [![last commit](https://img.shields.io/github/last-commit/HyperTars/Greloupis.svg?style=plasticr)](https://github.com/HyperTars/Greloupis/commits/master) -->
+- Git Statistics
+
+    [![size](https://img.shields.io/github/languages/code-size/hypertars/greloupis?style=plasticr)](https://github.com/HyperTars/Greloupis)
+    [![commit activity](https://img.shields.io/github/commit-activity/y/hypertars/greloupis?style=plasticr)](https://github.com/HyperTars/Greloupis/commits/master)
+    [![last commit](https://img.shields.io/github/last-commit/HyperTars/Greloupis.svg?style=plasticr)](https://github.com/HyperTars/Greloupis/commits/master)
+    
 
 - Websites and Metrics Monitors
     - Our [Heroku Frontend Site](https://greloupis-frontend.herokuapp.com/) | [Heroku Backend Site](https://greloupis-backend.herokuapp.com/)
