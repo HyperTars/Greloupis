@@ -1,4 +1,6 @@
-# Tutorial: Automatically distribute videos after uploading them to AWS S3
+[![logo](../documents/greloupis-horizontal.png)](https://greloupis-frontend.herokuapp.com/)
+
+# Greloupis - AWS Tutorial: Automatically distribute videos after uploading them to AWS S3
 
 This tutorial introduces how to use [AWS S3](https://aws.amazon.com/s3) as a storage loaction to upload video. Then the upload will automatically trigger a [AWS MediaConvert](https://aws.amazon.com/mediaconvert/) workflow to converts the video to suitable formats for distributing, which use [AWS Cloudfront](https://aws.amazon.com/cloudfront) to help. 
 When use the website [greloupis](https://greloupis-frontend.herokuapp.com/) to upload a video, it will trigger the workflow below.

@@ -1,3 +1,5 @@
+[![logo](greloupis-horizontal.png)](https://greloupis-frontend.herokuapp.com/)
+
 # Models Design
 
 ## User Models
