@@ -340,7 +340,7 @@ The lambda above will submit a job to MediaConvert, but it won't wait for the jo
     ```
 8. Click **Save**.
 
-## 7. use Cloudfront to distribute the video
+## 7. Use Cloudfront to distribute the video
 
 #### Background
 
