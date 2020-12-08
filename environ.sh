@@ -39,7 +39,7 @@ export AWS_CLOUD_FRONT=<aws cloud front address>
 # Backend: configs/config_base.py, routes/route_video.py
 export AWS_AUTH_KEY=<self defined aws-backend communication auth key>
 
-# MongoDB
+# MongoDB: "mongodb+srv://" + <collection URI you need to fill below>
 export MONGO_DEV=<MongoDB develop collection URI>
 export MONGO_TEST=<MongoDB test collection URI>
 export MONGO_PROD=<MongoDB production collection URI>
