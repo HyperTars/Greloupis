@@ -30,7 +30,16 @@ export SECRET_KEY1=<aws s3 video bucket secret key>
 # AWS - S3 Image Bucket
 export ACCESS_KEY_ID2=<aws s3 image bucket access key>
 export SECRET_KEY2=<aws s3 image bucket secret key>
+export AWS_THUMBNAIL_FOLDER=<aws s3 thumbnail folder>
+
+# AWS - Cloud Front
+export AWS_CLOUD_FRONT=<aws cloud front address>
 
 # AWS - Backend Post Key (after transcoding finished, post {AWS_AUTH_KEY=$AWS_AUTH_KEY, video_id=$video_id} to /video/aws)
 # Backend: configs/config_base.py, routes/route_video.py
 export AWS_AUTH_KEY=<self defined aws-backend communication auth key>
+
+# MongoDB
+export MONGO_DEV=<MongoDB develop collection URI>
+export MONGO_TEST=<MongoDB test collection URI>
+export MONGO_PROD=<MongoDB production collection URI>
