@@ -1,7 +1,7 @@
 [![logo](greloupis-horizontal.png)](https://greloupis-frontend.herokuapp.com/)
 
-# Online Video Platform
-- Proposal of An Online Video Platform
+# Greloupis
+- Proposal of Greloupis - An Online Video Sharing Platform
 - NYU CS-GY 9223 DevOps
 
 ## Overview
