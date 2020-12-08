@@ -21,9 +21,9 @@
 
 - CI / CD
 
-    [![CI/CD](https://github.com/HyperTars/Online-Video-Platform/workflows/CI/CD/badge.svg)](https://github.com/HyperTars/Online-Video-Platform/actions?query=workflow%3ACI%2FCD)
-    [![CodeCov Status](https://codecov.io/gh/HyperTars/Online-Video-Platform/branch/master/graph/badge.svg?token=8K7ODQK5BV)](https://codecov.io/gh/HyperTars/Online-Video-Platform)
-    [![Coveralls Status](https://coveralls.io/repos/github/HyperTars/Online-Video-Platform/badge.svg?t=dyCGTT)](https://coveralls.io/github/HyperTars/Online-Video-Platform)
+    [![CI/CD](https://github.com/HyperTars/Greloupis/workflows/CI/CD/badge.svg)](https://github.com/HyperTars/Greloupis/actions?query=workflow%3ACI%2FCD)
+    [![CodeCov Status](https://codecov.io/gh/HyperTars/Greloupis/branch/master/graph/badge.svg?token=8K7ODQK5BV)](https://codecov.io/gh/HyperTars/Greloupis)
+    [![Coveralls Status](https://coveralls.io/repos/github/HyperTars/Greloupis/badge.svg?t=dyCGTT)](https://coveralls.io/github/HyperTars/Greloupis)
     [![docker status](https://img.shields.io/docker/cloud/build/hypertars/greloupis-backend)](https://hub.docker.com/r/hypertars/greloupis-backend)
     [![docker image size](https://img.shields.io/docker/image-size/hypertars/greloupis-backend)](https://hub.docker.com/r/hypertars/greloupis-backend/tags)
     [![docker build](https://img.shields.io/docker/cloud/automated/hypertars/greloupis-backend)](https://hub.docker.com/r/hypertars/greloupis-backend/builds)
@@ -157,8 +157,8 @@ make heroku
 ## Tests
 - See full [Test Cases](../documents/Test.md)
 - Coverage
-  - [CodeCov](https://codecov.io/gh/HyperTars/Online-Video-Platform)
-  - [Coveralls](https://coveralls.io/github/HyperTars/Online-Video-Platform)
+  - [CodeCov](https://codecov.io/gh/HyperTars/Greloupis)
+  - [Coveralls](https://coveralls.io/github/HyperTars/Greloupis)
 
 ## Contributors
   

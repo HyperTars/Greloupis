@@ -1,5 +1,5 @@
 {
-  "name": "online-video-platform",
+  "name": "greloupis",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -67,11 +67,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/HyperTars/Online-Video-Platform.git"
+    "url": "git+https://github.com/HyperTars/Greloupis.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/HyperTars/Online-Video-Platform/issues"
+    "url": "https://github.com/HyperTars/Greloupis/issues"
   }
 }

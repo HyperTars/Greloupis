@@ -3,9 +3,9 @@
 # Greloupis - CI / CD Workflow
 - Continuous Integration
 
-    [![CI/CD](https://github.com/HyperTars/Online-Video-Platform/workflows/CI/CD/badge.svg)](https://github.com/HyperTars/Online-Video-Platform/actions?query=workflow%3ATest)
-    [![CodeCov Status](https://codecov.io/gh/HyperTars/Online-Video-Platform/branch/master/graph/badge.svg?token=8K7ODQK5BV)](https://codecov.io/gh/HyperTars/Online-Video-Platform)
-    [![Coveralls Status](https://coveralls.io/repos/github/HyperTars/Online-Video-Platform/badge.svg?t=dyCGTT)](https://coveralls.io/github/HyperTars/Online-Video-Platform)
+    [![CI/CD](https://github.com/HyperTars/Greloupis/workflows/CI/CD/badge.svg)](https://github.com/HyperTars/Greloupis/actions?query=workflow%3ATest)
+    [![CodeCov Status](https://codecov.io/gh/HyperTars/Greloupis/branch/master/graph/badge.svg?token=8K7ODQK5BV)](https://codecov.io/gh/HyperTars/Greloupis)
+    [![Coveralls Status](https://coveralls.io/repos/github/HyperTars/Greloupis/badge.svg?t=dyCGTT)](https://coveralls.io/github/HyperTars/Greloupis)
     
 - Continuous Delivery & Deploy (Frontend)
 
@@ -39,7 +39,7 @@
     - [Deploy monitoring](#deploy-monitoring)
 
 ## Overview
-- We use [GitHub Action](https://github.com/HyperTars/Online-Video-Platform/actions) to do our CI/CD job.
+- We use [GitHub Action](https://github.com/HyperTars/Greloupis/actions) to do our CI/CD job.
 - See our [GitHub Action Configuration](../.github/workflows/cicd.yml)
 - We set our running environment as Ubuntu 18.04
 - We divide our CI/CD workflow into 3 stages: test, dockerize, and deploy as coded in [GitHub Action Configuration](../.github/workflows/cicd.yml)
@@ -137,7 +137,7 @@
 - `lint`: Finally, we use [Flake8](../backend/configs/flake8) to do lint test
 
     ![lint](images/lint.png)
-- Finally, we upload our test results to [CodeCov](https://codecov.io/gh/HyperTars/Online-Video-Platform) and [Coveralls](https://coveralls.io/github/HyperTars/Online-Video-Platform) so that we can see our visualized coverage report.
+- Finally, we upload our test results to [CodeCov](https://codecov.io/gh/HyperTars/Greloupis) and [Coveralls](https://coveralls.io/github/HyperTars/Greloupis) so that we can see our visualized coverage report.
     - CodeCov
 
         ![codecov](images/codecov.png)
