@@ -42,7 +42,7 @@ docker_build:
 	- docker build -f Dockerfile -t $(BACKEND_BUILD):$(TAG) .
 
 docker_run:
-	- docker run -p 5000:5000 --env PORT=5000 --env AWS_AUTH_KEY=$(AWS_AUTH_KEY) --env PROFILE=$(PROFILE) $(BACKEND_BUILD)
+	- docker run -p 5000:5000 --env PORT=5000 --env AWS_AUTH_KEY=$(AWS_AUTH_KEY) --env AWS_CLOUD_FRONT=$(AWS_CLOUD_FRONT) --env AWS_THUMBNAIL_FOLDER=$(AWS_THUMBNAIL_FOLDER) --env PROFILE=$(PROFILE) $(BACKEND_BUILD)
 
 docker_push:
 	- docker login --username $(DOCKER_USER) --password $(DOCKER_PASS)
@@ -50,7 +50,7 @@ docker_push:
 	- docker push $(BACKEND_REPO)
 
 docker_hub:
-	- docker run -p 5000:5000 --env PORT=5000 --env AWS_AUTH_KEY=$(AWS_AUTH_KEY) --env PROFILE=$(PROFILE) --rm -it $(BACKEND_REPO):$(TAG)
+	- docker run -p 5000:5000 --env PORT=5000 --env AWS_AUTH_KEY=$(AWS_AUTH_KEY) --env AWS_CLOUD_FRONT=$(AWS_CLOUD_FRONT) --env AWS_THUMBNAIL_FOLDER=$(AWS_THUMBNAIL_FOLDER) --env PROFILE=$(PROFILE) $(BACKEND_BUILD) --rm -it $(BACKEND_REPO):$(TAG)
 
 heroku:
 	- docker login --username _ --password=$(HEROKU_API_KEY) registry.heroku.com

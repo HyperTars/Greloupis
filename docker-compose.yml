@@ -36,4 +36,9 @@ services:
       - PORT=5000
       - PROFILE="prod"
       - AWS_AUTH_KEY=${AWS_AUTH_KEY}
+      - AWS_CLOUD_FRONT=${AWS_CLOUD_FRONT}
+      - AWS_THUMBNAIL_FOLDER=${AWS_THUMBNAIL_FOLDER}
+      - MONGO_DEV=${MONGO_DEV}
+      - MONGO_TEST=${MONGO_TEST}
+      - MONGO_PROD=${MONGO_PROD}
     image: hypertars/greloupis-backend:latest
