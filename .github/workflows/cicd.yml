@@ -1,7 +1,7 @@
 name: CI/CD
 
 on:
-  push:
+  #push:
   workflow_dispatch:
 
 env:
@@ -21,6 +21,9 @@ env:
   SECRET_KEY1: ${{ secrets.SECRET_KEY1 }}
   SECRET_KEY2: ${{ secrets.SECRET_KEY2 }}
   AWS_AUTH_KEY: ${{ secrets.AWS_AUTH_KEY }}
+  AWS_CLOUD_FRONT: ${{ secrets.AWS_CLOUD_FRONT }}
+  AWS_THUMBNAIL_FOLDER: ${{ secrets.AWS_THUMBNAIL_FOLDER }}
+  MONGO_TEST: ${{ secrets.MONGO_TEST }}
 
 jobs:
   test:

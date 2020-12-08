@@ -22,6 +22,11 @@
   - ACCESS_KEY_ID2
   - SECRET_KEY1
   - SECRET_KEY2
+  - MONGO_DEV
+  - MONGO_TEST
+  - MONGO_PROD
+  - AWS_CLOUD_FRONT
+  - AWS_THUMBNAIL_FOLDER
 
 ## Local Running Environment Variables
 ### Frontend Environment Variables
@@ -54,8 +59,11 @@
 - Python Flask
   - AWS_AUTH_KEY
   - PROFILE
-  - [MongoDB Endpoint](../backend/configs/config_dev.py)
-  - [AWS CloudFront & S3 Endpoints](../backend/configs/config_base.py)
+  - MONGO_DEV
+  - MONGO_TEST
+  - MONGO_PROD
+  - AWS_CLOUD_FRONT
+  - AWS_THUMBNAIL_FOLDER
 
 - Makefile: You can run and test backend separately.
   - CODECOV_TOKEN
@@ -65,6 +73,11 @@
   - BACKEND_REPO
   - TAG
   - HEROKU_APP_BACKEND
+  - MONGO_DEV
+  - MONGO_TEST
+  - MONGO_PROD
+  - AWS_CLOUD_FRONT
+  - AWS_THUMBNAIL_FOLDER
 
 ## CI / CD Workflow Environment Variables
 
@@ -79,6 +92,9 @@
 - DOCKER_EMAIL
 - DOCKER_PASS
 #### Test And Build
+- MONGO_TEST
+- AWS_CLOUD_FRONT
+- AWS_THUMBNAIL_FOLDER
 - AWS_AUTH_KEY
 - ACCESS_KEY_ID1
 - ACCESS_KEY_ID2
@@ -96,4 +112,7 @@
 - SECRET_KEY2
 
 #### Heroku Backend App
+- AWS_CLOUD_FRONT
+- AWS_THUMBNAIL_FOLDER
 - AWS_AUTH_KEY
+- MONGO_PROD

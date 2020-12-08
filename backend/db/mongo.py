@@ -4,6 +4,7 @@ from mongoengine.connection import disconnect
 
 
 def init_db():
+
     disconnect(alias='default')
     db_app = Flask(__name__)
     db_app.config = current_app.config
