@@ -52,15 +52,24 @@
   - [Contributors](#contributors)
 
 ## Designs
+### Login & Register
+- Login
+![login](../documents/images/login.png)
+
+- Register
+![register](../documents/images/register.png)
+
 ### Homepage Design
 - We list Top 10 Hit Videos in our homepage.
 - Private videos are hidden (not listed here).
+![home](../documents/images/home.png)
 
 ### Search Design
 - We support multi attribute search, including
     - User: user name, user email, user state/country/zip, user street address, user phont number, etc.
     - Video: video title, video channel, video tag, video category, video description, etc.
 - Private videos & pending videos(videos being transcoded and not ready for streaming) are hidden to all users except the video's author.
+![search](../documents/images/search.png)
 
 ### Player Design
 - We support multi resolution video playback, you can select quality when you play video, including
@@ -76,6 +85,7 @@
 - If logged in, we remember your last playback position, you will be redirect to the position the next time you open the video.
 - You can like, dislike, star, and comment on videos.
 - Private & pending videos are not allowed to be accessed unless logged in with author's account.
+![player](../documents/images/video.png)
 
 ### Dashboard Design
 - You can manage your user profile
@@ -84,9 +94,21 @@
 - You can see all the videos you starred, liked, commented.
 - Private users' detail information and their private videos are hidden unless logged in by themselves.
 
+- Self dashboard
+![dashboard](../documents/images/dashboard.png)
+
+- Private user profile
+![private](../documents/images/private.png)
+
 ### Uploading Design
 - You can upload your video first, after you successfully uploaded your video, you can edit video information while it is transcoding
 - We will generate a thumbnail automatically, but you can upload it by yourself if you like.
+
+- Video upload
+![upload](../documents/images/upload.png)
+
+- Video update
+![video-update](../documents/images/video-update.png)
 
 ### Error Page Design
 - We design three error pages
