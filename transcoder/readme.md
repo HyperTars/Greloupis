@@ -1,4 +1,4 @@
-[![logo](greloupis-horizontal.png)](https://greloupis-frontend.herokuapp.com/)
+[![logo](../documents/greloupis-horizontal.png)](https://greloupis-frontend.herokuapp.com/)
 
 # Greloupis - AWS Tutorial: Automatically distribute videos after uploading them to AWS S3
 
